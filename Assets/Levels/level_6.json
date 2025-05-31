@@ -1,0 +1,196 @@
+{
+    "levelNum": 6,
+    "width": 3,
+    "height": 4,
+    "minMoves": 5,
+    "padding": 1,
+    "scoring": {
+        "baseScore": 5000,
+        "movePenalty": 40,
+        "starThresholds": [ 0, 90, 100 ],
+        "gemBonus": 0
+    },
+    "tutorialSteps": [],
+
+    "blobs": [
+        {
+            "type": "flag",
+            "size": 4,
+            "color": "orange",
+            "x": 1,
+            "y": 0,
+            "trailColor": ""
+
+        },
+        {
+            "type": "normal",
+            "size": 4,
+            "color": "yellow",
+            "x": 0,
+            "y": 1,
+            "trailColor": ""
+
+        },
+        {
+            "type": "normal",
+            "size": 4,
+            "color": "orange",
+            "x": 1,
+            "y": 1,
+            "trailColor": ""
+
+        },
+        {
+            "type": "normal",
+            "size": 4,
+            "color": "orange",
+            "x": 1,
+            "y": 2,
+            "trailColor": ""
+
+        },
+
+
+        {
+            "type": "normal",
+            "size": 5,
+            "color": "yellow",
+            "x": 2,
+            "y": 1,
+            "trailColor": ""
+
+        },
+        {
+            "type": "normal",
+            "size": 4,
+            "color": "red",
+            "x": 2,
+            "y": 2,
+            "trailColor": ""
+
+        },
+
+        {
+            "type": "normal",
+            "size": 4,
+            "color": "orange",
+            "x": 0,
+            "y": 3,
+            "trailColor": ""
+
+        },
+
+        {
+            "type": "normal",
+            "size": 4,
+            "color": "red",
+            "x": 1,
+            "y": 3,
+            "trailColor": ""
+
+        },
+        {
+            "type": "normal",
+            "size": 2,
+            "color": "orange",
+            "x": 2,
+            "y": 3,
+            "trailColor": ""
+
+        }
+
+    ],
+    "tiles": [
+        {
+            "type": "normal",
+            "x": 1,
+            "y": 0,
+            "color": ""
+
+
+        },
+        {
+            "type": "normal",
+            "x": 0,
+            "y": 1,
+            "color": ""
+
+
+        },
+
+        {
+            "type": "normal",
+            "x": 1,
+            "y": 1,
+            "color": ""
+
+
+        },
+        {
+            "type": "normal",
+            "x": 2,
+            "y": 1,
+            "color": ""
+
+
+        },
+         {
+            "type": "normal",
+            "x": 0,
+            "y": 2,
+            "color": ""
+
+
+        },
+        {
+            "type": "normal",
+            "x": 1,
+            "y": 2,
+            "color": ""
+
+
+        },
+
+
+
+
+
+
+
+        {
+            "type": "normal",
+            "x": 2,
+            "y": 2,
+            "color": ""
+
+
+        },
+        {
+            "type": "normal",
+            "x": 0,
+            "y": 3,
+            "color": ""
+
+
+        },
+        {
+            "type": "normal",
+            "x": 1,
+            "y": 3,
+            "color": ""
+
+
+        },
+        {
+            "type": "normal",
+            "x": 2,
+            "y": 3,
+            "color": ""
+
+
+        }
+
+
+    ]
+
+}

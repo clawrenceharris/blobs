@@ -1,0 +1,82 @@
+{
+  "levelNum": 1,
+  "width": 3,
+  "height": 3,
+  "minMoves": 2,
+  "scoring": {
+    "baseScore": 2000,
+    "movePenalty": 30,
+    "starThresholds": [0, 0, 100],
+    "gemBonus": 0
+  },
+  "tutorialSteps": [
+    {
+      "topText": "Welcome to Blobs. The goal of the game is to clear the board so there are no Blobs left. You can clear a Blob by merging it with another one that is a different color and on a shared row or column.",
+      "bottomText": "Blobs can be small or big. Merging a small Blob on a big one removes it from the board. Try swiping that small Blob onto the one beside it.",
+      "startX": 0,
+      "startY": 2,
+      "endX": 2,
+      "endY": 2
+    },
+    {
+      "topText": "The checkered tile at the bottom is a Target Tile. If a Blob of the same color sits on a Target Tile while there are no other Blobs on the board, it will disappear and you win the level!",
+      "bottomText": "Try merging those last two Blobs together to finish the level.",
+      "startX": 2,
+      "startY": 2,
+      "endX": 2,
+      "endY": 0
+    }
+  ],
+
+  "blobs": [
+    {
+      "t": "nb",
+      "s": 2,
+      "c": "p",
+      "x": 0,
+      "y": 2
+    },
+    {
+      "t": "nb",
+      "s": 4,
+      "c": "pk",
+      "x": 2,
+      "y": 2
+    },
+    {
+      "t": "nb",
+      "s": 4,
+      "c": "p",
+      "x": 2,
+      "y": 0
+    }
+  ],
+  "tiles": [
+    {
+      "t": "nt",
+      "x": 0,
+      "y": 2
+    },
+    {
+      "t": "nt",
+      "x": 1,
+      "y": 2
+    },
+    {
+      "t": "nt",
+      "x": 2,
+      "y": 2
+    },
+    {
+      "t": "nt",
+      "x": 2,
+      "y": 1
+    },
+    {
+      "t": "tt",
+      "x": 2,
+      "y": 0,
+      "c": "pk"
+    }
+  ]
+}

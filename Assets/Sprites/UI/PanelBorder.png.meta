@@ -1,0 +1,546 @@
+fileFormatVersion: 2
+guid: d66d3304f041f44588c84950092bd865
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5402105980129724735
+    second: PanelBorder_0
+  - first:
+      213: 4284749646912850095
+    second: PanelBorder_1
+  - first:
+      213: -5470612435579613201
+    second: PanelBorder_2
+  - first:
+      213: -1345762488598353583
+    second: PanelBorder_3
+  - first:
+      213: 2079453584261440748
+    second: PanelBorder_4
+  - first:
+      213: -4802372190488993656
+    second: PanelBorder_5
+  - first:
+      213: 7569890708166657575
+    second: PanelBorder_6
+  - first:
+      213: 7453059679893892880
+    second: PanelBorder_7
+  - first:
+      213: 6549825139211462409
+    second: PanelBorder_8
+  - first:
+      213: 3419331361955914231
+    second: PanelBorder_9
+  - first:
+      213: -7269210353126719710
+    second: PanelBorder_10
+  - first:
+      213: -1520235675101395622
+    second: PanelBorder_11
+  - first:
+      213: 1976348012777043757
+    second: PanelBorder_12
+  - first:
+      213: 2122453122875509411
+    second: PanelBorder_13
+  - first:
+      213: -7637292840913897832
+    second: PanelBorder_14
+  - first:
+      213: -2384057630979219250
+    second: PanelBorder_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 900
+  spriteBorder: {x: 162, y: 172, z: 162, w: 728}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: PanelBorder_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 741
+        width: 145
+        height: 159
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3945a074c228fa40800000000000000
+      internalID: 5402105980129724735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelBorder_1
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 815
+        width: 146
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa888bf2a1d767b30800000000000000
+      internalID: 4284749646912850095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelBorder_2
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 815
+        width: 146
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fef417179fa7414b0800000000000000
+      internalID: -5470612435579613201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelBorder_3
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 815
+        width: 146
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 159ac039524e25de0800000000000000
+      internalID: -1345762488598353583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelBorder_4
+      rect:
+        serializedVersion: 2
+        x: 755
+        y: 741
+        width: 145
+        height: 159
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce4e0d87404bbdc10800000000000000
+      internalID: 2079453584261440748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelBorder_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 552
+        width: 70
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88060b2dfeb8a5db0800000000000000
+      internalID: -4802372190488993656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelBorder_6
+      rect:
+        serializedVersion: 2
+        x: 830
+        y: 552
+        width: 70
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 726cdc8fd77ad0960800000000000000
+      internalID: 7569890708166657575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelBorder_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 370
+        width: 70
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01facd57a469e6760800000000000000
+      internalID: 7453059679893892880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelBorder_8
+      rect:
+        serializedVersion: 2
+        x: 830
+        y: 370
+        width: 70
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9076f9bf247a5ea50800000000000000
+      internalID: 6549825139211462409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelBorder_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 179
+        width: 70
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f12cbed1c7e37f20800000000000000
+      internalID: 3419331361955914231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelBorder_10
+      rect:
+        serializedVersion: 2
+        x: 830
+        y: 179
+        width: 70
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22f3a40a2b39e1b90800000000000000
+      internalID: -7269210353126719710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelBorder_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 145
+        height: 159
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5584b245b907eae0800000000000000
+      internalID: -1520235675101395622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelBorder_12
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 0
+        width: 146
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d27ff16eb066d6b10800000000000000
+      internalID: 1976348012777043757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelBorder_13
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 0
+        width: 146
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3aac969bed7747d10800000000000000
+      internalID: 2122453122875509411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelBorder_14
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 0
+        width: 146
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89671b310a2e20690800000000000000
+      internalID: -7637292840913897832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelBorder_15
+      rect:
+        serializedVersion: 2
+        x: 755
+        y: 0
+        width: 145
+        height: 159
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec0ac6547302aeed0800000000000000
+      internalID: -2384057630979219250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 1537655665
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      PanelBorder_0: 5402105980129724735
+      PanelBorder_1: 4284749646912850095
+      PanelBorder_10: -7269210353126719710
+      PanelBorder_11: -1520235675101395622
+      PanelBorder_12: 1976348012777043757
+      PanelBorder_13: 2122453122875509411
+      PanelBorder_14: -7637292840913897832
+      PanelBorder_15: -2384057630979219250
+      PanelBorder_2: -5470612435579613201
+      PanelBorder_3: -1345762488598353583
+      PanelBorder_4: 2079453584261440748
+      PanelBorder_5: -4802372190488993656
+      PanelBorder_6: 7569890708166657575
+      PanelBorder_7: 7453059679893892880
+      PanelBorder_8: 6549825139211462409
+      PanelBorder_9: 3419331361955914231
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -59,8 +59,8 @@ public class LevelDataConverter : JsonConverter<LevelData>
         JArray tilesArray = (JArray)jsonObject[LevelDataKeys.Tiles];
         levelData.tiles = DeserializeTilesArray(tilesArray);
 
-        JArray dotsOnBoardArray = (JArray)jsonObject[LevelDataKeys.Blobs];
-        levelData.blobs = DeserializeBlobsArray(dotsOnBoardArray);
+        JArray blobsArray = (JArray)jsonObject[LevelDataKeys.Blobs];
+        levelData.blobs = DeserializeBlobsArray(blobsArray);
 
 
 

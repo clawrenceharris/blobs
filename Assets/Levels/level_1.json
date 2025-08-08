@@ -1,0 +1,83 @@
+{
+  "levelNum": 1,
+  "width": 3,
+  "height": 3,
+  "minMoves": 2,
+  "scoring": {
+    "baseScore": 2000,
+    "movePenalty": 30,
+    "starThresholds": [0, 0, 100],
+    "gemBonus": 0
+  },
+  "tutorialSteps": [
+    {
+      "topText": "Welcome to Blobs. The goal of the game is to clear all blobs off the board. You can clear a Blob by merging it into another one of a different color as long as they are on a shared row or column.",
+      "bottomText": "Try merging the purple Blob onto the one next to it.",
+      "startX": 0,
+      "startY": 2,
+      "endX": 2,
+      "endY": 2
+    },
+    {
+      "topText": "See that flag pole? That’s a Flag Blob. Flag Blobs can lead to a win when merged, as long as there are no other Blobs on the board.",
+      "bottomText": "Flags can't initiate a merge, but any normal Blob of the same color that is merged with it will clear. Try it out!",
+      "startX": 2,
+      "startY": 2,
+      "endX": 2,
+      "endY": 0
+    }
+  ],
+
+  "blobs": [
+    {
+      "t": "nb",
+      "c": "pk",
+
+      "s": "n",
+      "x": 0,
+      "y": 2
+    },
+    {
+      "t": "nb",
+      "c": "b",
+
+      "s": "n",
+      "x": 2,
+      "y": 2
+    },
+
+    {
+      "t": "fb",
+      "x": 2,
+      "y": 0,
+      "c": "pk"
+    }
+  ],
+  "tiles": [
+    {
+      "t": "nt",
+      "x": 0,
+      "y": 2
+    },
+    {
+      "t": "nt",
+      "x": 1,
+      "y": 2
+    },
+    {
+      "t": "nt",
+      "x": 2,
+      "y": 2
+    },
+    {
+      "t": "nt",
+      "x": 2,
+      "y": 1
+    },
+    {
+      "t": "nt",
+      "x": 2,
+      "y": 0
+    }
+  ]
+}

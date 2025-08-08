@@ -1,0 +1,145 @@
+{
+    "levelNum": 5,
+    "width": 4,
+    "height": 3,
+    "minMoves": 5,
+    "padding": 0.5,
+    "scoring": {
+        "baseScore": 5000,
+        "movePenalty": 40,
+        "starThresholds": [ 0, 90, 100 ],
+        "gemBonus": 0
+    },
+    "tutorialSteps": [],
+
+    "blobs": [
+
+        {
+            "type": "normal",
+            "size": 4,
+            "color": "light blue",
+            "x": 1,
+            "y": 1,
+            "trailColor": ""
+
+        },
+        {
+            "type": "normal",
+            "size": 4,
+            "color": "light blue",
+            "x": 2,
+            "y": 1,
+            "trailColor": ""
+
+        },
+        {
+            "type": "flag",
+            "size": 5,
+            "color": "light blue",
+            "x": 2,
+            "y": 2,
+            "trailColor": ""
+
+        },
+        {
+            "type": "normal",
+            "size": 4,
+            "color": "purple",
+            "x": 3,
+            "y": 1,
+            "trailColor": ""
+
+        },
+
+        {
+            "type": "normal",
+            "size": 4,
+            "color": "purple",
+            "x": 0,
+            "y": 1,
+            "trailColor": ""
+
+        },
+        {
+            "type": "normal",
+            "size": 4,
+            "color": "light blue",
+            "x": 0,
+            "y": 2,
+            "trailColor": ""
+
+        },
+        {
+            "type": "normal",
+            "size": 4,
+            "color": "dark blue",
+            "x": 1,
+            "y": 0,
+            "trailColor": ""
+
+        }
+
+    ],
+    "tiles": [
+        {
+            "type": "normal",
+            "x": 0,
+            "y": 2,
+            "color": ""
+
+
+        },
+        {
+            "type": "normal",
+            "x": 0,
+            "y": 1,
+            "color": ""
+
+
+        },
+        {
+            "type": "normal",
+            "x": 1,
+            "y": 1,
+            "color": ""
+
+
+        },
+
+        {
+            "type": "normal",
+            "x": 1,
+            "y": 0,
+            "color": ""
+
+
+        },
+        {
+            "type": "normal",
+            "x": 2,
+            "y": 1,
+            "color": ""
+
+
+        },
+        {
+            "type": "normal",
+            "x": 2,
+            "y": 2,
+            "color": ""
+
+
+        },
+        {
+            "type": "normal",
+            "x": 3,
+            "y": 1,
+            "color": ""
+
+
+        }
+
+
+    ]
+
+}

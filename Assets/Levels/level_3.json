@@ -1,0 +1,95 @@
+{
+    "levelNum": 3,
+    "width": 4,
+    "height": 3,
+    "minMoves": 10,
+    "padding": 0.5,
+    "scoring": {
+        "baseScore": 5000,
+        "movePenalty": 40,
+        "starThresholds": [ 0, 90, 100 ],
+        "gemBonus": 0
+    },
+    "tutorialSteps": [],
+    "blobs": [
+        {
+            "color": "green",
+            "size": 4,
+            "x": 0,
+            "y": 0,
+            "type": "normal",
+            "trailColor": ""
+
+
+        },
+        {
+            "color": "light blue",
+            "size": 4,
+            "x": 1,
+            "y": 0,
+            "type": "normal",
+            "trailColor": ""
+        },
+
+        {
+            "color": "light blue",
+            "size": 4,
+            "type": "normal",
+            "x": 1,
+            "y": 2
+        },
+
+        {
+            "color": "green",
+            "size": 5,
+            "type": "flag",
+            "x": 3,
+            "y": 2
+        }
+
+    ],
+    "tiles": [
+
+        {
+            "type": "normal",
+            "color": "",
+            "x": 0,
+            "y": 0
+
+        },
+        {
+            "type": "normal",
+            "color": "",
+            "x": 1,
+            "y": 0
+        },
+        {
+            "type": "normal",
+            "color": "",
+            "x": 1,
+            "y": 1
+        },
+
+        {
+            "type": "normal",
+            "color": "",
+            "x": 1,
+            "y": 2
+        },
+        {
+            "type": "normal",
+            "color": "",
+            "x": 2,
+            "y": 2
+        },
+        {
+            "type": "normal",
+            "color": "",
+            "x": 3,
+            "y": 2
+        }
+
+    ]
+
+}
+

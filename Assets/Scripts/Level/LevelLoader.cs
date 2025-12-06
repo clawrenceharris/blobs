@@ -8,6 +8,7 @@ public class LevelLoader
 {
 
     public static LevelData Level;
+    public static int NumLevels;
      public static LevelData LoadLevelData(TextAsset textAsset){
 
         var settings = new JsonSerializerSettings
@@ -17,29 +18,138 @@ public class LevelLoader
         Level = JsonConvert.DeserializeObject<LevelData>(textAsset.text, settings);
         return Level;
     }
-
-    
+    public static BlobType FromJsonBlobType(string type)
+    {
+        return type switch
+        {
+            LevelDataKeys.Types.NormalBlob => BlobType.Normal,
+            LevelDataKeys.Types.RockBlob => BlobType.Rock,
+            LevelDataKeys.Types.BombBlob => BlobType.Bomb,
+            LevelDataKeys.Types.GhostBlob => BlobType.Ghost,
+            LevelDataKeys.Types.FlagBlob => BlobType.Flag,
+            LevelDataKeys.Types.EnemyBlob => BlobType.Enemy,
+            LevelDataKeys.Types.SwitchBlob => BlobType.Switch,
+            LevelDataKeys.Types.TrailBlob => BlobType.Trail,
+            _ => throw new ArgumentException(type + " is not a valid Json game object type"),
+        };
+    }
+    public static string ToJsonBlobType(BlobType type)
+    {
+        return type switch
+        {
+            BlobType.Normal => LevelDataKeys.Types.NormalBlob,
+            BlobType.Rock => LevelDataKeys.Types.RockBlob,
+            BlobType.Bomb => LevelDataKeys.Types.BombBlob,
+            BlobType.Ghost => LevelDataKeys.Types.GhostBlob,
+            BlobType.Flag => LevelDataKeys.Types.FlagBlob,
+            BlobType.Enemy => LevelDataKeys.Types.EnemyBlob,
+            BlobType.Switch => LevelDataKeys.Types.SwitchBlob,
+            BlobType.Trail => LevelDataKeys.Types.TrailBlob,
+            _ => throw new ArgumentException(type + " is not a valid Json game object type"),
+        };
+    }
+    public static TileType FromJsonTileType(string type)
+    {
+        return type switch
+        {
+            LevelDataKeys.Types.TargetTile => TileType.Target,
+            LevelDataKeys.Types.SigilTile => TileType.Sigil,
+            LevelDataKeys.Types.LaserTile => TileType.Laser,
+            LevelDataKeys.Types.SpikeTile => TileType.Spike,
+            LevelDataKeys.Types.NormalTile => TileType.Normal,
+            _ => throw new ArgumentException(type + " is not a valid JSON game object type"),
+        };
+    }
+      public static string ToJsonTileType(TileType type)
+    {
+        return type switch
+        {
+            TileType.Target => LevelDataKeys.Types.TargetTile,
+            TileType.Sigil => LevelDataKeys.Types.SigilTile,
+            TileType.Laser => LevelDataKeys.Types.LaserTile,
+            TileType.Spike => LevelDataKeys.Types.SpikeTile,
+            TileType.Normal => LevelDataKeys.Types.NormalTile,
+            _ => throw new ArgumentException(type + " is not a valid JSON game object type"),
+        };
+    }
+     
     public static LevelData LoadLevelData(int levelNum)
     {
         string path = Application.dataPath + "/Levels/level_" + levelNum + ".json";
         string json = File.ReadAllText(path);
-
+        if(json == null)
+        {
+            return null;
+        }
         var settings = new JsonSerializerSettings
         {
             Converters = { new LevelDataConverter() }
         };
         LevelData level = JsonConvert.DeserializeObject<LevelData>(json, settings);
         return level;
-    }  
+    }
 
-   
+    public static BlobColor FromJsonColor(string color)
+    {
+        return color switch
+        {
+            LevelDataKeys.BlobColors.Red => BlobColor.Red,
+            LevelDataKeys.BlobColors.Blank => BlobColor.Blank,
+            LevelDataKeys.BlobColors.LightBlue => BlobColor.LightBlue,
+            LevelDataKeys.BlobColors.Blue => BlobColor.Blue,
+            LevelDataKeys.BlobColors.Pink => BlobColor.Pink,
+            LevelDataKeys.BlobColors.Green => BlobColor.Green,
+            LevelDataKeys.BlobColors.Purple => BlobColor.Purple,
+            LevelDataKeys.BlobColors.Yellow => BlobColor.Yellow,
 
+            _ => throw new ArgumentException(color + " is not a valid JSON game object color"),
+        };
+    }
+    public static string ToJsonColor(BlobColor color)
+    {
+        return color switch
+        {
+            BlobColor.Red => LevelDataKeys.BlobColors.Red,
+            BlobColor.Blank => LevelDataKeys.BlobColors.Blank,
+            BlobColor.LightBlue => LevelDataKeys.BlobColors.LightBlue,
+            BlobColor.Blue =>  LevelDataKeys.BlobColors.Blue,
+             BlobColor.Pink => LevelDataKeys.BlobColors.Pink,
+            BlobColor.Green => LevelDataKeys.BlobColors.Green,
+             BlobColor.Purple => LevelDataKeys.BlobColors.Purple,
+             BlobColor.Yellow => LevelDataKeys.BlobColors.Yellow,
+
+            _ => throw new ArgumentException(color + " is not a valid Blob color"),
+        };
+    }
+
+    public static BlobSize FromJsonSize(string size)
+    {
+        return size switch
+        {
+            LevelDataKeys.BlobSizes.Big => BlobSize.Big,
+            LevelDataKeys.BlobSizes.Normal => BlobSize.Normal,
+            LevelDataKeys.BlobSizes.Small => BlobSize.Small,
+
+            _ => throw new ArgumentException(size + " is not a valid JSON game object size"),
+        };
+    }
+    public static string ToJsonSize(BlobSize size)
+    {
+        return size switch
+        {
+             BlobSize.Big => LevelDataKeys.BlobSizes.Big,
+            BlobSize.Normal =>  LevelDataKeys.BlobSizes.Normal,
+            BlobSize.Small =>  LevelDataKeys.BlobSizes.Small,
+
+            _ => throw new ArgumentException(size + " is not a valid JSON game object size"),
+        };
+    }
 }
 
 
 
 [Serializable]
-public class JSONBlobObject
+public class BlobData
 {
     public int X;
     public int Y;

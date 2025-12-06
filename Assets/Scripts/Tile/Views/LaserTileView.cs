@@ -2,14 +2,12 @@ using UnityEngine;
 
 public class LaserTileView : TileView
 {
-    private LaserTileVisuals _visuals;
     private LaserTile _model;
     private GameObject LaserBeam => transform.Find("Laser Beam").gameObject;
     public override void Setup(Tile tile, BoardPresenter board)
     {
         base.Setup(tile, board);
 
-        _visuals = GetVisuals<LaserTileVisuals>();
         _model = GetModel<LaserTile>();
 
         ColorUtils.ApplyColorsToMaterial(

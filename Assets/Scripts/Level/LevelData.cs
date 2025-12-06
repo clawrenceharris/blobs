@@ -24,7 +24,7 @@ public class LaserLink {
     internal string color;
 }
 
-[System.Serializable]
+[Serializable]
 public class Scoring
 {
     public int baseScore;
@@ -34,7 +34,7 @@ public class Scoring
 }
 
 
-[System.Serializable]
+[Serializable]
 public class TutorialStep
 {
     public string topText;
@@ -56,7 +56,7 @@ public class TileJSON
 
 }
 
-[System.Serializable]
+[Serializable]
 public class BlobJSON
 {
     public string type;
@@ -65,7 +65,9 @@ public class BlobJSON
     public int y;
     public string trailColor;
     public int size;
+
 }
+
 
 
 

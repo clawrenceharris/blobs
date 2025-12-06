@@ -5,7 +5,7 @@ public class RockBlobBehavior : BlobMergeBehavior
     {
     }
 
-    public override void ModifyMergeFromTarget(MergePlan plan, BoardLogic boardLogic)
+    public override void ModifyMergeFromTarget(MergePlan plan, BoardModel boardLogic)
     {
         plan.EndPosition = _blob.GridPosition - plan.Direction;
         

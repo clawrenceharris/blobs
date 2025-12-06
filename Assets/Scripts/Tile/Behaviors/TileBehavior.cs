@@ -14,7 +14,7 @@ public interface ITileMergeBehavior
     /// </summary>
     /// <param name="plan">The current merge plan to be modified.</param>
     /// <param name="boardLogic">A reference to the board for querying state.</param>
-    void ModifyMerge(MergePlan plan, BoardLogic boardLogic);
+    void ModifyMerge(MergePlan plan, BoardModel boardLogic);
 
     
 }
@@ -30,7 +30,7 @@ public class TileMergeBehavior : ITileMergeBehavior
     {
         _tile = tile;
     }
-    public virtual void ModifyMerge(MergePlan plan, BoardLogic board)
+    public virtual void ModifyMerge(MergePlan plan, BoardModel board)
     {
         return;
     }

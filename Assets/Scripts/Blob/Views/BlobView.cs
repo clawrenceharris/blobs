@@ -9,7 +9,6 @@ public class BlobView : MonoBehaviour
 {
     public virtual Blob Model { get; protected set; }
     public string ID => Model.ID;
-    public BlobInput Input { get; private set; }
 
     public BlobVisuals Visuals { get; private set; }
 
@@ -36,18 +35,17 @@ public class BlobView : MonoBehaviour
     void Awake()
     {
         Visuals = GetComponent<BlobVisuals>();
-        Input = GetComponent<BlobInput>();
 
     }
     
     // The Presenter calls this to link the View to its data Model.
-    public virtual void Setup(Blob blob)
+    public virtual void Setup(Blob model)
     {
-        Model = blob;
+        Model = model;
         transform.localScale = Vector3.zero;
         
         // Configure the visuals based on the data.
-        gameObject.name = $"{blob.Type} Blob {blob.GridPosition}";
+        gameObject.name = $"{model.Type} Blob {model.GridPosition}";
 
     }
 

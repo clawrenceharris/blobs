@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-
+/// <summary>
+/// Rsponsible for managing the tutorial flow and interactions.
+/// It  handles the display of tutorial messages, user inputs, and progression through the tutorial steps.
+/// </summary>
 public class TutorialPresenter : MonoBehaviour
 {
-    // This class is responsible for managing the tutorial flow and interactions.
-    // It will handle the display of tutorial messages, user inputs, and progression through the tutorial steps.
-    public TutorialLogic TutorialLogic { get;  private set;}
+    
+    public TutorialModel TutorialLogic { get;  private set;}
+    public bool IsActivated;
+
     private LevelManager _levelManager;
     private BoardPresenter _board;
     private TutorialStep[] _tutorialSteps;
@@ -54,13 +58,13 @@ public class TutorialPresenter : MonoBehaviour
    
     public void InitializeTutorial()
     {
-        TutorialLogic = new TutorialLogic();
-
+        TutorialLogic = new TutorialModel();
+        IsActivated = true;
         _tutorialSteps = _levelManager.Level.tutorialSteps;
 
-        _blobs = _board.BoardLogic.GetAllBlobs();
+        _blobs = _board.BoardModel.GetAllBlobs();
 
-        TutorialLogic.InitializeTutorial(_tutorialSteps, _board.BoardLogic);
+        TutorialLogic.InitializeTutorial(_tutorialSteps, _board.BoardModel);
 
         Setup();
 
@@ -94,20 +98,12 @@ public class TutorialPresenter : MonoBehaviour
             StartCoroutine(ShowPointer());
         } 
     }
-   
+
     private void HandleBlobsHighlighted(Blob startBlob, Blob endBlob)
     {
 
-        if (_board.GetBlobView(startBlob.ID) is { } startView)
-        {
-            startView.Input.enabled = true;
-
-        }
-        if (_board.GetBlobView(endBlob.ID) is { } endView)
-        {
-            endView.Input.enabled = true;
-
-        }
+        startBlob.EnableBlob();
+        endBlob.EnableBlob();
     }
 
     private void HandleMergeComplete(MergePlan plan)
@@ -117,11 +113,12 @@ public class TutorialPresenter : MonoBehaviour
 
             EnableAllBlobs();
             StartCoroutine(UpdateMessages());
+            IsActivated = false;
             return;
 
         }
-        DisableBlob(TutorialLogic.StartBlob);
-        DisableBlob(TutorialLogic.EndBlob);
+        TutorialLogic.StartBlob.DisableBlob();
+        TutorialLogic.EndBlob.DisableBlob();
 
         TutorialLogic.NextTutorialStep();
         StartCoroutine(UpdateMessages());
@@ -138,6 +135,7 @@ public class TutorialPresenter : MonoBehaviour
 
             _topText.text = TutorialLogic.CurrentStep.topText;
             _bottomText.text = TutorialLogic.CurrentStep.bottomText;
+            
             yield return FadeIn();
 
         }
@@ -188,7 +186,7 @@ public class TutorialPresenter : MonoBehaviour
             {
                 continue;
             }
-            EnableBlob(blob);
+            blob.EnableBlob();
         }
     }
     private void DisableAllBlobs()
@@ -199,30 +197,10 @@ public class TutorialPresenter : MonoBehaviour
             {
                 continue;
             }
-            DisableBlob(blob);
-        }
-    }
-    
-     private void EnableBlob(Blob blob)
-    {
-        if (blob != null && _board.GetBlobView(blob.ID) is { } view)
-        {
-            view.Input.enabled = true;
-
+            blob.DisableBlob();
         }
     }
 
-    private void DisableBlob(Blob blob)
-    {
-
-        if (blob != null && _board.GetBlobView(blob.ID) is { } view)
-        {
-            view.Input.enabled = false;
-
-        }
-
-
-    }
 
     
 }

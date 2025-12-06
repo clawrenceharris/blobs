@@ -21,15 +21,15 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if(_board.BoardLogic == null)
+        if(_board.BoardModel == null)
         {
             return;
         }
-        RepositionCamera(_board.BoardLogic);
+        RepositionCamera(_board.BoardModel);
     }
 
   
-    void RepositionCamera(BoardLogic board)
+    void RepositionCamera(BoardModel board)
     {
         int x = board.Width - 1;
         int y = board.Height - 1;

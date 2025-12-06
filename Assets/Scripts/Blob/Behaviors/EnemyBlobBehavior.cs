@@ -5,7 +5,7 @@ public class EnemyBlobBehavior : BlobMergeBehavior
     public EnemyBlobBehavior(Blob blob) : base(blob)
     {
     }
-    public override void ModifyMergeFromSource(MergePlan plan, BoardLogic board)
+    public override void ModifyMergeFromSource(MergePlan plan, BoardModel board)
     {
 
         if (_blob is EnemyBlob enemyBlob)

@@ -13,25 +13,23 @@
   },
   "tutorialSteps": [
     {
-      "topText": "Merging two small Blobs together makes a big Blob that is the color of the Blob you swipe. ",
-      "bottomText": "Try merging the red Blob onto the one below it.",
+      "topText": "Merging two small Blobs creates a normal-sized Blob.",
+      "bottomText": "The Blob you swipe from keeps its color.",
       "startX": 0,
       "startY": 2,
       "endX": 0,
       "endY": 1
     },
-
     {
-      "topText": "Big Blobs can also be merged onto smaller ones, taking the small Blob’s place.",
-      "bottomText": "Try swiping that red Blob onto the pink one.",
+      "topText": "Normal Blobs can also merge onto smaller ones.",
+      "bottomText": "The larger Blob always takes the other’s place.",
       "startX": 0,
       "startY": 1,
       "endX": 2,
       "endY": 1
     },
     {
-      "topText": "See that flag pole? That’s a Flag Blob. In addition to Target Tiles, Flag Blobs can also lead to a win as long as there are no other Blobs on the board.",
-      "bottomText": "You can remove any sized Blob from the board by merging it onto a Flag Blob… But, make sure the Blob you swipe is the same color as the flag. Try it!",
+      "topText": "Finish by merging into the Flag Blob to win!",
       "startX": 2,
       "startY": 1,
       "endX": 2,
@@ -44,7 +42,7 @@
       "t": "nb",
       "c": "r",
 
-      "s": "n",
+      "s": "s",
       "x": 0,
       "y": 2
     },
@@ -52,7 +50,7 @@
       "t": "nb",
       "c": "pk",
 
-      "s": "n",
+      "s": "s",
       "x": 0,
       "y": 1
     },
@@ -60,7 +58,7 @@
       "t": "nb",
       "c": "pk",
 
-      "s": "n",
+      "s": "s",
       "x": 2,
       "y": 1
     },

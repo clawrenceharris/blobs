@@ -10,9 +10,9 @@ public class FlagBlob : Blob, IClearable
     {
     }
 
-    public override bool CanMergeWith(Blob targetBlob, MergePlan plan, BoardLogic board)
+    public override bool CanMergeWith(Blob targetBlob, MergePlan plan, BoardModel board)
     {
-        // Flag Blob can be merged with another blob if there are exactly two clearable blobs on the board.
+        // Flag Blob can be merged with another blob if there are exactly two clearable blobs on the board (the Flag Blob and source Blob).
         return base.CanMergeWith(targetBlob, plan, board) &&
             board.GetAllBlobs()
                 .Where(blob => !plan.BlobsToRemoveDuringMerge.Contains(blob) && !plan.BlobsToRemoveAfterMerge.Contains(blob))

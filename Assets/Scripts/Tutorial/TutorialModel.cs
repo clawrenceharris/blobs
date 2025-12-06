@@ -2,7 +2,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class TutorialLogic
+public class TutorialModel
 {
     // This class will handle the tutorial logic for the game.
     // It will guide players through the initial steps of gameplay.
@@ -11,11 +11,11 @@ public class TutorialLogic
     private int _index;
     private TutorialStep[] _tutorialSteps;
     public bool IsFinished => _tutorialSteps == null || _index >= _tutorialSteps.Length;
-    private BoardLogic _board;
+    private BoardModel _board;
     public Action<Blob, Blob> OnBlobsHighlighted;
     public TutorialStep CurrentStep { get; private set; }
 
-    public void InitializeTutorial(TutorialStep[] tutorialSteps, BoardLogic board)
+    public void InitializeTutorial(TutorialStep[] tutorialSteps, BoardModel board)
     {
         _index = 0;
         _tutorialSteps = tutorialSteps;

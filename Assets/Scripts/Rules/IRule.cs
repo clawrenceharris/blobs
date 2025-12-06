@@ -1,4 +1,4 @@
 public interface IRule<T> 
 {
-    bool Validate(T target, T other, BoardLogic board);
+    bool Validate(T target, T other, BoardModel board);
 }

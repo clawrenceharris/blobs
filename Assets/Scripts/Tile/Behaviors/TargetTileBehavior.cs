@@ -4,7 +4,7 @@ public class TargetTileBehavior : TileMergeBehavior
     {
     }
 
-    public override void ModifyMerge(MergePlan plan, BoardLogic board)
+    public override void ModifyMerge(MergePlan plan, BoardModel board)
     {
         if (board.BlobCount == 1)
         {

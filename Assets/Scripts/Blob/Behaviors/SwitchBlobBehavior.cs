@@ -6,7 +6,7 @@ public class SwitchBlobBehavior : BlobMergeBehavior
     {
     }
    
-    public override void ModifyMergeFromTarget(MergePlan plan, BoardLogic board)
+    public override void ModifyMergeFromTarget(MergePlan plan, BoardModel board)
     {
         plan.BlobsToRemoveAfterMerge.Add(plan.SourceBlob);
         // Turn off lasers of matching color

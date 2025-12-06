@@ -17,6 +17,7 @@ public class GameAssets : MonoBehaviour
     public BlobView EnemyBlob;
     public BlobView RockBlob;
 
+
     [Header("Tiles")]
 
     public TileView NormalTile;
@@ -46,7 +47,6 @@ public class GameAssets : MonoBehaviour
             BlobType.Ghost => GhostBlob,
             BlobType.Enemy => EnemyBlob,
             BlobType.Rock => RockBlob,
-
             _ => throw new ArgumentException("No type matches given type: " + type),
         };
     }

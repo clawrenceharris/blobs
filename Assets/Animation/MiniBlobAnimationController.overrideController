@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MiniBlobAnimationController
+  m_Controller: {fileID: 9100000, guid: ace1de52d668e43f4b3cb155616e8a35, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 5dd37a3f1bf4a4ddaa80d0668b280131, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 443eb8b8012e04fcdbe2bd2ac68826bb, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 5dfa5762366844f759424d25183d95f0, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 4127a88d974de42e3bb62a966f929b64, type: 2}

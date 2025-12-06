@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using UnityEngine;
+
 /// <summary>
 /// Manages a history of commands to enable undo functionality.
 /// </summary>
@@ -8,13 +8,13 @@ public static class ActionInvoker
     public static readonly Stack<IAction> _actions = new();
 
     
-    public static void ExecuteAction(IAction action, BoardLogic board)
+    public static void ExecuteAction(IAction action, BoardModel board)
     {
         action.Execute(board);
         _actions.Push(action);
     }
 
-    public static void UndoAction(BoardLogic board)
+    public static void UndoAction(BoardModel board)
     {
         if (_actions.Count > 0)
         {

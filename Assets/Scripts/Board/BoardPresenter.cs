@@ -13,7 +13,7 @@ public class BoardPresenter : MonoBehaviour
     [Header("Prefabs & Scene")]
 
     // --- Model & View State ---
-    public BoardLogic BoardLogic { get; private set; }
+    public BoardModel BoardModel { get; private set; }
     public Dictionary<string, BlobView> BlobViews { get; private set; } // Maps blob IDs to their GameObject Views
     public Dictionary<string, TileView> TileViews { get; private set; } // Maps blob IDs to their GameObject Views
     public static readonly float TileSize = 1.2f;
@@ -32,11 +32,12 @@ public class BoardPresenter : MonoBehaviour
     }
     private void Start()
     {
-        BoardLogic.OnBlobCreated += HandleBlobCreated;
-        BoardLogic.OnBlobRemoved += HandleBlobRemoved;
-        BoardLogic.OnBoardCleared += HandleBoardCleared;
-        BoardLogic.OnTileCreated += HandleTileCreated;
-        BoardLogic.OnBlobMoved += HandleBlobMoved;
+        BoardModel.OnBlobCreated += HandleBlobCreated;
+        BoardModel.OnBoardCleared += HandleBoardCleared;
+        BoardModel.OnTileCreated += HandleTileCreated;
+        BlobInput.OnBlobSelected += HandleBlobSelected;
+
+
 
     }
     public void Init(LevelManager levelManager)
@@ -47,7 +48,7 @@ public class BoardPresenter : MonoBehaviour
         TileViews = new Dictionary<string, TileView>();
         LevelData level = levelManager.Level;
 
-        BoardLogic = new BoardLogic(level.width, level.height);
+        BoardModel = new BoardModel(level.width, level.height);
 
 
         SetUpBoard(level);
@@ -56,13 +57,11 @@ public class BoardPresenter : MonoBehaviour
 
     void OnDestroy()
     {
-        if (BoardLogic != null)
+        if (BoardModel != null)
         {
-            BoardLogic.OnBlobCreated -= HandleBlobCreated;
-            BoardLogic.OnTileCreated -= HandleTileCreated;
-            BoardLogic.OnBlobMoved -= HandleBlobMoved;
-            BoardLogic.OnBlobRemoved -= HandleBlobRemoved;
-            BoardLogic.OnBoardCleared -= HandleBoardCleared;
+            BoardModel.OnBlobCreated -= HandleBlobCreated;
+            BoardModel.OnTileCreated -= HandleTileCreated;
+            BoardModel.OnBoardCleared -= HandleBoardCleared;
 
         }
 
@@ -86,8 +85,8 @@ public class BoardPresenter : MonoBehaviour
 
 
 
-        BoardLogic.CreateInitialBoard(blobs, tiles);
-        BoardLogic.LinkLasers(level);
+        BoardModel.CreateInitialBoard(blobs, tiles);
+        BoardModel.LinkLasers(level);
         _laserPresenter.Setup(this);
 
     }
@@ -99,20 +98,27 @@ public class BoardPresenter : MonoBehaviour
         yield return AnimateRemove(winningBlob);
 
         yield return new WaitForSeconds(0.3f);
-        foreach (var tile in BoardLogic.TileGrid)
+        foreach (var tile in BoardModel.TileGrid)
         {
             if (tile != null && GetTileView(tile.ID) is { } view)
             {
-                StartCoroutine(view.Remove());
+                CoroutineHandler.StartStaticCoroutine(view.Remove(), () =>
+                {
+                    Destroy(view);
+                });
             }
         }
-        foreach (var blob in BoardLogic.BlobGrid)
+        foreach (var blob in BoardModel.BlobGrid)
         {
             if (blob != null && GetBlobView(blob.ID) is { } view)
             {
-                StartCoroutine(view.Remove(scaleDuration));
+                CoroutineHandler.StartStaticCoroutine(view.Remove(scaleDuration), () =>
+                {
+                    Destroy(view);
+                });
             }
         }
+
         
     }  
 
@@ -124,9 +130,6 @@ public class BoardPresenter : MonoBehaviour
 
         // Link the view to its data and subscribe to its click event
         view.Setup(blob);
-        view.Input.OnBlobSelected += HandleBlobSelected;
-        view.Input.OnBlobDeselected += HandleBlobDeselected;
-
         // Store the view for later access
         BlobViews.Add(blob.ID, view);
 
@@ -151,24 +154,13 @@ public class BoardPresenter : MonoBehaviour
         // Store the view for later access
         TileViews.Add(model.ID, view);
     }
-    private void HandleBlobMoved(Blob blob, Vector2Int fromPosition, Vector2Int toPosition)
-    {
-    }
+    
 
 
 
 
 
-
-    private void HandleBlobRemoved(Blob blob)
-    {
-        if (BlobViews.TryGetValue(blob.ID, out BlobView view))
-        {
-            view.Input.OnBlobSelected -= HandleBlobSelected;
-            view.Input.OnBlobDeselected -= HandleBlobDeselected;
-        }
-
-    }
+   
     public BlobView GetBlobView(string id)
     {
         if (BlobViews.TryGetValue(id, out BlobView view))
@@ -203,8 +195,6 @@ public class BoardPresenter : MonoBehaviour
 
         }
 
-
-        
         OnMergeComplete?.Invoke(plan);
 
     }
@@ -212,53 +202,44 @@ public class BoardPresenter : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.Z))
         {
-            MergeAction action = MergeInvoker.UndoMerge(BoardLogic);
+            MergeAction action = MergeInvoker.UndoMerge(BoardModel);
             if (action.Plan != null)
                 StartCoroutine(AnimateTurnSequence(-action.Plan));
         }
     }
-    private void HandleBlobDeselected(Blob blob)
-    {
-        if (_firstSelectedBlob != null)
-        {
-            OnBlobDeactivated?.Invoke(_firstSelectedBlob);
-            _firstSelectedBlob = null;
-        }
-
-
-
-    }
-
+    
     private void HandleBlobSelected(Blob selectedBlob)
     {
+
         if (_firstSelectedBlob == null)
         {
             _firstSelectedBlob = selectedBlob;
             OnBlobActivated?.Invoke(selectedBlob);
         }
+        else if(selectedBlob.GridPosition.Equals(_firstSelectedBlob.GridPosition))
+        {
+            _firstSelectedBlob = null;
+            OnBlobDeactivated?.Invoke(selectedBlob);
+        }
         else
         {
-
             Blob sourceBlob = _firstSelectedBlob;
             Blob targetBlob = selectedBlob;
             OnBlobDeactivated?.Invoke(_firstSelectedBlob);
             _firstSelectedBlob = null;
-            var plan = BoardLogic.CalculateMergePlan(sourceBlob, targetBlob);
-
-
-            // If the move is valid, execute the merge
-
+            MergePlan plan = BoardModel.CalculateMergePlan(sourceBlob, targetBlob);
+           
+            // If the move is null it is not valid
             if (plan == null)
             {
                 _firstSelectedBlob = null;
                 return;
             }
 
-            if (_tutorial.TutorialLogic.IsValidMove(sourceBlob, targetBlob))
+            if (_tutorial.IsActivated && _tutorial.TutorialLogic.IsValidMove(sourceBlob, targetBlob))
             {
-
                 MergeAction action = new(plan);
-                MergeInvoker.ExecuteMerge(action, BoardLogic);
+                MergeInvoker.ExecuteMerge(action, BoardModel);
                 StartCoroutine(AnimateTurnSequence(plan));
 
 
@@ -368,6 +349,7 @@ public class BoardPresenter : MonoBehaviour
     {
         if (GetBlobView(blob.ID) is { } view)
         {
+            view.transform.localScale = Vector2.zero;
             yield return view.transform.DOScale(view.GetScaleFromBlobSize(), scaleDuration);
             yield return view.Spawn();
         }

@@ -14,7 +14,7 @@ public class BlobCollisionManager : MonoBehaviour
 
     private void Start()
     {
-        BoardLogic.OnBlobMoved += HandleBlobMoved;
+        BoardModel.OnBlobMoved += HandleBlobMoved;
 
 
     }
@@ -29,21 +29,21 @@ public class BlobCollisionManager : MonoBehaviour
 
         if (from.x > to.x || from.x < to.x)
         {
-            List<ICollidable> collidables = board.BoardLogic.FindObjectsInRow<ICollidable>(blob.GridPosition.y);
+            List<ICollidable> collidables = board.BoardModel.FindObjectsInRow<ICollidable>(blob.GridPosition.y);
             foreach (ICollidable collidable in collidables)
             {
-                collidable.HandleCollision(blob, collidable, board.BoardLogic);
+                collidable.HandleCollision(blob, collidable, board.BoardModel);
             }
 
         }
         else if(from.y > to.y || from.y < to.y)
         {
-            List<ICollidable> collidables = board.BoardLogic.FindObjectsInColumn<ICollidable>(blob.GridPosition.x);
+            List<ICollidable> collidables = board.BoardModel.FindObjectsInColumn<ICollidable>(blob.GridPosition.x);
 
             foreach (ICollidable collidable in collidables)
             {
 
-                collidable.HandleCollision(blob, collidable, board.BoardLogic);
+                collidable.HandleCollision(blob, collidable, board.BoardModel);
             }
         }
     }

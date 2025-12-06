@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// Command to remove a blob from the board.
+/// Command to spawn a blob on the board.
 /// </summary>
 public class SpawnAction : IAction
 {
@@ -13,12 +13,12 @@ public class SpawnAction : IAction
         Blob = blob;
     }
 
-    public void Execute(BoardLogic board)
+    public void Execute(BoardModel board)
     {
         board.PlaceBlob(Blob);
 
     }
-    public void Undo(BoardLogic board)
+    public void Undo(BoardModel board)
     {
         board.RemoveBlob(Blob);
 

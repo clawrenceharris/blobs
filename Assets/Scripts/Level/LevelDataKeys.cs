@@ -32,7 +32,6 @@ public static class LevelDataKeys
         public const string FlagBlob = "fb";
         public const string SwitchBlob = "sb";
         public const string TrailBlob = "tb";
-
         public const string BombBlob = "bb";
         public const string GhostBlob = "gb";
 

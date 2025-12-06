@@ -17,11 +17,11 @@ public class MoveAction : IAction
         ToPosition = toPosition;
     }
 
-    public void Execute(BoardLogic board)
+    public void Execute(BoardModel board)
     {
         board.MoveBlob(Blob, ToPosition);
     }
-    public void Undo(BoardLogic board)
+    public void Undo(BoardModel board)
     {
 
         board.MoveBlob(Blob, FromPosition);

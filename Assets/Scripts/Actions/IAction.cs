@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public interface IAction{
-    void Execute(BoardLogic board);
-    void Undo(BoardLogic board);
+    void Execute(BoardModel board);
+    void Undo(BoardModel board);
 }
 

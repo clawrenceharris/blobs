@@ -16,7 +16,8 @@ public class LevelDataConverter : JsonConverter<LevelData>
         for (int i = 0; i < array.Count; i++)
         {
             JObject itemObject = (JObject)array[i];
-            deserializedArray[i] = BlobDataFactory.CreateBlobData(itemObject);
+            BlobData data = BlobFactory.CreateBlobData(itemObject);
+            deserializedArray[i] = BlobFactory.CreateBlobModel(data);
         }
 
         return deserializedArray;
@@ -31,7 +32,7 @@ public class LevelDataConverter : JsonConverter<LevelData>
         for (int i = 0; i < array.Count; i++)
         {
             JObject itemObject = (JObject)array[i];
-            deserializedArray[i] = TileDataFactory.CreateTileData(itemObject);
+            deserializedArray[i] = TileFactory.CreateTileData(itemObject);
         }
 
         return deserializedArray;

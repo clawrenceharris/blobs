@@ -10,6 +10,6 @@ public class RemoveAction : IAction
         Blob = blobToRemove;
     }
 
-    public void Execute(BoardLogic boardLogic) => boardLogic.RemoveBlob(Blob);
-    public void Undo(BoardLogic boardLogic) => boardLogic.PlaceBlob(Blob);
+    public void Execute(BoardModel boardLogic) => boardLogic.RemoveBlob(Blob);
+    public void Undo(BoardModel boardLogic) => boardLogic.PlaceBlob(Blob);
 }

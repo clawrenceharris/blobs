@@ -6,7 +6,7 @@ public static class MergeInvoker
 {
     private static readonly Stack<MergeAction> _merges = new();
 
-    public static void ExecuteMerge(MergeAction action, BoardLogic board)
+    public static void ExecuteMerge(MergeAction action, BoardModel board)
     {
         ActionInvoker.ExecuteAction(action, board);
     }
@@ -14,7 +14,7 @@ public static class MergeInvoker
     {
         _merges.Clear();
     }
-    public static MergeAction UndoMerge(BoardLogic board)
+    public static MergeAction UndoMerge(BoardModel board)
     {
         
         MergeAction action = _merges.Pop();

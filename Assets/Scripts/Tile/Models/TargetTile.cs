@@ -12,7 +12,7 @@ public class TargetTile : Tile, IColorable, ICollidable, ITarget
 
     }
 
-    public void HandleCollision(Blob player, ICollidable other, BoardLogic board)
+    public void HandleCollision(Blob player, ICollidable other, BoardModel board)
     {
         CollisionHandler<TargetCollisionCommand> collisionHandler = new();
         collisionHandler.HandleCollision(player, other, board);

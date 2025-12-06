@@ -2,7 +2,7 @@ using System;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
-public class TileDataFactory
+public class TileFactory
 {
     
 

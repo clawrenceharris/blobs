@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 /// <summary>
-/// The Strategy interface. Defines a contract for any special logic
+/// A strategy that defines a contract for any special logic
 /// a blob might perform during a merge.
 /// </summary>
 public interface IMergeBehavior
@@ -14,19 +14,24 @@ public interface IMergeBehavior
     /// </summary>
     /// <param name="plan">The current merge plan to be modified.</param>
     /// <param name="boardLogic">A reference to the board for querying state.</param>
-    void ModifyMergeFromSource(MergePlan plan, BoardLogic boardLogic);
+    void ModifyMergeFromSource(MergePlan plan, BoardModel boardLogic);
 
     /// <summary>
     /// Called by the target blob in a merge to modify the outcome of the merge plan. Used for when a target Blob needs to react to the source blob's actions.
     /// </summary>
     /// <param name="plan">The current merge plan to be modified.</param>
     /// <param name="boardLogic">A reference to the board for querying state.</param>
-    void ModifyMergeFromTarget(MergePlan plan, BoardLogic boardLogic);
+    void ModifyMergeFromTarget(MergePlan plan, BoardModel boardLogic);
 }
 
 
 
 
+
+/// <summary>
+/// A strategy that defines a contract for any special logic
+/// a blob might perform during a merge.
+/// </summary>
 
 public class BlobMergeBehavior : IMergeBehavior
 {
@@ -35,7 +40,7 @@ public class BlobMergeBehavior : IMergeBehavior
     {
         _blob = blob;
     }
-    public virtual void ModifyMergeFromSource(MergePlan plan, BoardLogic board)
+    public virtual void ModifyMergeFromSource(MergePlan plan, BoardModel board)
     {
         if (plan.TargetBlob == null)
             return;
@@ -65,7 +70,7 @@ public class BlobMergeBehavior : IMergeBehavior
 
     }
 
-    public virtual void ModifyMergeFromTarget(MergePlan plan, BoardLogic boardLogic)
+    public virtual void ModifyMergeFromTarget(MergePlan plan, BoardModel boardLogic)
     {
         return;
     }

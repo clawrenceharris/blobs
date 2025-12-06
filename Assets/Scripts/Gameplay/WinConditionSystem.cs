@@ -12,7 +12,7 @@ public class WinConditionSystem
     /// Checks the board state for a win.
     /// </summary>
     /// <returns>The ID of the winning blob if conditions are met, otherwise null.</returns>
-    public Blob CheckForWin(BoardLogic board)
+    public Blob CheckForWin(BoardModel board)
     {
         // Win Condition: There must be exactly one blob on the board that is clearable.
         // This blob will be the winning blob.

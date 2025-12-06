@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))] // Ensures an Animator component is present
+[RequireComponent(typeof(BlobView))]
 public class BlobAnimationController : MonoBehaviour
 {
     private Animator _animator;
@@ -20,14 +21,14 @@ public class BlobAnimationController : MonoBehaviour
         BoardPresenter.OnBlobActivated += HandleBlobActivated;
         BoardPresenter.OnBlobDeactivated += HandleBlobDeactivated;
 
-        BoardLogic.OnBlobMoved +=  HandleBlobMoved;
+        BoardModel.OnBlobMoved +=  HandleBlobMoved;
     }
 
     private void OnDestroy()
     {
         BoardPresenter.OnBlobActivated -= HandleBlobActivated;
         BoardPresenter.OnBlobDeactivated -= HandleBlobDeactivated;
-        BoardLogic.OnBlobMoved -=  HandleBlobMoved;
+        BoardModel.OnBlobMoved -=  HandleBlobMoved;
     }
 
     private void HandleBlobMoved(Blob blob, Vector2Int int1, Vector2Int int2)
@@ -55,6 +56,8 @@ public class BlobAnimationController : MonoBehaviour
     /// <param name="isSelected">True to set to Selected state, False to return to Idle.</param>
     public void HandleBlobActivated(Blob blob)
     {
+        
+        
         if (blob.ID != _blobView.Model.ID)
         {
             return;

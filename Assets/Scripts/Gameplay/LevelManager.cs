@@ -59,8 +59,8 @@ public class LevelManager : MonoBehaviour
     {
 
         StartLevel(LevelNum);
-        BoardLogic.OnBoardCleared += OnBoardCleared;
-        BoardLogic.OnBlobMoved += OnBlobMoved;
+        BoardModel.OnBoardCleared += OnBoardCleared;
+        BoardModel.OnBlobMoved += OnBlobMoved;
         BoardPresenter.OnMergeComplete += HandleMergeComplete;
     }
 
@@ -68,13 +68,17 @@ public class LevelManager : MonoBehaviour
 
     private void HandleMergeComplete(MergePlan plan)
     {
-        Blob winningBlob = _winConditionSystem.CheckForWin(Board.BoardLogic);
+        Blob winningBlob = _winConditionSystem.CheckForWin(Board.BoardModel);
         if (winningBlob != null)
         {
-            OnLevelComplete?.Invoke(new LevelCompletedEventArgs(LevelNum));
-            StartCoroutine(Board.CompleteMergeCo(winningBlob));
-            
             _stateManager.SetState(null);
+            OnLevelComplete?.Invoke(new LevelCompletedEventArgs(LevelNum));
+            CoroutineHandler.StartStaticCoroutine(Board.CompleteMergeCo(winningBlob),() => {
+                
+                StartLevel(LevelNum + 1);
+
+            });
+
         }
     }
 
@@ -83,6 +87,7 @@ public class LevelManager : MonoBehaviour
     {
 
         Level = LevelLoader.LoadLevelData(levelNum);
+        if (Level == null) return;
         MoveCount = 0;
 
         Board.Init(this);
@@ -144,21 +149,12 @@ public class LevelManager : MonoBehaviour
         
         if (percentage >= Level.scoring.starThresholds[2])
             return 3;
-
-        
         else if (percentage >= Level.scoring.starThresholds[1])
             return 2;
-
-        
         else if (percentage >= Level.scoring.starThresholds[0])
             return 1;
-
-        
         else
             return 0;
-
-
-
     }
     
 
@@ -174,13 +170,6 @@ public class LevelManager : MonoBehaviour
         MoveCount++;
     }
 
-   
-
-    private void OnMoveUndone(Blob blob)
-    {
-        MoveCount--;
-
-    }
 
 
     public void StartNextLevel()

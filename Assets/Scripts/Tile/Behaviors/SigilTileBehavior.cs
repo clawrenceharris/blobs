@@ -4,7 +4,7 @@ public class SigilTileBehavior : TileMergeBehavior
     {
     }
 
-    public override void ModifyMerge(MergePlan plan, BoardLogic board)
+    public override void ModifyMerge(MergePlan plan, BoardModel board)
     {
         if (plan.SourceBlob is GhostBlob ghostBlob)
         {

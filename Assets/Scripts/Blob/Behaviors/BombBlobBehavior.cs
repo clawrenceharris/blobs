@@ -13,7 +13,7 @@ public class BombBlobBehavior : BlobMergeBehavior
     public BombBlobBehavior(Blob blob) : base(blob)
     {
     }
-    private void ExecuteBehavior(MergePlan plan, BoardLogic board)
+    private void ExecuteBehavior(MergePlan plan, BoardModel board)
     {
         plan.DeferredPlan = new();
         //remove the source and target blob
@@ -54,12 +54,12 @@ public class BombBlobBehavior : BlobMergeBehavior
 
         }
     }
-    public override void ModifyMergeFromSource(MergePlan plan, BoardLogic board)
+    public override void ModifyMergeFromSource(MergePlan plan, BoardModel board)
     {
         ExecuteBehavior(plan, board);
 
     }
-     public override void ModifyMergeFromTarget(MergePlan plan, BoardLogic board)
+     public override void ModifyMergeFromTarget(MergePlan plan, BoardModel board)
     {
         ExecuteBehavior(plan, board);
         

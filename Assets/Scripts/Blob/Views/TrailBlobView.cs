@@ -2,7 +2,6 @@
 
 using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(TrailBlobVisuals))]
 public class TrailBlobView : ColorBlobView

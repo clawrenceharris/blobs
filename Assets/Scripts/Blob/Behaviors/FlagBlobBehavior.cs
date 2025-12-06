@@ -1,7 +1,8 @@
 
 /// <summary>
-/// The Concrete Strategy for Flag Blobs.
-/// This class encapsulates the logic for creating a trail.
+/// The concrete strategy for Flag Blobs behavior.
+/// A Flag Blob modifies the merge plan by removing the source blob 
+/// after the merge is complete
 /// </summary>
 public class FlagBlobBehavior : BlobMergeBehavior
 {
@@ -9,12 +10,12 @@ public class FlagBlobBehavior : BlobMergeBehavior
     {
     }
 
-    public override void ModifyMergeFromTarget(MergePlan plan, BoardLogic board)
+    public override void ModifyMergeFromTarget(MergePlan plan, BoardModel board)
     {
         plan.BlobsToRemoveAfterMerge.Add(plan.SourceBlob);
 
     }
-    
+
 
 
 }

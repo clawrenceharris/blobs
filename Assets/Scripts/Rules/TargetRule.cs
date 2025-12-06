@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TargetRule
 {
-    public bool Validate(Blob blob, ITarget target, BoardLogic board)
+    public bool Validate(Blob blob, ITarget target, BoardModel board)
     {
         Blob blobOnTarget = board.GetBlobAt(target.GridPosition);
         

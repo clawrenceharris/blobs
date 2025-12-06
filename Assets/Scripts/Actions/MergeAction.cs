@@ -4,8 +4,8 @@ using UnityEngine;
 
 
 /// <summary>
-/// An action that represents a merge bundles multiple subactions occuring during a  to be executed as a single action.
-/// A "Merge" is a composite of a Move and a Remove command.
+/// An composite action that represents a merge. 
+/// It bundles multiple subactions occuring during the merge to be executed as a single action.
 /// </summary>
 public class MergeAction : IAction
 {
@@ -45,6 +45,7 @@ public class MergeAction : IAction
             actions.Add(new SpawnAction(blob));
         }
 
+        //repeat for deferred (after effect) merge plan
         if (plan?.DeferredPlan != null)
         {
             foreach (var blob in plan.DeferredPlan.BlobsToRemoveDuringMerge)
@@ -69,7 +70,7 @@ public class MergeAction : IAction
             
         return actions;
     }
-    public void Execute(BoardLogic board)
+    public void Execute(BoardModel board)
     {
         foreach (var action in _actions)
         {
@@ -77,7 +78,7 @@ public class MergeAction : IAction
         }
     }
 
-    public void Undo(BoardLogic board)
+    public void Undo(BoardModel board)
     {
        
         // Undo in reverse order of execution.

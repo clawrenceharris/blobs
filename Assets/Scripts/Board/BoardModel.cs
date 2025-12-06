@@ -83,9 +83,12 @@ public class MergePlan : Plan
 
         return str;
     }
-    
+
 }
-public class BoardLogic
+
+
+
+public class BoardModel
 {
     private readonly Dictionary<string, Blob> _blobsById;
     private readonly Dictionary<string, Tile> _tilesById;
@@ -96,19 +99,19 @@ public class BoardLogic
     public int Width { get; private set; }
     public int Height { get; private set; }
     // Events for the Presenter to subscribe to.
-    // These events are the ONLY way the logic communicates with the outside world.
+    // These events are the ONLY way the logic communicates with outside code.
     public static event Action<Blob> OnBlobCreated;
     public static event Action<Tile> OnTileCreated;
     public static event Action<Blob, Vector2Int, Vector2Int> OnBlobMoved; // ID, From, To
-    public List<Blob> GetAllBlobs() =>_blobsById.Values.ToList();
+    public List<Blob> GetAllBlobs() => _blobsById.Values.ToList();
     public List<Tile> GetAllTiles() => _tilesById.Values.ToList();
     public int BlobCount => _blobsById.Count;
 
     public static event Action<Blob> OnBlobRemoved;
     public static event Action OnBoardCleared;
-    public static event Action<BoardLogic> OnBoardCreated;
+    public static event Action<BoardModel> OnBoardCreated;
 
-    public BoardLogic(int width, int height)
+    public BoardModel(int width, int height)
     {
         Width = width;
         Height = height;
@@ -116,7 +119,7 @@ public class BoardLogic
         _tilesById = new Dictionary<string, Tile>();
 
     }
-    
+
     // Called by the Presenter to start a level.
     public void CreateInitialBoard(List<Blob> blobs, List<Tile> tiles)
     {
@@ -151,7 +154,7 @@ public class BoardLogic
                     {
                         return true;
                     }
-                  
+
                 }
             }
 
@@ -172,7 +175,7 @@ public class BoardLogic
 
         }
         return false;
-        
+
     }
     public void LinkLasers(LevelData level)
     {
@@ -194,9 +197,11 @@ public class BoardLogic
             }
         }
     }
-private bool IsBetweenTiles(Vector2Int sourcePosition, Vector2Int from, Vector2Int to, Vector2Int direction)
+
+    
+    private bool IsBetweenTiles(Vector2Int sourcePosition, Vector2Int from, Vector2Int to, Vector2Int direction)
     {
-        // Horizontal beam
+        // Horizontal
         if (direction == Vector2Int.right || direction == Vector2Int.left)
         {
             if (from.y != sourcePosition.y || to.y != sourcePosition.y)
@@ -209,7 +214,7 @@ private bool IsBetweenTiles(Vector2Int sourcePosition, Vector2Int from, Vector2I
             return sourcePosition.x > minX && sourcePosition.x < maxX;
         }
 
-        // Vertical beam
+        // Vertical
         if (direction == Vector2Int.up || direction == Vector2Int.down)
         {
             if (from.x != sourcePosition.x || to.x != sourcePosition.x)
@@ -250,22 +255,25 @@ private bool IsBetweenTiles(Vector2Int sourcePosition, Vector2Int from, Vector2I
             Debug.LogError($"Attempted to place blob outside board bounds: {blob.GridPosition}");
             return;
         }
-        
+
 
         if (_blobsById.TryAdd(blob.ID, blob))
         {
-            BlobGrid[blob.GridPosition.x, blob.GridPosition.y] = blob; 
-            OnBlobCreated?.Invoke(blob); 
-            
+            BlobGrid[blob.GridPosition.x, blob.GridPosition.y] = blob;
+            OnBlobCreated?.Invoke(blob);
+
         }
-       
-        
+
+
     }
     public MergePlan CalculateMergePlan(Blob sourceBlob, Blob targetBlob)
-    {       
+    {
 
-        if (!CheckMerge(sourceBlob.ID, targetBlob.ID)) return null;
-       
+        if (!CheckMerge(sourceBlob.ID, targetBlob.ID)){
+            Debug.Log("Can't merge");
+            return null;
+        }
+
         Vector2Int direction = targetBlob.GridPosition - sourceBlob.GridPosition;
         direction.Clamp(new Vector2Int(-1, -1), new Vector2Int(1, 1));
         // --- Base Plan Calculation ---
@@ -277,7 +285,7 @@ private bool IsBetweenTiles(Vector2Int sourcePosition, Vector2Int from, Vector2I
             Direction = direction,
 
         };
-      
+
         Vector2Int currentPos = sourceBlob.GridPosition + direction;
         //traverse the path to iterativley modify the plan from the source and target blobs
         while (currentPos != targetBlob.GridPosition + direction)
@@ -293,7 +301,7 @@ private bool IsBetweenTiles(Vector2Int sourcePosition, Vector2Int from, Vector2I
 
             plan.TargetBlob = blobOnPath;
             plan.EndPosition = currentPos;
-            
+
             sourceBlob.Behavior.ModifyMergeFromSource(plan, this);
             blobOnPath?.Behavior.ModifyMergeFromTarget(plan, this);
             tileOnPath?.Behavior.ModifyMerge(plan, this);
@@ -308,8 +316,12 @@ private bool IsBetweenTiles(Vector2Int sourcePosition, Vector2Int from, Vector2I
 
         }
         // --- End of Base Plan Calculation ---
+
+        if (!targetBlob.CanMergeWith(sourceBlob, plan, this)) {
+            Debug.Log("Can't merge");
+            return null;
         
-        if (!targetBlob.CanMergeWith(sourceBlob, plan, this)) return null;
+        };
 
         return plan;
     }
@@ -320,6 +332,11 @@ private bool IsBetweenTiles(Vector2Int sourcePosition, Vector2Int from, Vector2I
             _blobsById.Remove(blob.ID);
             BlobGrid[blobToRemove.GridPosition.x, blobToRemove.GridPosition.y] = null;
             OnBlobRemoved?.Invoke(blobToRemove);
+            if (_blobsById.Count == 0)
+            {
+                OnBoardCleared?.Invoke();
+
+            }
         }
     }
 
@@ -339,12 +356,12 @@ private bool IsBetweenTiles(Vector2Int sourcePosition, Vector2Int from, Vector2I
         _blobsById.TryGetValue(id, out var blob);
         return blob;
     }
-     public Tile GetTile(string id)
+    public Tile GetTile(string id)
     {
         _tilesById.TryGetValue(id, out var tile);
         return tile;
     }
-   
+
     public Blob GetBlobAt(Vector2Int position)
     {
         if (position.x >= 0 && position.x < Width && position.y >= 0 && position.y < Height)
@@ -353,7 +370,7 @@ private bool IsBetweenTiles(Vector2Int sourcePosition, Vector2Int from, Vector2I
         }
         return null;
     }
-    
+
     public T GetBlobAt<T>(Vector2Int position)
     {
         if (position.x >= 0 && position.x < Width && position.y >= 0 && position.y < Height)
@@ -366,7 +383,7 @@ private bool IsBetweenTiles(Vector2Int sourcePosition, Vector2Int from, Vector2I
         return default;
     }
 
-     public T GetTileAt<T>(Vector2Int position)
+    public T GetTileAt<T>(Vector2Int position)
     {
         if (position.x >= 0 && position.x < Width && position.y >= 0 && position.y < Height)
         {
@@ -377,12 +394,12 @@ private bool IsBetweenTiles(Vector2Int sourcePosition, Vector2Int from, Vector2I
         }
         return default;
     }
-   public List<T> FindObjectsInRow<T>(int row)
+    public List<T> FindObjectsInRow<T>(int row)
     {
         List<T> objects = new();
         if (row < 0 || row >= Height)
         {
-           return new();
+            return new();
 
 
         }
@@ -410,8 +427,8 @@ private bool IsBetweenTiles(Vector2Int sourcePosition, Vector2Int from, Vector2I
 
 
         }
-        for (int row = 0; row < TileGrid.GetLength(1); row++) 
-        
+        for (int row = 0; row < TileGrid.GetLength(1); row++)
+
         {
             if (TileGrid[col, row] is T tile)
             {
@@ -450,15 +467,15 @@ private bool IsBetweenTiles(Vector2Int sourcePosition, Vector2Int from, Vector2I
         }
         return null;
     }
-    
+
     // The core game logic method.
     public bool CheckMerge(string sourceId, string targetId)
     {
         if (!_blobsById.ContainsKey(sourceId) || !_blobsById.ContainsKey(targetId)) return false;
-        
+
         Blob sourceBlob = _blobsById[sourceId];
         Blob targetBlob = _blobsById[targetId];
-        
+
         //can't merge the source blob on itself
         if (sourceId == targetId) return false;
         //if the source blob is not mergable then this is invalid
@@ -466,12 +483,12 @@ private bool IsBetweenTiles(Vector2Int sourcePosition, Vector2Int from, Vector2I
             sourceBlob.GridPosition.y != targetBlob.GridPosition.y) return false;
 
 
-            
+
         return true;
     }
 
-   
 
-   
+
+
 }
 

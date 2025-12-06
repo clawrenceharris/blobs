@@ -1,0 +1,61 @@
+{
+  "levelNum": 8,
+  "width": 4,
+  "height": 1,
+  "minMoves": 2,
+  "scoring": {
+    "baseScore": 2000,
+    "movePenalty": 30,
+    "starThresholds": [0, 0, 100],
+    "gemBonus": 0
+  },
+  "tutorialSteps": [],
+
+  "blobs": [
+    {
+      "t": "tb",
+      "c": "r",
+      "tc": "lb",
+      "s": "s",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "t": "gb",
+      "x": 1,
+      "y": 0
+    },
+
+    {
+      "t": "nb",
+      "s": "b",
+      "c": "pk",
+
+      "x": 3,
+      "y": 0
+    }
+  ],
+  "tiles": [
+    {
+      "t": "nt",
+      "x": 0,
+      "y": 0
+    },
+
+    {
+      "t": "nt",
+      "x": 1,
+      "y": 0
+    },
+    {
+      "t": "sgt",
+      "x": 2,
+      "y": 0
+    },
+    {
+      "t": "nt",
+      "x": 3,
+      "y": 0
+    }
+  ]
+}

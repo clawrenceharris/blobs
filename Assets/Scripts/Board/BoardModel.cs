@@ -270,7 +270,6 @@ public class BoardModel
     {
 
         if (!CheckMerge(sourceBlob.ID, targetBlob.ID)){
-            Debug.Log("Can't merge");
             return null;
         }
 

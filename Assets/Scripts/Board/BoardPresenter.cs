@@ -236,14 +236,16 @@ public class BoardPresenter : MonoBehaviour
                 return;
             }
 
-            if (_tutorial.IsActivated && _tutorial.TutorialLogic.IsValidMove(sourceBlob, targetBlob))
+            if (_tutorial.IsActivated && !_tutorial.TutorialLogic.IsValidMove(sourceBlob, targetBlob))
             {
-                MergeAction action = new(plan);
-                MergeInvoker.ExecuteMerge(action, BoardModel);
-                StartCoroutine(AnimateTurnSequence(plan));
-
-
+                return;
             }
+            MergeAction action = new(plan);
+            MergeInvoker.ExecuteMerge(action, BoardModel);
+            StartCoroutine(AnimateTurnSequence(plan));
+
+
+            
 
 
 

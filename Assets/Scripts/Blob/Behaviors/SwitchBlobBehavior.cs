@@ -6,9 +6,11 @@ public class SwitchBlobBehavior : BlobMergeBehavior
     {
     }
    
-    public override void ModifyMergeFromTarget(MergePlan plan, BoardModel board)
+    public override void ModifyMergeFromTarget(MergeContext context)
     {
-        plan.BlobsToRemoveAfterMerge.Add(plan.SourceBlob);
+        var plan = context.Plan;
+        var board = context.Board;
+        plan.BlobsToRemoveOnPath.TryAdd(plan.SourceBlob, _blob.GridPosition);
         // Turn off lasers of matching color
         foreach (var tile in board.TileGrid)
         {
@@ -19,6 +21,5 @@ public class SwitchBlobBehavior : BlobMergeBehavior
                 };
         }
 
-        RemoveTargetBlob(plan); // Remove the switch blob after use
     }
 }

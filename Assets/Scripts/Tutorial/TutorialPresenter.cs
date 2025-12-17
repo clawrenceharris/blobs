@@ -53,6 +53,10 @@ public class TutorialPresenter : MonoBehaviour
 
 
         }
+        else
+        {
+            enabled = false;
+        }
     }
 
    

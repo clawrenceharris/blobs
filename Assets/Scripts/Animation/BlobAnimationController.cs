@@ -7,8 +7,6 @@ public class BlobAnimationController : MonoBehaviour
 {
     private Animator _animator;
     private BlobView _blobView;
-    // --- Animator Parameter Names (Public for easy adjustment in Inspector if needed) ---
-    // Using const strings for parameter names is a good practice to avoid typos
     public const string PARAM_IS_SELECTED = "IsSelected"; 
     public const string PARAM_TRIGGER_MERGE = "TriggerMerge";
     void Awake()
@@ -20,9 +18,12 @@ public class BlobAnimationController : MonoBehaviour
     {
         BoardPresenter.OnBlobActivated += HandleBlobActivated;
         BoardPresenter.OnBlobDeactivated += HandleBlobDeactivated;
+        
 
         BoardModel.OnBlobMoved +=  HandleBlobMoved;
     }
+
+    
 
     private void OnDestroy()
     {

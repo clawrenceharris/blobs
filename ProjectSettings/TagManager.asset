@@ -50,6 +50,9 @@ TagManager:
   - name: Blobs
     uniqueID: 1839430605
     locked: 0
+  - name: Foreground
+    uniqueID: 1715971971
+    locked: 0
   - name: Effects
     uniqueID: 1829873563
     locked: 0

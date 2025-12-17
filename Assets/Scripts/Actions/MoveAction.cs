@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -6,24 +7,26 @@ using UnityEngine;
 /// </summary>
 public class MoveAction : IAction
 {
-    public Blob Blob { get; private set; }
-    public Vector2Int FromPosition { get; private set; }
-    public Vector2Int ToPosition { get; private set; }
-
-    public MoveAction(Blob blob, Vector2Int fromPosition, Vector2Int toPosition)
+    public Blob Blob { get; set; }
+    public Vector2Int StartPosition { get; private set; }
+    public Vector2Int EndPosition { get; private set; }
+    public IEnumerator Animate(BoardPresenter presenter) => presenter.MoveBlob(Blob, StartPosition);
+    public MoveAction(Blob blob, Vector2Int startPosition, Vector2Int endPosition)
     {
         Blob = blob;
-        FromPosition = fromPosition;
-        ToPosition = toPosition;
+        StartPosition = startPosition;
+        EndPosition = endPosition;
     }
 
     public void Execute(BoardModel board)
     {
-        board.MoveBlob(Blob, ToPosition);
+        board.MoveBlob(Blob, EndPosition);
     }
     public void Undo(BoardModel board)
     {
 
-        board.MoveBlob(Blob, FromPosition);
+        board.MoveBlob(Blob, StartPosition);
     }
+
+    
 }

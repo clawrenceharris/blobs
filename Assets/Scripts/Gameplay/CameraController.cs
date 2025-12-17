@@ -2,10 +2,13 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Camera))]
 public class CameraController : MonoBehaviour
 {
-    private readonly float _aspectRatio = 0.625f;
+    [SerializeField] private float _aspectRatio;
     [SerializeField] private float padding;
+    [SerializeField] private float pixelsPerUnit;
+
     private Camera _cam;
     private BoardPresenter _board;
     private void Awake()
@@ -17,25 +20,24 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         _cam.backgroundColor = ColorSchemeManager.CurrentColorScheme.BackgroundColor;
-    }
 
+    }
     private void Update()
     {
-        if(_board.BoardModel == null)
+        if (_board.BoardModel == null)
         {
             return;
         }
-        RepositionCamera(_board.BoardModel);
+        RepositionCamera((_board.BoardModel.Width - 1) * BoardPresenter.TileSize, (_board.BoardModel.Height - 1) * BoardPresenter.TileSize);
+
     }
 
   
-    void RepositionCamera(BoardModel board)
+    void RepositionCamera(float x, float y)
     {
-        int x = board.Width - 1;
-        int y = board.Height - 1;
         Vector3 tempPosition = new(x / 2, y / 2, -1);
         transform.position = tempPosition;
-        if (board.Width >= board.Height)
+        if (_board.BoardModel.Width >= _board.BoardModel.Height)
         {
             Camera.main.orthographicSize = (x / 2 + padding) / _aspectRatio;
         }

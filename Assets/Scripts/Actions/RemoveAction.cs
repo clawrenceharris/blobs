@@ -1,9 +1,13 @@
+using System.Collections;
+
+
 /// <summary>
 /// Command to remove a blob from the board.
 /// </summary>
 public class RemoveAction : IAction
 {
-    public Blob Blob { get; private set; }
+    public Blob Blob { get; set; }
+    public IEnumerator Animate(BoardPresenter presenter) => presenter.RemoveBlob(Blob);
 
     public RemoveAction( Blob blobToRemove)
     {

@@ -13,12 +13,14 @@ public class BombBlobBehavior : BlobMergeBehavior
     public BombBlobBehavior(Blob blob) : base(blob)
     {
     }
-    private void ExecuteBehavior(MergePlan plan, BoardModel board)
+    private void ExecuteBehavior(MergeContext context)
     {
+        var plan = context.Plan;
+        var board = context.Board;
         plan.DeferredPlan = new();
         //remove the source and target blob
-        plan.DeferredPlan.BlobsToRemoveDuringMerge.Add(plan.TargetBlob);
-        plan.DeferredPlan.BlobsToRemoveDuringMerge.Add(plan.SourceBlob);
+        plan.DeferredPlan.BlobsToRemoveOnPath.TryAdd(plan.TargetBlob, plan.TargetBlob.GridPosition);
+        plan.DeferredPlan.BlobsToRemoveOnPath.TryAdd(plan.SourceBlob, plan.SourceBlob.GridPosition);
 
 
 
@@ -38,30 +40,30 @@ public class BombBlobBehavior : BlobMergeBehavior
             Blob existingBlob = board.GetBlobAt(targetPos);
             if (existingBlob != null)
             {
-                plan.DeferredPlan.BlobsToRemoveDuringMerge.Add(existingBlob);
+                plan.DeferredPlan.BlobsToRemoveOnPath.TryAdd(existingBlob, existingBlob.GridPosition);
                 continue;
             }
 
             // Second check: is a new blob being created in this position?
-            var createdBlob = plan.BlobsToCreateDuringMerge
-                .FirstOrDefault(b => b.GridPosition == targetPos);
+            var createdBlob = plan.BlobsToCreateOnPath
+                .FirstOrDefault(b => b.Value == targetPos).Key;
 
-            if (createdBlob != null && !plan.DeferredPlan.BlobsToRemoveDuringMerge.Contains(createdBlob))
+            if (createdBlob != null)
             {
-                plan.DeferredPlan.BlobsToRemoveDuringMerge.Add(createdBlob);
+                plan.DeferredPlan.BlobsToRemoveOnPath.TryAdd(createdBlob, createdBlob.GridPosition);
             }
 
 
         }
     }
-    public override void ModifyMergeFromSource(MergePlan plan, BoardModel board)
+    public override void ModifyMergeFromSource(MergeContext context)
     {
-        ExecuteBehavior(plan, board);
+        ExecuteBehavior(context);
 
     }
-     public override void ModifyMergeFromTarget(MergePlan plan, BoardModel board)
+     public override void ModifyMergeFromTarget(MergeContext context)
     {
-        ExecuteBehavior(plan, board);
+        ExecuteBehavior(context);
         
     }
 }

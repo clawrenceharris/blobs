@@ -21,12 +21,17 @@ public class GhostBlobView : BlobView
     public override IEnumerator StartMove()
     {
         Visuals.SpriteRenderer.DOFade(0, 0.3f);
-        yield return null;
+        yield return base.StartMove();
     }
     public override IEnumerator Merge()
     {
         StartCoroutine(base.Merge());
         yield return Visuals.SpriteRenderer.DOFade(1, 0.3f).WaitForCompletion();
-        
+
+    }
+    public override IEnumerator Remove(float duration)
+    {
+        yield return Visuals.SpriteRenderer.DOFade(1, 0.4f).WaitForCompletion();
+        yield return base.Remove(duration);
     }
 }

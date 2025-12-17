@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -7,16 +6,14 @@ using Newtonsoft.Json;
 public class LevelLoader
 {
 
-    public static LevelData Level;
-    public static int NumLevels;
-     public static LevelData LoadLevelData(TextAsset textAsset){
-
+    public static List<LevelData> Levels = new();
+     public static LevelData LoadLevelData(string json){
         var settings = new JsonSerializerSettings
         {
             Converters = { new LevelDataConverter() }
         };
-        Level = JsonConvert.DeserializeObject<LevelData>(textAsset.text, settings);
-        return Level;
+        var level = JsonConvert.DeserializeObject<LevelData>(json, settings);
+        return level;
     }
     public static BlobType FromJsonBlobType(string type)
     {
@@ -73,20 +70,30 @@ public class LevelLoader
         };
     }
      
-    public static LevelData LoadLevelData(int levelNum)
+    public static void LoadAllLevels()
     {
-        string path = Application.dataPath + "/Levels/level_" + levelNum + ".json";
-        string json = File.ReadAllText(path);
-        if(json == null)
+        int levelNum = 1;
+        
+        while(true)
         {
-            return null;
+            string path = Application.dataPath + "/Levels/level_" + levelNum + ".json";
+            if (File.Exists(path))
+            {
+                string json = File.ReadAllText(path);
+
+
+                LevelData level = LoadLevelData(json);
+                Levels.Add(level);
+                levelNum++;
+            }
+            else
+            {
+                break;
+            }
+
+            
         }
-        var settings = new JsonSerializerSettings
-        {
-            Converters = { new LevelDataConverter() }
-        };
-        LevelData level = JsonConvert.DeserializeObject<LevelData>(json, settings);
-        return level;
+       
     }
 
     public static BlobColor FromJsonColor(string color)

@@ -7,9 +7,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(TileVisuals))]
 public class TileView : MonoBehaviour
 {
-    // The data this view represents.
     private Tile _model;
     public string ID => _model.ID;
 
@@ -40,10 +40,6 @@ public class TileView : MonoBehaviour
         
         _visuals.SpriteRenderer.color = ColorSchemeManager.CurrentColorScheme.TileColor;
 
-        
-
-
-        // Configure the visuals based on the data.
         gameObject.name = $"{tile.TileType} Tile {tile.GridPosition}";
 
 

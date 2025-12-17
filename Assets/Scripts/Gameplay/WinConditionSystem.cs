@@ -12,16 +12,15 @@ public class WinConditionSystem
     /// Checks the board state for a win.
     /// </summary>
     /// <returns>The ID of the winning blob if conditions are met, otherwise null.</returns>
-    public Blob CheckForWin(BoardModel board)
+    public bool CheckForWin(BoardModel board)
     {
-        // Win Condition: There must be exactly one blob on the board that is clearable.
-        // This blob will be the winning blob.
+        // There must be no clearable Blobs on the board to win.
         var clearableBlobs = board.GetAllBlobs().OfType<IClearable>();
-        if (clearableBlobs.Count() == 1)
+        if (clearableBlobs.Count() == 0)
         {
-            return (Blob)clearableBlobs.First();
+            return true;
         }
-        return null;
+        return false;
 
     }
 }

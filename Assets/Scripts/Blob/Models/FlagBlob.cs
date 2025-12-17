@@ -1,5 +1,6 @@
 
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class FlagBlob : Blob, IClearable
@@ -14,9 +15,11 @@ public class FlagBlob : Blob, IClearable
     {
         // Flag Blob can be merged with another blob if there are exactly two clearable blobs on the board (the Flag Blob and source Blob).
         return base.CanMergeWith(targetBlob, plan, board) &&
-            board.GetAllBlobs()
-                .Where(blob => !plan.BlobsToRemoveDuringMerge.Contains(blob) && !plan.BlobsToRemoveAfterMerge.Contains(blob))
-                .OfType<IClearable>()
-                .Count() == 1;
+        board
+        .GetAllBlobs()
+        .Where(b => b.ID != ID)
+        .OfType<IClearable>()
+        .Count() == 1;
+           
     }
 }

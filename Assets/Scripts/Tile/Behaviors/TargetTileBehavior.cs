@@ -4,12 +4,12 @@ public class TargetTileBehavior : TileMergeBehavior
     {
     }
 
-    public override void ModifyMerge(MergePlan plan, BoardModel board)
+    public override void ModifyMerge(MergeContext context)
     {
-        if (board.BlobCount == 1)
+        if (context.Board.BlobCount == 1)
         {
             // If this is the only blob on the board, we can remove it immediately
-            plan.BlobsToRemoveDuringMerge.Add(plan.SourceBlob);
+            RemoveSourceBlob(context, _tile.GridPosition);
             return;
         }
     }

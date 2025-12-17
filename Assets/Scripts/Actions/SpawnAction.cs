@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +8,10 @@ using UnityEngine;
 /// </summary>
 public class SpawnAction : IAction
 {
-    public  Blob Blob { get; private set; }
+    public Blob Blob { get; set; }
+    private Vector2Int _at;
+
+    public IEnumerator Animate(BoardPresenter presenter) => presenter.SpawnBlob(Blob);
     public SpawnAction(Blob blob)
     {
         Blob = blob;

@@ -38,18 +38,15 @@ public class BlobView : MonoBehaviour
 
     }
     
-    // The Presenter calls this to link the View to its data Model.
     public virtual void Setup(Blob model)
     {
         Model = model;
         transform.localScale = Vector3.zero;
         
-        // Configure the visuals based on the data.
         gameObject.name = $"{model.Type} Blob {model.GridPosition}";
 
     }
 
-   
 
     public Vector2 GetScaleFromBlobSize() {
         return Model.Size switch
@@ -61,23 +58,41 @@ public class BlobView : MonoBehaviour
     }
     public virtual IEnumerator Spawn()
     {
-        yield return null;
+        transform.DOScale(GetScaleFromBlobSize(), 0.3f);
         StartCoroutine(CreateParticles());
+        yield return null;
     }
     public virtual IEnumerator StartMove()
     {
-        yield break;
+        ChangeSortingLayer("Foreground", transform);
+
+        yield return null;
+    }
+    private void ChangeSortingLayer(string layerName, Transform transform)
+    {
+        foreach(Transform child in transform)
+        {
+            if (child.TryGetComponent<SpriteRenderer>(out var sr))
+            {
+                sr.sortingLayerID = SortingLayer.NameToID(layerName);
+            }
+            if(child.childCount > 0)
+            {
+                ChangeSortingLayer(layerName, child);
+            }
+        }
+       
     }
     public virtual IEnumerator Merge()
     {
-        yield return null;
         StartCoroutine(CreateParticles());
+        yield return null;
     }
     public virtual IEnumerator Remove(float duration)
     {
-        yield return null;
         StartCoroutine(CreateParticles());
         transform.DOScale(Vector3.zero, duration).SetEase(Ease.InBack);
+        yield return null;
     }
 
     protected virtual IEnumerator CreateParticles()
@@ -97,6 +112,9 @@ public class BlobView : MonoBehaviour
 
     public virtual IEnumerator EndMove()
     {
-        yield break;
+        ChangeSortingLayer("Blobs", transform);
+        yield return null;
+
+
     }
 }

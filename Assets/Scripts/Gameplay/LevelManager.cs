@@ -4,9 +4,9 @@ using UnityEngine.SceneManagement;
 using System;
 using UnityEngine.UI;
 using System.Collections;
+using System.Linq;
 
-
-
+[RequireComponent(typeof(LevelStateManager))]
 public class LevelManager : MonoBehaviour
 
 
@@ -16,7 +16,7 @@ public class LevelManager : MonoBehaviour
     public int LevelNum;
     public LevelData Level { get; private set; }
     public static int MoveCount { get; private set; } = 0;
-    public bool IsHighscore{get; private set;}
+    public bool IsHighscore { get; private set; }
     public static event Action<LevelCompletedEventArgs> OnLevelComplete;
     private LevelStateManager _stateManager;
     private WinConditionSystem _winConditionSystem;
@@ -31,12 +31,12 @@ public class LevelManager : MonoBehaviour
     public BoardPresenter Board { get; private set; }
 
     private static ColorScheme _theme;
-    
+
     public ColorScheme Theme
     {
         get
         {
-            if(_theme == null)
+            if (_theme == null)
             {
                 _theme = FindFirstObjectByType<ColorScheme>();
             }
@@ -47,10 +47,11 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
-        
-      
+
+
         Board = FindFirstObjectByType<BoardPresenter>();
         _stateManager = GetComponent<LevelStateManager>();
+        LevelLoader.LoadAllLevels();
     }
 
 
@@ -68,12 +69,12 @@ public class LevelManager : MonoBehaviour
 
     private void HandleMergeComplete(MergePlan plan)
     {
-        Blob winningBlob = _winConditionSystem.CheckForWin(Board.BoardModel);
-        if (winningBlob != null)
+        bool didWin = _winConditionSystem.CheckForWin(Board.BoardModel);
+        if (didWin) 
         {
             _stateManager.SetState(null);
             OnLevelComplete?.Invoke(new LevelCompletedEventArgs(LevelNum));
-            CoroutineHandler.StartStaticCoroutine(Board.CompleteMergeCo(winningBlob),() => {
+            CoroutineHandler.StartStaticCoroutine(Board.AnimateEndTurnSequence(),() => {
                 
                 StartLevel(LevelNum + 1);
 
@@ -86,7 +87,7 @@ public class LevelManager : MonoBehaviour
     public void StartLevel(int levelNum)
     {
 
-        Level = LevelLoader.LoadLevelData(levelNum);
+        Level = LevelLoader.Levels.ElementAtOrDefault(levelNum -1);
         if (Level == null) return;
         MoveCount = 0;
 
@@ -98,53 +99,46 @@ public class LevelManager : MonoBehaviour
     }
     private void OnBoardCleared()
     {
-        int thisLevel = Level.levelNum;
-        int stars = DetermineStars();
-        int score = CalculateScore() + Level.scoring.gemBonus;
-        PlayerData data = GameManager.PlayerData;
+        // int thisLevel = Level.levelNum;
+        // int stars = DetermineStars();
+        // int score = 0;
+        // PlayerData data = GameManager.PlayerData;
 
-        //if we have not completed this level yet
-        if (!data.completedLevels.Contains(thisLevel))
-        {
-            //adds this level to completed levels
-            data.completedLevels.Add(thisLevel);
+        // //if we have not completed this level yet
+        // if (!data.completedLevels.Contains(thisLevel))
+        // {
+        //     //adds this level to completed levels
+        //     data.completedLevels.Add(thisLevel);
 
-        }
+        // }
 
-        //if the level does not have any stars at all or the level's stars are
-        //less than the amount just earned
-        if (!data.levelStars.ContainsKey(thisLevel) || data.levelStars[thisLevel] < stars)
-        {
-            data.levelStars[thisLevel] = stars;
-        }
+        // //if the level does not have any stars at all or the level's stars are
+        // //less than the amount just earned
+        // if (!data.levelStars.ContainsKey(thisLevel) || data.levelStars[thisLevel] < stars)
+        // {
+        //     data.levelStars[thisLevel] = stars;
+        // }
 
-        //if the level does not have points yet or the amount of points for this level
-        //is less than the amount just earned 
-        if (!data.levelPoints.ContainsKey(thisLevel) || data.levelPoints[thisLevel] < score)
-        {
-            IsHighscore = true;
-            data.levelPoints[thisLevel] = score;
-        }
+        // //if the level does not have points yet or the amount of points for this level
+        // //is less than the amount just earned 
+        // if (!data.levelPoints.ContainsKey(thisLevel) || data.levelPoints[thisLevel] < score)
+        // {
+        //     IsHighscore = true;
+        //     data.levelPoints[thisLevel] = score;
+        // }
 
-        //Saves the updated data back into the game's player data
-        GameManager.PlayerData = data;
-        MenuController.Instance.ReplacePage(PageType.LevelComplete);
-        _stateManager.SetState(null);
+        // //Saves the updated data back into the game's player data
+        // GameManager.PlayerData = data;
+        // MenuController.Instance.ReplacePage(PageType.LevelComplete);
+        // _stateManager.SetState(null);
     }
     
-    private int CalculateScore()
-    {
-        int baseScore = Level.scoring.baseScore;
-        int movePenalty = Level.scoring.movePenalty;
-       
-        float score = baseScore - (movePenalty * Math.Max(0, MoveCount - Level.minMoves));
-        return (int)Math.Round(score);
-    }
+    
 
    
     private int DetermineStars()
     {
-        double score = CalculateScore();
+        double score = 0;
         double percentage = score / Level.scoring.baseScore *100;
         
         if (percentage >= Level.scoring.starThresholds[2])

@@ -10,9 +10,9 @@ public class FlagBlobBehavior : BlobMergeBehavior
     {
     }
 
-    public override void ModifyMergeFromTarget(MergePlan plan, BoardModel board)
+    public override void ModifyMergeFromTarget(MergeContext context)
     {
-        plan.BlobsToRemoveAfterMerge.Add(plan.SourceBlob);
+        context.Plan.BlobsToRemoveOnPath.TryAdd(context.Plan.SourceBlob, _blob.GridPosition);
 
     }
 

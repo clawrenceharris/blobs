@@ -14,7 +14,7 @@ public interface ITileMergeBehavior
     /// </summary>
     /// <param name="plan">The current merge plan to be modified.</param>
     /// <param name="boardLogic">A reference to the board for querying state.</param>
-    void ModifyMerge(MergePlan plan, BoardModel boardLogic);
+    void ModifyMerge(MergeContext context);
 
     
 }
@@ -30,19 +30,23 @@ public class TileMergeBehavior : ITileMergeBehavior
     {
         _tile = tile;
     }
-    public virtual void ModifyMerge(MergePlan plan, BoardModel board)
+    public virtual void ModifyMerge(MergeContext context)
     {
         return;
     }
 
   
-
-    protected virtual void RemoveSourceBlob(MergePlan plan)
+    /// <summary>
+    /// Adds the source blob to the list of blobs that will be removed during the merge
+    /// </summary>
+    /// <param name="context">The merge context</param>
+    /// <param name="position">The grid position from which the source blob will be removed</param>
+    protected virtual void RemoveSourceBlob(MergeContext context, Vector2Int position)
     {
-        if (plan.SourceBlob is not IMergable) return;
-        if (plan.BlobsToRemoveDuringMerge.Contains(plan.SourceBlob)) return;
+        var plan = context.Plan;
+        if (plan.SourceBlob is not IClearable) return;
 
-        plan.BlobsToRemoveDuringMerge.Add(plan.SourceBlob);
+        plan.BlobsToRemoveOnPath.TryAdd(plan.SourceBlob, position);
     }
 
 

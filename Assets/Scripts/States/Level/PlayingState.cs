@@ -20,6 +20,10 @@ public class PlayingState : State
     public override void EnterState()
     {
         BlobInput.EnableInput();
+        if (context.LevelManager.Level.IsTutorial)
+        {
+            context.LevelManager.Tutorial.StartTutorial(context.LevelManager.Board, context.LevelManager.Level.TutorialSteps);
+        }
 
     }
 
@@ -27,11 +31,14 @@ public class PlayingState : State
 
    public override void UpdateState()
     {
-       
     }
     public override void ExitState()
     {
         BlobInput.DisableInput();
+        if (context.LevelManager.Level.IsTutorial)
+        {
+            context.LevelManager.Tutorial.StopTutorial();
+        }
 
     }
 

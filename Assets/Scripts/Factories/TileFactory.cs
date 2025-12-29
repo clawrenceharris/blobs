@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TileFactory
 {
-    
+
 
     public static Tile CreateTileData(JObject itemObject)
     {
@@ -17,14 +17,11 @@ public class TileFactory
 
         switch (type)
         {
-             case TileType.Normal:
+            case TileType.Normal:
                 {
                     return new NormalTile(position);
                 }
-            case TileType.Target:
-                {
-                    return new TargetTile(LevelDataKeys.BlobColors.GetBlobColorFromKey((string)color), position);
-                }
+           
             case TileType.Spike:
                 {
                     return new SpikeTile(position);
@@ -37,13 +34,22 @@ public class TileFactory
                 {
                     string id = (string)itemObject["id"];
                     return new LaserTile(LevelDataKeys.BlobColors.GetBlobColorFromKey((string)color), id, position);
-                   
+
                 }
             default: throw new ArgumentException();
 
-            
-           
-            
-        };
+
+
+
+        }
+        ;
     }
+    public static TilePresenter CreateTilePresenter(TileView view)
+    {
+        switch (view.Model.Type)
+        {
+            default: return new(view);
+        }
+    }
+
 }

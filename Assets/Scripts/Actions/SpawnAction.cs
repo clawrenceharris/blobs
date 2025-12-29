@@ -11,7 +11,6 @@ public class SpawnAction : IAction
     public Blob Blob { get; set; }
     private Vector2Int _at;
 
-    public IEnumerator Animate(BoardPresenter presenter) => presenter.SpawnBlob(Blob);
     public SpawnAction(Blob blob)
     {
         Blob = blob;
@@ -24,7 +23,7 @@ public class SpawnAction : IAction
     }
     public void Undo(BoardModel board)
     {
-        board.RemoveBlob(Blob);
+        board.RemoveBlob(Blob.ID);
 
     }
 

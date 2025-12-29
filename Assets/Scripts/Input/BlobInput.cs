@@ -1,34 +1,23 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(BlobView))]
+[RequireComponent(typeof(Collider2D))]
+
 public class BlobInput : MonoBehaviour
 {
 
 
 
     public static bool InputEnabled;
-    public static Action<Blob> OnBlobSelected;
-    private BoardModel _board;
-
-    public static Action<Blob> OnBlobDeselected;
-    
-    void Start()
+    public Action<Blob> OnBlobSelected;
+    private BlobView _view;
+    private void Awake() => _view = GetComponent<BlobView>();
+    private void Start()
     {
-        BoardModel.OnBoardCreated += HandleBoardCreated;
         EnableInput();
     }
-    private void HandleBoardCreated(BoardModel board)
-    {
-        _board = board;
-    }
-    
-    private Blob GetBlobAt(Vector3 worldPoint)
-    {
-        int x = (int)worldPoint.x;
-        int y = (int)worldPoint.y;
 
-        return _board.GetBlobAt(x, y);
-    }
     public static void EnableInput()
     {
         InputEnabled = true;
@@ -38,31 +27,14 @@ public class BlobInput : MonoBehaviour
     {
         InputEnabled = false;
     }
-    private void CheckInput()
+
+    private void OnMouseUp()
     {
-        if (!InputEnabled) return;
+        if (!_view.Model.Enabled) return;
 
-        if (Input.GetMouseButtonUp(0))
-        {
-
-            Vector3 worldPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition) / BoardPresenter.TileSize) + Vector3.one * 0.5f;
-            Blob blobAtWorldPos = GetBlobAt(worldPos);
-
-            if (blobAtWorldPos != null && blobAtWorldPos.Enabled)
-            {
-                OnBlobSelected?.Invoke(blobAtWorldPos);
-            }
-            
-
-        }
-
+        OnBlobSelected?.Invoke(_view.Model);
     }
+    
 
-    void Update()
-    {
-        CheckInput();
 
-    }
-
-   
 }

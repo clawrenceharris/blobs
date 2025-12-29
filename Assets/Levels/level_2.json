@@ -2,8 +2,7 @@
   "levelNum": 2,
   "width": 3,
   "height": 3,
-  "padding": 1.5,
-
+  "isTutorial": true,
   "minMoves": 3,
   "scoring": {
     "baseScore": 2000,

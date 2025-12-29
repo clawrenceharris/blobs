@@ -10,7 +10,6 @@ public class MoveAction : IAction
     public Blob Blob { get; set; }
     public Vector2Int StartPosition { get; private set; }
     public Vector2Int EndPosition { get; private set; }
-    public IEnumerator Animate(BoardPresenter presenter) => presenter.MoveBlob(Blob, StartPosition);
     public MoveAction(Blob blob, Vector2Int startPosition, Vector2Int endPosition)
     {
         Blob = blob;

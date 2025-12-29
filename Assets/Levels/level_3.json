@@ -3,7 +3,7 @@
   "width": 4,
   "height": 3,
   "minMoves": 10,
-  "padding": 0.5,
+  "isTutorial": false,
   "scoring": {
     "baseScore": 5000,
     "movePenalty": 40,

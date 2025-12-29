@@ -52,22 +52,22 @@ public class LevelDataConverter : JsonConverter<LevelData>
         // Deserialize common properties
         LevelData levelData = new()
         {
-            levelNum = (int)jsonObject[LevelDataKeys.LevelNum],
-            width = (int)jsonObject[LevelDataKeys.Width],
-            height = (int)jsonObject[LevelDataKeys.Height],
-            tutorialSteps = jsonObject[LevelDataKeys.TutorialSteps]?.ToObject<TutorialStep[]>(),
-
+            LevelNum = (int)jsonObject[LevelDataKeys.LevelNum],
+            Width = (int)jsonObject[LevelDataKeys.Width],
+            Height = (int)jsonObject[LevelDataKeys.Height],
+            TutorialSteps = jsonObject[LevelDataKeys.TutorialSteps].ToObject<TutorialStep[]>(),
+            IsTutorial = jsonObject[LevelDataKeys.IsTutorial].ToObject<bool>(),
         };
 
         // Deserialize arrays
         JArray tilesArray = (JArray)jsonObject[LevelDataKeys.Tiles];
-        levelData.tiles = DeserializeTilesArray(tilesArray);
+        levelData.Tiles = DeserializeTilesArray(tilesArray);
 
         JArray blobsArray = (JArray)jsonObject[LevelDataKeys.Blobs];
-        levelData.blobs = DeserializeBlobsArray(blobsArray);
+        levelData.Blobs = DeserializeBlobsArray(blobsArray);
 
         JArray laserLinks = (JArray)jsonObject[LevelDataKeys.LaserLinks];
-        levelData.laserLinks = DeserializeLaserLinks(laserLinks);
+        levelData.LaserLinks = DeserializeLaserLinks(laserLinks);
 
 
         return levelData;

@@ -34,15 +34,21 @@ public class ColorUtils
         return Color.Lerp(color, Color.black, amount);
     }
 
+    
+    
     public static void ApplyColorsToMaterial(Material material, BlobColor color)
     {
-        Color blobMainColor = ColorSchemeManager.FromBlobColor(color);
+        Color blobColor = ColorSchemeManager.FromBlobColor(color);
+        ApplyColorsToMaterial(material, blobColor);
+    }
+    public static void ApplyColorsToMaterial(Material material, Color color)
+    {
 
-        material.SetColor("_BaseColor", blobMainColor);
+        material.SetColor("_BaseColor", color);
 
-        Color shadowColor = DarkenColor(blobMainColor, 0.3f);;
+        Color shadowColor = DarkenColor(color, 0.3f);;
         material.SetColor("_ShadowColor", shadowColor);
-        Color highlightColor = LightenColor(blobMainColor, 0.3f);;
+        Color highlightColor = LightenColor(color, 0.3f);;
 
         material.SetColor("_HighlightColor", highlightColor);
     }

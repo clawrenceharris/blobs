@@ -50,7 +50,15 @@ public class BlobFactory
         }
         return blobData;
     }
-    
+    public static BlobPresenter CreateBlobPresenter(BlobView view)
+    {
+        switch (view.Model.Type)
+        {
+            case BlobType.Ghost: return new GhostBlobPresenter(view);
+            case BlobType.Bomb: return new BombBlobPresenter(view);
+            default: return new BlobPresenter(view);
+        }
+    }
     public static Blob CreateBlobModel(BlobData data)
     {
         int x = data.X;
@@ -121,5 +129,6 @@ public class BlobFactory
             default: throw new ArgumentException();
         }
     }
+
     
 }

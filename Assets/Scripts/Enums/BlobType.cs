@@ -6,8 +6,6 @@ public enum BlobType
     Switch,
     Trail,
     Flag,
-    Moving,
-    Button,
     Bomb,
     Ghost,
     Enemy,

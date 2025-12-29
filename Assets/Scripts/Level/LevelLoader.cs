@@ -49,7 +49,6 @@ public class LevelLoader
     {
         return type switch
         {
-            LevelDataKeys.Types.TargetTile => TileType.Target,
             LevelDataKeys.Types.SigilTile => TileType.Sigil,
             LevelDataKeys.Types.LaserTile => TileType.Laser,
             LevelDataKeys.Types.SpikeTile => TileType.Spike,
@@ -61,7 +60,6 @@ public class LevelLoader
     {
         return type switch
         {
-            TileType.Target => LevelDataKeys.Types.TargetTile,
             TileType.Sigil => LevelDataKeys.Types.SigilTile,
             TileType.Laser => LevelDataKeys.Types.LaserTile,
             TileType.Spike => LevelDataKeys.Types.SpikeTile,

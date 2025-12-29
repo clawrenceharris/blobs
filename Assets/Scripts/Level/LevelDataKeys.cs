@@ -24,7 +24,8 @@ public static class LevelDataKeys
     public const string Tiles = "tiles";
     public const string LaserLinks = "laserLinks";
 
-    public static object TutorialSteps  = "tutorialSteps";
+    public static string TutorialSteps  = "tutorialSteps";
+    public static string IsTutorial = "isTutorial";
 
     public static class Types
     {
@@ -40,8 +41,6 @@ public static class LevelDataKeys
 
         public const string NormalTile = "nt";
         public const string SpikeTile = "st";
-
-        public const string TargetTile = "tt";
       
         public const string SigilTile = "sgt";
 
@@ -67,7 +66,6 @@ public static class LevelDataKeys
         public static readonly Dictionary<string, TileType> tileTypeMap = new()
         {
             { NormalTile, TileType.Normal },
-            { TargetTile, TileType.Target },
             { SpikeTile, TileType.Spike },
             { SigilTile, TileType.Sigil },
             { LaserTile, TileType.Laser },

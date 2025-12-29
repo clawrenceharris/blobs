@@ -1,9 +1,9 @@
 public enum BlobSize
 {
-    Small,
-    Normal,
-    Big,
-    None
+    None = 4,
+    Small = 1,
+    Normal = 2,
+    Big = 3,
 
 
 

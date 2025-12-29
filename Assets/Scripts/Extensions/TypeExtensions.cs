@@ -26,37 +26,25 @@ public static class TypeExtensions
     {
         return type == BlobType.Flag;
     }
-    public static bool IsButtonBlob(this BlobType type)
-    {
-        return type == BlobType.Button;
-    }
+    
     public static bool IsBlob(this BlobType type)
     {
         return type == BlobType.Normal ||
             type == BlobType.Switch ||
             type == BlobType.Flag ||
-            type == BlobType.Trail||
-            type == BlobType.Button ||
-            type == BlobType.Moving ;
+            type == BlobType.Trail;
     }
 
-    public static bool IsUnMovableBlob(this BlobType type)
-    {
-        return type == BlobType.Flag || type == BlobType.Switch || type == BlobType.Button;
-    }
-
+   
     public static bool IsMaxSizedBlob(this BlobType type)
     {
         return type == BlobType.Flag || type == BlobType.Switch;
     }
-    public static bool IsTargetTile(this TileType type)
-    {
-        return type == TileType.Target;
-    }
+   
     
     public static bool IsTraversable(this TileType type)
     {
-        return type == TileType.Normal || type == TileType.Target || type == TileType.Sigil;
+        return type == TileType.Normal || type == TileType.Sigil;
     }
     public static bool IsSpikeTile(this TileType type)
     {

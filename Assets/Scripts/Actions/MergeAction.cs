@@ -13,7 +13,6 @@ public class MergeAction
 {
     private readonly List<IAction> _actions;
     public MergePlan Plan { get; private set; }
-    public IEnumerator Animate(BoardPresenter presenter) => presenter.AnimateMergeFromPlan(Plan);
 
     public MergeAction(MergePlan plan)
     {
@@ -23,15 +22,18 @@ public class MergeAction
     private List<IAction> CreateMergeActionsFromPlan(MergePlan plan)
     {
         var actions = new List<IAction>();
+        
         if (plan == null) return new();
+
+        
         // Create remove actions for blobs to remove
         foreach (var blob in plan.BlobsToRemoveOnPath)
         {
             actions.Add(new RemoveAction(blob.Key));
         }
        
-        
         actions.Add(new MoveAction(plan.SourceBlob, plan.StartPosition, plan.EndPosition));
+
         foreach (var blob in plan.SizeChanges.Keys)
         {
             actions.Add(new ResizeAction(blob, plan.SizeChanges[blob] - blob.Size));
@@ -41,10 +43,12 @@ public class MergeAction
         {
             actions.Add(new SpawnAction(blob.Key));
         }
-        
+
 
         //repeat for deferred merge plan
-        actions.AddRange(CreateMergeActionsFromPlan(plan.DeferredPlan));
+        foreach (MergePlan deferredPlan in plan.DeferredPlans)
+            actions.AddRange(CreateMergeActionsFromPlan(deferredPlan));
+        
             
         return actions;
     }

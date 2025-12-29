@@ -8,7 +8,5 @@ public interface IAction{
     void Execute(BoardModel model);
     void Undo(BoardModel model);
 
-    IEnumerator Animate(BoardPresenter presenter);
-
 }
 

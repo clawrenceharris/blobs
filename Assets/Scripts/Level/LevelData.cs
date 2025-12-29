@@ -6,22 +6,22 @@ using UnityEngine;
 [System.Serializable]
 public class LevelData
 {
-    public int levelNum;
-    public int width;
-    public int height;
-    public Scoring scoring;
-    public float padding;
-    public TutorialStep[] tutorialSteps;
-    public Blob[] blobs;
-    public Tile[] tiles;
-    public int minMoves;
-    public List<LaserLink> laserLinks;
+    public int LevelNum;
+    public int Width;
+    public int Height;
+    public Scoring Scoring;
+    public bool IsTutorial;
+    public TutorialStep[] TutorialSteps;
+    public Blob[] Blobs;
+    public Tile[] Tiles;
+    public int MinMoves;
+    public List<LaserLink> LaserLinks;
 }
 
 public class LaserLink {
     public string idA;
     public string idB;
-    internal string color;
+    public string color;
 }
 
 [Serializable]

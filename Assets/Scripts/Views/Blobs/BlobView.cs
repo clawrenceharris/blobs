@@ -9,7 +9,7 @@ using UnityEngine;
 public class BlobView : MonoBehaviour
 {
     public virtual Blob Model { get; protected set; }
-    public BlobInput Input;
+    public BlobInput Input { get; private set; }
 
     public BlobVisuals Visuals { get; private set; }
 

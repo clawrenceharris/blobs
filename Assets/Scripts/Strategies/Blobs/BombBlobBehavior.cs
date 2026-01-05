@@ -13,15 +13,13 @@ public class BombBlobBehavior : BlobMergeBehavior
     public BombBlobBehavior(Blob blob) : base(blob)
     {
     }
-    private void ExecuteBehavior(MergeContext context)
+    
+    public override void FinalizeMergeFromSource(MergeContext context)
     {
         var plan = context.Plan;
         var board = context.Board;
-        var deferredPlan = new MergePlan();
         //remove the source and target blob
-        deferredPlan.BlobsToRemoveOnPath.TryAdd(plan.TargetBlob, plan.TargetBlob.GridPosition);
-        deferredPlan.BlobsToRemoveOnPath.TryAdd(plan.SourceBlob, plan.SourceBlob.GridPosition);
-
+        plan.BlobsToRemoveAfterMerge.Add(plan.TargetBlob);
 
 
         Vector2Int start = plan.EndPosition; // the bomb ends up here
@@ -40,7 +38,7 @@ public class BombBlobBehavior : BlobMergeBehavior
             Blob existingBlob = board.Model.GetBlobAt(targetPos);
             if (existingBlob != null)
             {
-                deferredPlan.BlobsToRemoveAfterMerge.Add(existingBlob);
+                plan.BlobsToRemoveAfterMerge.Add(existingBlob);
                 continue;
             }
 
@@ -50,23 +48,13 @@ public class BombBlobBehavior : BlobMergeBehavior
 
             if (createdBlob != null)
             {
-                deferredPlan.BlobsToRemoveAfterMerge.Add(createdBlob);
+                plan.BlobsToRemoveAfterMerge.Add(createdBlob);
             }
 
 
         }
-        plan.DeferredPlans.Add(deferredPlan);
-
     }
-    public override void ModifyMergeFromSource(MergeContext context)
-    {
-        ExecuteBehavior(context);
-
-    }
-     public override void ModifyMergeFromTarget(MergeContext context)
-    {
-        ExecuteBehavior(context);
-        
-    }
+  
+    
 }
 

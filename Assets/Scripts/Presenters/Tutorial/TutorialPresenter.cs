@@ -86,8 +86,8 @@ public class TutorialPresenter : MonoBehaviour
         if (_model.IsFinished) return;
 
 
-        CurrentStartBlob.DisableBlob();
-        CurrentEndBlob.DisableBlob();
+        CurrentStartBlob?.DisableBlob();
+        CurrentEndBlob?.DisableBlob();
         
         _model.NextTutorialStep();
 

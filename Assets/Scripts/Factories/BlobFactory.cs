@@ -129,23 +129,6 @@ public class BlobFactory
             default: throw new ArgumentException();
         }
     }
-     public static BlobAnimator CreateBlobAnimator(BlobView view)
-    {
 
-
-
-        switch (view.Model.Type)
-        {
-
-            case BlobType.Bomb:
-                return new BombBlobAnimator(view);
-            case BlobType.Ghost:
-                return new GhostBlobAnimator(view);
-            default:
-                return new BlobAnimator(view);
-
-        }
-    }
-
-    
 }
+

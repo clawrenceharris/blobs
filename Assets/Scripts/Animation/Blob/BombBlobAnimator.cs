@@ -3,9 +3,7 @@ using UnityEngine;
 
 public class BombBlobAnimator : BlobAnimator
 {
-    public BombBlobAnimator(BlobView view) : base(view)
-    {
-    }
+   
 
     public override Tween CreateRemoveTween(float duration)
     {

@@ -55,16 +55,16 @@ public class FeedbackPresenter : MonoBehaviour
 
     private void Wiggle(string blobId)
     { 
-        _board.GetBlobById(blobId).View.transform.DOShakeRotation(0.3f, 5);
+        _board.GetBlob(blobId).View.transform.DOShakeRotation(0.3f, 5);
     }
     private void Shake(string blobId)
     { 
-        _board.GetBlobById(blobId).View.transform.DOShakePosition(0.5f, 0.1f, 10, 90f, false, true);
+        _board.GetBlob(blobId).View.transform.DOShakePosition(0.5f, 0.1f, 10, 90f, false, true);
     }
     private void Thud(string blobId)
     { 
     // Uses DOTween to create a "thud" effect by quickly moving the object down and back up.
-    var view = _board.GetBlobById(blobId).View;
+    var view = _board.GetBlob(blobId).View;
     var t = view.transform;
     float thudDistance = 0.2f;
     float thudDuration = 0.10f;

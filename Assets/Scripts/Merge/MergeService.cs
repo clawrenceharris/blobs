@@ -10,24 +10,35 @@ namespace Blobs.Core.Merge
         MergeResolveResult TryCreateMergeCommand(string sourceBlobId, string targetBlobId);
     }
 
+    /// <summary>
+    /// Service responsible for creating and executing merge commands between blobs on the board.
+    /// Implements the merge resolution strategy by delegating to a MergeResolver with predefined merge rules.
+    /// </summary>
     public class MergeService : IMergeService
     {
-        private readonly IBoardPresenter _board;
-
+        private IBoardPresenter _board;
+       
         public MergeService(IBoardPresenter board)
         {
             _board = board;
         }
 
-    
-
+        /// <summary>
+        /// Attempts to create and execute a merge command between a source blob and a target blob.
+        /// </summary>
+        /// <param name="sourceBlobId">The identifier of the source blob to merge.</param>
+        /// <param name="targetBlobId">The identifier of the target blob to merge into.</param>
+        /// <returns>
+        /// A MergeResolveResult indicating success with the execution plan, or failure with the reason.
+        /// Possible failure reasons include invalid source board or merge resolution failures.
+        /// </returns>
+        /// <remarks>
+        /// The merge process uses a resolver with multiple merge rules (Default, Normal, Flag, Trail, Bomb, Remove)
+        /// that are evaluated in order to determine the merge strategy. If resolution succeeds, the merge plan
+        /// is immediately executed on the board.
+        /// </remarks>
         public MergeResolveResult TryCreateMergeCommand(string sourceBlobId, string targetBlobId)
         {
-            var boardPresenter = _board as BoardPresenter;
-            var board = boardPresenter.Model;
-            if (board == null)
-                return MergeResolveResult.Fail(MergeFailReason.InvalidSource);
-
             var pathResolver = new PathResolver(null);
             var mergeResolver = new MergeResolver(pathResolver, new List<IMergeRule>
             {
@@ -39,11 +50,11 @@ namespace Blobs.Core.Merge
                 new RemoveRule()
             });
 
-            var result = mergeResolver.TryBuildPlan(board, new MergeRequest(sourceBlobId, targetBlobId), out var plan);
+            var result = mergeResolver.TryBuildPlan(_board, new MergeRequest(sourceBlobId, targetBlobId), out var plan);
             if (!result.Ok)
                 return MergeResolveResult.Fail(result.FailReason);
 
-            MergeInvoker.ExecuteMerge(plan, board);
+            MergeInvoker.ExecuteMerge(plan, _board);
             return MergeResolveResult.SuccessWithPlan(plan);
         }
     }

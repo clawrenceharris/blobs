@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 83418642717f5264f94bb0cc2eaa1428
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225102
+  packageName: Simple Cartoon UI
+  packageVersion: 1.1
+  assetPath: Assets/Cartoon UI/Prefabs/Level Select Panel.prefab
+  uploadId: 825882

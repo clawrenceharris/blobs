@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class GhostBlobAnimator : BlobAnimator
 {
-    public GhostBlobAnimator(BlobView view) : base(view)
-    {
-    }
 
 
 

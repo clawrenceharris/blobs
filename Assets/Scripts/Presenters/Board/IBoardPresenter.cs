@@ -14,27 +14,38 @@ public interface IBoardPresenter
     LevelData CurrentLevel { get; }
     BoardModel Model { get; }
     IBoardLayout Layout { get; }
-
+    
     // Initialization
     void Initialize(LevelData levelData);
     void ClearBoard();
 
     // Blob management
-    void MoveBlob(Blob blob, Vector2Int endPosition);
+    void MoveBlob(string id, Vector2Int endPosition);
+    void PlaceBlob(Blob blob);
+    void RemoveBlob(string id);
 
+
+    // Tile management
+    void PlaceTile(Tile tile);
+    void RemoveTile(string tile);
+
+
+    // Blob queries
     IBlobPresenter GetBlobAt(Vector2Int position);
     IBlobPresenter GetBlobAt(int x, int y);
+    IBlobPresenter GetBlob(string id);
 
-
-    void RemoveBlob(Blob blob);
     List<IBlobPresenter> GetAllBlobs();
-    
+
+    // Tile queries
+    ITilePresenter GetTileAt(Vector2Int gridPos);
+    ITilePresenter GetTileAt(int x, int y);
+    ITilePresenter GetTile(string id);
+    List<ITilePresenter> GetAllTiles();
+
     // Grid queries
-    // bool IsValidPosition(Vector2Int position);
-    // bool IsPositionOccupied(Vector2Int position);
-    
-    // Win condition
     int GetPlayableBlobCount();
-    IBlobPresenter GetBlobById(string id);
-    void PlaceBlob(Blob blob);
+
+    bool IsValidPosition(Vector2Int position);
+    bool IsLaserBlocking(IBlobPresenter source, Vector2Int position);
 }

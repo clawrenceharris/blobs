@@ -20,7 +20,7 @@ public class MergeInvoker : MonoBehaviour
         _commandManager = new CommandManager(FindFirstObjectByType<BoardPresenter>());
     }
     /// <summary>Execute a merge using the new event-based plan (MovePlanCommand).</summary>
-    public static void ExecuteMerge(MergePlan plan, BoardModel board)
+    public static void ExecuteMerge(MergePlan plan, IBoardPresenter board)
     {
         var mergeAction = new MergeAction(plan, board);
         _commandManager.ExecuteCommand(mergeAction);

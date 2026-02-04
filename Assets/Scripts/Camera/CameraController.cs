@@ -14,7 +14,7 @@ public class CameraController : MonoBehaviour
     {
         _board = FindFirstObjectByType<BoardPresenter>();
         _cam = GetComponent<Camera>();
-        BoardModel.OnBoardCreated += HandleBoardCreated;
+        BoardPresenter.OnBoardInitialized += HandleBoardInitialized;
     }
 
     private void Start()
@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour
         _cam.backgroundColor = ColorSchemeManager.CurrentColorScheme.BackgroundColor;
 
     }
-    private void HandleBoardCreated(BoardModel board)
+    private void HandleBoardInitialized(IBoardPresenter board)
     {
         
         RepositionCamera(board.Width, board.Height);

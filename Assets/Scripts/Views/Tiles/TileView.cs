@@ -15,6 +15,8 @@ public class TileView : MonoBehaviour
 
     // References to visual components.
     private TileVisuals _visuals;
+    public TileVisuals Visuals => _visuals;
+
     public T GetVisuals<T>() where T : IVisuals
     {
         if (_visuals is T t)

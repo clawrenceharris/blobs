@@ -20,7 +20,7 @@ public class FlagRule : IMergeRule
                 failReason = MergeFailReason.FlagRejected;
                 return false;
             }
-            if (ctx.Board.GetAllBlobs().Count(blob => blob.Type != BlobType.Flag) > 1)
+            if (ctx.Board.GetAllBlobs().Count(blob => blob.Model.Type != BlobType.Flag) > 1)
             {
                 failReason = MergeFailReason.FlagRejected;
                 return false;

@@ -8,9 +8,12 @@ using UnityEngine;
 /// </summary>
 public interface IBlobPresenter
 {
-    IBlobModel Model { get; }
+    Blob Model { get; }
     BlobView View { get; }
-        
+
+    IBlobAnimator Animator { get; }
+
+
     // Actions
     Tween MoveToGrid(Vector2Int gridPos, float duration);
     Tween Remove(float duration = 0.35f);

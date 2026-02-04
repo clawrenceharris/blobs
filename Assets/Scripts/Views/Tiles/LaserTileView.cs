@@ -10,9 +10,9 @@ public class LaserTileView : TileView
 
         _model = GetModel<LaserTile>();
 
-        ColorUtils.ApplyColorsToMaterial(
-            GetVisuals<LaserTileVisuals>().LaserBeam.GetComponent<SpriteRenderer>().sharedMaterial,
-            GetModel<LaserTile>().LaserColor);
+        Blobs.Utilities.ColorUtility.ApplyColorsToMaterial(
+        GetVisuals<LaserTileVisuals>().LaserBeam.GetComponent<SpriteRenderer>().sharedMaterial,
+        GetModel<LaserTile>().LaserColor);
     }
     private void Update()
     {

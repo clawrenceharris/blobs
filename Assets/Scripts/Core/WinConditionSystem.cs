@@ -11,7 +11,6 @@ public class WinConditionSystem
     /// <summary>
     /// Checks the board state for a win.
     /// </summary>
-    /// <returns>The ID of the winning blob if conditions are met, otherwise null.</returns>
     public bool CheckForWin(BoardModel board)
     {
         // There must be no clearable Blobs on the board to win.

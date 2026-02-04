@@ -1,21 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
-using UnityEngine;
 
-public class GameEndedState : State
+public class LevelEndedState : State<LevelStateManager>
 {
-    private new LevelStateManager context;
-    public GameEndedState(LevelStateManager context) : base(context)
-    {
-        this.context = context;
-        
+    public LevelEndedState(LevelStateManager context) : base(context)
+    {        
     }
 
     public override void EnterState()
     {
-        BoardPresenter board = context.LevelManager.Board;
 
     }
 

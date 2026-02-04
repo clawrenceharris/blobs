@@ -5,8 +5,9 @@ using System;
 using UnityEngine.UI;
 using System.Collections;
 using System.Linq;
+using Blobs.Input;
+using Blobs.Core.Merge;
 
-[RequireComponent(typeof(LevelStateManager))]
 public class LevelManager : MonoBehaviour
 
 
@@ -16,8 +17,8 @@ public class LevelManager : MonoBehaviour
     public static int MoveCount { get; private set; } = 0;
     public bool IsHighscore { get; private set; }
     private LevelStateManager _stateManager;
-    private WinConditionSystem _winConditionSystem;
 
+    private WinConditionSystem _winConditionSystem;
     public bool IsTutorial
     {
         get
@@ -47,10 +48,8 @@ public class LevelManager : MonoBehaviour
     {
 
         Tutorial = FindFirstObjectByType<TutorialPresenter>();
-
         Board = FindFirstObjectByType<BoardPresenter>();
-        _stateManager = GetComponent<LevelStateManager>();
-        
+        _stateManager = FindFirstObjectByType<LevelStateManager>();
         LevelLoader.LoadAllLevels();
     }
 
@@ -61,18 +60,23 @@ public class LevelManager : MonoBehaviour
 
         StartLevel(LevelNum);
         BoardModel.OnBlobMoved += OnBlobMoved;
-        MergeModel.OnMergeComplete += HandleMergeComplete;
+        BoardPresenter.OnMergeStart += HandleMergeStart;
+        BoardPresenter.OnMergeComplete += HandleMergeComplete;
 
     }
 
-
-
-    private void HandleMergeComplete(MergePlan plan)
+    private void HandleMergeStart(MergeAction action)
     {
+        _stateManager.ChangeState(new AnimationState(_stateManager));
+    }
+
+    private void HandleMergeComplete(MergeAction action)
+    {
+        _stateManager.ChangeState(new PlayingState(_stateManager));
         bool didWin = _winConditionSystem.CheckForWin(Board.Model);
         if (didWin)
         {
-            _stateManager.SetState(null);
+            _stateManager.ChangeState(new LevelEndedState(_stateManager));
             Tutorial.StopTutorial();
             CoroutineHandler.StartStaticCoroutine(Board.AnimateEndTurnSequence(), () =>
             {
@@ -90,10 +94,14 @@ public class LevelManager : MonoBehaviour
         if (Level == null) return;
         MoveCount = 0;
 
-        Board.Init(this);
-
+        Board.Initialize(Level);
         _winConditionSystem = new WinConditionSystem();
-        _stateManager.SetState(new PlayingState(_stateManager));
+        _stateManager.ChangeState(new PlayingState(_stateManager));
+       
+        if (Level.IsTutorial)
+        {
+            Tutorial.StartTutorial(Board, Level.TutorialSteps);
+        }
 
         
 

@@ -1,6 +1,5 @@
 
 
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(TrailBlobVisuals))]
@@ -15,7 +14,7 @@ public class TrailBlobView : ColorBlobView
         // Configure the visuals based on the data.
         TrailBlob trailBlob = (TrailBlob)model;
         TrailBlobVisuals visuals = (TrailBlobVisuals)Visuals;
-        ColorUtils.ApplyColorsToMaterial(visuals.TrailSprite.material, trailBlob.TrailColor);
+        Blobs.Utilities.ColorUtility.ApplyColorsToMaterial(visuals.TrailSprite.material, trailBlob.TrailColor);
         
     }
 

@@ -1,5 +1,5 @@
 using System.Collections;
 
-public interface IStateManager{
+public interface IStateMachine{
     void SetState(IState state);
 }

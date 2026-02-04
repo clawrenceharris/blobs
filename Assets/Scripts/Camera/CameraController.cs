@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Blobs.Utilities;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
@@ -32,8 +33,8 @@ public class CameraController : MonoBehaviour
 
     void RepositionCamera(int width, int height)
     {
-        Vector2 topLeft = _board.GridToIso(0, height - 1);
-        Vector2 bottomRight = _board.GridToIso(width - 1, 0);
+        Vector2 topLeft = GridUtility.GridToIso(0, height - 1);
+        Vector2 bottomRight = GridUtility.GridToIso(width - 1, 0);
 
         Vector2 center = (topLeft + bottomRight) / 2f;
         transform.position = new Vector3(center.x, center.y, -10);

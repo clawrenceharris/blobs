@@ -4,6 +4,6 @@ public abstract class ColorBlobView : BlobView
     {
         base.Setup(model);           
         // Apply the color to the sprite renderer's material.
-        ColorUtils.ApplyColorsToMaterial(Visuals.SpriteRenderer.material, model.Color);
+        Blobs.Utilities.ColorUtility.ApplyColorsToMaterial(Visuals.SpriteRenderer.material, model.Color);
     }
 }

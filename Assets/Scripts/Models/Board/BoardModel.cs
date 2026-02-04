@@ -201,12 +201,12 @@ public class BoardModel
     }
     public void RemoveTile(string id)
     {
-         if (_tilesById.TryGetValue(id, out Tile tileToRemove))
+        if (_tilesById.TryGetValue(id, out Tile tileToRemove))
         {
             _blobsById.Remove(id);
             BlobGrid[tileToRemove.GridPosition.x, tileToRemove.GridPosition.y] = null;
             OnTileRemoved?.Invoke(tileToRemove);
-           
+
         }
     }
     public void MoveBlob(Blob blob, Vector2Int toPosition)
@@ -214,7 +214,7 @@ public class BoardModel
         if (_blobsById.TryGetValue(blob.ID, out Blob blobToMove))
         {
             Vector2Int fromPosition = blobToMove.GridPosition;
-            
+
             BlobGrid[fromPosition.x, fromPosition.y] = null;
             BlobGrid[toPosition.x, toPosition.y] = blobToMove;
             blob.GridPosition = toPosition;
@@ -357,19 +357,7 @@ public class BoardModel
     }
 
 
-    public Vector2 GridToIso(int gridX, int gridY, float tileSize)
-    {
-        return new Vector2(
-            (gridX - gridY) * tileSize / 2f,
-            (gridX + gridY) * tileSize / 4f
-        );
-    }
-    public Vector2Int IsoToGrid(float isoX, float isoY, float tileSize)
-    {
-        float x = (isoX / (tileSize / 2) + isoY / (tileSize / 4)) / 2f;
-        float y = (isoY / (tileSize / 2) - isoX / (tileSize / 4)) / 2f;
-        return new Vector2Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
-    }
+
 
     public override string ToString()
     {
@@ -381,6 +369,10 @@ public class BoardModel
 
         }
         return str;
+    }
+    public bool IsValidPosition(Vector2Int position)
+    {
+        return position.x >= 0 && position.x < Width && position.y >= 0 && position.y < Height;
     }
 
    

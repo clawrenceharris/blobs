@@ -67,8 +67,8 @@ public class BlobFactory
         string color = data.GetProperty<string>(BlobData.Property.Color);
         string size = data.GetProperty<string>(BlobData.Property.Size);
         string trailColor = data.GetProperty<string>(BlobData.Property.TrailColor);
-        
-        
+
+
         Vector2Int position = new(x, y);
 
 
@@ -77,10 +77,10 @@ public class BlobFactory
             case LevelDataKeys.Types.NormalBlob:
                 {
                     BlobColor blobColor = LevelLoader.FromJsonColor(color);
-                    BlobSize blobSize =  LevelLoader.FromJsonSize(size);
-                    
-                    return new NormalBlob(blobColor,blobSize, position);
-                    
+                    BlobSize blobSize = LevelLoader.FromJsonSize(size);
+
+                    return new NormalBlob(blobColor, blobSize, position);
+
 
                 }
             case LevelDataKeys.Types.GhostBlob:
@@ -89,7 +89,7 @@ public class BlobFactory
                 }
             case LevelDataKeys.Types.EnemyBlob:
                 {
-                    BlobColor blobColor =  LevelLoader.FromJsonColor(color);
+                    BlobColor blobColor = LevelLoader.FromJsonColor(color);
 
                     return new EnemyBlob(blobColor, position);
                 }
@@ -100,33 +100,50 @@ public class BlobFactory
                 }
             case LevelDataKeys.Types.TrailBlob:
                 {
-                    BlobColor blobColor =  LevelLoader.FromJsonColor(color);
+                    BlobColor blobColor = LevelLoader.FromJsonColor(color);
                     BlobColor blobTrailColor = LevelLoader.FromJsonColor(trailColor);
-                    BlobSize blobSize =  LevelLoader.FromJsonSize(size);
+                    BlobSize blobSize = LevelLoader.FromJsonSize(size);
 
                     return new TrailBlob(blobColor, blobSize, blobTrailColor, position);
                 }
             case LevelDataKeys.Types.FlagBlob:
                 {
-                     BlobColor blobColor =  LevelLoader.FromJsonColor(color);
+                    BlobColor blobColor = LevelLoader.FromJsonColor(color);
 
                     return new FlagBlob(blobColor, position);
 
                 }
-               
+
             case LevelDataKeys.Types.SwitchBlob:
                 {
-                    BlobColor blobColor =  LevelLoader.FromJsonColor(color);
+                    BlobColor blobColor = LevelLoader.FromJsonColor(color);
 
                     return new SwitchBlob(blobColor, position);
 
                 }
-                 case LevelDataKeys.Types.RockBlob:
+            case LevelDataKeys.Types.RockBlob:
                 {
                     return new RockBlob(position);
 
                 }
             default: throw new ArgumentException();
+        }
+    }
+     public static BlobAnimator CreateBlobAnimator(BlobView view)
+    {
+
+
+
+        switch (view.Model.Type)
+        {
+
+            case BlobType.Bomb:
+                return new BombBlobAnimator(view);
+            case BlobType.Ghost:
+                return new GhostBlobAnimator(view);
+            default:
+                return new BlobAnimator(view);
+
         }
     }
 

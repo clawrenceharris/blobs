@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections;
+using Blobs.Input;
 using DG.Tweening;
 using UnityEngine;
 
@@ -9,8 +10,6 @@ using UnityEngine;
 public class BlobView : MonoBehaviour
 {
     public virtual Blob Model { get; protected set; }
-    public BlobInput Input { get; private set; }
-
     public BlobVisuals Visuals { get; private set; }
 
     public T GetModelOfType<T>()
@@ -36,16 +35,13 @@ public class BlobView : MonoBehaviour
     void Awake()
     {
         Visuals = GetComponent<BlobVisuals>();
-        if (TryGetComponent<BlobInput>(out var input)) {
-            Input = input;
-        }
+       
     }
 
     public virtual void Setup(Blob model)
     {
         Model = model;
         transform.localScale = Vector3.zero;
-
         gameObject.name = $"{model.Type} Blob {model.GridPosition}";
 
     }

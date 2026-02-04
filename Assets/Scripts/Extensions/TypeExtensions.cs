@@ -64,4 +64,8 @@ public static class TypeExtensions
     {
         return type == TileType.Train;
     }
+    public static bool IsStickyTile(this TileType type)
+    {
+        return type == TileType.Sticky;
+    }
 }

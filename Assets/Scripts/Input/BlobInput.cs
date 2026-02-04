@@ -7,8 +7,6 @@ using UnityEngine;
 public class BlobInput : MonoBehaviour
 {
 
-
-
     public static bool InputEnabled;
     public Action<Blob> OnBlobSelected;
     private BlobView _view;

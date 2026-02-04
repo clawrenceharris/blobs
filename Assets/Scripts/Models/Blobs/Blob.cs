@@ -1,5 +1,6 @@
 
 using System;
+using Blobs.Core.Merge;
 using UnityEngine;
 
 public abstract class Blob : IBlobModel, IBoardElement, ISizable, IColorable
@@ -8,10 +9,11 @@ public abstract class Blob : IBlobModel, IBoardElement, ISizable, IColorable
     public Vector2Int GridPosition { get; set; }
     public BlobType Type { get; protected set; }
     public BlobColor Color { get; set; }
-    public virtual BlobMergeBehavior Behavior => new(this);
     public BlobSize Size { get; set; }
     public virtual ColorRule Rule { get; }
-    public virtual bool Enabled { get; private set; }
+    public bool Enabled { get; private set; }
+    public bool IsSelected  { get; private set; }
+
 
     public Blob(BlobType type, BlobColor color, BlobSize size, Vector2Int position)
     {
@@ -24,13 +26,10 @@ public abstract class Blob : IBlobModel, IBoardElement, ISizable, IColorable
         Enabled = true;
 
     }
-    public virtual bool CanMergeWith(Blob targetBlob, MergePlan plan, BoardModel board)
-    {
-        return Rule.Validate(this, targetBlob, board);
-    }
+    
     public void EnableBlob()
-    {  
-        Enabled = true;  
+    {
+        Enabled = true;
     }
 
     public void DisableBlob()
@@ -47,6 +46,15 @@ public abstract class Blob : IBlobModel, IBoardElement, ISizable, IColorable
         };
     }
 
+    public void Select()
+    {
+        IsSelected = true;
+    }
+    public void Deselect()
+    {
+        IsSelected = false;
+    }
+    
     public override string ToString()
     {
         string str = "";
@@ -54,5 +62,10 @@ public abstract class Blob : IBlobModel, IBoardElement, ISizable, IColorable
 
         str += "(" + GridPosition.x + ", " + GridPosition.y + ")";
         return str;
+    }
+
+    public bool CanMergeWith(IBlobModel other)
+    {
+        throw new NotImplementedException();
     }
 }

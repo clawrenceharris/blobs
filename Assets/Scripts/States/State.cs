@@ -1,9 +1,9 @@
 using System.Collections;
 
-public abstract class State : IState
+public abstract class State<TStateManager> : IState  
 {
-    protected StateManager context;
-    public State(StateManager context)
+    protected TStateManager context;
+    public State(TStateManager context)
     {
         this.context = context;
     }

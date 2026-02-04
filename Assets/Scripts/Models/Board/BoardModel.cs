@@ -7,27 +7,32 @@ using UnityEngine;
 
 public class BoardModel
 {
+   
+
+    
+    // Board State
+    public Blob[,] BlobGrid { get; private set; }
+    public Tile[,] TileGrid { get; private set; }
+    public int Width { get; private set; }
+    public int Height { get; private set; }
+    public int BlobCount => _blobsById.Count;
+
     private readonly Dictionary<string, Blob> _blobsById;
     private readonly Dictionary<string, Tile> _tilesById;
 
-    public Blob[,] BlobGrid { get; private set; }
-    public Tile[,] TileGrid { get; private set; }
-
-    public int Width { get; private set; }
-    public int Height { get; private set; }
-    // Events for the Presenter to subscribe to.
-    public static event Action<Blob> OnBlobCreated;
-    public static event Action<Tile> OnTileCreated;
-    public static event Action<Blob, Vector2Int, Vector2Int> OnBlobMoved; // ID, From, To
+    // Board Queries
     public List<Blob> GetAllBlobs() => _blobsById.Values.ToList();
     public List<Tile> GetAllTiles() => _tilesById.Values.ToList();
-    public int BlobCount => _blobsById.Count;
+    
+    
+    // Events for the Presenter to subscribe to
 
-    public static event Action<Blob> OnBlobRemoved;
-    public static event Action<Tile> OnTileRemoved;
+    public event Action<Blob> OnBlobRemoved;
+    public event Action<Blob> OnBlobCreated;
 
-    public static event Action OnBoardCleared;
-    public static event Action<BoardModel> OnBoardCreated;
+    public event Action<Tile> OnTileRemoved;
+    public event Action<Tile> OnTileCreated;
+
 
     public BoardModel(int width, int height)
     {
@@ -54,42 +59,43 @@ public class BoardModel
         {
             PlaceTile(tileData);
         }
-
-        OnBoardCreated?.Invoke(this);
     }
-    public bool IsLaserBlocking(Blob blob, Vector2Int sourcePosition)
+    public bool IsLaserBlocking(string id, Vector2Int sourcePosition)
     {
-        List<LaserTile> lasersInColumn = FindObjectsInColumn<LaserTile>(sourcePosition.x);
-        List<LaserTile> lasersInRow = FindObjectsInRow<LaserTile>(sourcePosition.y);
-        foreach (LaserTile laser in lasersInColumn)
+        if (_blobsById.TryGetValue(id, out var blob))
         {
-
-            if (laser.IsActive)
+            List<LaserTile> lasersInColumn = FindObjectsInColumn<LaserTile>(sourcePosition.x);
+            List<LaserTile> lasersInRow = FindObjectsInRow<LaserTile>(sourcePosition.y);
+            foreach (LaserTile laser in lasersInColumn)
             {
-                if (laser.LaserColor == blob.Color)
+
+                if (laser.IsActive)
                 {
-                    if (IsBetweenTiles(sourcePosition, laser.GridPosition, laser.LinkedLaser.GridPosition, laser.Direction))
+                    if (laser.LaserColor == blob.Color)
                     {
-                        return true;
+                        if (IsBetweenTiles(sourcePosition, laser.GridPosition, laser.LinkedLaser.GridPosition, laser.Direction))
+                        {
+                            return true;
+                        }
                     }
                 }
+
             }
 
-        }
-
-        foreach (LaserTile laser in lasersInRow)
-        {
-            if (laser.IsActive)
+            foreach (LaserTile laser in lasersInRow)
             {
-                if (laser.LaserColor == blob.Color)
+                if (laser.IsActive)
                 {
-                    if (IsBetweenTiles(sourcePosition, laser.GridPosition, laser.LinkedLaser.GridPosition, laser.Direction))
+                    if (laser.LaserColor == blob.Color)
                     {
-                        return true;
+                        if (IsBetweenTiles(sourcePosition, laser.GridPosition, laser.LinkedLaser.GridPosition, laser.Direction))
+                        {
+                            return true;
+                        }
                     }
                 }
-            }
 
+            }
         }
         return false;
 
@@ -192,11 +198,7 @@ public class BoardModel
             _blobsById.Remove(id);
             BlobGrid[blobToRemove.GridPosition.x, blobToRemove.GridPosition.y] = null;
             OnBlobRemoved?.Invoke(blobToRemove);
-            if (_blobsById.Count == 0)
-            {
-                OnBoardCleared?.Invoke();
-
-            }
+            
         }
     }
     public void RemoveTile(string id)
@@ -209,28 +211,18 @@ public class BoardModel
 
         }
     }
-    public void MoveBlob(Blob blob, Vector2Int toPosition)
+    public void MoveBlob(string id, Vector2Int toPosition)
     {
-        if (_blobsById.TryGetValue(blob.ID, out Blob blobToMove))
+        if (_blobsById.TryGetValue(id, out Blob blobToMove))
         {
             Vector2Int fromPosition = blobToMove.GridPosition;
 
             BlobGrid[fromPosition.x, fromPosition.y] = null;
             BlobGrid[toPosition.x, toPosition.y] = blobToMove;
-            blob.GridPosition = toPosition;
-            OnBlobMoved?.Invoke(blob, fromPosition, toPosition);
+            blobToMove.GridPosition = toPosition;
         }
     }
-    public Blob GetBlob(string id)
-    {
-        _blobsById.TryGetValue(id, out var blob);
-        return blob;
-    }
-    public Tile GetTile(string id)
-    {
-        _tilesById.TryGetValue(id, out var tile);
-        return tile;
-    }
+   
 
     public Blob GetBlobAt(Vector2Int position)
     {
@@ -375,6 +367,9 @@ public class BoardModel
         return position.x >= 0 && position.x < Width && position.y >= 0 && position.y < Height;
     }
 
-   
+    public Blob GetBlob(string id) => _blobsById.TryGetValue(id, out var blob) ? blob : null;
+       
+    public Tile GetTile(string id) => _tilesById.TryGetValue(id, out var tile) ? tile : null;
+
 }
 

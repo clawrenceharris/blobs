@@ -13,11 +13,11 @@ namespace Blobs.Merge.Animation
         public Sequence BuildSequence(IMergeEvent e, IBoardPresenter board, object recipe)
         {
             if (e is not ExpressionEvent evt) return null;
-            var presenter = board?.GetBlobById(evt.BlobId);
+            var presenter = board?.GetBlob(evt.BlobId);
             if (presenter?.View == null) return null;
             var anim = presenter.View.GetComponent<Animator>();
             if (anim == null || string.IsNullOrEmpty(evt.ExpressionKey)) return null;
-            var rec = recipe as BlobAnimationRecipeSO;
+            var rec = recipe as BlobAnimationRecipe;
             var duration = rec != null && rec.beforeRemoveExpressionDuration > 0 ? rec.beforeRemoveExpressionDuration : evt.Duration;
             anim.SetTrigger(evt.ExpressionKey);
             return DOTween.Sequence().AppendInterval(duration);

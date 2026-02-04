@@ -20,11 +20,11 @@ public class MoveAction : IAction
 
     public void Execute(CommandManager context)
     {
-        context.Board.MoveBlob(Blob, EndPosition);
+        context.Board.MoveBlob(Blob.ID, EndPosition);
     }
     public void Undo(CommandManager context)
     {
-        context.Board.MoveBlob(Blob, StartPosition);
+        context.Board.MoveBlob(Blob.ID, StartPosition);
     }
 
     

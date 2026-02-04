@@ -14,9 +14,9 @@ namespace Blobs.Merge.Animation
             if (e is not SpawnBlobEvent evt) return null;
             var id = evt.BlobToSpawn?.ID;
             if (string.IsNullOrEmpty(id)) return null;
-            var presenter = board?.GetBlobById(id);
+            var presenter = board?.GetBlob(id);
             if (presenter == null) return null;
-            var rec = recipe as BlobAnimationRecipeSO;
+            var rec = recipe as BlobAnimationRecipe;
             var spawnTween = presenter.Spawn(rec.spawnDuration);
             if (rec != null && rec.spawnDuration > 0)
                 spawnTween.SetEase(rec.spawnEase);
@@ -28,9 +28,9 @@ namespace Blobs.Merge.Animation
             if (e is not SpawnBlobEvent evt) return null;
             var id = evt.BlobToSpawn?.ID;
             if (string.IsNullOrEmpty(id)) return null;
-            var presenter = board?.GetBlobById(id);
+            var presenter = board?.GetBlob(id);
             if (presenter == null) return null;
-            var rec = recipe as BlobAnimationRecipeSO;
+            var rec = recipe as BlobAnimationRecipe;
             var removeTween = presenter.Remove(rec.removeDuration);
             if (rec != null && rec.removeDuration > 0)
                 removeTween.SetEase(rec.removeEase);

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Blobs.Core.Merge;
+using Blobs.Input;
 using Blobs.Utilities;
 using DG.Tweening;
 using TMPro;
@@ -16,7 +17,6 @@ public class TutorialPresenter : MonoBehaviour
 
     public TutorialModel _model;
     public bool IsActivated;
-    private BoardPresenter _board;
     private TutorialStep[] _tutorialSteps;
     private readonly float _offsetX = -0.2f;
     private readonly float _offsetY = -0.7f + BlobPresenter.BlobOffsetY;
@@ -44,7 +44,6 @@ public class TutorialPresenter : MonoBehaviour
 
     private void InitializeTutorial(BoardPresenter board, TutorialStep[] steps)
     {
-        _board = board;
         _tutorialSteps = steps;
         _model = new TutorialModel();
         _blobs = board.GetAllBlobs();
@@ -59,17 +58,27 @@ public class TutorialPresenter : MonoBehaviour
         DisableAllBlobs();
         
         MergeInvoker.OnMergeExecuted += HandleMergeExecuted;
-        
+        InputRouter.BlobClicked += HandleBlobClicked;
         CurrentStartBlob?.EnableBlob();
-        CurrentEndBlob?.EnableBlob();
 
         IsActivated = true;
 
         CoroutineHandler.StartStaticCoroutine(UpdateMessages());
     }
 
-   
-    
+    private void HandleBlobClicked(BlobView view)
+    {
+        if (CurrentEndBlob == null || CurrentStartBlob == null) return;
+        if (view.Model.ID == CurrentStartBlob.ID && !CurrentEndBlob.Enabled && CurrentStartBlob.Enabled)
+        {
+            CurrentEndBlob.EnableBlob();
+        }
+        else
+        {
+            CurrentEndBlob.DisableBlob();
+        }
+
+    }
 
     public void Update()
     {
@@ -94,7 +103,6 @@ public class TutorialPresenter : MonoBehaviour
         _model.NextTutorialStep();
         
         CurrentStartBlob?.EnableBlob();
-        CurrentEndBlob?.EnableBlob();
         CoroutineHandler.StartStaticCoroutine(UpdateMessages());
        
     }
@@ -178,7 +186,7 @@ public class TutorialPresenter : MonoBehaviour
 
     public bool IsValidMove(Blob sourceBlob, Blob targetBlob)
     {
-        return !IsActivated || _model.IsValidMove(sourceBlob, targetBlob);
+        return _model.IsValidMove(sourceBlob, targetBlob);
     }
 
     

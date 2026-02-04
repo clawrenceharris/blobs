@@ -52,4 +52,11 @@ public class TileFactory
         }
     }
 
+    public static TileAnimator CreateTileAnimator(TileView view)
+    {
+        switch (view.Model.Type)
+        {
+            default: return new(view);
+        }
+    }
 }

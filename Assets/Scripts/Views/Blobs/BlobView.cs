@@ -10,7 +10,10 @@ using UnityEngine;
 public class BlobView : MonoBehaviour
 {
     public virtual Blob Model { get; protected set; }
-    public BlobVisuals Visuals { get; private set; }
+
+    private BlobVisuals _visuals;
+
+    public BlobVisuals Visuals => _visuals;
 
     public T GetModelOfType<T>()
     where T : Blob
@@ -34,7 +37,7 @@ public class BlobView : MonoBehaviour
 
     void Awake()
     {
-        Visuals = GetComponent<BlobVisuals>();
+        _visuals = GetComponent<BlobVisuals>();
        
     }
 

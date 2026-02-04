@@ -59,7 +59,6 @@ public class LevelManager : MonoBehaviour
     {
 
         StartLevel(LevelNum);
-        BoardModel.OnBlobMoved += OnBlobMoved;
         BoardPresenter.OnMergeStart += HandleMergeStart;
         BoardPresenter.OnMergeComplete += HandleMergeComplete;
 
@@ -105,16 +104,5 @@ public class LevelManager : MonoBehaviour
 
         
 
-    }
-
-    
-
-    private void OnBlobMoved(Blob blob, Vector2Int from, Vector2Int to)
-    {
-        MoveCount++;
-    }
-
-
-
-   
+    }   
 }

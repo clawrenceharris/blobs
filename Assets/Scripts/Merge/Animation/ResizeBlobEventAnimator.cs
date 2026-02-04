@@ -12,9 +12,9 @@ namespace Blobs.Merge.Animation
         public Sequence BuildSequence(IMergeEvent e, IBoardPresenter board, object recipe)
         {
             if (e is not ResizeBlobEvent evt) return null;
-            var presenter = board?.GetBlobById(evt.BlobId);
+            var presenter = board?.GetBlob(evt.BlobId);
             if (presenter == null) return null;
-            var rec = recipe as BlobAnimationRecipeSO;
+            var rec = recipe as BlobAnimationRecipe;
             var scale = evt.To switch { BlobSize.Small => 0.5f, BlobSize.Big => 1.4f, _ => 1f };
             var scaleTween = presenter.ScaleTo(scale, rec.resizeDuration);
             if (rec != null && rec.resizeDuration > 0)
@@ -25,9 +25,9 @@ namespace Blobs.Merge.Animation
         public Sequence BuildUndoSequence(IMergeEvent e, IBoardPresenter board, object recipe)
         {
             if (e is not ResizeBlobEvent evt) return null;
-            var presenter = board?.GetBlobById(evt.BlobId);
+            var presenter = board?.GetBlob(evt.BlobId);
             if (presenter == null) return null;
-            var rec = recipe as BlobAnimationRecipeSO;
+            var rec = recipe as BlobAnimationRecipe;
             var scale = evt.From switch { BlobSize.Small => 0.5f, BlobSize.Big => 1.4f, _ => 1f };
             var scaleTween = presenter.ScaleTo(scale, rec.resizeDuration);
             if (rec != null && rec.resizeDuration > 0)

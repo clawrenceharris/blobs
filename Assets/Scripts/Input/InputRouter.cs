@@ -10,19 +10,16 @@ namespace Blobs.Input
     public class InputRouter : MonoBehaviour
     {
         [SerializeField] private KeyCode undoKey = KeyCode.Z;
-        [SerializeField] private KeyCode redoKey = KeyCode.Y;
         [SerializeField] private InputGate gate;
         [SerializeField] private LayerMask _boardLayerMask = -1;
         [SerializeField] private float _rayDistance = 1000f;
 
         public static event System.Action<BlobView> BlobClicked;
         public static event System.Action EmptyClicked;
-        public static event System.Action<Vector2Int> DirectionPressed;
         public static event System.Action UndoPressed;
 
         private Camera _cam;
         private BlobView _pointerDownBlob;
-        private bool _pointerDownValid;
         private IBoardPresenter _board;
 
         private void Awake()
@@ -46,11 +43,9 @@ namespace Blobs.Input
 
         private void RecordPointerDown()
         {
-            _pointerDownValid = false;
             _pointerDownBlob = null;
 
             if (!TryGetPointerHit(out BlobView blob, out bool hitBoard)) return;
-            _pointerDownValid = true;
             _pointerDownBlob = blob;
         }
 

@@ -8,7 +8,8 @@ namespace Blobs.Input
     public class SelectionPresenter : MonoBehaviour
     {
         private FeedbackPresenter _feedback;
-
+        private TutorialPresenter _tutorial;
+        
         private IMergeService _mergeService;  
         private IBoardPresenter _board;
         private string _selectedId;
@@ -18,6 +19,7 @@ namespace Blobs.Input
             _feedback = FindFirstObjectByType<FeedbackPresenter>();
             _board = FindFirstObjectByType<BoardPresenter>();
             _mergeService = new MergeService(_board);
+            _tutorial = FindFirstObjectByType<TutorialPresenter>();
         }
 
         private void OnEnable()
@@ -65,13 +67,13 @@ namespace Blobs.Input
                 Deselect();
                 return;
             }
-            MergeInvoker.ExecuteMerge(result.Plan, _board.Model);
+            MergeInvoker.ExecuteMerge(result.Plan, _board);
             Deselect();
         }
 
         private void Select(string id)
         {
-            var blob =_board.GetBlobById(id);
+            var blob =_board.GetBlob(id);
             if(blob == null) return;
             
             _selectedId = id;
@@ -81,7 +83,7 @@ namespace Blobs.Input
         private void Deselect()
         {
             if(_selectedId == null) return; 
-            _board.GetBlobById(_selectedId)?.Deselect();
+            _board.GetBlob(_selectedId)?.Deselect();
             _selectedId = null;
         }
 

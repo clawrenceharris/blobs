@@ -12,9 +12,9 @@ namespace Blobs.Merge.Animation
         public Sequence BuildSequence(IMergeEvent e, IBoardPresenter board, object recipe)
         {
             if (e is not RemoveBlobEvent evt) return null;
-            var presenter = board?.GetBlobById(evt.BlobId);
+            var presenter = board?.GetBlob(evt.BlobId);
             if (presenter == null) return null;
-            var rec = recipe as BlobAnimationRecipeSO;
+            var rec = recipe as BlobAnimationRecipe;
             var removeTween = presenter.Remove(rec.removeDuration);;
             if (rec != null && rec.removeDuration > 0)
                 removeTween.SetEase(rec.removeEase);
@@ -36,9 +36,9 @@ namespace Blobs.Merge.Animation
         {
             if (e is not RemoveBlobEvent evt) return null;
             if (!evt.TryGetRestoredBlobId(out var id)) return null;
-            var presenter = board?.GetBlobById(id);
+            var presenter = board?.GetBlob(id);
             if (presenter == null) return null;
-            var rec = recipe as BlobAnimationRecipeSO;
+            var rec = recipe as BlobAnimationRecipe;
             var spawnTween = presenter.Spawn(rec.spawnDuration);
             if (rec != null && rec.spawnDuration > 0)
                 spawnTween.SetEase(rec.spawnEase);

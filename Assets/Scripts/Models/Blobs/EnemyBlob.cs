@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class EnemyBlob : Blob, IClearable
 {
-    public override BlobMergeBehavior Behavior => new EnemyBlobBehavior(this);
     public bool IsWeakened { get; private set; }
 
 

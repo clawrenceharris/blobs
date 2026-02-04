@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(TileVisuals))]
+[RequireComponent(typeof(Collider2D))]
 public class TileView : MonoBehaviour
 {
     public Tile Model { get; private set; }

@@ -9,7 +9,7 @@ using UnityEngine;
 /// <remarks>
 /// In this state, player and enemy movement is enabled, and collisions between the player and other objects are checked.
 /// </remarks>
-public class AnimationState : State
+public class AnimationState : State<LevelStateManager>
 {
     public AnimationState(LevelStateManager context) : base(context)
     {
@@ -17,7 +17,6 @@ public class AnimationState : State
 
     public override void EnterState()
     {
-        BlobInput.DisableInput();
 
     }
 

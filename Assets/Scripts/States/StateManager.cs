@@ -1,24 +1,18 @@
 using System;
-using System.Collections;
 using UnityEngine;
-public abstract class StateManager : MonoBehaviour, IStateManager
+public class StateMachine : IStateMachine
 {
 
 
-    public LevelManager LevelManager { get; private set; }
-    public abstract IState InitialState { get; }
 
-    public IState CurrentState { get; protected set; }
+    public IState CurrentState { get; private set; }
     public static event Action<IState> OnStateExit;
 
     public static event Action<IState> OnStateEnter;
-    protected virtual void Awake()
+    
+    public void Initialize(IState initialState)
     {
-        LevelManager = FindFirstObjectByType<LevelManager>();
-    }
-    private void Start()
-    {
-        SetState(InitialState);
+        SetState(initialState);
 
     }
 
@@ -38,13 +32,5 @@ public abstract class StateManager : MonoBehaviour, IStateManager
     public void Update()
     {
         CurrentState?.UpdateState();
-
-
-
-    }
-
-    private void OnDestroy()
-    {
-        StopAllCoroutines();
     }
 }

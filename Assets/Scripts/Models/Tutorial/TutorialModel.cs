@@ -15,7 +15,7 @@ public class TutorialModel
     private BoardModel _board;
     public TutorialStep CurrentStep => _tutorialSteps[Mathf.Clamp(_index, 0, _tutorialSteps.Length -1)];
     public Action<Blob, Blob> OnBlobsHighlighted;
-    public bool IsFinished => _index >= _tutorialSteps.Length - 1;
+    public bool IsFinished => _index >= _tutorialSteps.Length;
     public void InitializeTutorial(TutorialStep[] tutorialSteps, BoardModel board)
     {
         _index = 0;
@@ -47,12 +47,14 @@ public class TutorialModel
         return true;
     }
     public void NextTutorialStep()
-    {        
-        _index = Mathf.Clamp(_index + 1, 0, _tutorialSteps.Length -1);
+    {
+        _index = Mathf.Clamp(_index + 1, 0, _tutorialSteps.Length - 1);
+        Debug.Log("Next tutorial step: " + _index);
     }
-    
 
-   
-
-
+    public void PreviousTutorialStep()
+    {
+        _index = Mathf.Clamp(_index - 1, 0, _tutorialSteps.Length - 1);
+        Debug.Log("Previous tutorial step: " + _index);
+    }
 }

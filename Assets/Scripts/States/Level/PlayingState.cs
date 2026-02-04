@@ -1,5 +1,6 @@
 
 using System;
+using Blobs.Input;
 using UnityEngine;
 
 
@@ -9,36 +10,28 @@ using UnityEngine;
 /// <remarks>
 /// In this state, player and enemy movement is enabled, and collisions between the player and other objects are checked.
 /// </remarks>
-public class PlayingState : State
+public class PlayingState : State<LevelStateManager>
 {
-    private readonly BoardPresenter board;
     public PlayingState(LevelStateManager context) : base(context)
     {
-        board = context.LevelManager.Board;
     }
 
     public override void EnterState()
     {
-        BlobInput.EnableInput();
-        if (context.LevelManager.Level.IsTutorial)
-        {
-            context.LevelManager.Tutorial.StartTutorial(context.LevelManager.Board, context.LevelManager.Level.TutorialSteps);
-        }
+        context.InputGate.SetEnabled(true);
+        
 
     }
 
    
 
-   public override void UpdateState()
+    public override void UpdateState()
     {
     }
     public override void ExitState()
     {
-        BlobInput.DisableInput();
-        if (context.LevelManager.Level.IsTutorial)
-        {
-            context.LevelManager.Tutorial.StopTutorial();
-        }
+        context.InputGate.SetEnabled(false);
+        
 
     }
 

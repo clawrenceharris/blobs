@@ -35,16 +35,13 @@ public class TileView : MonoBehaviour
         _visuals = GetComponent<TileVisuals>();
     }
 
-    // The Presenter calls this to link the View to its data Model.
-    public virtual void Setup(Tile tile, BoardPresenter board)
+   
+
+    public virtual void Initialize(Tile tile)
     {
         Model = tile;
         _visuals.SpriteRenderer.color = ColorSchemeManager.CurrentColorScheme.TileColor;
         _visuals.SpriteRenderer.sortingOrder = -(int)(transform.localPosition.y * 100) + (int)transform.localPosition.x;
         gameObject.name = $"{tile.Type} Tile {tile.GridPosition}";
-
-
     }
-  
-    
 }

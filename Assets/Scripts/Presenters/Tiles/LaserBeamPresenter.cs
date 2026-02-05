@@ -9,10 +9,10 @@ public class LaserBeamPresenter : MonoBehaviour
    
     public void Setup(BoardPresenter board)
     {
-        IEnumerable<LaserTile> lasers = board.Model.GetAllTiles().OfType<LaserTile>();
+        IEnumerable<LaserTile> lasers = board.GetAllTiles().OfType<LaserTile>();
         foreach (LaserTile laser in lasers)
         {
-            laser.LinkedLaser = (LaserTile)board.Model.GetTile(laser.LinkedLaserId);
+            laser.LinkedLaser = (LaserTile)board.GetTile(laser.LinkedLaserId);
 
             Vector2Int dir = laser.Direction;
             LaserTileView view = (LaserTileView)TilePresenter.GetTileView(laser.ID);

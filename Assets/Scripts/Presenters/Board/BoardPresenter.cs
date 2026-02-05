@@ -9,7 +9,7 @@ using DG.Tweening;
 using UnityEngine;
 
 
-public class BoardLayout : IBoardLayout
+public class BoardLayout
 {
 
     public Vector2Int WorldToGrid(float worldX, float worldY)
@@ -30,9 +30,9 @@ public class BoardLayout : IBoardLayout
     }
     public Vector3 GridToWorld(int gridX, int gridY)
     {
-        return new Vector2(
+        return new Vector3(
             (gridX - gridY) * TilePresenter.TileSize / 2f,
-            (gridX + gridY) * TilePresenter.TileSize / 4f
+            (gridX + gridY) * TilePresenter.TileSize / 4f, 0
         );
     }
     public Vector2Int WorldToGridWithBlobOffset(Vector3 worldPos)
@@ -47,29 +47,29 @@ public class BoardLayout : IBoardLayout
     public Vector3 GridToWorldWithBlobOffset(Vector2Int gridPos)
     {
         var worldPos = GridToWorld(gridPos.x, gridPos.y);
-        return new Vector2(worldPos.x, worldPos.y + BlobPresenter.BlobOffsetY);
+        return new Vector3(worldPos.x, worldPos.y + BlobPresenter.BlobOffsetY,0);
     }
     public Vector3 GridToWorldWithBlobOffset(int x, int y)
     {
         var worldPos = GridToWorld(x, y);
-        return new Vector2(worldPos.x, worldPos.y + BlobPresenter.BlobOffsetY);
+        return new Vector3(worldPos.x, worldPos.y + BlobPresenter.BlobOffsetY,0);
     }
 }
 public class BoardPresenter : MonoBehaviour, IBoardPresenter
 {
     // Board State
-    public BoardModel Model { get; private set; }
+    private BoardModel _model;
 
-    public int Width => Model.Width;
+    public int Width => _model.Width;
 
-    public int Height => Model.Height;
+    public int Height => _model.Height;
 
     public LevelData CurrentLevel => throw new NotImplementedException();
-    
-    
-    // Layout
-    public IBoardLayout Layout => new BoardLayout();
 
+
+
+    // Layout
+    public BoardLayout Layout => new();
 
     // Merge Events
     public static Action<MergeAction> OnMergeStart;
@@ -107,10 +107,10 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
 
     void OnDestroy()
     {
-        if (Model != null)
+        if (_model != null)
         {
-            Model.OnBlobCreated -= HandleBlobCreated;
-            Model.OnTileCreated -= HandleTileCreated;
+            _model.OnBlobCreated -= HandleBlobCreated;
+            _model.OnTileCreated -= HandleTileCreated;
         }
 
 
@@ -119,9 +119,56 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
     #endregion
     
 
+    #region  Initialization
+    public void Initialize(LevelData level)
+    {
+        _model = new BoardModel(level.Width, level.Height); 
+        
+        _model.OnBlobCreated += HandleBlobCreated;
+        _model.OnTileCreated += HandleTileCreated;
+        SetUpBoard(level);
+        OnBoardInitialized?.Invoke(this);
 
-    #region Event handlers
-    private void HandleMergeExecuted(MergeAction action)
+    }
+
+    private void SetUpBoard(LevelData level)
+    {
+        var blobs = new List<Blob>();
+        var tiles = new List<Tile>();
+
+        if (level.Blobs != null)
+        {
+            foreach (var spawn in level.Blobs)
+            {
+                var blob = BlobFactory.CreateBlobFromSpawnData(spawn);
+                if (blob != null)
+                    blobs.Add(blob);
+            }
+        }
+
+        if (level.Tiles != null)
+        {
+            foreach (var spawn in level.Tiles)
+            {
+                var tile = TileFactory.CreateTileFromSpawnData(spawn);
+                if (tile != null)
+                    tiles.Add(tile);
+            }
+        }
+
+        _model.CreateInitialBoard(blobs, tiles);
+        if (level.LaserLinks != null && level.LaserLinks.Count > 0)
+            _model.LinkLasers(level);
+        _laserBeam.Setup(this);
+        StartCoroutine(AnimateInitialBlobs());
+
+    }
+    #endregion
+   
+
+    #region Event Handlers
+
+     private void HandleMergeExecuted(MergeAction action)
     {
         OnMergeStart?.Invoke(action);
         CoroutineHandler.StartStaticCoroutine(MergePlanAnimator.AnimatePlan(action.Plan, this), () =>
@@ -139,38 +186,6 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
         });
     }
 
-    #endregion
-
-
-
-    #region  Initialization
-    public void Initialize(LevelData level)
-    {
-        Model = new BoardModel(level.Width, level.Height); 
-        
-        Model.OnBlobCreated += HandleBlobCreated;
-        Model.OnTileCreated += HandleTileCreated;
-        SetUpBoard(level);
-        StartCoroutine(AnimateInitialBlobs());
-        OnBoardInitialized?.Invoke(this);
-
-    }
-
-    private void SetUpBoard(LevelData level)
-    {
-
-        List<Blob> blobs = level.Blobs.ToList();
-        List<Tile> tiles = level.Tiles.ToList();
-
-        Model.CreateInitialBoard(blobs, tiles);
-        Model.LinkLasers(level);
-        _laserBeam.Setup(this);
-
-    }
-    #endregion
-   
-
-    #region Event Handlers
     private void HandleBlobCreated(Blob blob)
     {
 
@@ -181,7 +196,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
         var view = Instantiate(PrefabLibrary.Instance.FromBlobType(blob.Type), isoPosition, Quaternion.identity, transform);
 
         // Link the view to its data model
-        view.Setup(blob);
+        view.Initialize(blob);
 
         var presenter = BlobFactory.CreateBlobPresenter(view);
         presenter.Initialize(this);
@@ -198,7 +213,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
         TileView view = Instantiate(PrefabLibrary.Instance.FromTileType(tile.Type), isoPosition, Quaternion.identity, transform);
 
         // Link the view to its data model
-        view.Setup(tile, this);
+        view.Initialize(tile);
         var presenter = TileFactory.CreateTilePresenter(view);
         presenter.Initialize(this);
         _tiles.Add(tile.ID, presenter);
@@ -215,9 +230,20 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
 
     private IEnumerator AnimateInitialBlobs()
     {
+        int completed = 0;
+        int started = 0;
+        
         foreach (IBlobPresenter bp in _blobs.Values)
         {
-            yield return bp.Spawn().WaitForCompletion();
+            
+            started++;
+            bp.Spawn(() =>
+            {
+                completed++;
+            });
+
+            yield return new WaitUntil(() => started == completed);
+            
         }
     }
 
@@ -230,9 +256,18 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
         // Add the dramatic pause
         yield return new WaitForSeconds(1.5f);
         var blobPresenters = new List<IBlobPresenter>(_blobs.Values);
+        int completed = 0;
+        int started = 0;
+        
         foreach (var bp in blobPresenters)
         {
-            yield return bp.Remove();
+            started++;
+            bp.Remove(() =>
+            {
+                completed++;
+
+            });
+            yield return new WaitUntil(() => started == completed);
         }
 
         yield return new WaitForSeconds(0.3f);
@@ -262,7 +297,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
 
     public int GetPlayableBlobCount()
     {
-        return Model.GetAllBlobs().OfType<IClearable>().Count();
+        return _model.GetAllBlobs().OfType<IClearable>().Count();
     }
 
 
@@ -271,7 +306,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
     public IBlobPresenter GetBlobAt(int x, int y)
     {
 
-        var blob = Model.GetBlobAt(x, y);
+        var blob = _model.GetBlobAt(x, y);
         if (blob != null)
         {
             if (_blobs.TryGetValue(blob.ID, out var presenter))
@@ -297,7 +332,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
     public ITilePresenter GetTileAt(int x, int y)
     {
 
-        var tile = Model.GetTileAt(x, y);
+        var tile = _model.GetTileAt(x, y);
         if (tile != null)
         {
             if (_tiles.TryGetValue(tile.ID, out var presenter))
@@ -313,17 +348,17 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
     #region  Blob Management
     public void MoveBlob(string id, Vector2Int endPosition)
     {
-        Model.MoveBlob(id, endPosition);
+        _model.MoveBlob(id, endPosition);
     }
 
     public void PlaceBlob(Blob blob)
     {
-        Model.PlaceBlob(blob);
+        _model.PlaceBlob(blob);
     }
     public void RemoveBlob(string id)
     {
         _blobs.Remove(id);
-        Model.RemoveBlob(id);
+        _model.RemoveBlob(id);
         if (_blobs.Count == 0)
         {
 
@@ -338,7 +373,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
     public void RemoveTile(string id)
     {
         _tiles.Remove(id);
-        Model.RemoveTile(id);
+        _model.RemoveTile(id);
 
     }
 
@@ -354,12 +389,12 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
 
     public bool IsValidPosition(Vector2Int position)
     {
-        return Model.IsValidPosition(position);
+        return _model.IsValidPosition(position);
     }
 
     public bool IsLaserBlocking(IBlobPresenter blob, Vector2Int position)
     {
-        return Model.IsLaserBlocking(blob.Model.ID, position);
+        return _model.IsLaserBlocking(blob.Model.ID, position);
     }
 
 

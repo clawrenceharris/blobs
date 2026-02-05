@@ -41,10 +41,9 @@ public class BlobView : MonoBehaviour
        
     }
 
-    public virtual void Setup(Blob model)
+    public virtual void Initialize(Blob model)
     {
         Model = model;
-        transform.localScale = Vector3.zero;
         gameObject.name = $"{model.Type} Blob {model.GridPosition}";
 
     }

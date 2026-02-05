@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
-using TMPro;
 using Blobs.Services;
 
 namespace Blobs.Core

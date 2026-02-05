@@ -24,15 +24,15 @@ namespace Blobs.Input
 
         private void OnEnable()
         {
-            InputRouter.BlobClicked += OnBlobClicked;
-            InputRouter.EmptyClicked += OnEmptyClicked;
-            InputRouter.UndoPressed += () => MergeInvoker.UndoMerge();
+            InputService.BlobClicked += OnBlobClicked;
+            InputService.EmptyClicked += OnEmptyClicked;
+            InputService.UndoPressed += () => MergeInvoker.UndoMerge();
         }
 
         private void OnDisable()
         {
-            InputRouter.BlobClicked -= OnBlobClicked;
-            InputRouter.EmptyClicked -= OnEmptyClicked;
+            InputService.BlobClicked -= OnBlobClicked;
+            InputService.EmptyClicked -= OnEmptyClicked;
         }
 
         private void OnBlobClicked(BlobView view)

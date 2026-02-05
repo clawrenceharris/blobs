@@ -32,8 +32,8 @@ public class TutorialPresenter : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI _bottomText;
 
-    private Blob CurrentStartBlob => _model.GetStartBlobAtStep(_model.CurrentStep);
-    private Blob CurrentEndBlob => _model.GetEndBlobAtStep(_model.CurrentStep);
+    private IBlobPresenter CurrentStartBlob => _model.GetStartBlobAtStep(_model.CurrentStep);
+    private IBlobPresenter CurrentEndBlob => _model.GetEndBlobAtStep(_model.CurrentStep);
 
 
     void Awake()
@@ -48,7 +48,7 @@ public class TutorialPresenter : MonoBehaviour
         _model = new TutorialModel();
         _blobs = board.GetAllBlobs();
         _tutorialSteps = steps;
-        _model.InitializeTutorial(_tutorialSteps, board.Model);
+        _model.InitializeTutorial(_tutorialSteps, board);
 
     }
     public void StartTutorial(BoardPresenter board, TutorialStep[] steps)
@@ -58,7 +58,7 @@ public class TutorialPresenter : MonoBehaviour
         DisableAllBlobs();
         
         MergeInvoker.OnMergeExecuted += HandleMergeExecuted;
-        InputRouter.BlobClicked += HandleBlobClicked;
+        InputService.BlobClicked += HandleBlobClicked;
         CurrentStartBlob?.EnableBlob();
 
         IsActivated = true;
@@ -69,7 +69,7 @@ public class TutorialPresenter : MonoBehaviour
     private void HandleBlobClicked(BlobView view)
     {
         if (CurrentEndBlob == null || CurrentStartBlob == null) return;
-        if (view.Model.ID == CurrentStartBlob.ID && !CurrentEndBlob.Enabled && CurrentStartBlob.Enabled)
+        if (view.Model.ID == CurrentStartBlob.Model.ID && !CurrentEndBlob.Enabled && CurrentStartBlob.Enabled)
         {
             CurrentEndBlob.EnableBlob();
         }
@@ -147,15 +147,15 @@ public class TutorialPresenter : MonoBehaviour
 
     }
 
-    public IEnumerator ShowPointer(Blob startBlob, Blob endBlob)
+    public IEnumerator ShowPointer(IBlobPresenter startBlob, IBlobPresenter endBlob)
     {
         if (startBlob == null || endBlob == null) yield break;
 
         _tutorialPointerSprite.DOFade(1, 0.3f);
 
         
-        Vector2 startPosition = GridUtility.GridToIso(startBlob.GridPosition.x, startBlob.GridPosition.y);
-        Vector2 endPosition = GridUtility.GridToIso(endBlob.GridPosition.x, endBlob.GridPosition.y);
+        Vector2 startPosition = GridUtility.GridToIso(startBlob.Model.GridPosition.x, startBlob.Model.GridPosition.y);
+        Vector2 endPosition = GridUtility.GridToIso(endBlob.Model.GridPosition.x, endBlob.Model.GridPosition.y);
         _tutorialPointerSprite.transform.position = new Vector3(startPosition.x + _offsetX, startPosition.y + _offsetY);
         _tutorialPointerSprite.transform.DOMove(new Vector3(endPosition.x + _offsetX, endPosition.y + _offsetY ), 0.8f).SetEase(Ease.InOutCirc);
         yield return new WaitForSeconds(1.2f);
@@ -173,14 +173,14 @@ public class TutorialPresenter : MonoBehaviour
     {
         foreach (IBlobPresenter blob in _blobs)
         {
-            blob?.Model.EnableBlob();
+            blob?.EnableBlob();
         }
     }
     private void DisableAllBlobs()
     {
         foreach (IBlobPresenter blob in _blobs)
         { 
-            blob?.Model.DisableBlob();
+            blob?.DisableBlob();
         }
     }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
@@ -8,20 +9,23 @@ using UnityEngine;
 /// </summary>
 public interface IBlobPresenter
 {
-    Blob Model { get; }
+    // Blob Model { get; }
     BlobView View { get; }
+    bool Enabled { get; }
+    Blob Model { get; }
 
-    IBlobAnimator Animator { get; }
-
+  
 
     // Actions
-    Tween MoveToGrid(Vector2Int gridPos, float duration);
-    Tween Remove(float duration = 0.35f);
-    Tween ScaleTo(float targetScale, float duration = 0.25f);
+    void MoveToGrid(Vector2Int gridPos,Action onComplete = null);
+    void Remove(Action onComplete = null);
+    void ScaleTo(float targetScale,Action onComplete = null);
 
-    Tween Spawn(float duration = 0.35f);
+    void Spawn(Action onComplete = null);
     // Lifecycle
     void Initialize(IBoardPresenter board);
     void Select();
     void Deselect();
+    void EnableBlob();
+    void DisableBlob();
 }

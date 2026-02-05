@@ -1,31 +1,41 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
-using System;
+using UnityEngine.SceneManagement;
+using Blobs.Commands;
+using Blobs.Services;
 
-namespace Blobs.UI
+namespace Blobs.Core
 {
-    /// <summary>
-    /// Simple UI Manager for gameplay feedback.
-    /// Shows animated text feedback for invalid actions.
-    /// </summary>
+    
     public class UIManager : MonoBehaviour
     {
         public static UIManager Instance { get; private set; }
 
         [Header("Feedback Text")]
-        [SerializeField] private TextMeshProUGUI feedbackText;
+        [SerializeField] private TextMeshProUGUI gameplayScoreText;
         
-        [Header("Animation Settings")]
-        [SerializeField] private float feedbackDuration = 1.5f;
-        [SerializeField] private float fadeInDuration = 0.2f;
-        [SerializeField] private float fadeOutDuration = 0.3f;
-        [SerializeField] private float moveUpAmount = 30f;
-        [SerializeField] private Ease fadeInEase = Ease.OutBack;
-        [SerializeField] private Ease fadeOutEase = Ease.InQuad;
 
-        private Sequence currentFeedbackSequence;
-        private Vector3 feedbackOriginalPosition;
+        [Header("Input UI")]
+        [SerializeField] private Button undoButton;
+
+        [Header("Win Panel")]
+        [SerializeField] private GameObject winPanel;
+        [SerializeField] private Image[] winStarImages;
+        [SerializeField] private Sprite starFilledSprite;
+        [SerializeField] private Sprite starEmptySprite;
+        [SerializeField] private TextMeshProUGUI winScoreText;
+        [SerializeField] private Button nextLevelButton;
+        [SerializeField] private Button retryButton;
+        [SerializeField] private Button menuButton;
+
+        [SerializeField] private Button pauseButton;
+        [SerializeField] private GameObject pausePanel;
+        [SerializeField] private Button resumeButton;
+        [SerializeField] private Button retryPauseButton;
+        [SerializeField] private Button menuPauseButton;
+
 
         private void Awake()
         {
@@ -36,111 +46,278 @@ namespace Blobs.UI
                 return;
             }
             Instance = this;
+           
+        }
 
-            // Store original position
-            if (feedbackText != null)
+        private void Start()
+        {
+            SetupButtonListeners();
+            UpdateUndoButtonState();
+        }
+
+        private void Update()
+        {
+            // Keep undo button state in sync
+            UpdateUndoButtonState();
+        }
+
+        private void UpdateUndoButtonState()
+        {
+            if (undoButton != null)
             {
-                feedbackOriginalPosition = feedbackText.rectTransform.anchoredPosition;
-                feedbackText.alpha = 0f;
+                undoButton.interactable =  MergeInvoker.CanUndo;
             }
+        }
+
+        private void SetupButtonListeners()
+        {
+            if (nextLevelButton != null) nextLevelButton.onClick.AddListener(OnNextLevelClicked);
+            if (retryButton != null) retryButton.onClick.AddListener(OnRetryClicked);
+            if (menuButton != null) menuButton.onClick.AddListener(OnMenuClicked);
+            if (undoButton != null) undoButton.onClick.AddListener(OnUndoClicked);
+
+            // Pause buttons
+            if (pauseButton != null) pauseButton.onClick.AddListener(OnPauseClicked);
+            if (resumeButton != null) resumeButton.onClick.AddListener(OnResumeClicked);
+            if (retryPauseButton != null) retryPauseButton.onClick.AddListener(OnRetryClicked);
+            if (menuPauseButton != null) menuPauseButton.onClick.AddListener(OnMenuClicked);
         }
 
         private void OnDestroy()
         {
             if (Instance == this)
                 Instance = null;
-
-            currentFeedbackSequence?.Kill();
         }
 
-        /// <summary>
-        /// Show animated feedback text
-        /// </summary>
-        public void ShowFeedback(string message)
+        #region Button Handlers
+
+        private void OnPauseClicked()
         {
-            if (feedbackText == null)
+            AudioManager.Instance?.PlaySFX("ui button");
+            ShowPausePanel();
+        }
+
+        private void OnResumeClicked()
+        {
+            AudioManager.Instance?.PlaySFX("ui button");
+            HidePausePanel();
+        }
+
+        private void OnNextLevelClicked()
+        {
+            Time.timeScale = 1f; // Ensure time scale is normal
+            // Get current level index from PlayerPrefs
+            int currentIndex = PlayerPrefs.GetInt("SelectedLevel", 0);
+            int nextIndex = currentIndex + 1;
+
+            // Check if there's a next level
+            if (nextIndex >= MainMenuController.TotalLevelCount)
             {
-                Debug.LogWarning("[UIManager] Feedback text not assigned!");
+                Debug.Log("[UIManager] No more levels! Returning to menu.");
+                SceneManager.LoadScene("Menu");
                 return;
             }
 
-            // Kill any existing animation
-            currentFeedbackSequence?.Kill();
-
-            // Reset position and set text
-            feedbackText.rectTransform.anchoredPosition = feedbackOriginalPosition;
-            feedbackText.text = message;
-            feedbackText.alpha = 0f;
-
-            // Create animation sequence
-            currentFeedbackSequence = DOTween.Sequence();
-
-            // Fade in + scale pop
-            currentFeedbackSequence.Append(
-                feedbackText.DOFade(1f, fadeInDuration)
-                    .SetEase(fadeInEase)
-            );
-            currentFeedbackSequence.Join(
-                feedbackText.rectTransform.DOScale(1.1f, fadeInDuration * 0.5f)
-                    .SetEase(Ease.OutBack)
-            );
-            currentFeedbackSequence.Append(
-                feedbackText.rectTransform.DOScale(1f, fadeInDuration * 0.5f)
-                    .SetEase(Ease.OutQuad)
-            );
-
-            // Hold for duration
-            currentFeedbackSequence.AppendInterval(feedbackDuration);
-
-            // Fade out + move up
-            currentFeedbackSequence.Append(
-                feedbackText.DOFade(0f, fadeOutDuration)
-                    .SetEase(fadeOutEase)
-            );
-            currentFeedbackSequence.Join(
-                feedbackText.rectTransform.DOAnchorPosY(
-                    feedbackOriginalPosition.y + moveUpAmount, 
-                    fadeOutDuration
-                ).SetEase(fadeOutEase)
-            );
-
-            // Reset position after complete
-            currentFeedbackSequence.OnComplete(() =>
+            // Set next level data
+            LevelData nextLevel = MainMenuController.SetSelectedLevel(nextIndex);
+            if (nextLevel != null)
             {
-                feedbackText.rectTransform.anchoredPosition = feedbackOriginalPosition;
-            });
+                Debug.Log($"[UIManager] Loading next level: {nextLevel.LevelName}");
+                SceneManager.LoadScene("MVPGameplay");
+            }
+            else
+            {
+                Debug.LogWarning("[UIManager] Failed to set next level, returning to menu.");
+                SceneManager.LoadScene("Menu");
+            }
         }
 
-        #region Predefined Messages
-
-        public void ShowCannotSelectFeedback()
+        private void OnRetryClicked()
         {
-            ShowFeedback("This blob can't initiate a merge!");
+            AudioManager.Instance?.PlaySFX("ui button");
+            Debug.Log("[UIManager] Retrying level");
+            Time.timeScale = 1f; // Reset time scale
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
-        public void ShowSameColorFeedback()
+        private void OnMenuClicked()
         {
-            ShowFeedback("Can't merge same colors!");
+            AudioManager.Instance?.PlaySFX("ui button");
+            Debug.Log("[UIManager] Returning to menu");
+            Time.timeScale = 1f; // Reset time scale
+            SceneManager.LoadScene("Menu");
         }
 
-        public void ShowCannotMergeFeedback()
+        private void OnUndoClicked()
         {
-            ShowFeedback("Can't merge with that!");
+            
+            // Play undo SFX
+            AudioManager.Instance.PlaySFX("undo");
+
+            MergeInvoker.UndoMerge();
+            Debug.Log("[UIManager] Undo executed successfully");
         }
 
-        public void ShowNoMoveFeedback()
+        #endregion
+
+        #region Pause Panel
+
+        private void ShowPausePanel()
         {
-            ShowFeedback("No blob there!");
+            if (pausePanel == null) return;
+
+            pausePanel.SetActive(true);
+            Time.timeScale = 0f;
+
+            // Animate
+            if (pausePanel.GetComponent<CanvasGroup>() == null)
+                pausePanel.AddComponent<CanvasGroup>();
+            
+            CanvasGroup cg = pausePanel.GetComponent<CanvasGroup>();
+            cg.alpha = 0f;
+            cg.DOFade(1f, 0.3f).SetUpdate(true); // SetUpdate(true) ignores timeScale
+
+            RectTransform rt = pausePanel.GetComponent<RectTransform>();
+            if (rt != null)
+            {
+                rt.localScale = Vector3.one * 0.9f;
+                rt.DOScale(1f, 0.3f).SetEase(Ease.OutBack).SetUpdate(true);
+            }
         }
 
-        public void ShowBlockedFeedback()
+        private void HidePausePanel()
         {
-            ShowFeedback("Path is blocked!");
+            if (pausePanel == null) return;
+
+            Time.timeScale = 1f;
+
+            // Animate
+            CanvasGroup cg = pausePanel.GetComponent<CanvasGroup>();
+            if (cg != null)
+            {
+                cg.DOFade(0f, 0.2f).SetUpdate(true).OnComplete(() =>
+                {
+                    pausePanel.SetActive(false);
+                });
+            }
+            else
+            {
+                pausePanel.SetActive(false);
+            }
         }
 
-        public void ShowFlagRejectedFeedback()
+        #endregion
+
+        #region Gameplay Score
+
+        /// <summary>
+        /// Update the gameplay score display with animation.
+        /// </summary>
+        public void UpdateScore(int newScore)
         {
-            ShowFeedback("Flags are only mergable with a single remaining blob of the same color!");
+            if (gameplayScoreText == null) return;
+
+            // Simple punch animation
+            gameplayScoreText.text = $"Score: {newScore}";
+            
+            // Kill existing tween on the transform to avoid conflicts
+            gameplayScoreText.transform.DOKill(true);
+            
+            // Punch scale effect
+            gameplayScoreText.transform.DOPunchScale(Vector3.one * 0.2f, 0.3f, 10, 1f);
+        }
+
+        #endregion
+
+       
+        #region Win Panel
+
+        /// <summary>
+        /// Show win panel with star animation.
+        /// </summary>
+        public void ShowWinPanel(int stars, int score)
+        {
+            if (winPanel == null)
+            {
+                Debug.LogWarning("[UIManager] Win panel not assigned!");
+                return;
+            }
+
+            // Play win SFX
+            AudioManager.Instance.PlaySFX("win");
+            AudioManager.Instance.PlaySFX("win2");
+
+            // Update score text
+            if (winScoreText != null)
+            {
+                winScoreText.text = $"Score: {score}";
+            }
+
+            // Update star display
+            UpdateWinStars(stars);
+
+            // Show panel with animation
+            winPanel.SetActive(true);
+            var panelRect = winPanel.GetComponent<RectTransform>();
+            if (panelRect != null)
+            {
+                panelRect.localScale = Vector3.zero;
+                panelRect.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
+            }
+
+            // Animate stars sequentially
+            AnimateStars(stars);
+        }
+
+        private void UpdateWinStars(int stars)
+        {
+            if (winStarImages == null) return;
+
+            for (int i = 0; i < winStarImages.Length; i++)
+            {
+                if (winStarImages[i] != null)
+                {
+                    winStarImages[i].sprite = (i < stars) ? starFilledSprite : starEmptySprite;
+                    winStarImages[i].transform.localScale = Vector3.zero;
+                }
+            }
+        }
+
+        private void AnimateStars(int stars)
+        {
+            if (winStarImages == null) return;
+
+            for (int i = 0; i < winStarImages.Length && i < stars; i++)
+            {
+                if (winStarImages[i] != null)
+                {
+                    float delay = 0.5f + (i * 0.2f);
+                    winStarImages[i].transform
+                        .DOScale(1f, 0.3f)
+                        .SetEase(Ease.OutBack)
+                        .SetDelay(delay);
+                }
+            }
+
+            // Show empty stars immediately (no animation)
+            for (int i = stars; i < winStarImages.Length; i++)
+            {
+                if (winStarImages[i] != null)
+                {
+                    winStarImages[i].transform.localScale = Vector3.one;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Hide win panel.
+        /// </summary>
+        public void HideWinPanel()
+        {
+            if (winPanel != null)
+            {
+                winPanel.SetActive(false);
+            }
         }
 
         #endregion

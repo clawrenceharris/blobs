@@ -76,43 +76,21 @@ public sealed class MergePlanAnimator
             yield return null;
             yield break;
         }
-        object recipe = null;
-        
-        
-            recipe = GetRecipeForEvent(e, board);
-        
-        Sequence seq = forUndo
-            ? animator.BuildUndoSequence(e, board, recipe)
-            : animator.BuildSequence(e, board, recipe);
-        if (seq == null) { yield return null; yield break; }
-        yield return seq.WaitForCompletion();
+        bool completed = false;
+        void onComplete() => completed = true;
+
+        if (forUndo)
+        {
+            animator.BuildUndoSequence(e, board, onComplete);
+        }
+        else
+        {
+            animator.BuildSequence(e, board, onComplete);
+        }
+
+        yield return new WaitUntil(() => completed);
+    
     }
 
-    private static object GetRecipeForEvent(IMergeEvent e, IBoardPresenter board)
-    {
-        string blobId;
-        switch (e)
-        {
-            case MoveBlobEvent m:
-                blobId = m.BlobId;
-                break;
-            case RemoveBlobEvent r:
-                blobId = r.BlobId;
-                break;
-            case SpawnBlobEvent s:
-                blobId = s.BlobToSpawn.ID;
-                break;
-            case ResizeBlobEvent z:
-                blobId = z.BlobId;
-                break;
-            case ExpressionEvent x:
-                blobId = x.BlobId;
-                break;
-            default:
-                return null;
-        }
-        if (string.IsNullOrEmpty(blobId)) return null;
-        var presenter = board.GetBlob(blobId);
-        return presenter?.View.GetComponent<BlobAnimator>().Recipe;
-    }
+    
 }

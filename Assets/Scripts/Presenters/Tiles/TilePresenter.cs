@@ -5,7 +5,7 @@ using DG.Tweening;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-public class TilePresenter
+public class TilePresenter : ITilePresenter
 {
     /// <summary>
     /// Maps tile IDs to their GameObject views
@@ -13,25 +13,32 @@ public class TilePresenter
     private static readonly Dictionary<string, TileView> _tileViews = new();
 
     protected readonly TileView _view;
-    protected readonly Tile _tile;
-    private readonly float _scaleDuration = 0.3f;
+    protected readonly Tile _model;
+
+    public Tile Model => _model;
+
+    public TileView View => _view;
+    private readonly TileAnimator _animator;
+
+    public ITileAnimator Animator => _animator;
+
 
     public static float TileSize => 1.5f;
 
-    public static readonly float BlobOffsetY =  -0.9f;
-   
-    protected BoardPresenter _board;
+
+    protected IBoardPresenter _board;
     public TilePresenter(TileView view)
     {
         _view = view;
-        _tile = view.Model;
+        _model = view.Model;
+        _animator = TileFactory.CreateTileAnimator(view);
 
     }
     
-    public void Initialize(BoardPresenter board)
+    public void Initialize(IBoardPresenter board)
     {
         _board = board;
-        _tileViews.TryAdd(_tile.ID, _view);
+        _tileViews.TryAdd(_model.ID, _view);
     }
     public IEnumerator SpawnTile()
     {
@@ -40,15 +47,15 @@ public class TilePresenter
         yield return tween.WaitForCompletion();
     }
 
-    public IEnumerator RemoveTile()
-    {
+ 
+    public Tween Remove(float duration){
+        _tileViews.Remove(_view.Model.ID);
+       return _animator.CreateRemoveTween(duration);
+    }
+    public Tween Spawn(float duration){
 
-        Tween tween = _view.transform.DOScale(Vector3.zero, _scaleDuration).SetEase(Ease.InBack);
-        yield return tween.WaitForCompletion();
-        _tileViews.Remove(_tile.ID);
-        _board.RemoveTilePresenter(_tile.ID);
-        Object.Destroy(_view.gameObject);
-
+        _tileViews.TryAdd(_view.Model.ID, _view);
+        return _animator.CreateSpawnTween(duration);
     }
     
     public static TileView GetTileView(string id)
@@ -61,5 +68,5 @@ public class TilePresenter
 
     }
 
-  
+    
 }

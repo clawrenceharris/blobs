@@ -1,79 +1,126 @@
+using System.Collections.Generic;
+using Blobs.Animation;
 using Blobs.Core.Merge;
 using Blobs.Input;
-using Blobs.UI;
+using Blobs.Services;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public class FeedbackPresenter : MonoBehaviour
 {
-    private UIManager _ui;
     private IBoardPresenter _board;
-    void Awake()
+
+    [SerializeField] private float feedbackDuration = 1.5f;
+    [SerializeField] private float fadeInDuration = 0.2f;
+    [SerializeField] private float fadeOutDuration = 0.3f;
+    [SerializeField] private float moveUpAmount = 30f;
+    [SerializeField] private Ease fadeInEase = Ease.OutBack;
+    [SerializeField] private Ease fadeOutEase = Ease.InQuad;
+
+    private Sequence currentFeedbackSequence;
+    private Vector3 feedbackOriginalPosition;
+    [Header("Feedback Text")]
+    [SerializeField] private TextMeshProUGUI feedbackText;
+    public Dictionary<MergeFailReason, string> feedbackMap = new()
     {
-        _ui = FindFirstObjectByType<UIManager>();
+        {MergeFailReason.ColorRuleRejected, "Can't merge same colors!"},
+        {MergeFailReason.InvalidSource, "This blob can't initiate a merge!"},
+        {MergeFailReason.InvalidTarget,"Can't merge with that!" },
+        {MergeFailReason.NoTargetInDirection, "No blob there!" },
+        {MergeFailReason.TileBlocked, "Path is blocked!" },
+        {MergeFailReason.NotAligned, "Blobs must share the same column or row to merge"},
+        {MergeFailReason.FlagRejected, "Flags are only mergable with a single remaining blob of the same color!"}
+
+
+    };
+
+    private void Awake()
+    {
         _board = FindFirstObjectByType<BoardPresenter>();
-    }
-    public void ShowInvalid(MergeFailReason reason, string blobId)
-    {
-        switch (reason)
-        {
-            case MergeFailReason.ColorRuleRejected:
-                _ui.ShowSameColorFeedback();
-                Wiggle(blobId);
-                break;
-
-            case MergeFailReason.NotAligned:
-                Shake(blobId);
-                break;
-
-            case MergeFailReason.TileBlocked:
-            case MergeFailReason.LaserBlocked:
-                _ui.ShowBlockedFeedback();
-                Thud(blobId);
-                break;
-
-            case MergeFailReason.NoTargetInDirection:
-                _ui.ShowNoMoveFeedback();
-                break;
-            case MergeFailReason.FlagRejected:
-                _ui.ShowFlagRejectedFeedback();
-                Thud(blobId);
-                break;
-            case MergeFailReason.InvalidSource:
-                _ui.ShowCannotSelectFeedback();
-                break;
-
-            case MergeFailReason.InvalidTarget:
-                _ui.ShowCannotMergeFeedback();
-                Thud(blobId);
-                break;
-
-            default:
-                break;
+            // Singleton
+           
+            // Store original position
+            if (feedbackText != null)
+            {
+                feedbackOriginalPosition = feedbackText.rectTransform.anchoredPosition;
+                feedbackText.alpha = 0f;
+            }
         }
-    }
 
-    private void Wiggle(string blobId)
-    { 
-        _board.GetBlobById(blobId).View.transform.DOShakeRotation(0.3f, 5);
-    }
-    private void Shake(string blobId)
-    { 
-        _board.GetBlobById(blobId).View.transform.DOShakePosition(0.5f, 0.1f, 10, 90f, false, true);
-    }
-    private void Thud(string blobId)
-    { 
-    // Uses DOTween to create a "thud" effect by quickly moving the object down and back up.
-    var view = _board.GetBlobById(blobId).View;
-    var t = view.transform;
-    float thudDistance = 0.2f;
-    float thudDuration = 0.10f;
+        private void OnDestroy()
+        {
+            
 
-    // Move down quickly, then back up (localY)
-    t.DOLocalMoveY(t.localPosition.y - thudDistance, thudDuration)
-        .SetEase(Ease.OutQuad)
-        .OnComplete(() => 
-            t.DOLocalMoveY(t.localPosition.y + thudDistance, thudDuration).SetEase(Ease.InQuad)
-        );
+            currentFeedbackSequence?.Kill();
+        }
+
+        /// <summary>
+        /// Show animated feedback text
+        /// </summary>
+        public void ShowFeedback(string message)
+        {
+            if (feedbackText == null)
+            {
+                Debug.LogWarning("[UIManager] Feedback text not assigned!");
+                return;
+            }
+
+            // Kill any existing animation
+            currentFeedbackSequence?.Kill();
+
+            // Reset position and set text
+            feedbackText.rectTransform.anchoredPosition = feedbackOriginalPosition;
+            feedbackText.text = message;
+            feedbackText.alpha = 0f;
+
+            // Create animation sequence
+            currentFeedbackSequence = DOTween.Sequence();
+
+            // Fade in + scale pop
+            currentFeedbackSequence.Append(
+                feedbackText.DOFade(1f, fadeInDuration)
+                    .SetEase(fadeInEase)
+            );
+            currentFeedbackSequence.Join(
+                feedbackText.rectTransform.DOScale(1.1f, fadeInDuration * 0.5f)
+                    .SetEase(Ease.OutBack)
+            );
+            currentFeedbackSequence.Append(
+                feedbackText.rectTransform.DOScale(1f, fadeInDuration * 0.5f)
+                    .SetEase(Ease.OutQuad)
+            );
+
+            // Hold for duration
+            currentFeedbackSequence.AppendInterval(feedbackDuration);
+
+            // Fade out + move up
+            currentFeedbackSequence.Append(
+                feedbackText.DOFade(0f, fadeOutDuration)
+                    .SetEase(fadeOutEase)
+            );
+            currentFeedbackSequence.Join(
+                feedbackText.rectTransform.DOAnchorPosY(
+                    feedbackOriginalPosition.y + moveUpAmount, 
+                    fadeOutDuration
+                ).SetEase(fadeOutEase)
+            );
+
+            // Reset position after complete
+            currentFeedbackSequence.OnComplete(() =>
+            {
+                feedbackText.rectTransform.anchoredPosition = feedbackOriginalPosition;
+            });
+        }
+
+    public void ShowInvalid( MergeFailReason failReason, string blobId)
+    {
+        if (feedbackMap.TryGetValue(failReason, out var feedback))
+        {
+            ShowFeedback(feedback);
+            _board.GetBlob(blobId)?.View.GetComponent<BlobAnimator>().PlayShakeAnimation();
+        }
+
     }
+       
 }

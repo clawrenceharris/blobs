@@ -14,13 +14,13 @@ public class MergeInvoker : MonoBehaviour
     public static event Action<MergeAction> OnMergeExecuted;
     public static event Action<MergeAction> OnMergeUndone;
     private static CommandManager _commandManager;
-
+    public static bool CanUndo => _merges.Count > 0;
     private void Awake()
     {
         _commandManager = new CommandManager(FindFirstObjectByType<BoardPresenter>());
     }
     /// <summary>Execute a merge using the new event-based plan (MovePlanCommand).</summary>
-    public static void ExecuteMerge(MergePlan plan, BoardModel board)
+    public static void ExecuteMerge(MergePlan plan, IBoardPresenter board)
     {
         var mergeAction = new MergeAction(plan, board);
         _commandManager.ExecuteCommand(mergeAction);

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Blobs.Core.Merge;
+using Blobs.Input;
 using Blobs.Utilities;
 using DG.Tweening;
 using TMPro;
@@ -16,7 +17,6 @@ public class TutorialPresenter : MonoBehaviour
 
     public TutorialModel _model;
     public bool IsActivated;
-    private BoardPresenter _board;
     private TutorialStep[] _tutorialSteps;
     private readonly float _offsetX = -0.2f;
     private readonly float _offsetY = -0.7f + BlobPresenter.BlobOffsetY;
@@ -32,8 +32,8 @@ public class TutorialPresenter : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI _bottomText;
 
-    private Blob CurrentStartBlob => _model.GetStartBlobAtStep(_model.CurrentStep);
-    private Blob CurrentEndBlob => _model.GetEndBlobAtStep(_model.CurrentStep);
+    private IBlobPresenter CurrentStartBlob => _model.GetStartBlobAtStep(_model.CurrentStep);
+    private IBlobPresenter CurrentEndBlob => _model.GetEndBlobAtStep(_model.CurrentStep);
 
 
     void Awake()
@@ -44,12 +44,11 @@ public class TutorialPresenter : MonoBehaviour
 
     private void InitializeTutorial(BoardPresenter board, TutorialStep[] steps)
     {
-        _board = board;
         _tutorialSteps = steps;
         _model = new TutorialModel();
         _blobs = board.GetAllBlobs();
         _tutorialSteps = steps;
-        _model.InitializeTutorial(_tutorialSteps, board.Model);
+        _model.InitializeTutorial(_tutorialSteps, board);
 
     }
     public void StartTutorial(BoardPresenter board, TutorialStep[] steps)
@@ -59,17 +58,27 @@ public class TutorialPresenter : MonoBehaviour
         DisableAllBlobs();
         
         MergeInvoker.OnMergeExecuted += HandleMergeExecuted;
-        
+        InputService.BlobClicked += HandleBlobClicked;
         CurrentStartBlob?.EnableBlob();
-        CurrentEndBlob?.EnableBlob();
 
         IsActivated = true;
 
         CoroutineHandler.StartStaticCoroutine(UpdateMessages());
     }
 
-   
-    
+    private void HandleBlobClicked(BlobView view)
+    {
+        if (CurrentEndBlob == null || CurrentStartBlob == null) return;
+        if (view.Model.ID == CurrentStartBlob.Model.ID && !CurrentEndBlob.Enabled && CurrentStartBlob.Enabled)
+        {
+            CurrentEndBlob.EnableBlob();
+        }
+        else
+        {
+            CurrentEndBlob.DisableBlob();
+        }
+
+    }
 
     public void Update()
     {
@@ -94,7 +103,6 @@ public class TutorialPresenter : MonoBehaviour
         _model.NextTutorialStep();
         
         CurrentStartBlob?.EnableBlob();
-        CurrentEndBlob?.EnableBlob();
         CoroutineHandler.StartStaticCoroutine(UpdateMessages());
        
     }
@@ -139,15 +147,15 @@ public class TutorialPresenter : MonoBehaviour
 
     }
 
-    public IEnumerator ShowPointer(Blob startBlob, Blob endBlob)
+    public IEnumerator ShowPointer(IBlobPresenter startBlob, IBlobPresenter endBlob)
     {
         if (startBlob == null || endBlob == null) yield break;
 
         _tutorialPointerSprite.DOFade(1, 0.3f);
 
         
-        Vector2 startPosition = GridUtility.GridToIso(startBlob.GridPosition.x, startBlob.GridPosition.y);
-        Vector2 endPosition = GridUtility.GridToIso(endBlob.GridPosition.x, endBlob.GridPosition.y);
+        Vector2 startPosition = GridUtility.GridToIso(startBlob.Model.GridPosition.x, startBlob.Model.GridPosition.y);
+        Vector2 endPosition = GridUtility.GridToIso(endBlob.Model.GridPosition.x, endBlob.Model.GridPosition.y);
         _tutorialPointerSprite.transform.position = new Vector3(startPosition.x + _offsetX, startPosition.y + _offsetY);
         _tutorialPointerSprite.transform.DOMove(new Vector3(endPosition.x + _offsetX, endPosition.y + _offsetY ), 0.8f).SetEase(Ease.InOutCirc);
         yield return new WaitForSeconds(1.2f);
@@ -165,20 +173,20 @@ public class TutorialPresenter : MonoBehaviour
     {
         foreach (IBlobPresenter blob in _blobs)
         {
-            blob?.Model.EnableBlob();
+            blob?.EnableBlob();
         }
     }
     private void DisableAllBlobs()
     {
         foreach (IBlobPresenter blob in _blobs)
         { 
-            blob?.Model.DisableBlob();
+            blob?.DisableBlob();
         }
     }
 
     public bool IsValidMove(Blob sourceBlob, Blob targetBlob)
     {
-        return !IsActivated || _model.IsValidMove(sourceBlob, targetBlob);
+        return _model.IsValidMove(sourceBlob, targetBlob);
     }
 
     

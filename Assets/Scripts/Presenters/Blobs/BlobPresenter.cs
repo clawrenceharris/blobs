@@ -1,37 +1,33 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Blobs.Core.Merge;
-using Blobs.Utilities;
+using Blobs.Animation;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 public class BlobPresenter : IBlobPresenter
 {
-    public const string PARAM_IS_SELECTED = "IsSelected";
-    public const string PARAM_TRIGGER_MERGE = "TriggerMerge";
+
     /// <summary>
     /// Maps blob IDs to their GameObject views
     /// </summary>
     private static readonly Dictionary<string, BlobView> _blobViews = new();
-    private readonly BlobView _blobView;
-    protected readonly IBlobModel _blobModel;
+    private readonly BlobView _view;
+    protected readonly Blob _model;
     public static readonly float BlobOffsetY = -0.9f;
 
     protected IBoardPresenter _board;
 
-    public IBlobModel Model => _blobModel;
-    private readonly IBlobAnimator _animator;
+    public Blob Model => _model;
+    private readonly BlobAnimator _animator;
+    public bool Enabled => _model.Enabled;
 
-    public BlobView View => _blobView;
+    public BlobView View => _view;
 
     public BlobPresenter(BlobView view)
     {
-        _blobView = view;
-        _blobModel = view.Model;
-        _animator = BlobFactory.CreateBlobAnimator(view);
+        _view = view;
+        _model = view.Model;
+        _animator = view.GetComponent<BlobAnimator>();
 
 
     }
@@ -39,38 +35,45 @@ public class BlobPresenter : IBlobPresenter
     public void Initialize(IBoardPresenter board)
     {
         _board = board;
-        _blobViews.TryAdd(_blobModel.ID, _blobView);
+        _blobViews.TryAdd(_model.ID, _view);
     }
-    
-   
 
-    public Tween MoveToGrid(Vector2Int gridPos, float duration)
+
+
+    public void MoveToGrid(Vector2Int gridPos,Action onComplete = null)
     {
-        _blobView.Visuals.ChangeSortingLayer("Foreground", _blobView.transform);
-
+        _view.Visuals.ChangeSortingLayer("Foreground", _view.transform);
         Vector3 target = _board.Layout.GridToWorldWithBlobOffset(gridPos);
-        return _animator.CreateMoveTween(target, duration).SetEase(Ease.OutQuad);
+        _animator.AnimateMoveTo(target);
     }
 
-    public Tween ScaleTo(float targetScale, float duration) => _animator.CreateScaleTween(targetScale, duration);
-    public Tween Remove(float duration){
-        _blobViews.Remove(_blobView.Model.ID);
-       return _animator.CreateRemoveTween(duration);
+    public void ScaleTo(float targetScale,Action onComplete = null) {
+        _animator.PlayResizeAnimation(targetScale); 
     }
-    public Tween Spawn(float duration){
 
-        _blobViews.TryAdd(_blobView.Model.ID, _blobView);
-        return _animator.CreateSpawnTween(duration);
+    public void Remove(Action onComplete = null)
+    {
+        _blobViews.Remove(_model.ID);
+        _animator.PlayDespawnAnimation();
     }
-   
+    public void Spawn(Action onComplete = null)
+    {
+
+        _blobViews.TryAdd(_model.ID, _view);
+        _animator.PlaySpawnAnimation();
+    }
+
     public void Select()
     {
-        _animator.Animator.SetBool(PARAM_IS_SELECTED, true);
-
+        _animator.PlaySelectAnimation();
     }
 
     public void Deselect()
     {
-        _animator.Animator.SetBool(PARAM_IS_SELECTED, false);
+        _animator.PlayDeselectAnimation();
     }
+
+    public void EnableBlob() => _model.EnableBlob();
+
+    public void DisableBlob() => _model.DisableBlob();
 }

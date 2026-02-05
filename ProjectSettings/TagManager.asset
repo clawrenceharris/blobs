@@ -3,10 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags:
-  - Aya
-  - Ura
-  - Oga
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -43,21 +40,6 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Tiles
-    uniqueID: 1322154675
-    locked: 0
-  - name: Blobs
-    uniqueID: 1839430605
-    locked: 0
-  - name: Foreground
-    uniqueID: 1715971971
-    locked: 0
-  - name: Effects
-    uniqueID: 1829873563
-    locked: 0
-  - name: UI
-    uniqueID: 1138095705
     locked: 0
   m_RenderingLayers:
   - Default

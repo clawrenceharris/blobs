@@ -4,9 +4,8 @@ using UnityEngine;
 
 public enum GameState
 {
-    Moving,
-    PlayerTurn,
+    Animating,
+    Playing,
     Win,
-    
-
+    Paused,
 }

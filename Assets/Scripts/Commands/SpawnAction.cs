@@ -24,7 +24,7 @@ public class SpawnAction : IAction
     }
     public void Undo(CommandManager context)
     {
-        context.Board.RemoveBlob(Blob);
+        context.Board.RemoveBlob(Blob.ID);
 
     }
 

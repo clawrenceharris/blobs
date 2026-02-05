@@ -12,22 +12,22 @@ public class TutorialModel
 
     private int _index;
     private TutorialStep[] _tutorialSteps;
-    private BoardModel _board;
+    private IBoardPresenter _board;
     public TutorialStep CurrentStep => _tutorialSteps[Mathf.Clamp(_index, 0, _tutorialSteps.Length -1)];
     public Action<Blob, Blob> OnBlobsHighlighted;
     public bool IsFinished => _index >= _tutorialSteps.Length;
-    public void InitializeTutorial(TutorialStep[] tutorialSteps, BoardModel board)
+    public void InitializeTutorial(TutorialStep[] tutorialSteps, IBoardPresenter board)
     {
         _index = 0;
         _tutorialSteps = tutorialSteps;
         _board = board;
 
     }
-    public Blob GetStartBlobAtStep(TutorialStep step)
+    public IBlobPresenter GetStartBlobAtStep(TutorialStep step)
     {
         return _board.GetBlobAt(step.startX, step.startY);
     }
-    public Blob GetEndBlobAtStep(TutorialStep step)
+    public IBlobPresenter GetEndBlobAtStep(TutorialStep step)
     {
         return _board.GetBlobAt(step.endX, step.endY);
     }
@@ -38,7 +38,7 @@ public class TutorialModel
         
         if (startBlob != null && endBlob != null)
         {
-            if (source.ID != startBlob.ID || target.ID != endBlob.ID)
+            if (source.ID != startBlob.Model.ID || target.ID != endBlob.Model.ID)
             {
                 return false;
             }

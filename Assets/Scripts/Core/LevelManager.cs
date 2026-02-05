@@ -72,7 +72,7 @@ public class LevelManager : MonoBehaviour
     private void HandleMergeComplete(MergeAction action)
     {
         _stateManager.ChangeState(new PlayingState(_stateManager));
-        bool didWin = _winConditionSystem.CheckForWin(Board.Model);
+        bool didWin = _winConditionSystem.CheckForWin(Board);
         if (didWin)
         {
             _stateManager.ChangeState(new LevelEndedState(_stateManager));

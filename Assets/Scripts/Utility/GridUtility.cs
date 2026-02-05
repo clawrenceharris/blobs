@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Blobs.Utilities
@@ -32,6 +33,11 @@ namespace Blobs.Utilities
         {
             var iso = GridToIso(x, y);
             return new Vector2(iso.x, iso.y + BlobPresenter.BlobOffsetY);
+        }
+
+        internal static Vector2 GridToIso(object x, object y)
+        {
+            throw new NotImplementedException();
         }
     }
 }

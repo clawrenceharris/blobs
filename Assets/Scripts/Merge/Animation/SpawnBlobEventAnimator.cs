@@ -1,3 +1,4 @@
+using System;
 using Blobs.Core.Merge;
 using DG.Tweening;
 using UnityEngine;
@@ -9,32 +10,32 @@ namespace Blobs.Merge.Animation
     /// </summary>
     public class SpawnBlobEventAnimator : IEventAnimator
     {
-        public Sequence BuildSequence(IMergeEvent e, IBoardPresenter board, object recipe)
+        public void BuildSequence(IMergeEvent e, IBoardPresenter board,  Action onComplete)
         {
-            if (e is not SpawnBlobEvent evt) return null;
+            if (e is not SpawnBlobEvent evt) return;
             var id = evt.BlobToSpawn?.ID;
-            if (string.IsNullOrEmpty(id)) return null;
+            if (string.IsNullOrEmpty(id)) return;
             var presenter = board?.GetBlob(id);
-            if (presenter == null) return null;
-            var rec = recipe as BlobAnimationRecipe;
-            var spawnTween = presenter.Spawn(rec.spawnDuration);
-            if (rec != null && rec.spawnDuration > 0)
-                spawnTween.SetEase(rec.spawnEase);
-            return DOTween.Sequence().Append(spawnTween);
+            if (presenter == null) return;
+            // var rec = recipe as BlobAnimationRecipe;
+            presenter.Spawn(onComplete);
+            // if (rec != null && rec.spawnDuration > 0)
+            //     spawnTween.SetEase(rec.spawnEase);
+            // return DOTween.Sequence().Append(spawnTween);
         }
 
-        public Sequence BuildUndoSequence(IMergeEvent e, IBoardPresenter board, object recipe)
+        public void BuildUndoSequence(IMergeEvent e, IBoardPresenter board, Action onComplete)
         {
-            if (e is not SpawnBlobEvent evt) return null;
+            if (e is not SpawnBlobEvent evt) return;
             var id = evt.BlobToSpawn?.ID;
-            if (string.IsNullOrEmpty(id)) return null;
+            if (string.IsNullOrEmpty(id)) return;
             var presenter = board?.GetBlob(id);
-            if (presenter == null) return null;
-            var rec = recipe as BlobAnimationRecipe;
-            var removeTween = presenter.Remove(rec.removeDuration);
-            if (rec != null && rec.removeDuration > 0)
-                removeTween.SetEase(rec.removeEase);
-            return DOTween.Sequence().Append(removeTween);
+            if (presenter == null) return;
+            // var rec = recipe as BlobAnimationRecipe;
+            presenter.Remove(onComplete);
+            // if (rec != null && rec.removeDuration > 0)
+            //     removeTween.SetEase(rec.removeEase);
+            // return DOTween.Sequence().Append(removeTween);
         }
     }
 }

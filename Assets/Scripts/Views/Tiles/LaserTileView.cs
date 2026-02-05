@@ -4,9 +4,8 @@ public class LaserTileView : TileView
 {
     private LaserTile _model;
     private GameObject LaserBeam => transform.Find("Laser Beam").gameObject;
-    public override void Setup(Tile tile, BoardPresenter board)
+    public override void Initialize(Tile tile)
     {
-        base.Setup(tile, board);
 
         _model = GetModel<LaserTile>();
 

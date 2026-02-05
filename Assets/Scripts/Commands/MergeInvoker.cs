@@ -14,7 +14,7 @@ public class MergeInvoker : MonoBehaviour
     public static event Action<MergeAction> OnMergeExecuted;
     public static event Action<MergeAction> OnMergeUndone;
     private static CommandManager _commandManager;
-
+    public static bool CanUndo => _merges.Count > 0;
     private void Awake()
     {
         _commandManager = new CommandManager(FindFirstObjectByType<BoardPresenter>());

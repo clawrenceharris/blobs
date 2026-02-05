@@ -1,10 +1,12 @@
+using System;
 using System.Collections.Generic;
+using Blobs.Animation;
 using DG.Tweening;
 using UnityEngine;
 
 public class BlobPresenter : IBlobPresenter
 {
-   
+
     /// <summary>
     /// Maps blob IDs to their GameObject views
     /// </summary>
@@ -17,8 +19,7 @@ public class BlobPresenter : IBlobPresenter
 
     public Blob Model => _model;
     private readonly BlobAnimator _animator;
-
-    public IBlobAnimator Animator => _animator;
+    public bool Enabled => _model.Enabled;
 
     public BlobView View => _view;
 
@@ -36,35 +37,43 @@ public class BlobPresenter : IBlobPresenter
         _board = board;
         _blobViews.TryAdd(_model.ID, _view);
     }
-    
-   
 
-    public Tween MoveToGrid(Vector2Int gridPos, float duration)
+
+
+    public void MoveToGrid(Vector2Int gridPos,Action onComplete = null)
     {
         _view.Visuals.ChangeSortingLayer("Foreground", _view.transform);
         Vector3 target = _board.Layout.GridToWorldWithBlobOffset(gridPos);
-        return _animator.CreateMoveTween(target, duration);
+        _animator.AnimateMoveTo(target);
     }
 
-    public Tween ScaleTo(float targetScale, float duration) => _animator.CreateScaleTween(targetScale, duration);
-    
-    public Tween Remove(float duration){
-        _blobViews.Remove(_view.Model.ID);
-       return _animator.CreateRemoveTween(duration);
+    public void ScaleTo(float targetScale,Action onComplete = null) {
+        _animator.PlayResizeAnimation(targetScale); 
     }
-    public Tween Spawn(float duration){
 
-        _blobViews.TryAdd(_view.Model.ID, _view);
-        return _animator.CreateSpawnTween(duration);
+    public void Remove(Action onComplete = null)
+    {
+        _blobViews.Remove(_model.ID);
+        _animator.PlayDespawnAnimation();
     }
-   
+    public void Spawn(Action onComplete = null)
+    {
+
+        _blobViews.TryAdd(_model.ID, _view);
+        _animator.PlaySpawnAnimation();
+    }
+
     public void Select()
     {
-        _animator.StartSelectionLoop();
+        _animator.PlaySelectAnimation();
     }
 
     public void Deselect()
     {
-        _animator.StopSelectionLoop();
+        _animator.PlayDeselectAnimation();
     }
+
+    public void EnableBlob() => _model.EnableBlob();
+
+    public void DisableBlob() => _model.DisableBlob();
 }

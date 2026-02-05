@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Blobs.Core.Merge;
 using DG.Tweening;
@@ -12,9 +13,9 @@ namespace Blobs.Merge.Animation
     public interface IEventAnimator
     {
         /// <summary>Builds the forward animation for this event. Returns a Sequence to play or null to skip.</summary>
-        Sequence BuildSequence(IMergeEvent e, IBoardPresenter board, object recipe);
+        void BuildSequence(IMergeEvent e, IBoardPresenter board, Action onComplete = null);
 
         /// <summary>Builds the undo animation for this event. Returns a Sequence to play or null to skip.</summary>
-        Sequence BuildUndoSequence(IMergeEvent e, IBoardPresenter board, object recipe);
+        void BuildUndoSequence(IMergeEvent e, IBoardPresenter board, Action onComplete = null);
     }
 }

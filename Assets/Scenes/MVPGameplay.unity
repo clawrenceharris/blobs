@@ -3316,7 +3316,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1539110402}
-  - component: {fileID: 1539110401}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -3324,43 +3323,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1539110401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1539110400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb7441875a62c6d4eb568729e69f1114, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  feedbackText: {fileID: 1027555357}
-  gameplayScoreText: {fileID: 2018327403}
-  feedbackDuration: 1.5
-  fadeInDuration: 0.2
-  fadeOutDuration: 0.3
-  moveUpAmount: 30
-  fadeInEase: 27
-  fadeOutEase: 5
-  undoButton: {fileID: 613707744}
-  winPanel: {fileID: 913509661}
-  winStarImages:
-  - {fileID: 1878394636}
-  - {fileID: 1755975226}
-  - {fileID: 836140408}
-  starFilledSprite: {fileID: 21300000, guid: 06c487ef7d0a52e45affa9b5203e224b, type: 3}
-  starEmptySprite: {fileID: 21300000, guid: 67f584718dfc4a142bfe20e5962fdef4, type: 3}
-  winScoreText: {fileID: 614191688}
-  nextLevelButton: {fileID: 198377654}
-  retryButton: {fileID: 1520459958}
-  menuButton: {fileID: 1069256749}
-  pauseButton: {fileID: 594876303}
-  pausePanel: {fileID: 589520960}
-  resumeButton: {fileID: 690023306}
-  retryPauseButton: {fileID: 945211277}
-  menuPauseButton: {fileID: 1534126424}
 --- !u!4 &1539110402
 Transform:
   m_ObjectHideFlags: 0

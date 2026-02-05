@@ -1,55 +1,39 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 public class BlobFactory
 {
     /// <summary>
-    /// Creates a BlobData object using the JSON object representing a blob
+    /// Creates a Blob model from editor/scriptable level data (BlobSpawnData).
+    /// Uses common fields plus optional Properties list for type-specific data.
     /// </summary>
-    /// <param name="itemObject">The JSON object with the blob data</param>
-    /// <returns></returns>
-    public static BlobData CreateBlobData(JObject itemObject)
+    public static Blob CreateBlobFromSpawnData(BlobSpawnData spawn)
     {
-        JToken type = itemObject[LevelDataKeys.Type];
-        JToken color = itemObject[LevelDataKeys.Color];
-        JToken size = itemObject[LevelDataKeys.Size];
-
-        JToken x = itemObject[LevelDataKeys.X];
-        JToken y = itemObject[LevelDataKeys.Y];
-        JToken trailColor = itemObject[LevelDataKeys.BlobColors.TrailColor];
-        Vector2Int position = new((int)x, (int)y);
-        BlobData blobData = new()
+        if (spawn == null) return null;
+        string typeKey = LevelLoader.ToJsonBlobType(spawn.Type);
+        var data = new BlobData
         {
-            Type = (string)type,
-            X = position.x,
-            Y = position.y,
-
+            Type = typeKey,
+            X = spawn.GridPosition.x,
+            Y = spawn.GridPosition.y
         };
-
-        switch ((string)type)
+        data.SetProperty(BlobData.Property.Color, LevelLoader.ToJsonColor(spawn.Color));
+        data.SetProperty(BlobData.Property.Size, LevelLoader.ToJsonSize(spawn.Size));
+        if (spawn.Type == BlobType.Trail)
+            data.SetProperty(BlobData.Property.TrailColor, LevelLoader.ToJsonColor(spawn.TrailColor));
+        if (spawn.Properties != null)
         {
-            case LevelDataKeys.Types.NormalBlob:
-
-                blobData.SetProperty(BlobData.Property.Color, (string)color);
-                blobData.SetProperty(BlobData.Property.Size, (string)size);
-                break;
-            case LevelDataKeys.Types.SwitchBlob:
-            case LevelDataKeys.Types.FlagBlob:
-            case LevelDataKeys.Types.EnemyBlob:
-
-
-                blobData.SetProperty(BlobData.Property.Color, (string)color);
-                break;
-            case LevelDataKeys.Types.TrailBlob:
-                blobData.SetProperty(BlobData.Property.Size, (string)size);
-
-                blobData.SetProperty(BlobData.Property.Color, (string)trailColor);
-                blobData.SetProperty(BlobData.Property.TrailColor, (string)color);
-                break;
+            foreach (var p in spawn.Properties)
+            {
+                if (!string.IsNullOrEmpty(p?.Key))
+                    data.SetProperty(p.Key, p.Value ?? "");
+            }
         }
-        return blobData;
+        return CreateBlobModel(data);
     }
+
     public static BlobPresenter CreateBlobPresenter(BlobView view)
     {
         switch (view.Model.Type)

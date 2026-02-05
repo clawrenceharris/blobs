@@ -12,8 +12,7 @@ public interface IBoardPresenter
     int Width { get; }
     int Height { get; }
     LevelData CurrentLevel { get; }
-    BoardModel Model { get; }
-    IBoardLayout Layout { get; }
+    BoardLayout Layout { get; }
     
     // Initialization
     void Initialize(LevelData levelData);

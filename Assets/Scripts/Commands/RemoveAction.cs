@@ -14,6 +14,6 @@ public class RemoveAction : IAction
         Blob = blobToRemove;
     }
 
-    public void Execute(CommandManager context) => context.Board.RemoveBlob(Blob);
+    public void Execute(CommandManager context) => context.Board.RemoveBlob(Blob.ID);
     public void Undo(CommandManager context) => context.Board.PlaceBlob(Blob);
 }

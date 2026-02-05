@@ -4,6 +4,19 @@ using System.Linq;
 namespace Blobs.Core.Merge
 {
 
+/// <summary>
+/// Resolves merge requests by validating the merge operation and building an execution plan.
+/// </summary>
+/// <remarks>
+/// This sealed class coordinates the merge resolution process by:
+/// 1. Resolving the path from source to target blob
+/// 2. Validating the source blob is movable and target exists (if specified)
+/// 3. Creating a merge context and plan
+/// 4. Applying all merge rules in priority order
+/// 5. Adding the final move event to the plan
+/// 
+/// Rules are applied in priority order as determined during construction.
+/// </remarks>
 public sealed class MergeResolver
 {
     private readonly PathResolver _pathResolver;
@@ -15,7 +28,14 @@ public sealed class MergeResolver
         _rules = rules.OrderBy(r => r.Priority).ToList();
     }
 
-    public MergeResolveResult TryBuildPlan(BoardModel board, MergeRequest request, out MergePlan plan)
+    /// <summary>
+    /// Attempts to build a merge execution plan for the given request.
+    /// </summary>
+    /// <param name="board">The board presenter containing the blobs. Must not be null.</param>
+    /// <param name="request">The merge request specifying source and optional target.</param>
+    /// <param name="plan">The generated merge plan if successful; otherwise null.</param>
+    /// <returns>A <see cref="MergeResolveResult"/> indicating success or the reason for failure.</returns>
+    public MergeResolveResult TryBuildPlan(IBoardPresenter board, MergeRequest request, out MergePlan plan)
     {
         plan = null;
         if (board == null) return MergeResolveResult.Fail(MergeFailReason.InvalidSource);
@@ -23,19 +43,19 @@ public sealed class MergeResolver
         // 1) Resolve path (single traversal)
         var pathResult = _pathResolver.ResolvePath(board, request, out var path);
         if (!pathResult.Ok) return MergeResolveResult.Fail(pathResult.FailReason);
-
+        
         var source = board.GetBlob(path.SourceId);
         
         if (source == null) return MergeResolveResult.Fail(MergeFailReason.InvalidSource);
-        if(source is not IMovable) return MergeResolveResult.Fail(MergeFailReason.InvalidSource);
-        Blob hitBlob = null;
+        if(!source.Model.Type.CanInitiateMerge()) return MergeResolveResult.Fail(MergeFailReason.InvalidSource);
+        IBlobPresenter hitBlob = null;
         if (!string.IsNullOrEmpty(path.HitBlobId))
             hitBlob = board.GetBlob(path.HitBlobId);
 
         // If the user clicked a specific target, enforce it:
         if (request.HasTarget)
         {
-            if (hitBlob == null || hitBlob.ID != request.TargetId)
+            if (hitBlob == null || hitBlob.Model.ID != request.TargetId)
                 return MergeResolveResult.Fail(MergeFailReason.InvalidTarget);
         }
 
@@ -47,15 +67,15 @@ public sealed class MergeResolver
         var ctx = new MergeContext
         {
             Board = board,
-            Source = source,
-            HitBlob = hitBlob,
+            Source = source.Model,
+            HitBlob = hitBlob.Model,
             Path = path
         };
 
         plan = new MergePlan
         {
-            SourceId = source.ID,
-            HitBlobId = hitBlob?.ID,
+            SourceId = source.Model.ID,
+            HitBlobId = hitBlob?.Model.ID,
             Path = path
         };
 
@@ -68,18 +88,14 @@ public sealed class MergeResolver
                 return MergeResolveResult.Fail(fail == MergeFailReason.None ? MergeFailReason.ColorRuleRejected : fail);
             }
         }
-
-        // 4) Basic default: if no rule added movement, add default movement now
-        // You can make this a rule instead if you prefer.
-        if (!plan.Events.OfType<MoveBlobEvent>().Any())
+        
+        plan.Events.Add(new MoveBlobEvent
         {
-            plan.Events.Add(new MoveBlobEvent
-            {
-                BlobId = source.ID,
-                From = path.Start,
-                To = path.End
-            });
-        }
+            BlobId = source.Model.ID,
+            From = path.Start,
+            To = path.End
+        });
+        
 
         return MergeResolveResult.SuccessWithPlan(plan);
     }

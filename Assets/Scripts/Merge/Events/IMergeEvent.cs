@@ -2,7 +2,7 @@ namespace Blobs.Core.Merge
 {
     public interface IMergeEvent
     {
-        void Execute(BoardModel board);
-        void Undo(BoardModel board);
+        void Execute(IBoardPresenter board);
+        void Undo(IBoardPresenter board);
     }
 }

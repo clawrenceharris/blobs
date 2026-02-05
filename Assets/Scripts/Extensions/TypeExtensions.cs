@@ -26,6 +26,10 @@ public static class TypeExtensions
     {
         return type == BlobType.Flag;
     }
+     public static bool CanInitiateMerge(this BlobType type)
+    {
+        return type != BlobType.Flag && type != BlobType.Rock && type != BlobType.Ghost && type != BlobType.Switch && type != BlobType.Enemy;
+    }
     
     public static bool IsBlob(this BlobType type)
     {
@@ -60,10 +64,7 @@ public static class TypeExtensions
         return type == TileType.Sigil;
     }
 
-    public static bool IsTrainTile(this TileType type)
-    {
-        return type == TileType.Train;
-    }
+   
     public static bool IsStickyTile(this TileType type)
     {
         return type == TileType.Sticky;

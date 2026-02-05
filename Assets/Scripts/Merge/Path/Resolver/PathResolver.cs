@@ -19,25 +19,25 @@ public sealed class PathResolver
             : new List<IPathModifier>();
     }
 
-    public MergeResolveResult ResolvePath(BoardModel board, MergeRequest request, out ResolvedPath path)
+    public MergeResolveResult ResolvePath(IBoardPresenter board, MergeRequest request, out ResolvedPath path)
     {
         path = null;
 
         var source = board.GetBlob(request.SourceId);
         if (source == null) return MergeResolveResult.Fail(MergeFailReason.InvalidSource);
 
-        Vector2Int dir = ResolveDirection(board, source, request, out var fail);
+        Vector2Int dir = ResolveDirection(board, source.Model, request, out var fail);
         if (fail != MergeFailReason.None) return MergeResolveResult.Fail(fail);
 
         path = new ResolvedPath
         {
-            SourceId = source.ID,
-            Start = source.GridPosition,
-            End = source.GridPosition,
+            SourceId = source.Model.ID,
+            Start = source.Model.GridPosition,
+            End = source.Model.GridPosition,
             InitialDirection = dir
         };
 
-        var current = source.GridPosition;
+        var current = source.Model.GridPosition;
         int safety = 0;
 
         while (true)
@@ -57,7 +57,7 @@ public sealed class PathResolver
             }
 
             var tile = board.GetTileAt(next);
-            if (tile == null || !tile.Type.IsTraversable())
+            if (tile == null || !tile.Model.Type.IsTraversable())
             {
                 path.Termination = PathTermination.BlockedByTile;
                 return MergeResolveResult.Fail(MergeFailReason.TileBlocked);
@@ -74,8 +74,8 @@ public sealed class PathResolver
             var cell = new PathCell
             {
                 Pos = next,
-                TileId = tile.ID,
-                BlobId = blob?.ID,
+                TileId = tile.Model.ID,
+                BlobId = blob?.Model.ID,
                 Flags = PathFlags.None
             };
             path.Cells.Add(cell);
@@ -83,7 +83,7 @@ public sealed class PathResolver
             // modifiers can redirect or stop
             foreach (var mod in _mods)
             {
-                mod.Apply(board, source, path, cell, ref dir, ref next, out bool stopNow);
+                mod.Apply(board, source.Model, path, cell, ref dir, ref next, out bool stopNow);
                 if (stopNow)
                 {
                     path.End = cell.Pos;
@@ -97,7 +97,7 @@ public sealed class PathResolver
             {
                 cell.Flags |= PathFlags.HitBlob;
                 path.End = cell.Pos;
-                path.HitBlobId = blob.ID;
+                path.HitBlobId = blob.Model.ID;
                 path.Termination = PathTermination.HitBlob;
                 return MergeResolveResult.SuccessWithPlan(null);
             }
@@ -107,7 +107,7 @@ public sealed class PathResolver
         }
     }
 
-    private static Vector2Int ResolveDirection(BoardModel board, Blob source, MergeRequest req, out MergeFailReason fail)
+    private static Vector2Int ResolveDirection(IBoardPresenter board, Blob source, MergeRequest req, out MergeFailReason fail)
     {
         fail = MergeFailReason.None;
 
@@ -127,7 +127,7 @@ public sealed class PathResolver
             return Vector2Int.zero;
         }
 
-        var delta = target.GridPosition - source.GridPosition;
+        var delta = target.Model.GridPosition - source.GridPosition;
         if (delta.x != 0 && delta.y != 0)
         {
             fail = MergeFailReason.NotAligned;

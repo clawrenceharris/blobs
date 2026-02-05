@@ -1,3 +1,4 @@
+using System;
 using Blobs.Core.Merge;
 using DG.Tweening;
 using UnityEngine;
@@ -10,16 +11,15 @@ namespace Blobs.Merge.Animation
     /// </summary>
     public class PlayVfxEventAnimator : IEventAnimator
     {
-        public Sequence BuildSequence(IMergeEvent e, IBoardPresenter board, object recipe)
+        public void BuildSequence(IMergeEvent e, IBoardPresenter board, Action onComplete)
         {
-            if (e is not PlayVfxEvent evt || board == null) return null;
+            if (e is not PlayVfxEvent evt || board == null) return;
             var worldPos = board.Layout.GridToWorldWithBlobOffset(evt.GridPos);
-            return DOTween.Sequence().AppendCallback(() => { /* Spawn VFX by evt.VfxKey at worldPos when VFX system exists */ });
+            // return DOTween.Sequence().AppendCallback(() => { /* Spawn VFX by evt.VfxKey at worldPos when VFX system exists */ });
         }
 
-        public Sequence BuildUndoSequence(IMergeEvent e, IBoardPresenter board, object recipe)
+        public void BuildUndoSequence(IMergeEvent e, IBoardPresenter board, Action onComplete)
         {
-            return null;
         }
     }
 }

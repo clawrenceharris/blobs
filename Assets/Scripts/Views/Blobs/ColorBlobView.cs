@@ -1,8 +1,8 @@
 public abstract class ColorBlobView : BlobView
 {
-    public override void Setup(Blob model)
+    public override void Initialize(Blob model)
     {
-        base.Setup(model);           
+        base.Initialize(model);           
         // Apply the color to the sprite renderer's material.
         Blobs.Utilities.ColorUtility.ApplyColorsToMaterial(Visuals.SpriteRenderer.material, model.Color);
     }

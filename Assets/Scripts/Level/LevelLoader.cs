@@ -8,11 +8,11 @@ public class LevelLoader
 
     public static List<LevelData> Levels = new();
      public static LevelData LoadLevelData(string json){
-        var settings = new JsonSerializerSettings
-        {
-            Converters = { new LevelDataConverter() }
-        };
-        var level = JsonConvert.DeserializeObject<LevelData>(json, settings);
+        // var settings = new JsonSerializerSettings
+        // {
+        //     Converters = { new LevelDataConverter() }
+        // };
+        var level = JsonConvert.DeserializeObject<LevelData>(json);
         return level;
     }
     public static BlobType FromJsonBlobType(string type)
@@ -68,30 +68,35 @@ public class LevelLoader
         };
     }
      
+    /// <summary>
+    /// Load levels from ScriptableObject assets in Resources/Levels first;
+    /// if none found, fall back to JSON files under Assets/Levels.
+    /// </summary>
     public static void LoadAllLevels()
     {
+        Levels.Clear();
+        LevelData[] assets = Resources.LoadAll<LevelData>("Levels");
+        if (assets != null && assets.Length > 0)
+        {
+            System.Array.Sort(assets, (a, b) => a.LevelNumber.CompareTo(b.LevelNumber));
+            Levels.AddRange(assets);
+            return;
+        }
         int levelNum = 1;
-        
-        while(true)
+        while (true)
         {
             string path = Application.dataPath + "/Levels/level_" + levelNum + ".json";
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-
-
                 LevelData level = LoadLevelData(json);
-                Levels.Add(level);
+                if (level != null)
+                    Levels.Add(level);
                 levelNum++;
             }
             else
-            {
                 break;
-            }
-
-            
         }
-       
     }
 
     public static BlobColor FromJsonColor(string color)
@@ -190,6 +195,19 @@ public class BlobData
         {
             properties.Add(key, value);
         }
+    }
+
+    /// <summary>
+    /// Set a property by string key (e.g. from BlobSpawnData.Properties).
+    /// Supports: color, c, size, s, trailColor, tc.
+    /// </summary>
+    public void SetProperty(string key, string value)
+    {
+        if (string.IsNullOrEmpty(key)) return;
+        var k = key.Trim().ToLowerInvariant();
+        if (k == "color" || k == "c") SetProperty(Property.Color, value);
+        else if (k == "size" || k == "s") SetProperty(Property.Size, value);
+        else if (k == "trailcolor" || k == "tc") SetProperty(Property.TrailColor, value);
     }
 }
 

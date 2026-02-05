@@ -12,12 +12,12 @@ namespace Blobs.Core.Merge
     public class MergeAction : IAction
     {
         private readonly MergePlan _plan;
-        private readonly BoardModel _board;
+        private readonly IBoardPresenter _board;
 
         public MergePlan Plan => _plan;
         public Blob Blob { get; set; }
 
-        public MergeAction(MergePlan plan, BoardModel board)
+        public MergeAction(MergePlan plan, IBoardPresenter board)
         {
             _plan = plan;
             _board = board;

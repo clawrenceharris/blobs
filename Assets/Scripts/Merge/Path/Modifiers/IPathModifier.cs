@@ -14,7 +14,7 @@ namespace Blobs.Core.Merge
     /// Called after a cell is appended, before default termination.
     /// You may mutate nextPos/direction or stop traversal.
     /// </summary>
-    void Apply(BoardModel board, Blob source, ResolvedPath path, PathCell cell,
+    void Apply(IBoardPresenter board, Blob source, ResolvedPath path, PathCell cell,
         ref Vector2Int direction, ref Vector2Int nextPos, out bool stopNow);
 }
 }

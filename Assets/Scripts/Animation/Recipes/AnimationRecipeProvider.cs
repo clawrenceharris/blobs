@@ -43,7 +43,7 @@ namespace Blobs.Animation
         }
         
         private Dictionary<BlobType, AnimationRecipe> _lookup;
-        public T GetRecipe<T>(BlobType blobType) where T : AnimationRecipe
+        public T GetBlobRecipe<T>(BlobType type) where T : AnimationRecipe
         {
             if (_lookup == null)
             {
@@ -54,7 +54,7 @@ namespace Blobs.Animation
                         _lookup[e.blobType] = e.recipe;
                 }
             }
-            if (_lookup.TryGetValue(blobType, out var r))
+            if (_lookup.TryGetValue(type, out var r))
             {
                 return r as T;
             }

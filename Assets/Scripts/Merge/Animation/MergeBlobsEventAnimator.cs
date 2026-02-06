@@ -19,7 +19,7 @@ namespace Blobs.Merge.Animation
             var presenter = board.GetBlob(evt.BlobId);
             var hitBlobPresenter = board.GetBlob(evt.HitBlobId);
             if (presenter == null || hitBlobPresenter == null) return null;
-            var rec = AnimationRecipeProvider.Instance.GetRecipe<BlobAnimationRecipe>(presenter.Model.Type);
+            var rec = AnimationRecipeProvider.Instance.GetBlobRecipe<BlobAnimationRecipe>(presenter.Model.Type);
                 // Defaults if no recipe is provided (defensive)
             float anticipationDuration = rec != null && rec.mergeAnticipationDuration > 0 ? rec.mergeAnticipationDuration : 0f;
             float squashAmount = rec != null && rec.mergeSquashAmount > 0 ? rec.mergeSquashAmount : 0.85f;

@@ -4,7 +4,6 @@ using UnityEngine;
 public class GameStateManager : MonoBehaviour
 {
     public IState CurrentState => _stateMachine.CurrentState;
-    private int _score;
     private int _moveCount;
     public int MoveCount
     {
@@ -21,7 +20,7 @@ public class GameStateManager : MonoBehaviour
 
     public int LevelNumber => _levelNumber;
     private StateMachine _stateMachine;
-    public event System.Action<GameState> OnStateChanged;
+    public event System.Action<IState> OnStateChanged;
     public event System.Action<int> OnMoveCountChanged;
 
     private BoardPresenter _board;
@@ -53,6 +52,7 @@ public class GameStateManager : MonoBehaviour
     public void ChangeState(IState state)
     {
         _stateMachine.SetState(state);
+        OnStateChanged?.Invoke(state);
     }
     private void Update()
     {

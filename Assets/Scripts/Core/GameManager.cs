@@ -18,13 +18,12 @@ public class GameManager : MonoBehaviour
     private LevelData _startingLevel;
     public bool IsHighscore { get; private set; }
     private GameStateManager _stateManager;
-
+    public static Action<int> OnMoveCountChanged;
     private WinConditionSystem _winConditionSystem;
     
     private BoardPresenter _board;
 
     private static ColorScheme _theme;
-    private int _undoCount;
 
     public ColorScheme Theme
     {
@@ -52,18 +51,25 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        BoardPresenter.OnMergeStart += HandleMergeStart;
-        BoardPresenter.OnMergeComplete += HandleMergeComplete;
+        BoardPresenter.OnMergeAnimationStart += HandleMergeAnimationStart;
+        BoardPresenter.OnMergeAnimationComplete += HandleMergeAnimationComplete;
+        MergeInvoker.OnMergeExecuted += HandleMergeExecuted;
+        _stateManager.OnMoveCountChanged += moveCount => OnMoveCountChanged?.Invoke(moveCount);
         InitializeGame();
 
     }
 
-    private void HandleMergeStart(MergeAction action)
+    private void HandleMergeExecuted(MergeAction action)
+    {
+        _stateManager.IncrementMoveCount();
+    }
+
+    private void HandleMergeAnimationStart(MergeAction action)
     {
         _stateManager.ChangeState(new AnimationState(_stateManager));
     }
 
-    private void HandleMergeComplete(MergeAction action)
+    private void HandleMergeAnimationComplete(MergeAction action)
     {
         _stateManager.ChangeState(new PlayingState(_stateManager));
         bool didWin = _winConditionSystem.CheckForWin(_board);
@@ -81,7 +87,6 @@ public class GameManager : MonoBehaviour
     private void InitializeGame()
         {
             _stateManager.Reset();
-            _undoCount = 0;
             if (_board == null)
                 _board = FindFirstObjectByType<BoardPresenter>();
 

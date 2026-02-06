@@ -59,9 +59,7 @@ namespace Blobs.Input
 
         private void TryMerge(string sourceId, string targetId)
         {
-            var result = _mergeService.TryCreateMergeCommand(sourceId, targetId);
-            var source = _board.GetBlob(sourceId)?.Model;
-            
+            var result = _mergeService.TryCreateMergeCommand(sourceId, targetId);            
 
             if (!result.Ok)
             {
@@ -69,7 +67,8 @@ namespace Blobs.Input
                 Deselect();
                 return;
             }
-            MergeInvoker.ExecuteMerge(result.Plan, _board);
+            var action = new MergeAction(result.Plan, _board);
+            MergeInvoker.ExecuteMerge(action);
             Deselect();
         }
 

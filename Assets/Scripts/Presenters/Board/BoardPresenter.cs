@@ -25,8 +25,8 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
    
 
     // Merge Events
-    public static Action<MergeAction> OnMergeStart;
-    public static Action<MergeAction> OnMergeComplete;
+    public static Action<MergeAction> OnMergeAnimationStart;
+    public static Action<MergeAction> OnMergeAnimationComplete;
     public static Action<MergeAction> OnMergeUndo;
     public static Action<MergeAction> OnMergeUndoComplete;
 
@@ -138,10 +138,10 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
 
     private void HandleMergeExecuted(MergeAction action)
     {
-        OnMergeStart?.Invoke(action);
+        OnMergeAnimationStart?.Invoke(action);
         CoroutineHandler.StartStaticCoroutine(MergePlanAnimator.AnimatePlan(action.Plan, this), () =>
         {
-            OnMergeComplete?.Invoke(action);
+            OnMergeAnimationComplete?.Invoke(action);
         });
     }
 

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
-using Blobs.Commands;
+using Blobs.Core.Merge;
 
 namespace Blobs.Core
 {
@@ -13,7 +13,7 @@ namespace Blobs.Core
         public static UIManager Instance { get; private set; }
 
         [Header("Feedback Text")]
-        [SerializeField] private TextMeshProUGUI gameplayScoreText;
+        [SerializeField] private TextMeshProUGUI moveCountText;
         
 
         [Header("Input UI")]
@@ -52,19 +52,33 @@ namespace Blobs.Core
         {
             SetupButtonListeners();
             UpdateUndoButtonState();
-        }
+            MergeInvoker.OnMergeUndone += HandleMergeUndone;
+            MergeInvoker.OnMergeExecuted += HandleMergeExecuted;
+            GameManager.OnMoveCountChanged += HandleMoveCountChanged;
 
-        private void Update()
+        }
+        private void HandleMergeExecuted(MergeAction action)
         {
-            // Keep undo button state in sync
             UpdateUndoButtonState();
         }
+        
+        private void HandleMergeUndone(MergeAction action)
+        {
+            UpdateUndoButtonState();
+        }
+
+        private void HandleMoveCountChanged(int moveCount)
+        {
+            UpdateMoves(moveCount);
+        }
+
+       
 
         private void UpdateUndoButtonState()
         {
             if (undoButton != null)
             {
-                undoButton.interactable =  MergeInvoker.CanUndo;
+                undoButton.interactable = MergeInvoker.CanUndo;
             }
         }
 
@@ -86,13 +100,20 @@ namespace Blobs.Core
         {
             if (Instance == this)
                 Instance = null;
+            MergeInvoker.OnMergeUndone -= HandleMergeUndone;
+            MergeInvoker.OnMergeExecuted -= HandleMergeExecuted;
+            GameManager.OnMoveCountChanged -= HandleMoveCountChanged;
+
         }
 
         #region Button Handlers
 
         private void OnPauseClicked()
         {
-            AudioManager.Instance?.PlaySFX("ui button");
+            if(AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySFX("ui button");
+            }
             ShowPausePanel();
         }
 
@@ -215,18 +236,18 @@ namespace Blobs.Core
         /// <summary>
         /// Update the gameplay score display with animation.
         /// </summary>
-        public void UpdateScore(int newScore)
+        public void UpdateMoves(int moves)
         {
-            if (gameplayScoreText == null) return;
+            if (moveCountText == null) return;
 
             // Simple punch animation
-            gameplayScoreText.text = $"Score: {newScore}";
+            moveCountText.text = $"Moves: {moves}";
             
             // Kill existing tween on the transform to avoid conflicts
-            gameplayScoreText.transform.DOKill(true);
+            moveCountText.transform.DOKill(true);
             
             // Punch scale effect
-            gameplayScoreText.transform.DOPunchScale(Vector3.one * 0.2f, 0.3f, 10, 1f);
+            moveCountText.transform.DOPunchScale(Vector3.one * 0.2f, 0.3f, 10, 1f);
         }
 
         #endregion

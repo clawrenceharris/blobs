@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
-using Blobs.Services;
 
 namespace Blobs.Core
 {
@@ -46,41 +45,20 @@ namespace Blobs.Core
         [SerializeField] private RectTransform titleImage;
 
         [Header("Scene Names")]
-        [SerializeField] private string gameplaySceneName = "MVPGameplay";
+        [SerializeField] private string gameplaySceneName = "Blobs";
 
-        [Header("Level Data")]
-        [SerializeField] private LevelData[] allLevels;
-        
-        /// <summary>
-        /// Static reference to pass selected level data to the gameplay scene.
-        /// </summary>
-        public static LevelData SelectedLevelData { get; private set; }
 
-        /// <summary>
-        /// Static reference to all levels for UI access.
-        /// </summary>
-        public static LevelData[] AllLevels { get; private set; }
-
-        /// <summary>
-        /// Total number of available levels.
-        /// </summary>
-        public static int TotalLevelCount => AllLevels?.Length ?? 0;
-
+       
         /// <summary>
         /// Set the selected level by index and return the level data.
         /// </summary>
-        public static LevelData SetSelectedLevel(int levelIndex)
+        public static void SelectLevel(int levelIndex)
         {
-            if (AllLevels == null || levelIndex < 0 || levelIndex >= AllLevels.Length)
-            {
-                Debug.LogWarning($"[MainMenuController] Invalid level index: {levelIndex}");
-                return null;
-            }
-
-            SelectedLevelData = AllLevels[levelIndex];
+            
+            LevelLoader.SelectLevel(levelIndex);
             PlayerPrefs.SetInt("SelectedLevel", levelIndex);
+            
             PlayerPrefs.Save();
-            return SelectedLevelData;
         }
 
         #endregion
@@ -99,8 +77,6 @@ namespace Blobs.Core
 
         private void Awake()
         {
-            // Set static reference for other scripts to access
-            AllLevels = allLevels;
 
             SetupPanelPositions();
             SetupButtonListeners();
@@ -148,7 +124,7 @@ namespace Blobs.Core
 
                     // Randomly choose between just floating or floating + scaling
                     // Use a unique ID for each tween to avoid conflicts if we need to kill them later
-                    
+
                     // Floating Y (Up/Down)
                     blob.DOAnchorPosY(blob.anchoredPosition.y + moveAmount, duration)
                         .SetLoops(-1, LoopType.Yoyo)
@@ -332,10 +308,9 @@ namespace Blobs.Core
             PlayerPrefs.Save();
 
             // Set static data for GamePresenter to pick up
-            if (allLevels != null && levelIndex < allLevels.Length)
+            if (LevelLoader.AllLevels != null && levelIndex < LevelLoader.AllLevels.Length)
             {
-                SelectedLevelData = allLevels[levelIndex];
-                Debug.Log($"[MainMenuController] Selected Level Data: {SelectedLevelData.name}");
+                SelectLevel(levelIndex);
             }
             else
             {
@@ -388,7 +363,7 @@ namespace Blobs.Core
             // Get all images (parent IS star 1, children are star 2 and 3)
             // GetComponentsInChildren returns parent first, then children in hierarchy order
             var starImages = levelStarContainers[levelIndex].GetComponentsInChildren<Image>(true);
-            
+
             // Update up to 3 stars
             for (int s = 0; s < 3; s++)
             {
@@ -470,6 +445,11 @@ namespace Blobs.Core
             {
                 AudioManager.Instance.PlaySFX("ui button");
             }
+        }
+
+        public static void ClearSelectedLevelData()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

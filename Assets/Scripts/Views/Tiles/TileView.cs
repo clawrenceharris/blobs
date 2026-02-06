@@ -8,10 +8,8 @@ using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(TileVisuals))]
-[RequireComponent(typeof(Collider2D))]
 public class TileView : MonoBehaviour
 {
-    public Tile Model { get; private set; }
 
     // References to visual components.
     private TileVisuals _visuals;
@@ -23,12 +21,7 @@ public class TileView : MonoBehaviour
             return t;
         return default;
     }
-    public T GetModel<T>() where T : Tile
-    {
-        if (Model is T t)
-            return t;
-        return default;
-    }
+   
 
     private void Awake()
     {
@@ -39,9 +32,13 @@ public class TileView : MonoBehaviour
 
     public virtual void Initialize(Tile tile)
     {
-        Model = tile;
         _visuals.SpriteRenderer.color = ColorSchemeManager.CurrentColorScheme.TileColor;
         _visuals.SpriteRenderer.sortingOrder = -(int)(transform.localPosition.y * 100) + (int)transform.localPosition.x;
-        gameObject.name = $"{tile.Type} Tile {tile.GridPosition}";
+        gameObject.name = $"{tile.Type} - {tile.GridPosition}";
+    }
+
+    internal void SetRotationFromDirection(Vector2Int dir)
+    {
+        throw new NotImplementedException();
     }
 }

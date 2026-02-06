@@ -51,10 +51,18 @@ public class TutorialPresenter : MonoBehaviour
         _model.InitializeTutorial(_tutorialSteps, board);
 
     }
-    public void StartTutorial(BoardPresenter board, TutorialStep[] steps)
+    public void TryStartTutorial(BoardPresenter board, LevelData startingLevel)
+    {
+        if (startingLevel.TutorialSteps.Count > 0)
+        {
+            StartTutorial(board, startingLevel);
+        }
+        
+    }
+    public void StartTutorial(BoardPresenter board, LevelData level)
     {
         
-        InitializeTutorial(board, steps);
+        InitializeTutorial(board, level.TutorialSteps.ToArray());
         DisableAllBlobs();
         
         MergeInvoker.OnMergeExecuted += HandleMergeExecuted;
@@ -112,7 +120,7 @@ public class TutorialPresenter : MonoBehaviour
     private IEnumerator UpdateMessages()
     {
         yield return FadeOut();
-
+        Debug.Log("Text: " + _model.CurrentStep.topText);
         _topText.text = _model.CurrentStep.topText;
         _bottomText.text = _model.CurrentStep.bottomText;
 

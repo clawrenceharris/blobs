@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
+using Blobs.Animation;
 using UnityEditor;
 using UnityEngine;
 
-namespace Blobs.Merge.Animation
+namespace Blobs.Animation
 {
     /// <summary>
-    /// Loads BlobAnimationRecipe per blob type and implements IAnimationRecipeProvider.
+    /// Loads AnimationRecipe per blob type and implements IAnimationRecipeProvider.
     /// Assign recipes in the Inspector or via code; fallback to default recipe if blob type not found.
     /// </summary>
-    public class AnimationRecipeProvider : MonoBehaviour, IAnimationRecipeProvider
+    public class AnimationRecipeProvider : MonoBehaviour
     {
        
         private static AnimationRecipeProvider _instance;
@@ -31,29 +32,33 @@ namespace Blobs.Merge.Animation
             else
                 _instance = this;
         }
-        [SerializeField] private BlobAnimationRecipe _defaultRecipe;
+        public AnimationRecipe DefaultRecipe;
         [SerializeField] private List<BlobTypeRecipeEntry> _perType = new();
 
         [Serializable]
         public class BlobTypeRecipeEntry
         {
             public BlobType blobType;
-            public BlobAnimationRecipe recipe;
+            public AnimationRecipe recipe;
         }
         
-        private Dictionary<BlobType, BlobAnimationRecipe> _lookup;
-        public BlobAnimationRecipe GetRecipe(BlobType blobType)
+        private Dictionary<BlobType, AnimationRecipe> _lookup;
+        public T GetRecipe<T>(BlobType blobType) where T : AnimationRecipe
         {
             if (_lookup == null)
             {
-                _lookup = new Dictionary<BlobType, BlobAnimationRecipe>();
+                _lookup = new Dictionary<BlobType, AnimationRecipe>();
                 foreach (var e in _perType)
                 {
                     if (e.recipe != null)
                         _lookup[e.blobType] = e.recipe;
                 }
             }
-            return _lookup.TryGetValue(blobType, out var r) ? r : _defaultRecipe;
+            if (_lookup.TryGetValue(blobType, out var r))
+            {
+                return r as T;
+            }
+            return null;
         }
     }
 }

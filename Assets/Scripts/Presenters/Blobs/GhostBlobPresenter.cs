@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GhostBlobPresenter : BlobPresenter
 {
-    public GhostBlobPresenter(BlobView view) : base(view)
+    public GhostBlobPresenter(Blob model, BlobView view) : base(model, view)
     {
     }
 

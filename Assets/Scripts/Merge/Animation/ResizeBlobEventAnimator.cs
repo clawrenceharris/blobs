@@ -10,30 +10,24 @@ namespace Blobs.Merge.Animation
     /// </summary>
     public class ResizeBlobEventAnimator : IEventAnimator
     {
-        public void BuildSequence(IMergeEvent e, IBoardPresenter board, Action onComplete)
+        public Sequence BuildSequence(IMergeEvent e, IBoardPresenter board)
         {
-            if (e is not ResizeBlobEvent evt) return;
+            if (e is not ResizeBlobEvent evt) return null;
             var presenter = board?.GetBlob(evt.BlobId);
-            if (presenter == null) return;
-            // var rec = recipe as BlobAnimationRecipe;
+            if (presenter == null) return null;
             var scale = evt.To switch { BlobSize.Small => 0.5f, BlobSize.Big => 1.4f, _ => 1f };
-            presenter.ScaleTo(scale, onComplete);
-            // if (rec != null && rec.resizeDuration > 0)
-            //     scaleTween.SetEase(rec.resizeEase);
-            // return DOTween.Sequence().Append(scaleTween);
+            return presenter.ScaleTo(scale);
+      
         }
 
-        public void BuildUndoSequence(IMergeEvent e, IBoardPresenter board, Action onComplete)
+        public Sequence BuildUndoSequence(IMergeEvent e, IBoardPresenter board)
         {
-            if (e is not ResizeBlobEvent evt) return;
+            if (e is not ResizeBlobEvent evt) return null;
             var presenter = board?.GetBlob(evt.BlobId);
-            if (presenter == null) return;
-            // var rec = recipe as BlobAnimationRecipe;
+            if (presenter == null) return null;
             var scale = evt.From switch { BlobSize.Small => 0.5f, BlobSize.Big => 1.4f, _ => 1f };
-            presenter.ScaleTo(scale, onComplete);
-            // if (rec != null && rec.resizeDuration > 0)
-            //     scaleTween.SetEase(rec.resizeEase);
-            // return DOTween.Sequence().Append(scaleTween);
+            return presenter.ScaleTo(scale);
+            
         }
     }
 }

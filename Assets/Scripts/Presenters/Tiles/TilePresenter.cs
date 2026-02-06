@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Blobs.Animation;
 using DG.Tweening;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -20,25 +21,27 @@ public class TilePresenter : ITilePresenter
     public TileView View => _view;
     private readonly TileAnimator _animator;
 
-    public ITileAnimator Animator => _animator;
 
 
     public static float TileSize => 1.5f;
 
 
     protected IBoardPresenter _board;
-    public TilePresenter(TileView view)
+    public TilePresenter(Tile model, TileView view)
     {
+        _model = model;
         _view = view;
-        _model = view.Model;
-        _animator = TileFactory.CreateTileAnimator(view);
+        _animator = view.GetComponent<TileAnimator>();
 
     }
-    
+
     public void Initialize(IBoardPresenter board)
     {
         _board = board;
         _tileViews.TryAdd(_model.ID, _view);
+        _animator.Initialize();
+
+
     }
     public IEnumerator SpawnTile()
     {
@@ -48,25 +51,17 @@ public class TilePresenter : ITilePresenter
     }
 
  
-    public Tween Remove(float duration){
-        _tileViews.Remove(_view.Model.ID);
-       return _animator.CreateRemoveTween(duration);
+    public Tween Remove(){
+        _tileViews.Remove(_model.ID);
+       return _animator.PlayDespawnAnimation();
     }
-    public Tween Spawn(float duration){
+    public Tween Spawn(){
 
-        _tileViews.TryAdd(_view.Model.ID, _view);
-        return _animator.CreateSpawnTween(duration);
+        _tileViews.TryAdd(_model.ID, _view);
+        return _animator.PlaySpawnAnimation();
     }
-    
-    public static TileView GetTileView(string id)
-    {
-        if (_tileViews.TryGetValue(id, out TileView view))
-        {
-            return view;
-        }
-        return null;
 
-    }
+    public void PlayTraversalEffect() => _animator.PlayTraversalEffect();
 
     
 }

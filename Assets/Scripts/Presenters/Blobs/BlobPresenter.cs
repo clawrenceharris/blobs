@@ -23,10 +23,10 @@ public class BlobPresenter : IBlobPresenter
 
     public BlobView View => _view;
 
-    public BlobPresenter(BlobView view)
+    public BlobPresenter(Blob model, BlobView view)
     {
+        _model = model;
         _view = view;
-        _model = view.Model;
         _animator = view.GetComponent<BlobAnimator>();
 
 
@@ -36,44 +36,58 @@ public class BlobPresenter : IBlobPresenter
     {
         _board = board;
         _blobViews.TryAdd(_model.ID, _view);
+        _animator.Initialize();
+
+        _view.transform.localScale = Vector2.zero;
+
+
     }
 
 
 
-    public void MoveToGrid(Vector2Int gridPos,Action onComplete = null)
+    public Sequence MoveToGrid(Vector2Int gridPos)
     {
         _view.Visuals.ChangeSortingLayer("Foreground", _view.transform);
         Vector3 target = _board.Layout.GridToWorldWithBlobOffset(gridPos);
-        _animator.AnimateMoveTo(target);
+        return _animator.AnimateMoveTo(target);
     }
 
-    public void ScaleTo(float targetScale,Action onComplete = null) {
-        _animator.PlayResizeAnimation(targetScale); 
+    public Sequence ScaleTo(float targetScale) {
+        return _animator.PlayResizeAnimation(targetScale);
     }
 
-    public void Remove(Action onComplete = null)
+    public Sequence Remove()
     {
         _blobViews.Remove(_model.ID);
-        _animator.PlayDespawnAnimation();
+        return _animator.PlayDespawnAnimation();
     }
-    public void Spawn(Action onComplete = null)
+    public Sequence Spawn()
     {
 
         _blobViews.TryAdd(_model.ID, _view);
-        _animator.PlaySpawnAnimation();
+        return _animator.PlaySpawnAnimation();
     }
 
     public void Select()
-    {
+    {  
         _animator.PlaySelectAnimation();
     }
 
     public void Deselect()
     {
+       
+        
         _animator.PlayDeselectAnimation();
+        
+            
     }
+    
 
     public void EnableBlob() => _model.EnableBlob();
 
     public void DisableBlob() => _model.DisableBlob();
+
+    public Sequence Merge() => _animator.PlayMergeAnimation(_board.Layout.GridToWorldWithBlobOffset(_model.GridPosition));
+
+    public void PlayMergeEffect() => _animator.SpawnMergeParticles(ColorSchemeManager.FromBlobColor(_model.Color));
 }

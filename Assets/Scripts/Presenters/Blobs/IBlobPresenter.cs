@@ -9,7 +9,6 @@ using UnityEngine;
 /// </summary>
 public interface IBlobPresenter
 {
-    // Blob Model { get; }
     BlobView View { get; }
     bool Enabled { get; }
     Blob Model { get; }
@@ -17,15 +16,17 @@ public interface IBlobPresenter
   
 
     // Actions
-    void MoveToGrid(Vector2Int gridPos,Action onComplete = null);
-    void Remove(Action onComplete = null);
-    void ScaleTo(float targetScale,Action onComplete = null);
+    Sequence MoveToGrid(Vector2Int gridPos);
+    Sequence Remove();
+    Sequence ScaleTo(float targetScale);
 
-    void Spawn(Action onComplete = null);
+    Sequence Spawn();
     // Lifecycle
     void Initialize(IBoardPresenter board);
     void Select();
     void Deselect();
     void EnableBlob();
     void DisableBlob();
+    Sequence Merge();
+    void PlayMergeEffect();
 }

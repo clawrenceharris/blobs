@@ -12,7 +12,7 @@ public class LevelData : ScriptableObject
     public Scoring Scoring;
     public bool IsTutorial;
     [NonReorderable]
-    public TutorialStep[] TutorialSteps;
+    public List<TutorialStep> TutorialSteps = new();
     public List<BlobSpawnData> Blobs;
     public List<TileSpawnData> Tiles;
     public int MinMoves;

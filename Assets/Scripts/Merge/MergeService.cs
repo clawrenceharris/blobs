@@ -112,5 +112,7 @@ namespace Blobs.Core.Merge
 
         public static MergeResolveResult SuccessWithPlan(MergePlan plan) => new(true, MergeFailReason.None, plan);
         public static MergeResolveResult Fail(MergeFailReason reason) => new(false, reason, null);
+        public static MergeResolveResult FailSilently() => new(false, MergeFailReason.None, null);
+
     }
 }

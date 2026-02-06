@@ -7,11 +7,10 @@ public class LaserTileView : TileView
     public override void Initialize(Tile tile)
     {
 
-        _model = GetModel<LaserTile>();
 
         Blobs.Utilities.ColorUtility.ApplyColorsToMaterial(
         GetVisuals<LaserTileVisuals>().LaserBeam.GetComponent<SpriteRenderer>().sharedMaterial,
-        GetModel<LaserTile>().LaserColor);
+        (tile as LaserTile).LaserColor);
     }
     private void Update()
     {

@@ -35,12 +35,19 @@ namespace Blobs.Input
         {
             if (!gate.Enabled) return;
 
-            if (IsUndoPressed()) UndoPressed?.Invoke();
+            if (IsUndoPressed()) {
+                Debug.Log("UNDO");
+
+                UndoPressed?.Invoke();}
 
             if (IsPointerPressDown())
+            {
                 RecordPointerDown();
+            }
             else if (IsPointerPressUp())
+            {
                 HandlePointerUp();
+            }
         }
 
         private void RecordPointerDown()
@@ -57,15 +64,11 @@ namespace Blobs.Input
 
             if (!hitBoard)
             {
-                if (_pointerDownBlob != null)
-                    BlobClicked?.Invoke(_pointerDownBlob);
-                else
-                    EmptyClicked?.Invoke();
                 return;
             }
 
             if (_pointerDownBlob != null && endBlobView != null &&
-                _pointerDownBlob.Model != null && endBlobView.Model != null &&
+                
                 _pointerDownBlob.Model.ID != endBlobView.Model.ID)
             {
                 BlobClicked?.Invoke(_pointerDownBlob);
@@ -88,44 +91,7 @@ namespace Blobs.Input
             EmptyClicked?.Invoke();
         }
 
-        /// <summary>
-        /// Raycasts from the pointer into the scene. Returns the blob under the pointer (if any) and whether we hit the board (tile or blob).
-        /// Hit board + blob = blob at that cell; hit board + no blob = empty tile; no hit = off board.
-        /// </summary>
-        private bool TryGetPointerHit(out BlobView blob, out bool hitBoard)
-        {
-            blob = null;
-            hitBoard = false;
-            if (_cam == null || _board == null) return false;
-
-            if (!TryGetPointerScreenPosition(out Vector2 pointerPosition)) return false;
-
-            Ray ray = _cam.ScreenPointToRay(pointerPosition);
-            RaycastHit2D hit = Physics2D.GetRayIntersection(ray, _rayDistance, _boardLayerMask);
-            if (!hit.collider) return false;
-
-            GameObject go = hit.collider.gameObject;
-
-            BlobView blobView = go.GetComponent<BlobView>() ?? go.GetComponentInParent<BlobView>();
-            if (blobView != null)
-            {
-                blob = blobView;
-                hitBoard = true;
-                return true;
-            }
-
-            TileView tileView = go.GetComponent<TileView>() ?? go.GetComponentInParent<TileView>();
-            if (tileView != null && tileView.Model != null)
-            {
-                hitBoard = true;
-                var presenter = _board.GetBlobAt(tileView.Model.GridPosition);
-                blob = presenter?.View;
-                return true;
-            }
-
-            return false;
-        }
-
+       
         private bool IsUndoPressed()
         {
             if (Keyboard.current == null) return false;
@@ -178,5 +144,37 @@ namespace Blobs.Input
 
             return false;
         }
+
+
+        /// <summary>
+        /// Raycasts from the pointer into the scene. Returns the blob under the pointer (if any) and whether we hit the board (tile or blob).
+        /// Hit board + blob = blob at that cell; hit board + no blob = empty tile; no hit = off board.
+        /// </summary>
+        private bool TryGetPointerHit(out BlobView blob, out bool hitBoard)
+        {
+            blob = null;
+            hitBoard = false;
+            if (_cam == null || _board == null) return false;
+            if (!TryGetPointerScreenPosition(out Vector2 pointerPosition)) return false;
+            Ray ray = _cam.ScreenPointToRay(pointerPosition);
+            RaycastHit2D hit = Physics2D.GetRayIntersection(ray, _rayDistance, _boardLayerMask);
+            if (!hit.collider){
+                Debug.Log("No hit");
+                return false;
+            };
+
+            GameObject go = hit.collider.gameObject;
+
+            if (go.TryGetComponent<BlobView>(out var blobView))
+            {
+                blob = blobView;
+                hitBoard = true;
+                return true;
+            }
+
+            return false;
+        }
     }
+    
+    
 }

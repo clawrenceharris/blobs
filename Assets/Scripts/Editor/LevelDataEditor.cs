@@ -374,6 +374,12 @@ namespace Blobs.Editor
                     {
                         EditorGUILayout.Space(SPACING_SMALL);
                         DrawPropertyFieldSafe(GetPropertySafe("TutorialSteps"), "Tutorial Steps", 0);
+                        
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            EditorUtility.SetDirty(levelData);
+                            AssetDatabase.SaveAssets();
+                        }
                     }
                 });
                 EditorGUI.indentLevel--;
@@ -728,7 +734,7 @@ namespace Blobs.Editor
                 }
                 else
                 {
-                    if (levelData.Tiles == null) levelData.Tiles = new System.Collections.Generic.List<TileSpawnData>();
+                    levelData.Tiles ??= new System.Collections.Generic.List<TileSpawnData>();
                     levelData.Tiles.RemoveAll(t => t.GridPosition == pos);
                     if (selectedTileType != TileType.Normal)
                     {

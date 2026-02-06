@@ -81,19 +81,13 @@ public class TileFactory
         }
         ;
     }
-    public static TilePresenter CreateTilePresenter(TileView view)
+    public static TilePresenter CreateTilePresenter(Tile model, TileView view)
     {
-        switch (view.Model.Type)
+        switch (model.Type)
         {
-            default: return new(view);
+            default: return new(model, view);
         }
     }
 
-    public static TileAnimator CreateTileAnimator(TileView view)
-    {
-        switch (view.Model.Type)
-        {
-            default: return new(view);
-        }
-    }
+   
 }

@@ -13,9 +13,9 @@ namespace Blobs.Merge.Animation
     public interface IEventAnimator
     {
         /// <summary>Builds the forward animation for this event. Returns a Sequence to play or null to skip.</summary>
-        void BuildSequence(IMergeEvent e, IBoardPresenter board, Action onComplete = null);
+        Sequence BuildSequence(IMergeEvent e, IBoardPresenter board);
 
         /// <summary>Builds the undo animation for this event. Returns a Sequence to play or null to skip.</summary>
-        void BuildUndoSequence(IMergeEvent e, IBoardPresenter board, Action onComplete = null);
+        Sequence BuildUndoSequence(IMergeEvent e, IBoardPresenter board);
     }
 }

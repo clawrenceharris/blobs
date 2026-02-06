@@ -111,7 +111,7 @@ namespace Blobs.Core
             int nextIndex = currentIndex + 1;
 
             // Check if there's a next level
-            if (nextIndex >= MainMenuController.TotalLevelCount)
+            if (nextIndex >= LevelLoader.TotalLevelCount)
             {
                 Debug.Log("[UIManager] No more levels! Returning to menu.");
                 SceneManager.LoadScene("Menu");
@@ -119,7 +119,7 @@ namespace Blobs.Core
             }
 
             // Set next level data
-            LevelData nextLevel = MainMenuController.SetSelectedLevel(nextIndex);
+            LevelData nextLevel = LevelLoader.SelectLevel(nextIndex);
             if (nextLevel != null)
             {
                 Debug.Log($"[UIManager] Loading next level: {nextLevel.LevelName}");

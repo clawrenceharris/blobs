@@ -236,18 +236,18 @@ namespace Blobs.Core
         /// <summary>
         /// Update the gameplay score display with animation.
         /// </summary>
-        public void UpdateMoves(int moves)
+        public void UpdateMoves(int moveCount)
         {
             if (moveCountText == null) return;
 
             // Simple punch animation
-            moveCountText.text = $"Moves: {moves}";
+            moveCountText.text = $"{moveCount}";
             
             // Kill existing tween on the transform to avoid conflicts
             moveCountText.transform.DOKill(true);
             
             // Punch scale effect
-            moveCountText.transform.DOPunchScale(Vector3.one * 0.2f, 0.3f, 10, 1f);
+            moveCountText.transform.DOPunchScale(Vector3.one * 0.1f, 0.3f, 2, 1f);
         }
 
         #endregion

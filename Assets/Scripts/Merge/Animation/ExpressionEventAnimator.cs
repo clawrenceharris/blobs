@@ -11,7 +11,7 @@ namespace Blobs.Merge.Animation
     /// </summary>
     public class ExpressionEventAnimator : IEventAnimator
     {
-        public void BuildSequence(IMergeEvent e, IBoardPresenter board, Action onComplete)
+        public Sequence BuildSequence(IMergeEvent e, IBoardPresenter board)
         {
             // if (e is not ExpressionEvent evt) return null;
             // var presenter = board?.GetBlob(evt.BlobId);
@@ -22,10 +22,12 @@ namespace Blobs.Merge.Animation
             // var duration = rec != null && rec.beforeRemoveExpressionDuration > 0 ? rec.beforeRemoveExpressionDuration : evt.Duration;
             // anim.SetTrigger(evt.ExpressionKey);
             // return DOTween.Sequence().AppendInterval(duration);
+            return null;
         }
 
-        public void BuildUndoSequence(IMergeEvent e, IBoardPresenter board, Action onComplete)
+        public Sequence BuildUndoSequence(IMergeEvent e, IBoardPresenter board)
         {
+            return null;
         }
     }
 }

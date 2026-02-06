@@ -14,7 +14,7 @@ public class WinConditionSystem
     public bool CheckForWin(IBoardPresenter board)
     {
         // There must be no clearable Blobs on the board to win.
-        var clearableBlobs = board.GetAllBlobs().OfType<IClearable>();
+        var clearableBlobs = board.GetAllBlobs().Select(b => b.Model).OfType<IClearable>();
         if (clearableBlobs.Count() == 0)
         {
             return true;

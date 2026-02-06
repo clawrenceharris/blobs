@@ -11,15 +11,25 @@ namespace Blobs.Merge.Animation
     /// </summary>
     public class PlayVfxEventAnimator : IEventAnimator
     {
-        public void BuildSequence(IMergeEvent e, IBoardPresenter board, Action onComplete)
+        public Sequence BuildSequence(IMergeEvent e, IBoardPresenter board)
         {
-            if (e is not PlayVfxEvent evt || board == null) return;
+            if (e is not PlayVfxEvent evt || board == null) return null;
             var worldPos = board.Layout.GridToWorldWithBlobOffset(evt.GridPos);
-            // return DOTween.Sequence().AppendCallback(() => { /* Spawn VFX by evt.VfxKey at worldPos when VFX system exists */ });
+            var blob = board.GetBlob(evt.BlobTriggerId);
+            var tile = board.GetTile(evt.TileTriggerId);
+
+            Sequence seq = DOTween.Sequence();
+            if (blob != null)
+                seq.AppendCallback(() => { blob.PlayMergeEffect(); });
+            if (tile != null)
+                seq.AppendCallback(() => { tile.PlayTraversalEffect(); });
+
+            return seq;
         }
 
-        public void BuildUndoSequence(IMergeEvent e, IBoardPresenter board, Action onComplete)
+        public Sequence BuildUndoSequence(IMergeEvent e, IBoardPresenter board)
         {
+            return BuildSequence(e, board);
         }
     }
 }

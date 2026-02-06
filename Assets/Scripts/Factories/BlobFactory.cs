@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class BlobFactory
@@ -12,17 +13,17 @@ public class BlobFactory
     public static Blob CreateBlobFromSpawnData(BlobSpawnData spawn)
     {
         if (spawn == null) return null;
-        string typeKey = LevelLoader.ToJsonBlobType(spawn.Type);
+        BlobType type = spawn.Type;
         var data = new BlobData
         {
-            Type = typeKey,
+            Type = type,
             X = spawn.GridPosition.x,
             Y = spawn.GridPosition.y
         };
-        data.SetProperty(BlobData.Property.Color, LevelLoader.ToJsonColor(spawn.Color));
-        data.SetProperty(BlobData.Property.Size, LevelLoader.ToJsonSize(spawn.Size));
+        data.SetProperty(BlobData.Property.Color, spawn.Color);
+        data.SetProperty(BlobData.Property.Size, spawn.Size);
         if (spawn.Type == BlobType.Trail)
-            data.SetProperty(BlobData.Property.TrailColor, LevelLoader.ToJsonColor(spawn.TrailColor));
+            data.SetProperty(BlobData.Property.TrailColor,spawn.TrailColor);
         if (spawn.Properties != null)
         {
             foreach (var p in spawn.Properties)
@@ -34,23 +35,22 @@ public class BlobFactory
         return CreateBlobModel(data);
     }
 
-    public static BlobPresenter CreateBlobPresenter(BlobView view)
+    public static BlobPresenter CreateBlobPresenter(Blob model, BlobView view)
     {
-        switch (view.Model.Type)
+        switch (model.Type)
         {
-            case BlobType.Ghost: return new GhostBlobPresenter(view);
-            case BlobType.Bomb: return new BombBlobPresenter(view);
-            default: return new BlobPresenter(view);
+            case BlobType.Ghost: return new GhostBlobPresenter(model, view);
+            default: return new BlobPresenter(model, view);
         }
     }
     public static Blob CreateBlobModel(BlobData data)
     {
         int x = data.X;
         int y = data.Y;
-        string type = data.Type;
-        string color = data.GetProperty<string>(BlobData.Property.Color);
-        string size = data.GetProperty<string>(BlobData.Property.Size);
-        string trailColor = data.GetProperty<string>(BlobData.Property.TrailColor);
+        BlobType type = data.Type;
+        BlobColor color = data.GetProperty<BlobColor>(BlobData.Property.Color);
+        BlobSize size = data.GetProperty<BlobSize>(BlobData.Property.Size);
+        BlobColor trailColor = data.GetProperty<BlobColor>(BlobData.Property.TrailColor);
 
 
         Vector2Int position = new(x, y);
@@ -58,58 +58,30 @@ public class BlobFactory
 
         switch (type)
         {
-            case LevelDataKeys.Types.NormalBlob:
-                {
-                    BlobColor blobColor = LevelLoader.FromJsonColor(color);
-                    BlobSize blobSize = LevelLoader.FromJsonSize(size);
+            case BlobType.Normal:
+                return new NormalBlob(color, size, position);
 
-                    return new NormalBlob(blobColor, blobSize, position);
+            case BlobType.Ghost:
+                return new GhostBlob(position);
 
+            case BlobType.Enemy:
+                return new EnemyBlob(color, position);
 
-                }
-            case LevelDataKeys.Types.GhostBlob:
-                {
-                    return new GhostBlob(position);
-                }
-            case LevelDataKeys.Types.EnemyBlob:
-                {
-                    BlobColor blobColor = LevelLoader.FromJsonColor(color);
+            case BlobType.Bomb:
+                return new BombBlob(position);
 
-                    return new EnemyBlob(blobColor, position);
-                }
-            case LevelDataKeys.Types.BombBlob:
-                {
-                    return new BombBlob(position);
+            case BlobType.Trail:
+                return new TrailBlob(color, size, trailColor, position);
 
-                }
-            case LevelDataKeys.Types.TrailBlob:
-                {
-                    BlobColor blobColor = LevelLoader.FromJsonColor(color);
-                    BlobColor blobTrailColor = LevelLoader.FromJsonColor(trailColor);
-                    BlobSize blobSize = LevelLoader.FromJsonSize(size);
+            case BlobType.Flag:
+                return new FlagBlob(color, position);
 
-                    return new TrailBlob(blobColor, blobSize, blobTrailColor, position);
-                }
-            case LevelDataKeys.Types.FlagBlob:
-                {
-                    BlobColor blobColor = LevelLoader.FromJsonColor(color);
+            case BlobType.Switch:
+                return new SwitchBlob(color, position);
 
-                    return new FlagBlob(blobColor, position);
+            case BlobType.Rock:
+                return new RockBlob(position);
 
-                }
-
-            case LevelDataKeys.Types.SwitchBlob:
-                {
-                    BlobColor blobColor = LevelLoader.FromJsonColor(color);
-
-                    return new SwitchBlob(blobColor, position);
-
-                }
-            case LevelDataKeys.Types.RockBlob:
-                {
-                    return new RockBlob(position);
-
-                }
             default: throw new ArgumentException();
         }
     }

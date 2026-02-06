@@ -17,23 +17,11 @@ namespace Blobs.Core.Merge
                 fail = MergeFailReason.NoTargetInDirection;
                 return false;
             }
-
-            // blobs must be on the same row or column
-            if (ctx.HitBlob != null)
-            {
-                if (ctx.Source.GridPosition.x != ctx.HitBlob.GridPosition.x && ctx.Source.GridPosition.y != ctx.HitBlob.GridPosition.y)
-                {
-                    fail = MergeFailReason.NotAligned;
-                    return false;
-                }
-               
-            }
             // Move happens (source slides to end)
-            plan.Events.Add(new MoveBlobEvent
+            plan.Events.Add(new MergeBlobsEvent
             {
                 BlobId = ctx.Source.ID,
-                From = ctx.Path.Start,
-                To = ctx.Path.End
+                HitBlobId = ctx.HitBlob.ID,
             });
 
 

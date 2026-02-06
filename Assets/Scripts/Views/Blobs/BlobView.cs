@@ -1,11 +1,9 @@
 
-using System;
 using System.Collections;
-using Blobs.Input;
 using DG.Tweening;
 using UnityEngine;
 
-
+[RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(BlobVisuals))]
 public class BlobView : MonoBehaviour
 {
@@ -45,7 +43,6 @@ public class BlobView : MonoBehaviour
     {
         Model = model;
         gameObject.name = $"{model.Type} Blob {model.GridPosition}";
-
     }
 
 

@@ -191,14 +191,13 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
 
         int gridX = blob.GridPosition.x;
         int gridY = blob.GridPosition.y;
-        Vector3 isoPosition = GridUtility.GridToIsoWithBlobOffset(gridX, gridY);
+        Vector3 worldPos = Layout.GridToWorldWithBlobOffset(gridX, gridY);
 
-        var view = Instantiate(PrefabLibrary.Instance.FromBlobType(blob.Type), isoPosition, Quaternion.identity, transform);
-
-        // Link the view to its data model
+        var view = Instantiate(PrefabLibrary.Instance.FromBlobType(blob.Type), worldPos, Quaternion.identity, transform);
         view.Initialize(blob);
 
-        var presenter = BlobFactory.CreateBlobPresenter(view);
+        var presenter = BlobFactory.CreateBlobPresenter(blob, view);
+
         presenter.Initialize(this);
         _blobs.Add(blob.ID, presenter);
     }
@@ -209,12 +208,14 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
         int gridX = tile.GridPosition.x;
         int gridY = tile.GridPosition.y;
 
-        Vector3 isoPosition = GridUtility.GridToIso(gridX, gridY);
-        TileView view = Instantiate(PrefabLibrary.Instance.FromTileType(tile.Type), isoPosition, Quaternion.identity, transform);
+        Vector3 worldPos = Layout.GridToWorld(gridX, gridY);
 
-        // Link the view to its data model
+        var view = Instantiate(PrefabLibrary.Instance.FromTileType(tile.Type), worldPos, Quaternion.identity, transform);
         view.Initialize(tile);
-        var presenter = TileFactory.CreateTilePresenter(view);
+
+        
+        var presenter = TileFactory.CreateTilePresenter(tile, view);
+        
         presenter.Initialize(this);
         _tiles.Add(tile.ID, presenter);
     }
@@ -230,21 +231,13 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
 
     private IEnumerator AnimateInitialBlobs()
     {
-        int completed = 0;
-        int started = 0;
-        
-        foreach (IBlobPresenter bp in _blobs.Values)
-        {
-            
-            started++;
-            bp.Spawn(() =>
-            {
-                completed++;
-            });
 
-            yield return new WaitUntil(() => started == completed);
-            
+        foreach (IBlobPresenter presenter in _blobs.Values)
+        {
+            presenter.Spawn();
+            yield return new WaitForSeconds(0.2f);
         }
+        
     }
 
 
@@ -256,25 +249,17 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
         // Add the dramatic pause
         yield return new WaitForSeconds(1.5f);
         var blobPresenters = new List<IBlobPresenter>(_blobs.Values);
-        int completed = 0;
-        int started = 0;
         
         foreach (var bp in blobPresenters)
         {
-            started++;
-            bp.Remove(() =>
-            {
-                completed++;
-
-            });
-            yield return new WaitUntil(() => started == completed);
+            yield return bp.Remove().WaitForCompletion();
         }
 
         yield return new WaitForSeconds(0.3f);
         var tilePresenters = new List<ITilePresenter>(_tiles.Values);
         foreach (var tp in tilePresenters)
         {
-            yield return tp.Remove(0.3f).WaitForCompletion();
+            yield return tp.Remove().WaitForCompletion();
         }
     }
 

@@ -45,20 +45,16 @@ public sealed class MergeResolver
         if (!pathResult.Ok) return MergeResolveResult.Fail(pathResult.FailReason);
         
         var source = board.GetBlob(path.SourceId);
-        
+
         if (source == null) return MergeResolveResult.Fail(MergeFailReason.InvalidSource);
-        if(!source.Model.Type.CanInitiateMerge()) return MergeResolveResult.Fail(MergeFailReason.InvalidSource);
+        if(!source.Model.Type.CanInitiateMerge()) return MergeResolveResult.FailSilently();
         IBlobPresenter hitBlob = null;
         if (!string.IsNullOrEmpty(path.HitBlobId))
             hitBlob = board.GetBlob(path.HitBlobId);
-
-        // If the user clicked a specific target, enforce it:
-        if (request.HasTarget)
+        if (source.Model.GridPosition.x != hitBlob.Model.GridPosition.x && source.Model.GridPosition.y != hitBlob.Model.GridPosition.y)
         {
-            if (hitBlob == null || hitBlob.Model.ID != request.TargetId)
-                return MergeResolveResult.Fail(MergeFailReason.InvalidTarget);
+            return MergeResolveResult.FailSilently();
         }
-
         // If the path never hit a blob, default is no move
         if (hitBlob == null && path.Termination != PathTermination.ForcedStop)
             return MergeResolveResult.Fail(MergeFailReason.NoTargetInDirection);

@@ -29,7 +29,6 @@ namespace Blobs.Core.Merge
                 plan.Events.Add(new ResizeBlobEvent { BlobId = ctx.Source.ID, From = ctx.Source.Size, To = BlobSize.Big });
             }
             // Remove target blob if source blob is the same size and not small
-            UnityEngine.Debug.Log("Target is removing");
             plan.Events.Add(new RemoveBlobEvent { BlobId = ctx.HitBlob.ID });
             return true;
         }

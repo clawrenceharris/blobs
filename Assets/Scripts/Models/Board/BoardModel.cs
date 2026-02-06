@@ -28,8 +28,8 @@ public class BoardModel
     // Events for the Presenter to subscribe to
 
     public event Action<Blob> OnBlobRemoved;
-    public event Action<Blob> OnBlobCreated;
-
+    public event Action<Blob> OnBlobRespawned;
+    public event Action<Blob> OnBlobSpawned;
     public event Action<Tile> OnTileRemoved;
     public event Action<Tile> OnTileCreated;
 
@@ -51,13 +51,13 @@ public class BoardModel
 
         _blobsById.Clear();
         _tilesById.Clear();
-        foreach (var blobData in blobs)
+        foreach (var blob in blobs)
         {
-            PlaceBlob(blobData);
+            SpawnBlob(blob);
         }
-        foreach (var tileData in tiles)
+        foreach (var tile in tiles)
         {
-            PlaceTile(tileData);
+            PlaceTile(tile);
         }
     }
     public bool IsLaserBlocking(string id, Vector2Int sourcePosition)
@@ -102,6 +102,11 @@ public class BoardModel
     }
     public void LinkLasers(LevelData level)
     {
+        if (level.LaserLinks == null || level.LaserLinks.Count > 0)
+        {
+            return;
+        }
+
         foreach (var link in level.LaserLinks)
         {
             if (_tilesById.TryGetValue(link.idA, out Tile tileA) &&
@@ -152,43 +157,52 @@ public class BoardModel
 
         return false;
     }
-    private void PlaceTile(Tile tileData)
+    public void PlaceTile(Tile tile)
     {
-        if (tileData.GridPosition.x < 0 || tileData.GridPosition.x >= Width ||
-            tileData.GridPosition.y < 0 || tileData.GridPosition.y >= Height)
+        if (!IsValidPosition(tile.GridPosition))
         {
-            Debug.LogError($"Attempted to place tile outside board bounds: {tileData.GridPosition}");
+            Debug.LogError($"Attempted to place tile outside board bounds: {tile.GridPosition}");
             return;
         }
-        if (TileGrid[tileData.GridPosition.x, tileData.GridPosition.y] != null)
+        if (TileGrid[tile.GridPosition.x, tile.GridPosition.y] != null)
         {
-            throw new ArgumentException("A tile already exists at this position: " + tileData.GridPosition);
+            throw new ArgumentException("A tile already exists at this position: " + tile.GridPosition);
         }
 
-        _tilesById.Add(tileData.ID, tileData);
-        TileGrid[tileData.GridPosition.x, tileData.GridPosition.y] = tileData; // Place in grid
-        OnTileCreated?.Invoke(tileData);
+        _tilesById.Add(tile.ID, tile);
+        TileGrid[tile.GridPosition.x, tile.GridPosition.y] = tile; // Place in grid
+        OnTileCreated?.Invoke(tile);
     }
-
-    public void PlaceBlob(Blob blob)
+    public void SpawnBlob(Blob blob)
     {
-        if (blob.GridPosition.x < 0 || blob.GridPosition.x >= Width ||
-            blob.GridPosition.y < 0 || blob.GridPosition.y >= Height)
+
+        if (TryPlaceBlob(blob))
+        {
+            OnBlobSpawned?.Invoke(blob);
+        }
+    }
+     public void RespawnBlob(Blob blob)
+    {
+        if (TryPlaceBlob(blob)) 
+        {
+            _blobsById.TryAdd(blob.ID, blob);
+            OnBlobRespawned?.Invoke(blob);
+        }
+        
+    }
+    public bool TryPlaceBlob(Blob blob)
+    {
+        if (!IsValidPosition(blob.GridPosition))
         {
             Debug.LogError($"Attempted to place blob outside board bounds: {blob.GridPosition}");
-            return;
+            return false;
         }
-
-
-        if (_blobsById.TryAdd(blob.ID, blob))
+        else if (_blobsById.TryAdd(blob.ID, blob))
         {
             BlobGrid[blob.GridPosition.x, blob.GridPosition.y] = blob;
-            OnBlobCreated?.Invoke(blob);
-
+            return true;
         }
-
-
-
+        return false;
     }
 
     public void RemoveBlob(string id)
@@ -370,6 +384,7 @@ public class BoardModel
     public Blob GetBlob(string id) => _blobsById.TryGetValue(id, out var blob) ? blob : null;
        
     public Tile GetTile(string id) => _tilesById.TryGetValue(id, out var tile) ? tile : null;
-
+    
+   
 }
 

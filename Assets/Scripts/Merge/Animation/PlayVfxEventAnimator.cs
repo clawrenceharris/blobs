@@ -2,7 +2,7 @@ using System;
 using Blobs.Core.Merge;
 using DG.Tweening;
 using UnityEngine;
-
+using Blobs.Utilities;
 namespace Blobs.Merge.Animation
 {
     /// <summary>
@@ -14,7 +14,7 @@ namespace Blobs.Merge.Animation
         public Sequence BuildSequence(IMergeEvent e, IBoardPresenter board)
         {
             if (e is not PlayVfxEvent evt || board == null) return null;
-            var worldPos = board.Layout.GridToWorldWithBlobOffset(evt.GridPos);
+            var worldPos = GridUtility.GridToWorldWithBlobOffset(evt.GridPos);
             var blob = board.GetBlob(evt.BlobTriggerId);
             var tile = board.GetTile(evt.TileTriggerId);
 

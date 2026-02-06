@@ -11,7 +11,6 @@ public interface IBoardPresenter
     int Width { get; }
     int Height { get; }
     LevelData CurrentLevel { get; }
-    BoardLayout Layout { get; }
     
     // Initialization
     void Initialize(LevelData levelData);
@@ -19,7 +18,6 @@ public interface IBoardPresenter
 
     // Blob management
     void MoveBlob(string id, Vector2Int endPosition);
-    void PlaceBlob(Blob blob);
     void RemoveBlob(string id);
 
 
@@ -46,4 +44,6 @@ public interface IBoardPresenter
 
     bool IsValidPosition(Vector2Int position);
     bool IsLaserBlocking(IBlobPresenter source, Vector2Int position);
+    void RespawnBlob(string id);
+    void SpawnBlob(Blob blob);
 }

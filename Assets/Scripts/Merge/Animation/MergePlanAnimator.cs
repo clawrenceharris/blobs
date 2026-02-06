@@ -29,7 +29,7 @@ namespace Blobs.Core.Merge
 
         private static void RegisterDefaultAnimators(EventAnimatorRegistry registry)
         {
-            registry.Register<MoveBlobEvent>(new MoveBlobEventAnimator());
+            // registry.Register<MoveBlobEvent>(new MoveBlobEventAnimator());
             registry.Register<RemoveBlobEvent>(new RemoveBlobEventAnimator());
             registry.Register<SpawnBlobEvent>(new SpawnBlobEventAnimator());
             registry.Register<ResizeBlobEvent>(new ResizeBlobEventAnimator());

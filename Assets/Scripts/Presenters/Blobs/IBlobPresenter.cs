@@ -29,4 +29,5 @@ public interface IBlobPresenter
     void DisableBlob();
     Sequence Merge();
     void PlayMergeEffect();
+    Sequence Respawn();
 }

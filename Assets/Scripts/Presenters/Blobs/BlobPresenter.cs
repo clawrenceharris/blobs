@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Blobs.Animation;
+using Blobs.Utilities;
 using DG.Tweening;
 using UnityEngine;
 
@@ -48,7 +49,7 @@ public class BlobPresenter : IBlobPresenter
     public Sequence MoveToGrid(Vector2Int gridPos)
     {
         _view.Visuals.ChangeSortingLayer("Foreground", _view.transform);
-        Vector3 target = _board.Layout.GridToWorldWithBlobOffset(gridPos);
+        Vector3 target = GridUtility.GridToWorldWithBlobOffset(gridPos);
         return _animator.AnimateMoveTo(target);
     }
 
@@ -58,8 +59,12 @@ public class BlobPresenter : IBlobPresenter
 
     public Sequence Remove()
     {
-        _blobViews.Remove(_model.ID);
-        return _animator.PlayDespawnAnimation();
+        return _animator.PlayDespawnAnimation().OnComplete(() =>
+        {
+            _blobViews.Remove(_model.ID);
+            _view.gameObject.SetActive(false);
+
+        });
     }
     public Sequence Spawn()
     {
@@ -67,9 +72,15 @@ public class BlobPresenter : IBlobPresenter
         _blobViews.TryAdd(_model.ID, _view);
         return _animator.PlaySpawnAnimation();
     }
+    
+    public Sequence Respawn()
+    {
+        _view.gameObject.SetActive(true);
+        return _animator.PlaySpawnAnimation();
+    }
 
     public void Select()
-    {  
+    {
         _animator.PlaySelectAnimation();
     }
 
@@ -87,7 +98,7 @@ public class BlobPresenter : IBlobPresenter
 
     public void DisableBlob() => _model.DisableBlob();
 
-    public Sequence Merge() => _animator.PlayMergeAnimation(_board.Layout.GridToWorldWithBlobOffset(_model.GridPosition));
+    public Sequence Merge() => _animator.PlayMergeAnimation(GridUtility.GridToWorldWithBlobOffset(_model.GridPosition));
 
     public void PlayMergeEffect() => _animator.SpawnMergeParticles(ColorSchemeManager.FromBlobColor(_model.Color));
 }

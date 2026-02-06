@@ -9,52 +9,6 @@ using DG.Tweening;
 using UnityEngine;
 
 
-public class BoardLayout
-{
-
-    public Vector2Int WorldToGrid(float worldX, float worldY)
-    {
-        float x = (worldX / (TilePresenter.TileSize / 2) + worldY / (TilePresenter.TileSize / 4)) / 2f;
-        float y = (worldY / (TilePresenter.TileSize / 2) - worldX / (TilePresenter.TileSize / 4)) / 2f;
-        return new Vector2Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
-    }
-    public Vector2Int WorldToGrid(Vector3 worldPos)
-    {
-
-        return WorldToGrid(worldPos.x, worldPos.y);
-    }
-
-    public Vector3 GridToWorld(Vector2Int gridPos)
-    {
-        return GridToWorld(gridPos.x, gridPos.y);
-    }
-    public Vector3 GridToWorld(int gridX, int gridY)
-    {
-        return new Vector3(
-            (gridX - gridY) * TilePresenter.TileSize / 2f,
-            (gridX + gridY) * TilePresenter.TileSize / 4f, 0
-        );
-    }
-    public Vector2Int WorldToGridWithBlobOffset(Vector3 worldPos)
-    {
-      
-        return WorldToGridWithBlobOffset(worldPos.x, worldPos.y);
-    }
-    public Vector2Int WorldToGridWithBlobOffset(float worldX, float worldY)
-    {
-        return WorldToGrid(new Vector3(worldX, worldY - BlobPresenter.BlobOffsetY, 0));
-    }
-    public Vector3 GridToWorldWithBlobOffset(Vector2Int gridPos)
-    {
-        var worldPos = GridToWorld(gridPos.x, gridPos.y);
-        return new Vector3(worldPos.x, worldPos.y + BlobPresenter.BlobOffsetY,0);
-    }
-    public Vector3 GridToWorldWithBlobOffset(int x, int y)
-    {
-        var worldPos = GridToWorld(x, y);
-        return new Vector3(worldPos.x, worldPos.y + BlobPresenter.BlobOffsetY,0);
-    }
-}
 public class BoardPresenter : MonoBehaviour, IBoardPresenter
 {
     // Board State
@@ -68,8 +22,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
 
 
 
-    // Layout
-    public BoardLayout Layout => new();
+   
 
     // Merge Events
     public static Action<MergeAction> OnMergeStart;
@@ -99,9 +52,10 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
 
     private void Start()
     {
-       
+
         MergeInvoker.OnMergeExecuted += HandleMergeExecuted;
         MergeInvoker.OnMergeUndone += HandleMergeUndone;
+        
 
     }
 
@@ -109,7 +63,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
     {
         if (_model != null)
         {
-            _model.OnBlobCreated -= HandleBlobCreated;
+            _model.OnBlobSpawned -= HandleBlobSpawned;
             _model.OnTileCreated -= HandleTileCreated;
         }
 
@@ -124,17 +78,30 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
     {
         _model = new BoardModel(level.Width, level.Height); 
         
-        _model.OnBlobCreated += HandleBlobCreated;
+        _model.OnBlobSpawned += HandleBlobSpawned;
         _model.OnTileCreated += HandleTileCreated;
-        SetUpBoard(level);
+        
+        SetupBoard(level);
         OnBoardInitialized?.Invoke(this);
 
     }
 
-    private void SetUpBoard(LevelData level)
+    private void SetupBoard(LevelData level)
+    {
+        var blobs = CreateBlobs(level);
+        var tiles = CreateTiles(level);
+
+        _model.CreateInitialBoard(blobs, tiles);
+        _model.LinkLasers(level);
+        _laserBeam.Setup(this);
+        StartCoroutine(AnimateInitialBlobs());
+
+    }
+    
+
+    public List<Blob> CreateBlobs(LevelData level)
     {
         var blobs = new List<Blob>();
-        var tiles = new List<Tile>();
 
         if (level.Blobs != null)
         {
@@ -145,6 +112,12 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
                     blobs.Add(blob);
             }
         }
+        
+        return blobs;
+    }
+    public List<Tile> CreateTiles(LevelData level)
+    {
+        var tiles = new List<Tile>();
 
         if (level.Tiles != null)
         {
@@ -155,20 +128,15 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
                     tiles.Add(tile);
             }
         }
-
-        _model.CreateInitialBoard(blobs, tiles);
-        if (level.LaserLinks != null && level.LaserLinks.Count > 0)
-            _model.LinkLasers(level);
-        _laserBeam.Setup(this);
-        StartCoroutine(AnimateInitialBlobs());
-
+        
+        return tiles;
     }
     #endregion
-   
+
 
     #region Event Handlers
 
-     private void HandleMergeExecuted(MergeAction action)
+    private void HandleMergeExecuted(MergeAction action)
     {
         OnMergeStart?.Invoke(action);
         CoroutineHandler.StartStaticCoroutine(MergePlanAnimator.AnimatePlan(action.Plan, this), () =>
@@ -186,12 +154,12 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
         });
     }
 
-    private void HandleBlobCreated(Blob blob)
+    private void HandleBlobSpawned(Blob blob)
     {
 
         int gridX = blob.GridPosition.x;
         int gridY = blob.GridPosition.y;
-        Vector3 worldPos = Layout.GridToWorldWithBlobOffset(gridX, gridY);
+        Vector3 worldPos = GridUtility.GridToWorldWithBlobOffset(gridX, gridY);
 
         var view = Instantiate(PrefabLibrary.Instance.FromBlobType(blob.Type), worldPos, Quaternion.identity, transform);
         view.Initialize(blob);
@@ -208,7 +176,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
         int gridX = tile.GridPosition.x;
         int gridY = tile.GridPosition.y;
 
-        Vector3 worldPos = Layout.GridToWorld(gridX, gridY);
+        Vector3 worldPos = GridUtility.GridToWorld(gridX, gridY);
 
         var view = Instantiate(PrefabLibrary.Instance.FromTileType(tile.Type), worldPos, Quaternion.identity, transform);
         view.Initialize(tile);
@@ -280,10 +248,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
     #region Board Queries
     public List<IBlobPresenter> GetAllBlobs() => _blobs.Values.ToList();
 
-    public int GetPlayableBlobCount()
-    {
-        return _model.GetAllBlobs().OfType<IClearable>().Count();
-    }
+    public int GetPlayableBlobCount() => _model.GetAllBlobs().OfType<IClearable>().Count();
 
 
     public IBlobPresenter GetBlobAt(Vector2Int position) => GetBlobAt(position.x, position.y);
@@ -336,21 +301,35 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
         _model.MoveBlob(id, endPosition);
     }
 
-    public void PlaceBlob(Blob blob)
+    public void SpawnBlob(Blob blob)
     {
-        _model.PlaceBlob(blob);
+        _model.SpawnBlob(blob);
     }
-    public void RemoveBlob(string id)
+
+    public void RespawnBlob(string id)
     {
-        _blobs.Remove(id);
-        _model.RemoveBlob(id);
-        if (_blobs.Count == 0)
+        
+        // we can only respawn if it existed to begin with
+        if (_blobs.TryGetValue(id, out var presenter))
         {
-
-            OnBoardCleared?.Invoke();
-
+            _model.RespawnBlob(presenter.Model);
+        }
+        else
+        {
+            Debug.LogError($"Attempted to respawn blob {id} that does not exist");
         }
     }
+   
+    public void RemoveBlob(string id)
+    {
+        _model.RemoveBlob(id);
+        if (_model.BlobCount == 0)
+        {
+            OnBoardCleared?.Invoke();
+        }
+    }
+
+   
     #endregion
 
     #region Tile Management
@@ -362,20 +341,11 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
 
     }
 
-    public void PlaceTile(Tile tile)
-    {
-        throw new NotImplementedException();
-    }
+    public void PlaceTile(Tile tile) => _model.PlaceTile(tile);
 
-    public ITilePresenter GetTile(string id)
-    {
-        throw new NotImplementedException();
-    }
+    public ITilePresenter GetTile(string id) => _tiles.TryGetValue(id, out var presenter) ? presenter : null;
 
-    public bool IsValidPosition(Vector2Int position)
-    {
-        return _model.IsValidPosition(position);
-    }
+    public bool IsValidPosition(Vector2Int position) => _model.IsValidPosition(position);
 
     public bool IsLaserBlocking(IBlobPresenter blob, Vector2Int position)
     {

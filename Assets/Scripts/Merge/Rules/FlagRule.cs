@@ -10,7 +10,6 @@ public class FlagRule : IMergeRule
     {
         
         failReason = MergeFailReason.None;
-        UnityEngine.Debug.Log("FlagRule: " + ctx.Source.Color + " " + ctx.HitBlob.Color);
         if (ctx.HitBlob is not FlagBlob flag)
             return true;
         

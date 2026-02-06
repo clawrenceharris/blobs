@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Blobs.Core;
+using Blobs.Utilities;
 
 namespace Blobs.Views
 {
@@ -43,7 +44,7 @@ namespace Blobs.Views
             foreach (Blob blob in _boardModel.GetAllBlobs())
             {
                 Vector2Int gridPos = new(blob.GridPosition.x, blob.GridPosition.y);
-                Vector3 worldPos = _board.Layout.GridToWorldWithBlobOffset(gridPos);
+                Vector3 worldPos = GridUtility.GridToWorldWithBlobOffset(gridPos);
                 GameObject prefab = GetBlobPrefabFromType(blob.Type);
 
                 GameObject blobObj = Instantiate(prefab, worldPos, Quaternion.identity, transform);
@@ -57,7 +58,7 @@ namespace Blobs.Views
             foreach (Tile tile in _boardModel.GetAllTiles())
             {
                 Vector2Int gridPos = new(tile.GridPosition.x, tile.GridPosition.y);
-                Vector3 worldPos = _board.Layout.GridToWorld(gridPos);
+                Vector3 worldPos = GridUtility.GridToWorld(gridPos);
                 GameObject prefab = GetTilePrefabFromType(tile.Type);
 
                 GameObject tileObj = Instantiate(prefab, worldPos, Quaternion.identity, transform);

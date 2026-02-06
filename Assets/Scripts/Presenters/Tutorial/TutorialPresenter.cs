@@ -162,8 +162,8 @@ public class TutorialPresenter : MonoBehaviour
         _tutorialPointerSprite.DOFade(1, 0.3f);
 
         
-        Vector2 startPosition = GridUtility.GridToIso(startBlob.Model.GridPosition.x, startBlob.Model.GridPosition.y);
-        Vector2 endPosition = GridUtility.GridToIso(endBlob.Model.GridPosition.x, endBlob.Model.GridPosition.y);
+        Vector2 startPosition = GridUtility.GridToWorld(startBlob.Model.GridPosition.x, startBlob.Model.GridPosition.y);
+        Vector2 endPosition = GridUtility.GridToWorld(endBlob.Model.GridPosition.x, endBlob.Model.GridPosition.y);
         _tutorialPointerSprite.transform.position = new Vector3(startPosition.x + _offsetX, startPosition.y + _offsetY);
         _tutorialPointerSprite.transform.DOMove(new Vector3(endPosition.x + _offsetX, endPosition.y + _offsetY ), 0.8f).SetEase(Ease.InOutCirc);
         yield return new WaitForSeconds(1.2f);

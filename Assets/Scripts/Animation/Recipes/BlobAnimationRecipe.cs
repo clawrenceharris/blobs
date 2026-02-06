@@ -29,7 +29,9 @@ namespace Blobs.Animation
 
         [Header("Merge")]
         public float mergeDuration = 0.25f;
-       
+        public float mergeAnticipationDuration = 0.1f;
+        public float mergeAnticipationAmount = 0.85f;
+        public float mergeAnticipationStretchAmount = 1.08f;
 
        
         [Header("Resize")]
@@ -41,7 +43,7 @@ namespace Blobs.Animation
         [Header("Expressions (e.g. Shocked before Sigil clear)")]
         public  string beforeRemoveExpression;
         public  float beforeRemoveExpressionDuration = 0.2f;
-
-        
+        public float mergeOvershootDuration = 0.2f;
+        internal int mergeSquashAmount;
     }
 }

@@ -33,8 +33,8 @@ public class CameraController : MonoBehaviour
 
     void RepositionCamera(int width, int height)
     {
-        Vector2 topLeft = GridUtility.GridToIso(0, height - 1);
-        Vector2 bottomRight = GridUtility.GridToIso(width - 1, 0);
+        Vector2 topLeft = GridUtility.GridToWorld(0, height - 1);
+        Vector2 bottomRight = GridUtility.GridToWorld(width - 1, 0);
 
         Vector2 center = (topLeft + bottomRight) / 2f;
         transform.position = new Vector3(center.x, center.y, -10);

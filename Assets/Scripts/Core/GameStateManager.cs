@@ -15,10 +15,6 @@ public class GameStateManager : MonoBehaviour
         }
     }
    
-
-       private int _levelNumber;
-
-    public int LevelNumber => _levelNumber;
     private StateMachine _stateMachine;
     public event System.Action<IState> OnStateChanged;
     public event System.Action<int> OnMoveCountChanged;
@@ -46,7 +42,6 @@ public class GameStateManager : MonoBehaviour
     {
         _stateMachine.Initialize(initialState);
         MoveCount = 0;
-        _levelNumber = 1;
     }
 
     public void ChangeState(IState state)
@@ -66,11 +61,6 @@ public class GameStateManager : MonoBehaviour
         MoveCount++;
     }
 
-    
-    public void SetLevelNumber(int level)
-    {
-        _levelNumber = level;
-    }
 
     public void Reset()
     {

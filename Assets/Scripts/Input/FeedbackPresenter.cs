@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Blobs.Animation;
 using Blobs.Core.Merge;
 using Blobs.Input;
-using Blobs.Services;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;

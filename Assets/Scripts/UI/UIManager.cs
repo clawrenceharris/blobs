@@ -4,7 +4,6 @@ using TMPro;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using Blobs.Commands;
-using Blobs.Services;
 
 namespace Blobs.Core
 {
@@ -150,9 +149,12 @@ namespace Blobs.Core
 
         private void OnUndoClicked()
         {
-            
+
             // Play undo SFX
-            AudioManager.Instance.PlaySFX("undo");
+            if(AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySFX("undo");
+            }
 
             MergeInvoker.UndoMerge();
             Debug.Log("[UIManager] Undo executed successfully");

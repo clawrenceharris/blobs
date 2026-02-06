@@ -35,10 +35,10 @@ namespace Blobs.Input
         {
             if (!gate.Enabled) return;
 
-            if (IsUndoPressed()) {
-                Debug.Log("UNDO");
-
-                UndoPressed?.Invoke();}
+            if (IsUndoPressed())
+            {
+                UndoPressed?.Invoke();
+            }
 
             if (IsPointerPressDown())
             {
@@ -159,7 +159,6 @@ namespace Blobs.Input
             Ray ray = _cam.ScreenPointToRay(pointerPosition);
             RaycastHit2D hit = Physics2D.GetRayIntersection(ray, _rayDistance, _boardLayerMask);
             if (!hit.collider){
-                Debug.Log("No hit");
                 return false;
             };
 

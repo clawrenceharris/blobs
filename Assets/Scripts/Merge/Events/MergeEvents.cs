@@ -6,9 +6,9 @@ namespace Blobs.Core.Merge
 
     public sealed class MoveBlobEvent : IMergeEvent
     {
-        public string BlobId;
-        public Vector2Int From;
-        public Vector2Int To;
+        public string BlobId{ get; set; } 
+        public Vector2Int From { get; set; }
+        public Vector2Int To { get; set; }
 
         public void Execute(IBoardPresenter board)
         {
@@ -25,20 +25,20 @@ namespace Blobs.Core.Merge
 
     public sealed class MergeBlobsEvent : IMergeEvent
     {
-        public string BlobId;
-        public string HitBlobId;
+        public string BlobId { get; set; }
+        public string HitBlobId { get; set; }
         private Blob _cached; // to restore on undo
-        public Vector2Int StartPos { get; private set; }
+        public Vector2Int To { get; set; }
+
+        public Vector2Int From { get; set; }
 
         public void Execute(IBoardPresenter board)
         {
 
             _cached = board.GetBlob(HitBlobId)?.Model;
-            var source = board.GetBlob(BlobId);
-            if (_cached != null && source != null) {
-                StartPos = source.Model.GridPosition;
+            if (_cached != null) {
                 board.RemoveBlob(_cached.ID);
-                board.MoveBlob(source.Model.ID, _cached.GridPosition);
+                board.MoveBlob(BlobId, _cached.GridPosition);
             }
 
         }
@@ -46,8 +46,8 @@ namespace Blobs.Core.Merge
         public void Undo(IBoardPresenter board)
         {
             if (_cached != null) {
-                board.MoveBlob(BlobId, StartPos);
-                board.PlaceBlob(_cached);
+                board.MoveBlob(BlobId, From);
+                board.RespawnBlob(_cached.ID);
             
             }
         }
@@ -69,7 +69,7 @@ namespace Blobs.Core.Merge
 
     public sealed class RemoveBlobEvent : IMergeEvent
     {
-        public string BlobId;
+        public string BlobId { get; set; }
         private Blob _cached; // to restore on undo
 
         public void Execute(IBoardPresenter board)
@@ -81,7 +81,7 @@ namespace Blobs.Core.Merge
 
         public void Undo(IBoardPresenter board)
         {
-            if (_cached != null) board.PlaceBlob(_cached);
+            if (_cached != null) board.RespawnBlob(_cached.ID);
         }
 
         /// <summary>Returns the restored blob ID for undo animation (e.g. view lookup).</summary>
@@ -99,17 +99,17 @@ namespace Blobs.Core.Merge
 
     public sealed class SpawnBlobEvent : IMergeEvent
     {
-        public Blob BlobToSpawn;
+        public Blob BlobToSpawn { get; set; }
 
-        public void Execute(IBoardPresenter board) => board.PlaceBlob(BlobToSpawn);
+        public void Execute(IBoardPresenter board) => board.SpawnBlob(BlobToSpawn);
         public void Undo(IBoardPresenter board) => board.RemoveBlob(BlobToSpawn.ID);
     }
 
     public sealed class ResizeBlobEvent : IMergeEvent
     {
-        public string BlobId;
-        public BlobSize From;
-        public BlobSize To;
+        public string BlobId { get; set; }
+        public BlobSize From { get; set; }
+        public BlobSize To { get; set; }
 
         public void Execute(IBoardPresenter board)
         {
@@ -130,9 +130,9 @@ namespace Blobs.Core.Merge
     /// </summary>
     public sealed class ExpressionEvent : IMergeEvent
     {
-        public string BlobId;
-        public string ExpressionKey;
-        public float Duration;
+        public string BlobId { get; set; }
+        public string ExpressionKey { get; set; }
+        public float Duration { get; set; }
 
         public void Execute(IBoardPresenter board) { }
         public void Undo(IBoardPresenter board) { }
@@ -144,18 +144,18 @@ namespace Blobs.Core.Merge
     /// </summary>
     public sealed class PlayVfxEvent : IMergeEvent
     {
-        public string VfxKey;
+        public string VfxKey { get; set; }
 
         /// <summary>
         /// The ID of the blob that triggers this effect
         /// </summary>
-        public string BlobTriggerId; // Possibly null
+        public string BlobTriggerId { get; set; } // Possibly null
 
         /// <summary>
         /// The ID of the tile that triggers this effect
         /// </summary>
-        public string TileTriggerId; // Possibly null
-        public Vector2Int GridPos;
+        public string TileTriggerId { get; set; }    // Possibly null
+        public Vector2Int GridPos { get; set; } 
 
         public void Execute(IBoardPresenter board) { }
         public void Undo(IBoardPresenter board) { }

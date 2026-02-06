@@ -53,7 +53,6 @@ namespace Blobs.Commands
             }
 
             OnCommandExecuted?.Invoke();
-            Debug.Log($"[CommandManager] Command executed. History: {commandHistory.Count}");
         }
 
         /// <summary>
@@ -71,7 +70,6 @@ namespace Blobs.Commands
             command.Undo(this);
 
             OnCommandUndone?.Invoke();
-            Debug.Log($"[CommandManager] Undo performed. History: {commandHistory.Count}");
         }
 
        
@@ -82,7 +80,6 @@ namespace Blobs.Commands
         public void ClearHistory()
         {
             commandHistory.Clear();
-            Debug.Log("[CommandManager] History cleared");
         }
     }
 }

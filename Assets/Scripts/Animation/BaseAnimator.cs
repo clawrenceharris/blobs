@@ -34,7 +34,7 @@ namespace Blobs.Animation
             {
                 sequence.Kill();
             }
-
+            
             transform.DOKill();
         }
 

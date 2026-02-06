@@ -154,7 +154,7 @@ namespace Blobs.Animation
         #region Movement
         
         /// <summary>
-        /// Smoothly move to target position with arc
+        /// Smoothly move to target position
         /// </summary>
         public Sequence AnimateMoveTo(Vector3 targetPosition)
         {
@@ -162,22 +162,7 @@ namespace Blobs.Animation
             currentState = BlobState.Moving;
             _isAnimating = true;
 
-            Vector3 startPosition = transform.position;
-
-            // Create arc path
-            Vector3[] path = new Vector3[3];
-            path[0] = startPosition;
-            path[1] = (startPosition + targetPosition) / 2f + Vector3.up * _recipe.moveArcHeight;
-            path[2] = targetPosition;
-
-            _currentMoveTween = transform.DOPath(path, _recipe.moveDuration, PathType.CatmullRom)
-                .SetEase(_recipe.moveEase)
-                .OnComplete(() =>
-                {
-                    _isAnimating = false;
-                    _originalPosition = transform.localPosition;
-                    StartIdleAnimation();
-                });
+            _currentMoveTween = transform.DOMove(targetPosition, _recipe.moveDuration).SetEase(Ease.OutQuad);
             return DOTween.Sequence().Append(_currentMoveTween);
         }
 
@@ -287,28 +272,7 @@ namespace Blobs.Animation
 
         #endregion
 
-        #region Utility
-
-      
-
-        /// <summary>
-        /// Force reset to idle state
-        /// </summary>
-        public void ResetToIdle()
-        {
-            KillAllTweens();
-            transform.localScale = _originalScale;
-            transform.localRotation = Quaternion.identity;
-            transform.localPosition = _originalPosition;
-            _isAnimating = false;
-            currentState = BlobState.Idle;
-            StartIdleAnimation();
-        }
-
        
-        #endregion
-
-
 
 
     }

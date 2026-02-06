@@ -17,11 +17,13 @@ namespace Blobs.Core.Merge
                 fail = MergeFailReason.NoTargetInDirection;
                 return false;
             }
-            // Move happens (source slides to end)
+            // // Move happens (source slides to end)
             plan.Events.Add(new MergeBlobsEvent
             {
                 BlobId = ctx.Source.ID,
                 HitBlobId = ctx.HitBlob.ID,
+                To = ctx.HitBlob.GridPosition,
+                From = ctx.Source.GridPosition,
             });
 
 

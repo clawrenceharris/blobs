@@ -1274,7 +1274,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Click blob \u2192 Arrow keys to merge \u2192 Z to undo"
+  m_Text: 
 --- !u!222 &346644467
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5505,7 +5505,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Feedback Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ac6a46ecbbf7c7c4294f097fa7851f40, type: 2}
   m_sharedMaterial: {fileID: 7157891125187467766, guid: ac6a46ecbbf7c7c4294f097fa7851f40, type: 2}

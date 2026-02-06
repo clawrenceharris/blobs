@@ -1,5 +1,3 @@
-using Blobs.Commands;
-using Blobs.Input;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -53,8 +51,7 @@ namespace Blobs.Core.Merge
             var result = mergeResolver.TryBuildPlan(_board, new MergeRequest(sourceBlobId, targetBlobId), out var plan);
             if (!result.Ok)
                 return MergeResolveResult.Fail(result.FailReason);
-
-            MergeInvoker.ExecuteMerge(plan, _board);
+          
             return MergeResolveResult.SuccessWithPlan(plan);
         }
     }

@@ -1,9 +1,13 @@
 using System.Collections.Generic;
-using Blobs.Commands;
 using UnityEngine;
 
 namespace Blobs.Core.Merge
 {
+    public interface IAction
+    {
+        void Execute();
+        void Undo();
+    }
     /// <summary>
     /// Command that executes a MergePlan (new event-based shape) on the board model.
     /// Execute: runs Plan.Events then Plan.DeferredEvents.
@@ -23,7 +27,7 @@ namespace Blobs.Core.Merge
             _board = board;
         }
 
-        public void Execute(CommandManager context)
+        public void Execute()
         {
             foreach (var e in _plan.Events)
                 e.Execute(_board);
@@ -31,7 +35,7 @@ namespace Blobs.Core.Merge
                 e.Execute(_board);
         }
 
-        public void Undo(CommandManager context)
+        public void Undo()
         {
             for (int i = _plan.DeferredEvents.Count - 1; i >= 0; i--)
                 _plan.DeferredEvents[i].Undo(_board);

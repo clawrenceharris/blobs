@@ -19,7 +19,6 @@ namespace Blobs.Animation
             Merging
         }
 
-        private BlobAnimationRecipe _recipe;
 
         
         private Sequence _idleSequence;
@@ -27,24 +26,18 @@ namespace Blobs.Animation
         private Sequence _selectionSequence;
 
         public override List<Sequence> Sequences => new() { _idleSequence, _selectionSequence };
-       
+        private BlobAnimationRecipe Recipe => GetRecipe<BlobAnimationRecipe>(_blobView.Model.Type);
         private BlobState currentState = BlobState.Idle;
         public BlobState CurrentState => currentState;
 
         protected BlobView _blobView;
 
-        protected void SetRecipe(BlobType blobType)
-        {
-            _recipe = AnimationRecipeProvider.Instance.GetRecipe<BlobAnimationRecipe>(blobType);
-        }
         public override void Initialize()
         {
             base.Initialize();
             currentState = BlobState.Idle;
             _blobView = GetComponent<BlobView>();
             _renderer = _blobView.Visuals.SpriteRenderer;
-
-             SetRecipe(_blobView.Model.Type);
 
         }
         #region State Animations
@@ -68,16 +61,16 @@ namespace Blobs.Animation
 
             // Breathing: scale pulse
             _idleSequence.Append(
-                transform.DOScale(_originalScale * (1f + _recipe.idleScaleAmount), _recipe.idleScaleDuration / 2f)
+                transform.DOScale(_originalScale * (1f + Recipe.idleScaleAmount), Recipe.idleScaleDuration / 2f)
                     .SetEase(Ease.InOutSine)
             );
             _idleSequence.Append(
-                transform.DOScale(_originalScale * (1f - _recipe.idleScaleAmount * 0.5f), _recipe.idleScaleDuration / 2f)
+                transform.DOScale(_originalScale * (1f - Recipe.idleScaleAmount * 0.5f), Recipe.idleScaleDuration / 2f)
                     .SetEase(Ease.InOutSine)
             );
 
             // Also add subtle float movement
-            transform.DOLocalMoveY(_originalPosition.y + _recipe.idleFloatAmount, _recipe.idleFloatDuration / 2f)
+            transform.DOLocalMoveY(_originalPosition.y + Recipe.idleFloatAmount, Recipe.idleFloatDuration / 2f)
                 .SetEase(Ease.InOutSine)
                 .SetLoops(-1, LoopType.Yoyo);
 
@@ -91,9 +84,9 @@ namespace Blobs.Animation
 
         public virtual Sequence StartSelectionLoop()
         {
-            float selectionSquishDuration = _recipe.selectionSquishDuration;
-            float selectionSquishAmount = _recipe.selectionSquishAmount;
-            float selectionStretchAmount = _recipe.selectionStretchAmount;
+            float selectionSquishDuration = Recipe.selectionSquishDuration;
+            float selectionSquishAmount = Recipe.selectionSquishAmount;
+            float selectionStretchAmount = Recipe.selectionStretchAmount;
 
 
             // Kill any existing loop
@@ -131,7 +124,7 @@ namespace Blobs.Animation
         {
             // Kill the loop and smoothly blend back to base scale
             _selectionSequence.Kill();
-            transform.DOScale(_originalScale, _recipe.selectionSquishDuration * 0.5f).SetEase(Ease.OutQuad);
+            transform.DOScale(_originalScale, Recipe.selectionSquishDuration * 0.5f).SetEase(Ease.OutQuad);
         }
         _selectionSequence = null;
     }
@@ -162,7 +155,7 @@ namespace Blobs.Animation
             currentState = BlobState.Moving;
             _isAnimating = true;
 
-            _currentMoveTween = transform.DOMove(targetPosition, _recipe.moveDuration).SetEase(Ease.OutQuad);
+            _currentMoveTween = transform.DOMove(targetPosition, Recipe.moveDuration).SetEase(Ease.OutQuad);
             return DOTween.Sequence().Append(_currentMoveTween);
         }
 
@@ -178,7 +171,7 @@ namespace Blobs.Animation
             Sequence spawnSeq = DOTween.Sequence();
 
             spawnSeq.Append(
-                transform.DOScale(targetScale, _recipe.spawnDuration * 0.4f)
+                transform.DOScale(targetScale, Recipe.spawnDuration * 0.4f)
                     .SetEase(Ease.OutBounce)
             );
             return spawnSeq;
@@ -214,17 +207,17 @@ namespace Blobs.Animation
 
             // Stretch effect
             mergeSeq.Append(
-                transform.DOScale(new Vector3(_originalScale.x * 1.3f, _originalScale.y * 0.7f, _originalScale.z), _recipe.mergeDuration * 0.3f)
+                transform.DOScale(new Vector3(_originalScale.x * 1.3f, _originalScale.y * 0.7f, _originalScale.z), Recipe.mergeDuration * 0.3f)
                     .SetEase(Ease.OutQuad)
             );
 
             // Move to target while shrinking
             mergeSeq.Append(
-                transform.DOMove(targetPosition, _recipe.mergeDuration * 0.7f)
+                transform.DOMove(targetPosition, Recipe.mergeDuration * 0.7f)
                     .SetEase(Ease.InQuad)
             );
             mergeSeq.Join(
-                transform.DOScale(Vector3.zero, _recipe.mergeDuration * 0.7f)
+                transform.DOScale(Vector3.zero, Recipe.mergeDuration * 0.7f)
                     .SetEase(Ease.InQuad)
             );
 

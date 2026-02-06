@@ -7,6 +7,7 @@ namespace Blobs.Animation
     [RequireComponent(typeof(TileView))]
     public class TileAnimator : BaseAnimator
     {
+        
         protected TileView _view;
 
         public override void Initialize()

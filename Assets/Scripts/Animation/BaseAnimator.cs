@@ -11,7 +11,10 @@ namespace Blobs.Animation
         protected Vector3 _originalPosition;
         private AnimationRecipe _recipe;
 
-
+        protected T GetRecipe<T>(BlobType type) where T : AnimationRecipe
+        {
+            return AnimationRecipeProvider.Instance.GetBlobRecipe<T>(type);
+        }
         public virtual List<Sequence> Sequences { get; } = new();
          protected bool _isAnimating;
 
@@ -22,12 +25,9 @@ namespace Blobs.Animation
         {
             _originalScale = transform.localScale;
             _originalPosition = transform.localPosition;
-            SetRecipe();
-        }
-        protected virtual void SetRecipe(BlobType? blobType = null) {
             _recipe = AnimationRecipeProvider.Instance.DefaultRecipe;
-
         }
+        
         protected void KillAllTweens()
         {
             foreach (var sequence in Sequences)

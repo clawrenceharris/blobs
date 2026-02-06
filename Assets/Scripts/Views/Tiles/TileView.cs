@@ -36,9 +36,4 @@ public class TileView : MonoBehaviour
         _visuals.SpriteRenderer.sortingOrder = -(int)(transform.localPosition.y * 100) + (int)transform.localPosition.x;
         gameObject.name = $"{tile.Type} - {tile.GridPosition}";
     }
-
-    internal void SetRotationFromDirection(Vector2Int dir)
-    {
-        throw new NotImplementedException();
-    }
 }

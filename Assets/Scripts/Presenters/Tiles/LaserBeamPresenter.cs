@@ -15,9 +15,9 @@ public class LaserBeamPresenter : MonoBehaviour
             laser.LinkedLaser = (LaserTile)board.GetTile(laser.LinkedLaserId);
 
             Vector2Int dir = laser.Direction;
-            // LaserTilePresenter presenter = board.GetTile(laser.ID);
-            // presenter.View.SetRotationFromDirection(dir);
-            // SpawnBeamBetween(presenter.View, laser.GridPosition, laser.LinkedLaser.GridPosition, laser.LaserColor);
+            ITilePresenter presenter = board.GetTile(laser.ID);
+            (presenter.View as LaserTileView).SetRotationFromDirection(dir);
+            SpawnBeamBetween(presenter.View as LaserTileView, laser.GridPosition, laser.LinkedLaser.GridPosition, laser.LaserColor);
 
         }
     }

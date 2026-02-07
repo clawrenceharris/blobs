@@ -30,8 +30,6 @@ public class FeedbackPresenter : MonoBehaviour
         {MergeFailReason.TileBlocked, "Path is blocked!" },
         {MergeFailReason.NotAligned, "Blobs must share the same column or row to merge"},
         {MergeFailReason.FlagRejected, "Flags are only mergable with a single remaining blob of the same color!"}
-
-
     };
 
     private void Awake()

@@ -61,15 +61,11 @@ public class GameStateManager : MonoBehaviour
         MoveCount++;
     }
 
-
     public void Reset()
     {
         _stateMachine.SetState(null);
         MoveCount = 0;
         
     }
-
-
-
 
 }

@@ -25,11 +25,11 @@ public class TutorialModel
     }
     public IBlobPresenter GetStartBlobAtStep(TutorialStep step)
     {
-        return _board.GetBlobAt(step.startX, step.startY);
+        return _board.GetBlobAt(step.StartX, step.StartY);
     }
     public IBlobPresenter GetEndBlobAtStep(TutorialStep step)
     {
-        return _board.GetBlobAt(step.endX, step.endY);
+        return _board.GetBlobAt(step.EndX, step.EndY);
     }
     public bool IsValidMove(Blob source, Blob target)
     {

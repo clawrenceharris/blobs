@@ -10,29 +10,49 @@ public class BlobFactory
     /// Creates a Blob model from editor/scriptable level data (BlobSpawnData).
     /// Uses common fields plus optional Properties list for type-specific data.
     /// </summary>
-    public static Blob CreateBlobFromSpawnData(BlobSpawnData spawn)
+    public static Blob CreateBlobModel(BlobSpawnData data)
     {
-        if (spawn == null) return null;
-        BlobType type = spawn.Type;
-        var data = new BlobData
+        
+        if (data.Properties != null)
         {
-            Type = type,
-            X = spawn.GridPosition.x,
-            Y = spawn.GridPosition.y
-        };
-        data.SetProperty(BlobData.Property.Color, spawn.Color);
-        data.SetProperty(BlobData.Property.Size, spawn.Size);
-        if (spawn.Type == BlobType.Trail)
-            data.SetProperty(BlobData.Property.TrailColor,spawn.TrailColor);
-        if (spawn.Properties != null)
-        {
-            foreach (var p in spawn.Properties)
+            foreach (var p in data.Properties)
             {
-                if (!string.IsNullOrEmpty(p?.Key))
-                    data.SetProperty(p.Key, p.Value ?? "");
+                if (!string.IsNullOrEmpty(p.Key))
+                    data.SetProperty(p.Key, p.Value);
             }
         }
-        return CreateBlobModel(data);
+
+
+
+        switch (data.Type)
+        {
+            case BlobType.Normal:
+                return new NormalBlob(data.Color, data.Size, data.GridPosition);
+
+            case BlobType.Ghost:
+                return new GhostBlob(data.GridPosition);
+
+            case BlobType.Enemy:
+                return new EnemyBlob(data.Color, data.GridPosition);
+
+            case BlobType.Bomb:
+                return new BombBlob(data.GridPosition);
+
+            case BlobType.Trail:
+                BlobColor trailColor = data.GetProperty<BlobColor>(LevelDataKeys.Properties.TrailColor);
+                return new TrailBlob(data.Color, data.Size, trailColor, data.GridPosition);
+
+            case BlobType.Flag:
+                return new FlagBlob(data.Color, data.GridPosition);
+
+            case BlobType.Switch:
+                return new SwitchBlob(data.Color, data.GridPosition);
+
+            case BlobType.Rock:
+                return new RockBlob(data.GridPosition);
+
+            default: throw new ArgumentException();
+        }
     }
 
     public static BlobPresenter CreateBlobPresenter(Blob model, BlobView view)
@@ -43,48 +63,7 @@ public class BlobFactory
             default: return new BlobPresenter(model, view);
         }
     }
-    public static Blob CreateBlobModel(BlobData data)
-    {
-        int x = data.X;
-        int y = data.Y;
-        BlobType type = data.Type;
-        BlobColor color = data.GetProperty<BlobColor>(BlobData.Property.Color);
-        BlobSize size = data.GetProperty<BlobSize>(BlobData.Property.Size);
-        BlobColor trailColor = data.GetProperty<BlobColor>(BlobData.Property.TrailColor);
-
-
-        Vector2Int position = new(x, y);
-
-
-        switch (type)
-        {
-            case BlobType.Normal:
-                return new NormalBlob(color, size, position);
-
-            case BlobType.Ghost:
-                return new GhostBlob(position);
-
-            case BlobType.Enemy:
-                return new EnemyBlob(color, position);
-
-            case BlobType.Bomb:
-                return new BombBlob(position);
-
-            case BlobType.Trail:
-                return new TrailBlob(color, size, trailColor, position);
-
-            case BlobType.Flag:
-                return new FlagBlob(color, position);
-
-            case BlobType.Switch:
-                return new SwitchBlob(color, position);
-
-            case BlobType.Rock:
-                return new RockBlob(position);
-
-            default: throw new ArgumentException();
-        }
-    }
+    
 
 }
 

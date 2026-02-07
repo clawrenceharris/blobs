@@ -85,55 +85,33 @@ public class LevelLoader : MonoBehaviour
 
 
 [Serializable]
-public class BlobData
+public class SpawnData
 {
-    public int X;
-    public int Y;
-    public BlobType Type;
+    public Vector2Int GridPosition;   
     
-    public enum Property{
-        Color,
-        Type,
-        Size,
-        TrailColor,
-        Position,
-        Index
-    }
     // Dictionary to hold dynamic properties
-    private readonly Dictionary<Property, object> properties = new();
+    public readonly Dictionary<string, object> Properties = new();
 
-    public T GetProperty<T>(Property key)
+    public T GetProperty<T>(string key)
     {
-        if (properties.ContainsKey(key))
+        if (Properties.ContainsKey(key))
         {
-            return (T)properties[key];
+            return (T)Properties[key];
         }
         return default;
     }
 
-    public void SetProperty<T>(Property key, T value)
+    public void SetProperty<T>(string key, T value)
     {
-        if (properties.ContainsKey(key))
+        if (Properties.ContainsKey(key))
         {
-            properties[key] = value;
+            Properties[key] = value;
         }
         else
         {
-            properties.Add(key, value);
+            Properties.Add(key, value);
         }
     }
 
-    /// <summary>
-    /// Set a property by string key (e.g. from BlobSpawnData.Properties).
-    /// Supports: color, c, size, s, trailColor, tc.
-    /// </summary>
-    public void SetProperty(string key, string value)
-    {
-        if (string.IsNullOrEmpty(key)) return;
-        var k = key.Trim().ToLowerInvariant();
-        if (k == "color" || k == "c") SetProperty(Property.Color, value);
-        else if (k == "size" || k == "s") SetProperty(Property.Size, value);
-        else if (k == "trailcolor" || k == "tc") SetProperty(Property.TrailColor, value);
-    }
 }
 

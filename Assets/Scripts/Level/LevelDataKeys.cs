@@ -7,12 +7,7 @@ using System.Collections.Generic;
 
 public static class LevelDataKeys
 {
-    public const string Type = "t";
-    public const string Color = "c";
-    public const string Size = "s";
-    public const string X = "x";
-
-    public const string Y = "y";
+   
 
     public const string Width = "width";
     public const string LevelNum = "levelNum";
@@ -27,6 +22,15 @@ public static class LevelDataKeys
     public static string TutorialSteps  = "tutorialSteps";
     public static string IsTutorial = "isTutorial";
 
+    public static class Properties{
+        public const string Color = "color";
+        public const string Type = "type";
+        public const string Size = "size";
+        public const string TrailColor = "trailColor";
+        public const string Position = "position";
+        public const string Index = "index";
+        public static string LaserId = "id";
+    }
     public static class Types
     {
         public const string NormalBlob = "nb";
@@ -41,7 +45,7 @@ public static class LevelDataKeys
 
         public const string NormalTile = "nt";
         public const string SpikeTile = "st";
-      
+
         public const string SigilTile = "sgt";
 
 

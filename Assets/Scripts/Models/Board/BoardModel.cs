@@ -109,19 +109,19 @@ public class BoardModel
 
         foreach (var link in level.LaserLinks)
         {
-            if (_tilesById.TryGetValue(link.idA, out Tile tileA) &&
-                _tilesById.TryGetValue(link.idB, out Tile tileB) &&
+            if (_tilesById.TryGetValue(link.IdA, out Tile tileA) &&
+                _tilesById.TryGetValue(link.IdB, out Tile tileB) &&
                 tileA is LaserTile laserA &&
                 tileB is LaserTile laserB)
             {
-                laserA.LinkedLaserId = link.idB;
-                laserB.LinkedLaserId = link.idA;
+                laserA.LinkedLaserId = link.IdB;
+                laserB.LinkedLaserId = link.IdA;
                 laserA.LinkedLaser = laserB;
                 laserB.LinkedLaser = laserA;
             }
             else
             {
-                Debug.LogWarning($"Invalid laser link between {link.idA} and {link.idB}");
+                Debug.LogWarning($"Invalid laser link between {link.IdA} and {link.IdB}");
             }
         }
     }

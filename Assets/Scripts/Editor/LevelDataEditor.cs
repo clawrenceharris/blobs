@@ -16,7 +16,7 @@ namespace Blobs.Editor
         private const float SPACING_LARGE = 15f;
         private const float FIELD_WIDTH_SMALL = 80f;
         private const float FIELD_WIDTH_MEDIUM = 150f;
-        private const float FIELD_WIDTH_LARGE = 200f;
+        private const float FIELD_WIDTH_LARGE = 250f;
         private const float BUTTON_HEIGHT = 22f;
         private const float GRID_MAX_HEIGHT = 400f;
         
@@ -261,7 +261,7 @@ namespace Blobs.Editor
         
         private new void DrawHeader()
         {
-            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.BeginVertical();
             
             string levelName = string.IsNullOrEmpty(levelData.LevelName) ? "Unnamed Level" : levelData.LevelName;
             EditorGUILayout.LabelField($"Level {levelData.LevelNumber}: {levelName}", EditorStyleConfig.GetHeaderStyle());
@@ -272,7 +272,7 @@ namespace Blobs.Editor
             EditorGUILayout.LabelField($"{levelData.Width}x{levelData.Height} | {blobCount} blobs", 
                 EditorStyles.miniLabel, GUILayout.Width(120));
             
-            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
             
             EditorGUILayout.Space(SPACING_SMALL);
             Rect separatorRect = EditorGUILayout.GetControlRect(false, 2);
@@ -301,8 +301,8 @@ namespace Blobs.Editor
                     
                     EditorGUILayout.BeginHorizontal();
                     EditorGUILayout.BeginVertical();
-                    DrawIntFieldSafe(GetPropertySafe("Width"), "Width", FIELD_WIDTH_MEDIUM);
-                    DrawIntFieldSafe(GetPropertySafe("Height"), "Height", FIELD_WIDTH_MEDIUM);
+                    DrawIntFieldSafe(GetPropertySafe("Width"), "Width");
+                    DrawIntFieldSafe(GetPropertySafe("Height"), "Height");
                     EditorGUILayout.EndVertical();
                     EditorGUILayout.Space(SPACING_SMALL);
                     
@@ -335,20 +335,21 @@ namespace Blobs.Editor
                         EditorGUILayout.Space(SPACING_SMALL);
                         
                         // Scoring fields in two columns
-                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.BeginVertical();
                         DrawPropertyFieldSafe(scoringProp.FindPropertyRelative("BaseScore"), "Base Score", FIELD_WIDTH_MEDIUM);
+
                         DrawPropertyFieldSafe(scoringProp.FindPropertyRelative("MovePenalty"), "Move Penalty", FIELD_WIDTH_MEDIUM);
-                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginVertical();
                         
                         EditorGUILayout.Space(SPACING_SMALL);
                         
                         DrawPropertyFieldSafe(scoringProp.FindPropertyRelative("StarThresholds"), "Star Thresholds");
                         EditorGUILayout.Space(SPACING_SMALL);
                         
-                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.BeginVertical();
                         DrawPropertyFieldSafe(scoringProp.FindPropertyRelative("GemBonus"), "Gem Bonus", FIELD_WIDTH_MEDIUM);
                         DrawPropertyFieldSafe(scoringProp.FindPropertyRelative("UndoPenalty"), "Undo Penalty", FIELD_WIDTH_MEDIUM);
-                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.EndVertical();
                     }
                     else
                     {
@@ -731,19 +732,20 @@ namespace Blobs.Editor
                         Color = selectedBlobColor,
                         Size = BlobSize.Normal
                     });
+                    // Ensure a tile exists at blob position (default Normal unless already set)
+                    levelData.Tiles ??= new System.Collections.Generic.List<TileSpawnData>();
+                    if (GetTileAt(pos) == null)
+                        levelData.Tiles.Add(new TileSpawnData { GridPosition = pos, Type = TileType.Normal });
                 }
                 else
                 {
                     levelData.Tiles ??= new System.Collections.Generic.List<TileSpawnData>();
                     levelData.Tiles.RemoveAll(t => t.GridPosition == pos);
-                    if (selectedTileType != TileType.Normal)
+                    levelData.Tiles.Add(new TileSpawnData
                     {
-                        levelData.Tiles.Add(new TileSpawnData
-                        {
-                            GridPosition = pos,
-                            Type = selectedTileType
-                        });
-                    }
+                        GridPosition = pos,
+                        Type = selectedTileType
+                    });
                 }
             }
             else if (mouseButton == 1) // Right click - remove

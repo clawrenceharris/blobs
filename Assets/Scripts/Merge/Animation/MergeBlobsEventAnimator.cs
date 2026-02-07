@@ -44,7 +44,7 @@ namespace Blobs.Merge.Animation
                 seq.Append(transform.DOScale(squishScale, anticipationDuration));
             }
 
-            var mergeTween = presenter.MoveToGrid(evt.To).AppendInterval(0.2f).Join(hitBlobPresenter.Remove());
+            var mergeTween = presenter.MoveToGrid(evt.To).AppendInterval(0.2f).Join(hitBlobPresenter.Merge());
 
               
             return mergeTween;

@@ -7,27 +7,26 @@ using UnityEngine;
 public class LevelData : ScriptableObject
 {
     public int LevelNumber;
+    public string LevelName;
+
     public int Width;
     public int Height;
     public Scoring Scoring;
     public bool IsTutorial;
-    [NonReorderable]
-    public List<TutorialStep> TutorialSteps = new();
+    [NonReorderable] public TutorialStep[] TutorialSteps;
     public List<BlobSpawnData> Blobs;
     public List<TileSpawnData> Tiles;
     public int MinMoves;
 
-    [NonReorderable]
-    public List<LaserLink> LaserLinks;
+    [NonReorderable] public List<LaserLink> LaserLinks;
 
-    public string LevelName;
     
 }
 
 public class LaserLink {
-    public string idA;
-    public string idB;
-    public string color;
+    public string IdA;
+    public string IdB;
+    public string Color;
 }
 
 [Serializable]
@@ -48,65 +47,28 @@ public class Scoring
 [Serializable]
 public class TutorialStep
 {
-    public string topText;
-    public string bottomText;
-    public int startX;
-    public int startY;
-    public int endX;
-    public int endY;
+    [TextArea(3, 10)] public string TopText;
+    [TextArea(3, 10)] public string BottomText;
+    public int StartX;
+    public int StartY;
+    public int EndX;
+    public int EndY;
 }
 
-
-[System.Serializable]
-public class TileJSON
-{
-    public string type;
-    public int x;
-    public int y;
-    public string color;
-
-}
 
 [Serializable]
-public class BlobJSON
+public class TileSpawnData : SpawnData
 {
-    public string type;
-    public string color;
-    public int x;
-    public int y;
-    public string trailColor;
-    public int size;
-
-}
-
-[Serializable]
-public class StringKeyValue
-{
-    public string Key;
-    public string Value;
-}
-
-[Serializable]
-public class TileSpawnData
-{
-    public Vector2Int GridPosition;
     public TileType Type = TileType.Normal;
-    [Tooltip("Optional type-specific data (e.g. id, color for Laser)")]
-    public List<StringKeyValue> Properties = new();
 }
 
 [Serializable]
-public class BlobSpawnData
+public class BlobSpawnData :SpawnData
 {
-    public Vector2Int GridPosition;
     public BlobType Type = BlobType.Normal;
     public BlobColor Color = BlobColor.Pink;
     [Tooltip("Optional: Size for certain blob types")]
     public BlobSize Size = BlobSize.Normal;
-    [Tooltip("Optional: Trail color for TrailBlob")]
-    public BlobColor TrailColor = BlobColor.Pink;
-    [Tooltip("Optional: Type-specific keys (color, size, trailColor, etc.) for JSON-style overrides")]
-    public List<StringKeyValue> Properties = new();
 }
 
 

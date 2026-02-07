@@ -1,20 +1,14 @@
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using System;
-using UnityEngine.UI;
-using System.Collections;
-using System.Linq;
-using Blobs.Input;
 using Blobs.Core.Merge;
-using Blobs.Core;
 
 [RequireComponent(typeof(GameStateManager))]
 public class GameManager : MonoBehaviour
 
 
 {
-    public int LevelNum;
+    public int LevelNumber => _startingLevel.LevelNumber;
     private LevelData _startingLevel;
     public bool IsHighscore { get; private set; }
     private GameStateManager _stateManager;
@@ -116,13 +110,12 @@ public class GameManager : MonoBehaviour
     public void StartLevel(LevelData level)
     {
         _startingLevel = level;
-        _stateManager.SetLevelNumber(level.LevelNumber);
         _board.Initialize(level);
 
         _winConditionSystem = new WinConditionSystem();
         _stateManager.ChangeState(new PlayingState(_stateManager));
 
-        // _tutorial.TryStartTutorial(_board, _startingLevel);
+        _tutorial.TryStartTutorial(_board, _startingLevel);
         
         
 

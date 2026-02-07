@@ -107,7 +107,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
         {
             foreach (var spawn in level.Blobs)
             {
-                var blob = BlobFactory.CreateBlobFromSpawnData(spawn);
+                var blob = BlobFactory.CreateBlobModel(spawn);
                 if (blob != null)
                     blobs.Add(blob);
             }
@@ -118,18 +118,40 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
     public List<Tile> CreateTiles(LevelData level)
     {
         var tiles = new List<Tile>();
-
-        if (level.Tiles != null)
+        var tileSpawns = BuildTileSpawns(level);
+        Debug.Log($"Creating {tileSpawns.Count} tiles");
+        foreach (var spawn in tileSpawns)
         {
-            foreach (var spawn in level.Tiles)
+            Debug.Log($"Creating tile: {spawn.Type} at {spawn.GridPosition}");
+            var tile = TileFactory.CreateTileModel(spawn);
+            if (tile != null)
+                tiles.Add(tile);
+            else
             {
-                var tile = TileFactory.CreateTileFromSpawnData(spawn);
-                if (tile != null)
-                    tiles.Add(tile);
+                Debug.LogError($"Failed to create tile: {spawn.Type} at {spawn.GridPosition}");
             }
         }
-        
         return tiles;
+    }
+
+    /// <summary>
+    /// Builds the full list of tile spawns: use level.Tiles when present, otherwise one Normal per blob.
+    /// When level.Tiles exists, ensures every blob position has a tile (adds Normal if missing).
+    /// </summary>
+    private static List<TileSpawnData> BuildTileSpawns(LevelData level)
+    {
+        if (level?.Blobs == null) return new List<TileSpawnData>();
+
+        var list = level.Tiles != null && level.Tiles.Count > 0
+            ? new List<TileSpawnData>(level.Tiles)
+            : new List<TileSpawnData>();
+
+        foreach (var b in level.Blobs)
+        {
+            if (list.Exists(t => t.GridPosition == b.GridPosition)) continue;
+            list.Add(new TileSpawnData { GridPosition = b.GridPosition, Type = TileType.Normal });
+        }
+        return list;
     }
     #endregion
 

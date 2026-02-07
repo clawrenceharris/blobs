@@ -145,18 +145,40 @@ namespace Blobs.Animation
         #endregion
 
         #region Movement
-        
+
         /// <summary>
         /// Smoothly move to target position
         /// </summary>
         public Sequence AnimateMoveTo(Vector3 targetPosition)
         {
+            // KillAllTweens();
+            // currentState = BlobState.Moving;
+            // _isAnimating = true;
+
+            // _currentMoveTween = transform.DOMove(targetPosition, Recipe.moveDuration).SetEase(Ease.OutQuad);
+            // return DOTween.Sequence().Append(_currentMoveTween);
             KillAllTweens();
             currentState = BlobState.Moving;
             _isAnimating = true;
 
-            _currentMoveTween = transform.DOMove(targetPosition, Recipe.moveDuration).SetEase(Ease.OutQuad);
-            return DOTween.Sequence().Append(_currentMoveTween);
+            Vector3 startPosition = transform.position;
+
+            // Create arc path
+            Vector3[] path = new Vector3[3];
+            path[0] = startPosition;
+            path[1] = (startPosition + targetPosition) / 2f + Vector3.up * Recipe.moveArcHeight;
+            path[2] = targetPosition;
+
+            _currentMoveTween = transform.DOPath(path, Recipe.moveDuration, PathType.CatmullRom)
+                .SetEase(Recipe.moveEase)
+                .OnComplete(() =>
+                {
+                    _isAnimating = false;
+                    _originalPosition = transform.localPosition;
+                    StartIdleAnimation();
+                });     
+
+                return DOTween.Sequence().Append(_currentMoveTween);
         }
 
         #endregion

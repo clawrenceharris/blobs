@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Level_1
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
   LevelNumber: 1
+  LevelName: 
   Width: 3
   Height: 3
   Scoring:
@@ -23,58 +24,34 @@ MonoBehaviour:
     UndoPenalty: 0
   IsTutorial: 1
   TutorialSteps:
-  - topText: 
-    bottomText: 
-    startX: 0
-    startY: 0
-    endX: 0
-    endY: 0
-  - topText: 
-    bottomText: 
-    startX: 0
-    startY: 0
-    endX: 0
-    endY: 0
-  - topText: 
-    bottomText: 
-    startX: 0
-    startY: 0
-    endX: 0
-    endY: 0
+  - TopText: Welcome to Blobs. The goal of the game is to clear all blobs off the
+      board. You can clear a Blob by merging it with another one of a different color
+      as long as they are on a shared row or column.
+    BottomText: Try merging the purple Blob onto the one next to it.
+    StartX: 0
+    StartY: 2
+    EndX: 2
+    EndY: 2
+  - TopText: "See that flag pole? That\u2019s a Flag Blob. Flag Blobs can lead to
+      a win when merged, as long as there are no other Blobs on the board."
+    BottomText: Flags can't initiate a merge, but any normal Blob of the same color
+      that is merged with it will clear. Try it out!
+    StartX: 2
+    StartY: 2
+    EndX: 2
+    EndY: 0
   Blobs:
   - GridPosition: {x: 0, y: 2}
     Type: 1
-    Color: 0
-    Size: 2
-    TrailColor: 3
-    Properties: []
-  - GridPosition: {x: 2, y: 2}
-    Type: 1
     Color: 3
     Size: 2
-    TrailColor: 3
-    Properties: []
   - GridPosition: {x: 2, y: 0}
     Type: 4
-    Color: 0
+    Color: 3
     Size: 2
-    TrailColor: 3
-    Properties: []
-  Tiles:
-  - GridPosition: {x: 0, y: 2}
-    Type: 0
-    Properties: []
-  - GridPosition: {x: 1, y: 2}
-    Type: 0
-    Properties: []
   - GridPosition: {x: 2, y: 2}
-    Type: 0
-    Properties: []
-  - GridPosition: {x: 2, y: 1}
-    Type: 0
-    Properties: []
-  - GridPosition: {x: 2, y: 0}
-    Type: 0
-    Properties: []
+    Type: 1
+    Color: 2
+    Size: 2
+  Tiles: []
   MinMoves: 0
-  LevelName: Tutorial #1

@@ -162,13 +162,13 @@ namespace Blobs.Animation
             _isAnimating = true;
 
             Vector3 startPosition = transform.position;
-
+           
             // Create arc path
             Vector3[] path = new Vector3[3];
             path[0] = startPosition;
             path[1] = (startPosition + targetPosition) / 2f + Vector3.up * Recipe.moveArcHeight;
             path[2] = targetPosition;
-
+            Debug.Log("Path: " + path[0] + " " + path[1] + " " + path[2]);
             _currentMoveTween = transform.DOPath(path, Recipe.moveDuration, PathType.CatmullRom)
                 .SetEase(Recipe.moveEase)
                 .OnComplete(() =>

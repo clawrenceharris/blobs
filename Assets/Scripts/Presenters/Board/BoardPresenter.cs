@@ -119,17 +119,12 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
     {
         var tiles = new List<Tile>();
         var tileSpawns = BuildTileSpawns(level);
-        Debug.Log($"Creating {tileSpawns.Count} tiles");
         foreach (var spawn in tileSpawns)
         {
-            Debug.Log($"Creating tile: {spawn.Type} at {spawn.GridPosition}");
             var tile = TileFactory.CreateTileModel(spawn);
             if (tile != null)
                 tiles.Add(tile);
-            else
-            {
-                Debug.LogError($"Failed to create tile: {spawn.Type} at {spawn.GridPosition}");
-            }
+            
         }
         return tiles;
     }

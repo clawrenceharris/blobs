@@ -49,12 +49,10 @@ public class TutorialModel
     public void NextTutorialStep()
     {
         _index = Mathf.Clamp(_index + 1, 0, _tutorialSteps.Length - 1);
-        Debug.Log("Next tutorial step: " + _index);
     }
 
     public void PreviousTutorialStep()
     {
         _index = Mathf.Clamp(_index - 1, 0, _tutorialSteps.Length - 1);
-        Debug.Log("Previous tutorial step: " + _index);
     }
 }

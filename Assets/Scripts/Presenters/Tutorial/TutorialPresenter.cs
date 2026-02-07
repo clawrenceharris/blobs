@@ -121,7 +121,6 @@ public class TutorialPresenter : MonoBehaviour
     private IEnumerator UpdateMessages()
     {
         yield return FadeOut();
-        Debug.Log("Text: " + _model.CurrentStep.TopText);
         _topText.text = _model.CurrentStep.TopText;
         _bottomText.text = _model.CurrentStep.BottomText;
 

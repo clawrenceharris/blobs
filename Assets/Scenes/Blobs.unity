@@ -2424,7 +2424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 679a33ffa916a4ccea0266ed3d0cc739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
-  _padding: 1.5
+  _padding: 2
 --- !u!1 &996677744
 GameObject:
   m_ObjectHideFlags: 0
@@ -4387,7 +4387,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dfa7d1286f014a0faa6ab6c09831b4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  LevelNum: 0
 --- !u!114 &1828006024
 MonoBehaviour:
   m_ObjectHideFlags: 0

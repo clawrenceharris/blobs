@@ -49,8 +49,8 @@ public class BlobPresenter : IBlobPresenter
     public Sequence MoveToGrid(Vector2Int gridPos)
     {
         _view.Visuals.ChangeSortingLayer("Foreground", _view.transform);
-        Vector3 target = GridUtility.GridToWorldWithBlobOffset(gridPos);
-        return _animator.AnimateMoveTo(target);
+        Vector3 worldPos = GridUtility.GridToWorldWithBlobOffset(gridPos);
+        return _animator.AnimateMoveTo(worldPos);
     }
 
     public Sequence ScaleTo(float targetScale) {
@@ -98,7 +98,12 @@ public class BlobPresenter : IBlobPresenter
 
     public void DisableBlob() => _model.DisableBlob();
 
-    public Sequence Merge() => _animator.PlayMergeAnimation(GridUtility.GridToWorldWithBlobOffset(_model.GridPosition));
+    public Sequence Merge(IBlobPresenter blobToRemove) {
+
+        _view.Visuals.ChangeSortingLayer("Foreground", blobToRemove.View.transform);
+        return _animator.PlayMergeAnimation(blobToRemove, this, GridUtility.GridToWorldWithBlobOffset(_model.GridPosition));
+
+    }
 
     public void PlayMergeEffect() => _animator.SpawnMergeParticles(ColorSchemeManager.FromBlobColor(_model.Color));
 }

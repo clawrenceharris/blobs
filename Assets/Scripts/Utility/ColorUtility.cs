@@ -49,7 +49,7 @@ namespace Blobs.Utilities
         {
 
             material.SetColor("_BaseColor", color);
-
+            material.color = color;
             Color shadowColor = DarkenColor(color, 0.3f); ;
             material.SetColor("_ShadowColor", shadowColor);
             Color highlightColor = LightenColor(color, 0.3f); ;

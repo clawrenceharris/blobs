@@ -181,11 +181,12 @@ public class BoardModel
             OnBlobSpawned?.Invoke(blob);
         }
     }
-     public void RespawnBlob(Blob blob)
+    public void RespawnBlob(Blob blob)
     {
-        if (TryPlaceBlob(blob)) 
+        if (IsValidPosition(blob.GridPosition)) 
         {
             _blobsById.TryAdd(blob.ID, blob);
+            BlobGrid[blob.GridPosition.x, blob.GridPosition.y] = blob;
             OnBlobRespawned?.Invoke(blob);
         }
         

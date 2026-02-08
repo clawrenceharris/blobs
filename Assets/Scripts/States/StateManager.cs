@@ -6,9 +6,8 @@ public class StateMachine : IStateMachine
 
 
     public IState CurrentState { get; private set; }
-    public static event Action<IState> OnStateExit;
+    public event Action<IState> OnStateChanged;
 
-    public static event Action<IState> OnStateEnter;
     
     public void Initialize(IState initialState)
     {
@@ -19,10 +18,9 @@ public class StateMachine : IStateMachine
     public void SetState(IState newState)
     {
         CurrentState?.ExitState();
-        OnStateExit?.Invoke(CurrentState);
+        OnStateChanged?.Invoke(CurrentState);
 
         newState?.EnterState();
-        OnStateEnter?.Invoke(newState);
 
         CurrentState = newState;
 

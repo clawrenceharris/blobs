@@ -1,5 +1,3 @@
-using Blobs.Animation;
-using Blobs.Merge.Animation;
 using UnityEngine;
 
 namespace Blobs.Animation

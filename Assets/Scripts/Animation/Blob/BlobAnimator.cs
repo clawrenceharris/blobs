@@ -22,22 +22,22 @@ namespace Blobs.Animation
 
         
         private Sequence _idleSequence;
-        private Tween _currentMoveTween;
+        private Tween _moveSequence;
         private Sequence _selectionSequence;
 
         public override List<Sequence> Sequences => new() { _idleSequence, _selectionSequence };
         private BlobAnimationRecipe Recipe => GetRecipe<BlobAnimationRecipe>(_blobView.Model.Type);
-        private BlobState currentState = BlobState.Idle;
-        public BlobState CurrentState => currentState;
+        private BlobState _currentState;
+        public BlobState CurrentState => _currentState;
 
         protected BlobView _blobView;
 
         public override void Initialize()
         {
             base.Initialize();
-            currentState = BlobState.Idle;
             _blobView = GetComponent<BlobView>();
             _renderer = _blobView.Visuals.SpriteRenderer;
+            StartIdleAnimation();
 
         }
         #region State Animations
@@ -47,10 +47,10 @@ namespace Blobs.Animation
         /// </summary>
         public void StartIdleAnimation()
         {
-            if (currentState == BlobState.Idle) return;
+            if (_currentState == BlobState.Idle) return;
 
             KillAllTweens();
-            currentState = BlobState.Idle;
+            _currentState = BlobState.Idle;
 
             // Reset to original state
             transform.localScale = _originalScale;
@@ -68,12 +68,6 @@ namespace Blobs.Animation
                 transform.DOScale(_originalScale * (1f - Recipe.idleScaleAmount * 0.5f), Recipe.idleScaleDuration / 2f)
                     .SetEase(Ease.InOutSine)
             );
-
-            // Also add subtle float movement
-            transform.DOLocalMoveY(_originalPosition.y + Recipe.idleFloatAmount, Recipe.idleFloatDuration / 2f)
-                .SetEase(Ease.InOutSine)
-                .SetLoops(-1, LoopType.Yoyo);
-
             _idleSequence.SetLoops(-1, LoopType.Restart);
         }
 
@@ -131,7 +125,7 @@ namespace Blobs.Animation
 
         public void PlaySelectAnimation()
         {
-            if (currentState == BlobState.Selected) return;
+            if (_currentState == BlobState.Selected) return;
             KillAllTweens();
             StartSelectionLoop();
         }
@@ -151,34 +145,25 @@ namespace Blobs.Animation
         /// </summary>
         public Sequence AnimateMoveTo(Vector3 targetPosition)
         {
-            // KillAllTweens();
-            // currentState = BlobState.Moving;
-            // _isAnimating = true;
-
-            // _currentMoveTween = transform.DOMove(targetPosition, Recipe.moveDuration).SetEase(Ease.OutQuad);
-            // return DOTween.Sequence().Append(_currentMoveTween);
             KillAllTweens();
-            currentState = BlobState.Moving;
+
+            _currentState = BlobState.Moving;
             _isAnimating = true;
 
-            Vector3 startPosition = transform.position;
-           
-            // Create arc path
-            Vector3[] path = new Vector3[3];
-            path[0] = startPosition;
-            path[1] = (startPosition + targetPosition) / 2f + Vector3.up * Recipe.moveArcHeight;
-            path[2] = targetPosition;
-            Debug.Log("Path: " + path[0] + " " + path[1] + " " + path[2]);
-            _currentMoveTween = transform.DOPath(path, Recipe.moveDuration, PathType.CatmullRom)
-                .SetEase(Recipe.moveEase)
-                .OnComplete(() =>
-                {
-                    _isAnimating = false;
-                    _originalPosition = transform.localPosition;
-                    StartIdleAnimation();
-                });     
+         
+            Sequence moveSeq = DOTween.Sequence();
+            moveSeq.Join(transform.DOScale(Recipe.mergeAnticipationStretchAmount, Recipe.mergeAnticipationDuration).SetEase(Ease.OutQuad));
+            moveSeq.Join(transform.DOMove(targetPosition, Recipe.moveDuration).SetEase(Recipe.moveEase));
+            moveSeq.OnComplete(() =>
+            {
+                _isAnimating = false;
+                _originalPosition = transform.localPosition;
+                StartIdleAnimation();
+            });
+            _moveSequence = moveSeq;
+            return moveSeq;
 
-                return DOTween.Sequence().Append(_currentMoveTween);
+            
         }
 
         #endregion
@@ -213,36 +198,73 @@ namespace Blobs.Animation
         /// <summary>
         /// Play merge animation - squish towards target then spawn particles
         /// </summary>
-        public Sequence PlayMergeAnimation(Vector3 targetPosition)
+        public Sequence PlayMergeAnimation(IBlobPresenter blobToRemove, IBlobPresenter blobToMove, Vector3 targetPosition)
         {
             KillAllTweens();
-            currentState = BlobState.Merging;
+            _currentState = BlobState.Merging;
             _isAnimating = true;
 
-            Vector3 startPosition = transform.position;
+            if (blobToRemove == null || blobToMove == null)
+            {
+                _isAnimating = false;
+                return DOTween.Sequence();
+            }
+
+            Transform moverTransform = blobToMove.View.transform;
+            Transform targetTransform = blobToRemove.View.transform;
+            Vector3 moverStartPosition = moverTransform.position;
+            Vector3 targetStartPosition = targetTransform.position;
+            Vector3 moverStartScale = moverTransform.localScale;
+            Vector3 targetStartScale = targetTransform.localScale;
+            Vector3 direction = (targetPosition - moverStartPosition).normalized;
+            bool isHorizontal = Mathf.Abs(direction.x) >= Mathf.Abs(direction.y);
+            Vector3 moverAnticipationScale = isHorizontal
+                ? new Vector3(moverStartScale.x * Recipe.mergeAnticipationStretchAmount, moverStartScale.y * Recipe.mergeAnticipationAmount, moverStartScale.z)
+                : new Vector3(moverStartScale.x * Recipe.mergeAnticipationAmount, moverStartScale.y * Recipe.mergeAnticipationStretchAmount, moverStartScale.z);
+            Vector3 targetAnticipationScale = isHorizontal
+                ? new Vector3(targetStartScale.x * Recipe.mergeAnticipationAmount, targetStartScale.y * Recipe.mergeAnticipationStretchAmount, targetStartScale.z)
+                : new Vector3(targetStartScale.x * Recipe.mergeAnticipationStretchAmount, targetStartScale.y * Recipe.mergeAnticipationAmount, targetStartScale.z);
+            Vector3 moverStretchScale = isHorizontal
+                ? new Vector3(moverStartScale.x * Recipe.mergeStretchAmount, moverStartScale.y * Recipe.mergeSquashAmount, moverStartScale.z)
+                : new Vector3(moverStartScale.x * Recipe.mergeSquashAmount, moverStartScale.y * Recipe.mergeStretchAmount, moverStartScale.z);
+            Vector3 targetImpactScale = isHorizontal
+                ? new Vector3(targetStartScale.x * Recipe.mergeSquashAmount, targetStartScale.y * Recipe.mergeStretchAmount, targetStartScale.z)
+                : new Vector3(targetStartScale.x * Recipe.mergeStretchAmount, targetStartScale.y * Recipe.mergeSquashAmount, targetStartScale.z);
+            Vector3 nudgeOffset = direction * Recipe.mergeImpactNudge;
+
+            moverTransform.DOKill(true);
+            targetTransform.DOKill(true);
 
             Sequence mergeSeq = DOTween.Sequence();
 
-            // Squish towards target (stretch in direction of movement)
-            Vector3 direction = (targetPosition - startPosition).normalized;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            if (Recipe.mergeAnticipationDuration > 0f)
+            {
+                mergeSeq.Append(moverTransform.DOScale(moverAnticipationScale, Recipe.mergeAnticipationDuration).SetEase(Ease.OutQuad));
+                mergeSeq.Join(targetTransform.DOScale(targetAnticipationScale, Recipe.mergeAnticipationDuration).SetEase(Ease.OutQuad));
+            }
 
-            // Stretch effect
-            mergeSeq.Append(
-                transform.DOScale(new Vector3(_originalScale.x * 1.3f, _originalScale.y * 0.7f, _originalScale.z), Recipe.mergeDuration * 0.3f)
-                    .SetEase(Ease.OutQuad)
-            );
+            // Slide the moving blob into place with a viscous stretch.
+            mergeSeq.Append(moverTransform.DOMove(targetPosition, Recipe.moveDuration).SetEase(Recipe.moveEase));
+            mergeSeq.Join(moverTransform.DOScale(moverStretchScale, Recipe.moveDuration * 0.7f).SetEase(Ease.OutQuad));
 
-            // Move to target while shrinking
-            mergeSeq.Append(
-                transform.DOMove(targetPosition, Recipe.mergeDuration * 0.7f)
-                    .SetEase(Ease.InQuad)
-            );
-            mergeSeq.Join(
-                transform.DOScale(Vector3.zero, Recipe.mergeDuration * 0.7f)
-                    .SetEase(Ease.InQuad)
-            );
+            // Impact: squish + subtle nudge on the target to sell absorption.
+            mergeSeq.Append(targetTransform.DOScale(targetImpactScale, Recipe.mergeImpactInDuration).SetEase(Ease.OutQuad));
+            mergeSeq.Join(targetTransform.DOMove(targetStartPosition + nudgeOffset, Recipe.mergeImpactInDuration).SetEase(Ease.OutQuad));
+            mergeSeq.Append(targetTransform.DOScale(targetStartScale * Recipe.mergeOvershootAmount, Recipe.mergeImpactOutDuration).SetEase(Ease.OutBack));
+            mergeSeq.Join(targetTransform.DOMove(targetStartPosition, Recipe.mergeImpactOutDuration).SetEase(Ease.OutQuad));
 
+            // Absorb: target shrinks away while the mover settles back to normal scale.
+            mergeSeq.Append(targetTransform.DOScale(Vector3.zero, Recipe.mergeDuration).SetEase(Ease.InQuad));
+            mergeSeq.Join(moverTransform.DOScale(moverStartScale * Recipe.mergeSettleAmount, Recipe.mergeSettleDuration).SetEase(Recipe.mergeSettleEase));
+            mergeSeq.Append(moverTransform.DOScale(moverStartScale, Recipe.mergeSettleDuration).SetEase(Recipe.mergeSettleEase));
+
+            mergeSeq.OnComplete(() =>
+            {
+                _isAnimating = false;
+                moverTransform.position = targetPosition;
+                _originalPosition = moverTransform.localPosition;
+                StartIdleAnimation();
+            });
             return mergeSeq;
         }
 
@@ -260,6 +282,7 @@ namespace Blobs.Animation
 
             // Auto-destroy after particles finish
             Destroy(particles.gameObject, main.duration + main.startLifetime.constantMax);
+
         }
 
         #endregion
@@ -272,13 +295,13 @@ namespace Blobs.Animation
         public void PlayShakeAnimation()
         {
             // Don't interrupt important animations
-            if (currentState == BlobState.Moving || currentState == BlobState.Merging) return;
+            if (_currentState == BlobState.Moving || _currentState == BlobState.Merging) return;
 
             transform.DOShakePosition(0.3f, 0.1f, 20, 90, false, true)
                 .OnComplete(() =>
                 {
                     // Return to current state animation
-                    if (currentState == BlobState.Selected)
+                    if (_currentState == BlobState.Selected)
                         PlaySelectAnimation();
                     else
                         StartIdleAnimation();

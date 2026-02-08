@@ -2,18 +2,19 @@
 using UnityEngine;
 using System;
 using Blobs.Core.Merge;
+using Blobs.Input;
+using System.Linq;
 
 [RequireComponent(typeof(GameStateManager))]
 public class GameManager : MonoBehaviour
 
 
 {
-    public int LevelNumber => _startingLevel.LevelNumber;
+    public static event Action<LevelData> OnLevelStarted;
     private LevelData _startingLevel;
     public bool IsHighscore { get; private set; }
     private GameStateManager _stateManager;
     public static Action<int> OnMoveCountChanged;
-    private WinConditionSystem _winConditionSystem;
     
     private BoardPresenter _board;
 
@@ -31,12 +32,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private TutorialPresenter _tutorial;
+    public LevelData StartingLevel => _startingLevel;
 
     private void Awake()
     {
-
-        _tutorial = FindFirstObjectByType<TutorialPresenter>();
         _board = FindFirstObjectByType<BoardPresenter>();
         _stateManager = GetComponent<GameStateManager>();
     }
@@ -60,22 +59,23 @@ public class GameManager : MonoBehaviour
 
     private void HandleMergeAnimationStart(MergeAction action)
     {
-        _stateManager.ChangeState(new AnimationState(_stateManager));
+        InputService.Gate.SetEnabled(false);
     }
 
     private void HandleMergeAnimationComplete(MergeAction action)
     {
-        _stateManager.ChangeState(new PlayingState(_stateManager));
-        bool didWin = _winConditionSystem.CheckForWin(_board);
-        if (didWin)
+        InputService.Gate.SetEnabled(true);
+        bool didWin = CheckForWin(_board);
+         if (didWin)
         {
-            _tutorial.StopTutorial();
-            CoroutineHandler.StartStaticCoroutine(_board.AnimateEndTurnSequence(), () =>
+            CoroutineHandler.StartStaticCoroutine(_stateManager.Board.AnimateEndTurnSequence(), () =>
             {
                 _stateManager.ChangeState(new WinState(_stateManager));
 
             });
+
         }
+       
     }
     
     private void InitializeGame()
@@ -106,17 +106,36 @@ public class GameManager : MonoBehaviour
 
             Debug.Log("[GamePresenter] Game initialized");
         }
+    /// <summary>
+    /// Checks the board state for a win.
+    /// </summary>
+    public bool CheckForWin(IBoardPresenter board)
+    {
+        // There must be no clearable Blobs on the board to win.
+        var clearableBlobsCount = board.GetAllBlobs().Count(b => b.Model is IClearable);
+        if (clearableBlobsCount == 0)
+        {
+            return true;
+        }
+        return false;
 
+    }
     public void StartLevel(LevelData level)
     {
         _startingLevel = level;
         _board.Initialize(level);
 
-        _winConditionSystem = new WinConditionSystem();
-        _stateManager.ChangeState(new PlayingState(_stateManager));
 
-        _tutorial.TryStartTutorial(_board, _startingLevel);
-        
+        if (level.IsTutorial)
+        {
+            _stateManager.ChangeState(new TutorialState(_stateManager));
+        }
+        else
+        {
+            _stateManager.ChangeState(new PlayingState(_stateManager));
+        }
+
+        OnLevelStarted?.Invoke(_startingLevel);
         
 
         

@@ -18,7 +18,7 @@ public class WinState : State<GameStateManager>
 
     public override void EnterState()
     {
-        context.InputGate.SetEnabled(true);
+        InputService.Gate.SetEnabled(false);
 
     }
 
@@ -29,7 +29,6 @@ public class WinState : State<GameStateManager>
     }
     public override void ExitState()
     {
-        context.InputGate.SetEnabled(false);
 
     }
 

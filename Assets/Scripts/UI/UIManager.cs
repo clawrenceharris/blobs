@@ -4,123 +4,70 @@ using TMPro;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using Blobs.Core.Merge;
+using System.Collections;
 
-namespace Blobs.Core
+namespace Blobs.Core.UI
 {
-    
+
     public class UIManager : MonoBehaviour
     {
-        public static UIManager Instance { get; private set; }
 
-        [Header("Feedback Text")]
-        [SerializeField] private TextMeshProUGUI moveCountText;
-        
+        [SerializeField] private PausePanelView _pauseView;
 
-        [Header("Input UI")]
-        [SerializeField] private Button undoButton;
+        [SerializeField] private WinPanelView _winView;
 
-        [Header("Win Panel")]
-        [SerializeField] private GameObject winPanel;
-        [SerializeField] private Image[] winStarImages;
-        [SerializeField] private Sprite starFilledSprite;
-        [SerializeField] private Sprite starEmptySprite;
-        [SerializeField] private TextMeshProUGUI winScoreText;
-        [SerializeField] private Button nextLevelButton;
-        [SerializeField] private Button retryButton;
-        [SerializeField] private Button menuButton;
+        [SerializeField] private TutorialView _tutorialView;
 
-        [SerializeField] private Button pauseButton;
-        [SerializeField] private GameObject pausePanel;
-        [SerializeField] private Button resumeButton;
-        [SerializeField] private Button retryPauseButton;
-        [SerializeField] private Button menuPauseButton;
+        [SerializeField] private HUDView _hudView;
 
+        public PausePanelView PauseView => _pauseView;
+        public WinPanelView WinView => _winView;
+        public HUDView HudView => _hudView;
+        public TutorialView TutorialView => _tutorialView;
 
-        private void Awake()
-        {
-            // Singleton
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-            Instance = this;
-           
-        }
 
         private void Start()
         {
             SetupButtonListeners();
-            UpdateUndoButtonState();
-            MergeInvoker.OnMergeUndone += HandleMergeUndone;
-            MergeInvoker.OnMergeExecuted += HandleMergeExecuted;
-            GameManager.OnMoveCountChanged += HandleMoveCountChanged;
 
         }
-        private void HandleMergeExecuted(MergeAction action)
-        {
-            UpdateUndoButtonState();
-        }
-        
-        private void HandleMergeUndone(MergeAction action)
-        {
-            UpdateUndoButtonState();
-        }
 
-        private void HandleMoveCountChanged(int moveCount)
-        {
-            UpdateMoves(moveCount);
-        }
-
-       
-
-        private void UpdateUndoButtonState()
-        {
-            if (undoButton != null)
-            {
-                undoButton.interactable = MergeInvoker.CanUndo;
-            }
-        }
 
         private void SetupButtonListeners()
         {
-            if (nextLevelButton != null) nextLevelButton.onClick.AddListener(OnNextLevelClicked);
-            if (retryButton != null) retryButton.onClick.AddListener(OnRetryClicked);
-            if (menuButton != null) menuButton.onClick.AddListener(OnMenuClicked);
-            if (undoButton != null) undoButton.onClick.AddListener(OnUndoClicked);
-
-            // Pause buttons
-            if (pauseButton != null) pauseButton.onClick.AddListener(OnPauseClicked);
-            if (resumeButton != null) resumeButton.onClick.AddListener(OnResumeClicked);
-            if (retryPauseButton != null) retryPauseButton.onClick.AddListener(OnRetryClicked);
-            if (menuPauseButton != null) menuPauseButton.onClick.AddListener(OnMenuClicked);
+            _pauseView.RetryButton.onClick.AddListener(OnRetryClicked);
+            _pauseView.ResumeButton.onClick.AddListener(OnResumeClicked);
+            _pauseView.MenuButton.onClick.AddListener(OnMenuClicked);
+            _winView.NextLevelButton.onClick.AddListener(OnNextLevelClicked);
+            _winView.RetryButton.onClick.AddListener(OnRetryClicked);
+            _winView.MenuButton.onClick.AddListener(OnMenuClicked);
+            _hudView.UndoButton.onClick.AddListener(OnUndoClicked);
+            _hudView.PauseButton.onClick.AddListener(OnPauseClicked);
         }
-
-        private void OnDestroy()
+        private void OnResumeClicked()
         {
-            if (Instance == this)
-                Instance = null;
-            MergeInvoker.OnMergeUndone -= HandleMergeUndone;
-            MergeInvoker.OnMergeExecuted -= HandleMergeExecuted;
-            GameManager.OnMoveCountChanged -= HandleMoveCountChanged;
-
-        }
-
-        #region Button Handlers
-
-        private void OnPauseClicked()
-        {
-            if(AudioManager.Instance != null)
+            if (AudioManager.Instance != null)
             {
                 AudioManager.Instance.PlaySFX("ui button");
             }
-            ShowPausePanel();
+            _pauseView.HidePanel();
         }
 
-        private void OnResumeClicked()
+
+
+        #region Button Handlers
+
+
+        private void OnUndoClicked()
         {
-            AudioManager.Instance?.PlaySFX("ui button");
-            HidePausePanel();
+
+            // Play undo SFX
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySFX("undo");
+            }
+
+            MergeInvoker.UndoMerge();
         }
 
         private void OnNextLevelClicked()
@@ -143,7 +90,7 @@ namespace Blobs.Core
             if (nextLevel != null)
             {
                 Debug.Log($"[UIManager] Loading next level: {nextLevel.LevelName}");
-                SceneManager.LoadScene("MVPGameplay");
+                SceneManager.LoadScene("Blobs");
             }
             else
             {
@@ -159,7 +106,14 @@ namespace Blobs.Core
             Time.timeScale = 1f; // Reset time scale
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-
+        private void OnPauseClicked()
+        {
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySFX("ui button");
+            }
+            _pauseView.ShowPanel();
+        }
         private void OnMenuClicked()
         {
             AudioManager.Instance?.PlaySFX("ui button");
@@ -168,181 +122,16 @@ namespace Blobs.Core
             SceneManager.LoadScene("Menu");
         }
 
-        private void OnUndoClicked()
-        {
 
-            // Play undo SFX
-            if(AudioManager.Instance != null)
-            {
-                AudioManager.Instance.PlaySFX("undo");
-            }
-
-            MergeInvoker.UndoMerge();
-            Debug.Log("[UIManager] Undo executed successfully");
-        }
 
         #endregion
 
-        #region Pause Panel
 
-        private void ShowPausePanel()
-        {
-            if (pausePanel == null) return;
 
-            pausePanel.SetActive(true);
-            Time.timeScale = 0f;
 
-            // Animate
-            if (pausePanel.GetComponent<CanvasGroup>() == null)
-                pausePanel.AddComponent<CanvasGroup>();
-            
-            CanvasGroup cg = pausePanel.GetComponent<CanvasGroup>();
-            cg.alpha = 0f;
-            cg.DOFade(1f, 0.3f).SetUpdate(true); // SetUpdate(true) ignores timeScale
 
-            RectTransform rt = pausePanel.GetComponent<RectTransform>();
-            if (rt != null)
-            {
-                rt.localScale = Vector3.one * 0.9f;
-                rt.DOScale(1f, 0.3f).SetEase(Ease.OutBack).SetUpdate(true);
-            }
-        }
 
-        private void HidePausePanel()
-        {
-            if (pausePanel == null) return;
 
-            Time.timeScale = 1f;
 
-            // Animate
-            CanvasGroup cg = pausePanel.GetComponent<CanvasGroup>();
-            if (cg != null)
-            {
-                cg.DOFade(0f, 0.2f).SetUpdate(true).OnComplete(() =>
-                {
-                    pausePanel.SetActive(false);
-                });
-            }
-            else
-            {
-                pausePanel.SetActive(false);
-            }
-        }
-
-        #endregion
-
-        #region Gameplay Score
-
-        /// <summary>
-        /// Update the gameplay score display with animation.
-        /// </summary>
-        public void UpdateMoves(int moveCount)
-        {
-            if (moveCountText == null) return;
-
-            // Simple punch animation
-            moveCountText.text = $"{moveCount}";
-            
-            // Kill existing tween on the transform to avoid conflicts
-            moveCountText.transform.DOKill(true);
-            
-            // Punch scale effect
-            moveCountText.transform.DOPunchScale(Vector3.one * 0.1f, 0.3f, 2, 1f);
-        }
-
-        #endregion
-
-       
-        #region Win Panel
-
-        /// <summary>
-        /// Show win panel with star animation.
-        /// </summary>
-        public void ShowWinPanel(int stars, int score)
-        {
-            if (winPanel == null)
-            {
-                Debug.LogWarning("[UIManager] Win panel not assigned!");
-                return;
-            }
-
-            // Play win SFX
-            AudioManager.Instance.PlaySFX("win");
-            AudioManager.Instance.PlaySFX("win2");
-
-            // Update score text
-            if (winScoreText != null)
-            {
-                winScoreText.text = $"Score: {score}";
-            }
-
-            // Update star display
-            UpdateWinStars(stars);
-
-            // Show panel with animation
-            winPanel.SetActive(true);
-            var panelRect = winPanel.GetComponent<RectTransform>();
-            if (panelRect != null)
-            {
-                panelRect.localScale = Vector3.zero;
-                panelRect.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
-            }
-
-            // Animate stars sequentially
-            AnimateStars(stars);
-        }
-
-        private void UpdateWinStars(int stars)
-        {
-            if (winStarImages == null) return;
-
-            for (int i = 0; i < winStarImages.Length; i++)
-            {
-                if (winStarImages[i] != null)
-                {
-                    winStarImages[i].sprite = (i < stars) ? starFilledSprite : starEmptySprite;
-                    winStarImages[i].transform.localScale = Vector3.zero;
-                }
-            }
-        }
-
-        private void AnimateStars(int stars)
-        {
-            if (winStarImages == null) return;
-
-            for (int i = 0; i < winStarImages.Length && i < stars; i++)
-            {
-                if (winStarImages[i] != null)
-                {
-                    float delay = 0.5f + (i * 0.2f);
-                    winStarImages[i].transform
-                        .DOScale(1f, 0.3f)
-                        .SetEase(Ease.OutBack)
-                        .SetDelay(delay);
-                }
-            }
-
-            // Show empty stars immediately (no animation)
-            for (int i = stars; i < winStarImages.Length; i++)
-            {
-                if (winStarImages[i] != null)
-                {
-                    winStarImages[i].transform.localScale = Vector3.one;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Hide win panel.
-        /// </summary>
-        public void HideWinPanel()
-        {
-            if (winPanel != null)
-            {
-                winPanel.SetActive(false);
-            }
-        }
-
-        #endregion
     }
 }

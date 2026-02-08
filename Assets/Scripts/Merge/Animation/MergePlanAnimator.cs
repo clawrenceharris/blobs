@@ -29,8 +29,6 @@ namespace Blobs.Core.Merge
 
         private static void RegisterDefaultAnimators(EventAnimatorRegistry registry)
         {
-            // registry.Register<MoveBlobEvent>(new MoveBlobEventAnimator());
-            registry.Register<RemoveBlobEvent>(new RemoveBlobEventAnimator());
             registry.Register<SpawnBlobEvent>(new SpawnBlobEventAnimator());
             registry.Register<ResizeBlobEvent>(new ResizeBlobEventAnimator());
             registry.Register<MergeBlobsEvent>(new MergeBlobsEventAnimator());
@@ -81,6 +79,8 @@ namespace Blobs.Core.Merge
             }
             else
             {
+                // Yield one frame so the blob is rendered at source before the move tween runs (fixes first-merge "mid jump").
+                yield return null;
                 yield return animator.BuildSequence(e, board)?.WaitForCompletion();
             }
 

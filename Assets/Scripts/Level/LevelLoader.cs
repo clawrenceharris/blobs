@@ -22,7 +22,7 @@ public class LevelLoader : MonoBehaviour
     }
     public static LevelData SelectLevel(int levelIndex)
     {
-        if (AllLevels == null || levelIndex < 0 || levelIndex >= AllLevels.Length)
+        if (levelIndex < 0 || levelIndex >= AllLevels.Length)
         {
             Debug.LogWarning($"[LevelLoader] Invalid level index: {levelIndex}");
             return null;

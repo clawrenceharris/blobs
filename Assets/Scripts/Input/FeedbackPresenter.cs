@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Blobs.Animation;
 using Blobs.Core.Merge;
-using Blobs.Input;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -29,7 +28,9 @@ public class FeedbackPresenter : MonoBehaviour
         {MergeFailReason.NoTargetInDirection, "No blob there!" },
         {MergeFailReason.TileBlocked, "Path is blocked!" },
         {MergeFailReason.NotAligned, "Blobs must share the same column or row to merge"},
-        {MergeFailReason.FlagRejected, "Flags are only mergable with a single remaining blob of the same color!"}
+        {MergeFailReason.FlagColorRuleRejected, "A flag only accepts a blob that matches its color!"},
+        {MergeFailReason.FlagMergeRuleRejected, "Only your last blob (same color) can merge with a flag!"}
+
     };
 
     private void Awake()

@@ -7,7 +7,6 @@ namespace Blobs.Input
     public class SelectionPresenter : MonoBehaviour
     {
         private FeedbackPresenter _feedback;
-        private TutorialPresenter _tutorial;
         
         private IMergeService _mergeService;  
         private IBoardPresenter _board;
@@ -18,14 +17,13 @@ namespace Blobs.Input
             _feedback = FindFirstObjectByType<FeedbackPresenter>();
             _board = FindFirstObjectByType<BoardPresenter>();
             _mergeService = new MergeService(_board);
-            _tutorial = FindFirstObjectByType<TutorialPresenter>();
         }
 
         private void OnEnable()
         {
             InputService.BlobClicked += OnBlobClicked;
             InputService.EmptyClicked += OnEmptyClicked;
-            InputService.UndoPressed += () => MergeInvoker.UndoMerge();
+            InputService.UndoPressed += OnUndoPressed;
         }
 
         private void OnDisable()
@@ -55,7 +53,11 @@ namespace Blobs.Input
             TryMerge(_selectedId, clicked.ID);
         }
 
-        
+        private void OnUndoPressed()
+        {
+            MergeInvoker.UndoMerge();
+            Deselect();
+        }
 
         private void TryMerge(string sourceId, string targetId)
         {

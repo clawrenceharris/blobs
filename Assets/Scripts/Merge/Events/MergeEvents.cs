@@ -12,21 +12,19 @@ namespace Blobs.Core.Merge
 
         public void Execute(IBoardPresenter board)
         {
-            var blob = board.GetBlob(BlobId)?.Model;
-            if (blob != null) board.MoveBlob(blob.ID, To);
+             board.MoveBlob(BlobId, To);
         }
 
         public void Undo(IBoardPresenter board)
         {
-            var blob = board.GetBlob(BlobId)?.Model;
-            if (blob != null) board.MoveBlob(blob.ID, From);
+            board.MoveBlob(BlobId, From);
         }
     }
 
     public sealed class MergeBlobsEvent : IMergeEvent
     {
-        public string BlobId { get; set; }
-        public string HitBlobId { get; set; }
+        public string BlobToMoveId { get; set; }
+        public string BlobToRemoveId { get; set; }
         private Blob _cached; // to restore on undo
         public Vector2Int To { get; set; }
 
@@ -35,10 +33,10 @@ namespace Blobs.Core.Merge
         public void Execute(IBoardPresenter board)
         {
 
-            _cached = board.GetBlob(HitBlobId)?.Model;
+            _cached = board.GetBlob(BlobToRemoveId)?.Model;
             if (_cached != null) {
                 board.RemoveBlob(_cached.ID);
-                board.MoveBlob(BlobId, _cached.GridPosition);
+                board.MoveBlob(BlobToMoveId, _cached.GridPosition);
             }
 
         }
@@ -46,7 +44,7 @@ namespace Blobs.Core.Merge
         public void Undo(IBoardPresenter board)
         {
             if (_cached != null) {
-                board.MoveBlob(BlobId, From);
+                board.MoveBlob(BlobToMoveId, From);
                 board.RespawnBlob(_cached.ID);
             
             }

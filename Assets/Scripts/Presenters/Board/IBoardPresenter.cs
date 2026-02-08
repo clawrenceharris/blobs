@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 
 /// <summary>
@@ -46,4 +47,5 @@ public interface IBoardPresenter
     bool IsLaserBlocking(IBlobPresenter source, Vector2Int position);
     void RespawnBlob(string id);
     void SpawnBlob(Blob blob);
+    IEnumerator AnimateEndTurnSequence();
 }

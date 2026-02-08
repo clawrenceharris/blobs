@@ -1,9 +1,13 @@
+using System;
+using Blobs.Core.UI;
 using Blobs.Input;
 using UnityEngine;
 
 public class GameStateManager : MonoBehaviour
 {
     public IState CurrentState => _stateMachine.CurrentState;
+    public UIManager UIManager => _uiManager;
+    private UIManager _uiManager;
     private int _moveCount;
     public int MoveCount
     {
@@ -15,26 +19,26 @@ public class GameStateManager : MonoBehaviour
         }
     }
    
-    private StateMachine _stateMachine;
-    public event System.Action<IState> OnStateChanged;
-    public event System.Action<int> OnMoveCountChanged;
+    private IStateMachine _stateMachine;
+    public event Action<int> OnMoveCountChanged;
 
     private BoardPresenter _board;
 
-    private GameManager _levelManager;
-    private InputGate _inputGate;
+    private GameManager _gameManager;
+    private TutorialPresenter _tutorial;
+
+    public TutorialPresenter Tutorial => _tutorial;
+
     public IBoardPresenter Board => _board;
-    public GameManager LevelManager => _levelManager;
-    public InputGate InputGate => _inputGate;
+    public GameManager GameManager => _gameManager;
 
     private void Awake()
     {
         _stateMachine = new StateMachine();
-        _inputGate = FindFirstObjectByType<InputGate>();
-        _levelManager = FindFirstObjectByType<GameManager>();
+        _tutorial = new TutorialPresenter();
+        _gameManager = FindFirstObjectByType<GameManager>();
         _board = FindFirstObjectByType<BoardPresenter>();
-        
-
+        _uiManager = FindFirstObjectByType<UIManager>();
     }
 
 
@@ -47,7 +51,6 @@ public class GameStateManager : MonoBehaviour
     public void ChangeState(IState state)
     {
         _stateMachine.SetState(state);
-        OnStateChanged?.Invoke(state);
     }
     private void Update()
     {

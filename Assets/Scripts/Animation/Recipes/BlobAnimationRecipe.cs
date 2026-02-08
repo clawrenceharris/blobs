@@ -24,14 +24,25 @@ namespace Blobs.Animation
 
         [Header("Movement")]
         public float moveDuration = 0.3f;
-        public float moveArcHeight = 0.3f;
+        public float moveArcHeight = 1f;
         public Ease moveEase = Ease.OutQuad;
+        public float moveInterval = 0.5f;
 
         [Header("Merge")]
         public float mergeDuration = 0.25f;
         public float mergeAnticipationDuration = 0.1f;
         public float mergeAnticipationAmount = 0.85f;
         public float mergeAnticipationStretchAmount = 1.08f;
+        public float mergeImpactNudge = 0.08f;
+        public float mergeImpactInDuration = 0.08f;
+        public float mergeImpactOutDuration = 0.12f;
+        public float mergeOvershootDuration = 0.2f;
+        public float mergeOvershootAmount = 1.08f;
+        public float mergeSquashAmount = 0.85f;
+        public float mergeStretchAmount = 1.08f;
+        public float mergeSettleDuration = 0.2f;
+        public float mergeSettleAmount = 1.0f;
+        public Ease mergeSettleEase = Ease.OutQuad;
 
        
         [Header("Resize")]
@@ -43,7 +54,5 @@ namespace Blobs.Animation
         [Header("Expressions (e.g. Shocked before Sigil clear)")]
         public  string beforeRemoveExpression;
         public  float beforeRemoveExpressionDuration = 0.2f;
-        public float mergeOvershootDuration = 0.2f;
-        internal int mergeSquashAmount;
     }
 }

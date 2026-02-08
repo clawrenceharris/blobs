@@ -27,7 +27,7 @@ public interface IBlobPresenter
     void Deselect();
     void EnableBlob();
     void DisableBlob();
-    Sequence Merge();
+    Sequence Merge(IBlobPresenter blobToRemove);
     void PlayMergeEffect();
     Sequence Respawn();
 }

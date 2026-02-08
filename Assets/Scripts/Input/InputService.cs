@@ -12,13 +12,13 @@ namespace Blobs.Input
     public class InputService : MonoBehaviour
     {
         [SerializeField] private KeyCode undoKey = KeyCode.Z;
-        [SerializeField] private InputGate gate;
         [SerializeField] private LayerMask _boardLayerMask = -1;
         [SerializeField] private float _rayDistance = 1000f;
-
-        public static event System.Action<BlobView> BlobClicked;
-        public static event System.Action EmptyClicked;
-        public static event System.Action UndoPressed;
+        private static InputGate _gate;
+        public static InputGate Gate => _gate ??= new InputGate();
+        public static event Action<BlobView> BlobClicked;
+        public static event Action EmptyClicked;
+        public static event Action UndoPressed;
 
         private Camera _cam;
         private BlobView _pointerDownBlob;
@@ -27,13 +27,12 @@ namespace Blobs.Input
         private void Awake()
         {
             _cam = Camera.main;
-            gate = gate == null ? FindFirstObjectByType<InputGate>() : gate;
             _board = FindFirstObjectByType<BoardPresenter>();
         }
 
         private void Update()
         {
-            if (!gate.Enabled) return;
+            if (!_gate.Enabled) return;
 
             if (IsUndoPressed())
             {
@@ -64,29 +63,25 @@ namespace Blobs.Input
 
             if (!hitBoard)
             {
+                EmptyClicked?.Invoke();
                 return;
             }
 
             if (_pointerDownBlob != null && endBlobView != null &&
-                
                 _pointerDownBlob.Model.ID != endBlobView.Model.ID)
             {
                 BlobClicked?.Invoke(_pointerDownBlob);
                 BlobClicked?.Invoke(endBlobView);
                 return;
             }
-
-            if (_pointerDownBlob != null && (endBlobView == null || _pointerDownBlob.Model?.ID == endBlobView.Model?.ID))
+            // if the blob is the same 
+            if (_pointerDownBlob != null && (endBlobView == null || _pointerDownBlob.Model.ID == endBlobView.Model?.ID))
             {
                 BlobClicked?.Invoke(_pointerDownBlob);
                 return;
             }
 
-            if (_pointerDownBlob == null && endBlobView != null)
-            {
-                BlobClicked?.Invoke(endBlobView);
-                return;
-            }
+           
 
             EmptyClicked?.Invoke();
         }

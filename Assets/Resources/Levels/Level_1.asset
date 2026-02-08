@@ -32,10 +32,9 @@ MonoBehaviour:
     StartY: 2
     EndX: 2
     EndY: 2
-  - TopText: "See that flag pole? That\u2019s a Flag Blob. Flag Blobs can lead to
-      a win when merged, as long as there are no other Blobs on the board."
-    BottomText: Flags can't initiate a merge, but any normal Blob of the same color
-      that is merged with it will clear. Try it out!
+  - TopText: "See that Flag Blob? You win by merging onto it\u2014but only when the
+      moving blob is the last blob on the board and matches the flag\u2019s color."
+    BottomText: Finish by merging with the Flag Blob!
     StartX: 2
     StartY: 2
     EndX: 2

@@ -10,7 +10,6 @@ public abstract class Blob : IBlobModel, IBoardElement, ISizable, IColorable
     public BlobType Type { get; protected set; }
     public BlobColor Color { get; set; }
     public BlobSize Size { get; set; }
-    public virtual ColorRule Rule { get; }
     public bool Enabled { get; private set; }
     public bool IsSelected  { get; private set; }
 
@@ -22,7 +21,6 @@ public abstract class Blob : IBlobModel, IBoardElement, ISizable, IColorable
         Color = color;
         ID = Guid.NewGuid().ToString();
         Size = size;
-        Rule = new DifferentColorRule();
         Enabled = true;
 
     }
@@ -64,8 +62,4 @@ public abstract class Blob : IBlobModel, IBoardElement, ISizable, IColorable
         return str;
     }
 
-    public bool CanMergeWith(IBlobModel other)
-    {
-        throw new NotImplementedException();
-    }
 }

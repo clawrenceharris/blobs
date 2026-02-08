@@ -45,7 +45,6 @@ namespace Blobs.Core.Merge
                 new FlagRule(),
                 new TrailRule(),
                 new BombRule(),
-                new RemoveRule()
             });
 
             var result = mergeResolver.TryBuildPlan(_board, new MergeRequest(sourceBlobId, targetBlobId), out var plan);
@@ -88,10 +87,11 @@ namespace Blobs.Core.Merge
         NotAligned,
         NoTargetInDirection,
         TileBlocked,
-        FlagRejected,
         LaserBlocked,
         ColorRuleRejected,
-        InfiniteLoopGuard
+        InfiniteLoopGuard,
+        FlagColorRuleRejected,
+        FlagMergeRuleRejected
     }
 
     public readonly struct MergeResolveResult

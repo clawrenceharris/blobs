@@ -10,7 +10,6 @@ public interface IBlobModel
     BlobColor Color { get; }
     Vector2Int GridPosition { get; set; }
     BlobSize Size { get; }
-    bool CanMergeWith(IBlobModel other);
     float GetScaleFromBlobSize();
     void EnableBlob();
     void DisableBlob();

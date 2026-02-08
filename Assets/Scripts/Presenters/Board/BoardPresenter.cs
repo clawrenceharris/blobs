@@ -39,14 +39,12 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
     private readonly Dictionary<string, IBlobPresenter> _blobs = new();
     private readonly Dictionary<string, ITilePresenter> _tiles = new();
 
-    private TutorialPresenter _tutorial;
 
 
     #region Board Lifecycle
     private void Awake()
     {
         _laserBeam = FindFirstObjectByType<LaserBeamPresenter>();
-        _tutorial = FindFirstObjectByType<TutorialPresenter>();
     }
 
 

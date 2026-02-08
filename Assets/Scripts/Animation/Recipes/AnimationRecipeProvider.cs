@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Blobs.Animation;
-using UnityEditor;
 using UnityEngine;
 
 namespace Blobs.Animation

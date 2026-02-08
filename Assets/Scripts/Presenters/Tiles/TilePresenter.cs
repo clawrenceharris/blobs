@@ -1,10 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Blobs.Animation;
 using DG.Tweening;
-using UnityEngine;
-using Object = UnityEngine.Object;
 
 public class TilePresenter : ITilePresenter
 {

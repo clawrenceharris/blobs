@@ -18,7 +18,6 @@ public class PlayingState : State<GameStateManager>
 
     public override void EnterState()
     {
-        context.InputGate.SetEnabled(true);
 
     }
 
@@ -26,10 +25,10 @@ public class PlayingState : State<GameStateManager>
 
     public override void UpdateState()
     {
+        context.UIManager.HudView.UpdateUndoButtonState();
     }
     public override void ExitState()
     {
-        context.InputGate.SetEnabled(false);
 
     }
 

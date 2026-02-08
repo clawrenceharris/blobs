@@ -41,8 +41,7 @@ namespace Blobs.Utilities
         }
         public static Vector3 GridToWorldWithBlobOffset(Vector2Int gridPos)
         {
-            var worldPos = GridToWorld(gridPos.x, gridPos.y);
-            return new Vector3(worldPos.x, worldPos.y + BlobPresenter.BlobOffsetY, 0);
+            return  GridToWorldWithBlobOffset(gridPos.x, gridPos.y);
         }
         public static Vector3 GridToWorldWithBlobOffset(int x, int y)
         {

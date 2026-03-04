@@ -17,6 +17,11 @@ public class CameraController : MonoBehaviour
         BoardPresenter.OnBoardInitialized += HandleBoardInitialized;
     }
 
+    private void OnDestroy()
+    {
+        BoardPresenter.OnBoardInitialized -= HandleBoardInitialized;
+    }
+
     private void Start()
     {
         _cam.backgroundColor = ColorSchemeManager.CurrentColorScheme.BackgroundColor;
@@ -24,7 +29,7 @@ public class CameraController : MonoBehaviour
     }
     private void HandleBoardInitialized(IBoardPresenter board)
     {
-        
+
         RepositionCamera(board.Width, board.Height);
 
     }

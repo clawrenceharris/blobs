@@ -89,6 +89,8 @@ namespace Blobs.Core.UI
             LevelData nextLevel = LevelLoader.SelectLevel(nextIndex);
             if (nextLevel != null)
             {
+                PlayerPrefs.SetInt("SelectedLevel", nextIndex);
+                PlayerPrefs.Save();
                 Debug.Log($"[UIManager] Loading next level: {nextLevel.LevelName}");
                 SceneManager.LoadScene("Blobs");
             }

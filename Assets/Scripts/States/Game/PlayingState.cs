@@ -18,7 +18,7 @@ public class PlayingState : State<GameStateManager>
 
     public override void EnterState()
     {
-
+        InputService.Gate.SetEnabled(true);
     }
 
 
@@ -32,6 +32,6 @@ public class PlayingState : State<GameStateManager>
 
     }
 
-   
-    
+
+
 }

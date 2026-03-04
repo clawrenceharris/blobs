@@ -48,16 +48,16 @@ namespace Blobs.Core
         [SerializeField] private string gameplaySceneName = "Blobs";
 
 
-       
+
         /// <summary>
         /// Set the selected level by index and return the level data.
         /// </summary>
         public static void SelectLevel(int levelIndex)
         {
-            
+
             LevelLoader.SelectLevel(levelIndex);
             PlayerPrefs.SetInt("SelectedLevel", levelIndex);
-            
+
             PlayerPrefs.Save();
         }
 
@@ -307,14 +307,14 @@ namespace Blobs.Core
             PlayerPrefs.SetInt("SelectedLevel", levelIndex);
             PlayerPrefs.Save();
 
-            // Set static data for GamePresenter to pick up
+            // Try to set static data if LevelLoader is available in this scene
             if (LevelLoader.AllLevels != null && levelIndex < LevelLoader.AllLevels.Length)
             {
                 SelectLevel(levelIndex);
             }
             else
             {
-                Debug.LogWarning("[MainMenuController] Level data missing for index " + levelIndex);
+                Debug.LogWarning($"[MainMenuController] LevelLoader not found or level index out of range. Level selection may not persist to gameplay scene.");
             }
 
             // Load gameplay scene

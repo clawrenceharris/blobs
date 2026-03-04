@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a96180900d9a4a40b76f3bcdd118d02, type: 3}
-  m_Name: Level_1
+  m_Name: Level_2
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
-  LevelNumber: 1
+  LevelNumber: 2
   LevelName: 
   Width: 3
   Height: 3
@@ -24,44 +24,50 @@ MonoBehaviour:
     UndoPenalty: 0
   IsTutorial: 1
   TutorialSteps:
-  - TopText: Welcome to Blobs. The goal of the game is to clear all blobs off the
-      board. You can clear a Blob by merging it into another one of a different color
-      as long as they are on a shared row or column.
-    BottomText: Try merging the purple Blob onto the one next to it.
+  - TopText: Merging two small Blobs creates a normal-sized Blob.
+    BottomText: The Blob you swipe from keeps its color.
     StartX: 0
     StartY: 2
+    EndX: 0
+    EndY: 1
+  - TopText: Normal Blobs can also merge onto smaller ones.
+    BottomText: "The larger Blob always takes the other\u2019s place."
+    StartX: 0
+    StartY: 1
     EndX: 2
-    EndY: 2
-  - TopText: "See that flag pole? That\u2019s a Flag Blob. Flag Blobs can lead to
-      a win when merged, as long as there are no other Blobs on the board."
-    BottomText: Flags can't initiate a merge, but any normal Blob of the same color
-      that is merged with it will clear. Try it out!
+    EndY: 1
+  - TopText: Finish by merging into the Flag Blob to win!
+    BottomText: 
     StartX: 2
-    StartY: 2
+    StartY: 1
     EndX: 2
     EndY: 0
   Blobs:
   - GridPosition: {x: 0, y: 2}
     Type: 1
-    Color: 3
-    Size: 2
-  - GridPosition: {x: 2, y: 2}
+    Color: 0
+    Size: 1
+  - GridPosition: {x: 0, y: 1}
     Type: 1
-    Color: 2
-    Size: 2
+    Color: 3
+    Size: 1
+  - GridPosition: {x: 2, y: 1}
+    Type: 1
+    Color: 3
+    Size: 1
   - GridPosition: {x: 2, y: 0}
     Type: 4
-    Color: 3
-    Size: 2
+    Color: 0
+    Size: 3
   Tiles:
   - GridPosition: {x: 0, y: 2}
     Type: 0
-  - GridPosition: {x: 1, y: 2}
+  - GridPosition: {x: 0, y: 1}
     Type: 0
-  - GridPosition: {x: 2, y: 2}
+  - GridPosition: {x: 1, y: 1}
     Type: 0
   - GridPosition: {x: 2, y: 1}
     Type: 0
   - GridPosition: {x: 2, y: 0}
     Type: 0
-  MinMoves: 2
+  MinMoves: 3

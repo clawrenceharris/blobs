@@ -39,10 +39,10 @@ public class TutorialPresenter
     }
     public void StartTutorial(IBoardPresenter board, LevelData level)
     {
-        
+
         InitializeTutorial(board, level.TutorialSteps);
         DisableAllBlobs();
-        
+
         BoardPresenter.OnMergeAnimationComplete += OnMergeAnimationComplete;
         InputService.BlobClicked += HandleBlobClicked;
         CurrentStartBlob?.EnableBlob();
@@ -65,28 +65,29 @@ public class TutorialPresenter
 
     private void OnMergeAnimationComplete(IAction cmd)
     {
-    
+
         // Disable all blobs to prevent player from interacting with the wrong blob
-        DisableAllBlobs(); 
+        DisableAllBlobs();
 
         _model.NextTutorialStep();
         CurrentStartBlob?.EnableBlob();
-       
+
     }
-  
-    
-    
-    
+
+
+
+
     public void StopTutorial()
     {
-        MergeInvoker.OnMergeExecuted -= OnMergeAnimationComplete;
+        BoardPresenter.OnMergeAnimationComplete -= OnMergeAnimationComplete;
+        InputService.BlobClicked -= HandleBlobClicked;
 
         EnableAllBlobs();
-        
+
         Debug.Log("Tutorial stopped");
     }
-    
-   
+
+
     private void EnableAllBlobs()
     {
         foreach (IBlobPresenter blob in _blobs)
@@ -97,7 +98,7 @@ public class TutorialPresenter
     private void DisableAllBlobs()
     {
         foreach (IBlobPresenter blob in _blobs)
-        { 
+        {
             blob?.DisableBlob();
         }
     }
@@ -107,5 +108,5 @@ public class TutorialPresenter
         return _model.IsValidMove(sourceBlob, targetBlob);
     }
 
-    
+
 }

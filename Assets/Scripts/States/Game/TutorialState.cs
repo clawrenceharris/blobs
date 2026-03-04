@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using Blobs.Input;
 using Blobs.Utilities;
 using DG.Tweening;
@@ -41,11 +42,11 @@ public class TutorialState : State<GameStateManager>
         _tutorialPointer.transform.SetParent(context.UIManager.transform);
         UpdateTutorialText(_currentStep);
     }
-  
+
     public override void UpdateState()
     {
         _elapsedTime += Time.deltaTime;
-        
+
         if (_elapsedTime > _cooldown)
         {
             _elapsedTime = 0;
@@ -56,7 +57,7 @@ public class TutorialState : State<GameStateManager>
     }
     private void UpdateTutorialText(TutorialStep step)
     {
-       
+
         CoroutineHandler.StartStaticCoroutine(context.UIManager.TutorialView.UpdateTutorialText(step.TopText, step.BottomText));
     }
 
@@ -96,20 +97,31 @@ public class TutorialState : State<GameStateManager>
     {
         _currentStep = step;
         UpdateTutorialText(_currentStep);
-        
+
     }
     private void OnTutorialComplete()
     {
-        context.ChangeState(new PlayingState(context));
+        bool didWin = context.GameManager.CheckForWin(context.Board);
+        int blobCount = context.Board.GetAllBlobs().Count;
+        int clearableCount = context.Board.GetAllBlobs().Count(b => b.Model is IClearable);
+        Debug.Log($"[TutorialState] OnTutorialComplete — didWin: {didWin}, totalBlobs: {blobCount}, clearableBlobs: {clearableCount}");
+
+        if (didWin)
+        {
+            context.ChangeState(new WinState(context));
+        }
+        else
+        {
+            context.ChangeState(new PlayingState(context));
+        }
     }
     public override void ExitState()
     {
-        context.Tutorial.StopTutorial();
-        context.UIManager.HudView.UndoButton.gameObject.SetActive(true);
-        context.UIManager.TutorialView.HideTutorialView();
+        try { context.Tutorial.StopTutorial(); } catch (System.Exception e) { Debug.LogError("[TutorialState] StopTutorial threw: " + e); }
+        try { context.UIManager.HudView.UndoButton.gameObject.SetActive(true); } catch (System.Exception e) { Debug.LogError("[TutorialState] UndoButton threw: " + e); }
+        try { context.UIManager.TutorialView.HideTutorialView(); } catch (System.Exception e) { Debug.LogError("[TutorialState] HideTutorialView threw: " + e); }
         context.Tutorial.OnNextTutorialStep -= OnNextTutorialStep;
-        Object.Destroy(_tutorialPointer.gameObject);
-
+        try { if (_tutorialPointer != null) Object.Destroy(_tutorialPointer.gameObject); } catch (System.Exception e) { Debug.LogError("[TutorialState] Destroy pointer threw: " + e); }
     }
-    
+
 }

@@ -32,7 +32,7 @@ namespace Blobs.Input
 
         private void Update()
         {
-            if (!_gate.Enabled) return;
+            if (!Gate.Enabled) return;
 
             if (IsUndoPressed())
             {
@@ -81,12 +81,12 @@ namespace Blobs.Input
                 return;
             }
 
-           
+
 
             EmptyClicked?.Invoke();
         }
 
-       
+
         private bool IsUndoPressed()
         {
             if (Keyboard.current == null) return false;
@@ -153,9 +153,11 @@ namespace Blobs.Input
             if (!TryGetPointerScreenPosition(out Vector2 pointerPosition)) return false;
             Ray ray = _cam.ScreenPointToRay(pointerPosition);
             RaycastHit2D hit = Physics2D.GetRayIntersection(ray, _rayDistance, _boardLayerMask);
-            if (!hit.collider){
+            if (!hit.collider)
+            {
                 return false;
-            };
+            }
+            ;
 
             GameObject go = hit.collider.gameObject;
 
@@ -169,6 +171,6 @@ namespace Blobs.Input
             return false;
         }
     }
-    
-    
+
+
 }

@@ -22,7 +22,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
 
 
 
-   
+
 
     // Merge Events
     public static Action<MergeAction> OnMergeAnimationStart;
@@ -53,7 +53,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
 
         MergeInvoker.OnMergeExecuted += HandleMergeExecuted;
         MergeInvoker.OnMergeUndone += HandleMergeUndone;
-        
+
 
     }
 
@@ -69,16 +69,16 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
     }
 
     #endregion
-    
+
 
     #region  Initialization
     public void Initialize(LevelData level)
     {
-        _model = new BoardModel(level.Width, level.Height); 
-        
+        _model = new BoardModel(level.Width, level.Height);
+
         _model.OnBlobSpawned += HandleBlobSpawned;
         _model.OnTileCreated += HandleTileCreated;
-        
+
         SetupBoard(level);
         OnBoardInitialized?.Invoke(this);
 
@@ -95,7 +95,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
         StartCoroutine(AnimateInitialBlobs());
 
     }
-    
+
 
     public List<Blob> CreateBlobs(LevelData level)
     {
@@ -110,7 +110,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
                     blobs.Add(blob);
             }
         }
-        
+
         return blobs;
     }
     public List<Tile> CreateTiles(LevelData level)
@@ -122,7 +122,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
             var tile = TileFactory.CreateTileModel(spawn);
             if (tile != null)
                 tiles.Add(tile);
-            
+
         }
         return tiles;
     }
@@ -196,9 +196,9 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
         var view = Instantiate(PrefabLibrary.Instance.FromTileType(tile.Type), worldPos, Quaternion.identity, transform);
         view.Initialize(tile);
 
-        
+
         var presenter = TileFactory.CreateTilePresenter(tile, view);
-        
+
         presenter.Initialize(this);
         _tiles.Add(tile.ID, presenter);
     }
@@ -220,7 +220,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
             presenter.Spawn();
             yield return new WaitForSeconds(0.2f);
         }
-        
+
     }
 
 
@@ -232,17 +232,21 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
         // Add the dramatic pause
         yield return new WaitForSeconds(1.5f);
         var blobPresenters = new List<IBlobPresenter>(_blobs.Values);
-        
+
         foreach (var bp in blobPresenters)
         {
-            yield return bp.Remove().WaitForCompletion();
+            if (bp?.View == null || !bp.View.gameObject.activeSelf) continue;
+            var seq = bp.Remove();
+            if (seq != null) yield return seq.WaitForCompletion();
         }
 
         yield return new WaitForSeconds(0.3f);
         var tilePresenters = new List<ITilePresenter>(_tiles.Values);
         foreach (var tp in tilePresenters)
         {
-            yield return tp.Remove().WaitForCompletion();
+            if (tp?.View == null || !tp.View.gameObject.activeSelf) continue;
+            var seq = tp.Remove();
+            if (seq != null) yield return seq.WaitForCompletion();
         }
     }
 
@@ -323,7 +327,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
 
     public void RespawnBlob(string id)
     {
-        
+
         // we can only respawn if it existed to begin with
         if (_blobs.TryGetValue(id, out var presenter))
         {
@@ -334,7 +338,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
             Debug.LogError($"Attempted to respawn blob {id} that does not exist");
         }
     }
-   
+
     public void RemoveBlob(string id)
     {
         _model.RemoveBlob(id);
@@ -344,7 +348,7 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
         }
     }
 
-   
+
     #endregion
 
     #region Tile Management

@@ -2318,7 +2318,10 @@ MonoBehaviour:
   buttonHoverScale: 1.1
   buttonHoverDuration: 0.15
   panelEase: 27
-  ornamentalBlobs: []
+  ornamentalBlobs:
+  - {fileID: 178008004}
+  - {fileID: 1121153291}
+  - {fileID: 2124384740}
   titleImage: {fileID: 40126983}
   gameplaySceneName: Blobs
 --- !u!1 &601518269
@@ -5772,6 +5775,60 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1421110180}
   m_CullTransparentMesh: 1
+--- !u!1 &1423614686
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1423614688}
+  - component: {fileID: 1423614687}
+  m_Layer: 0
+  m_Name: LevelLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1423614687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423614686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e210972520a64d2c8e8e39355235314, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelLoader
+  _levels:
+  - {fileID: 11400000, guid: 3c2e92e8c070e4c06b14eb2983cdee01, type: 2}
+  - {fileID: 11400000, guid: b86c190d0d5b3e045bd64be951a7098a, type: 2}
+  - {fileID: 11400000, guid: 89a1fb7d6ef6da14fbab6e84c47ecf7b, type: 2}
+  - {fileID: 11400000, guid: 0da99709a61173d4c93198d31269958b, type: 2}
+  - {fileID: 11400000, guid: 033d18a9cbea68441bd4e9b7b9c9fb39, type: 2}
+  - {fileID: 11400000, guid: cd0edb44bdfa3d649af29b7270f1ad8b, type: 2}
+  - {fileID: 11400000, guid: 82409fd1430d23443aae8c00b99e1d52, type: 2}
+  - {fileID: 11400000, guid: e21d72a106b9e4e44bc0f108b3a91a1d, type: 2}
+  - {fileID: 11400000, guid: 6010fc6a9ba881a4599c286b3a423d1c, type: 2}
+--- !u!4 &1423614688
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423614686}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1433788792
 GameObject:
   m_ObjectHideFlags: 0
@@ -8808,3 +8865,4 @@ SceneRoots:
   - {fileID: 2141695939}
   - {fileID: 600024178}
   - {fileID: 1177419649}
+  - {fileID: 1423614688}

@@ -4,10 +4,8 @@ using System;
 using UnityEditor;
 public class LevelLoader : MonoBehaviour
 {
+    [SerializeField] private LevelData[] _levels = Array.Empty<LevelData>();
 
-    [Header("Level Data")]
-    [SerializeField] private LevelData[] _allLevels;
-    
     public static LevelData[] AllLevels { get; private set; } = Array.Empty<LevelData>();
     public static int TotalLevelCount => AllLevels.Length;
     /// <summary>
@@ -18,7 +16,12 @@ public class LevelLoader : MonoBehaviour
 
     private void Awake()
     {
-        AllLevels = LoadAllLevels();
+        // Use manually assigned levels from Inspector if provided,
+        // otherwise fall back to auto-loading from Resources.
+        if (_levels != null && _levels.Length > 0)
+            AllLevels = _levels;
+        else
+            AllLevels = LoadAllLevels();
     }
     public static LevelData SelectLevel(int levelIndex)
     {
@@ -32,7 +35,7 @@ public class LevelLoader : MonoBehaviour
 
         return SelectedLevelData;
     }
-   
+
 
     /// <summary>
     /// Load levels from ScriptableObject assets in Resources/Levels first;
@@ -47,8 +50,10 @@ public class LevelLoader : MonoBehaviour
 
         // Also search deeper, e.g. Resources/Levels/* (Unity limitation workaround)
         LevelData[] deepAssets = Resources.LoadAll<LevelData>("");
-        foreach(var asset in deepAssets) {
-            if (asset != null && AssetDatabase.GetAssetPath(asset).Contains("/Levels/") && !assetsList.Contains(asset)) {
+        foreach (var asset in deepAssets)
+        {
+            if (asset != null && AssetDatabase.GetAssetPath(asset).Contains("/Levels/") && !assetsList.Contains(asset))
+            {
                 assetsList.Add(asset);
             }
         }
@@ -87,8 +92,8 @@ public class LevelLoader : MonoBehaviour
 [Serializable]
 public class SpawnData
 {
-    public Vector2Int GridPosition;   
-    
+    public Vector2Int GridPosition;
+
     // Dictionary to hold dynamic properties
     public readonly Dictionary<string, object> Properties = new();
 

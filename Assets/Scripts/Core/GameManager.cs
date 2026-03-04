@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public bool IsHighscore { get; private set; }
     private GameStateManager _stateManager;
     public static Action<int> OnMoveCountChanged;
-    
+
     private BoardPresenter _board;
 
     private static ColorScheme _theme;
@@ -65,60 +65,57 @@ public class GameManager : MonoBehaviour
     private void HandleMergeAnimationComplete(MergeAction action)
     {
         InputService.Gate.SetEnabled(true);
+
+        // Skip win check during tutorials — TutorialState handles its own win transition
+        if (_stateManager.CurrentState is TutorialState) return;
+
         bool didWin = CheckForWin(_board);
-         if (didWin)
+        if (didWin)
         {
             CoroutineHandler.StartStaticCoroutine(_stateManager.Board.AnimateEndTurnSequence(), () =>
             {
                 _stateManager.ChangeState(new WinState(_stateManager));
-
             });
-
         }
-       
     }
-    
+
     private void InitializeGame()
+    {
+        _stateManager.Reset();
+        if (_board == null)
+            _board = FindFirstObjectByType<BoardPresenter>();
+
+        // Check if level data was passed from Main Menu
+        var startingLevel = LevelLoader.SelectedLevelData;
+        LevelLoader.ClearSelectedLevelData();
+
+        // If SelectedLevelData is null (e.g. LevelLoader wasn't in the Menu scene),
+        // fall back to the index saved in PlayerPrefs.
+        if (startingLevel == null)
         {
-            _stateManager.Reset();
-            if (_board == null)
-                _board = FindFirstObjectByType<BoardPresenter>();
-
-            // Check if level data was passed from Main Menu
-            
-            var startingLevel = LevelLoader.SelectedLevelData;
-            
-            LevelLoader.ClearSelectedLevelData();
-
-
-        if (startingLevel != null)
-        {
-            StartLevel(startingLevel);
+            int selectedIndex = PlayerPrefs.GetInt("SelectedLevel", 0);
+            if (LevelLoader.AllLevels != null && selectedIndex < LevelLoader.AllLevels.Length)
+                startingLevel = LevelLoader.AllLevels[selectedIndex];
+            else
+                startingLevel = LevelLoader.AllLevels[0];
         }
-        else
-        {
-            StartLevel(LevelLoader.AllLevels[0]);
-        }
 
-            // Play gameplay BGM
+        StartLevel(startingLevel);
+
+        // Play gameplay BGM
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlayBGM("gameplay");
 
-            Debug.Log("[GamePresenter] Game initialized");
-        }
+        Debug.Log("[GamePresenter] Game initialized");
+    }
     /// <summary>
     /// Checks the board state for a win.
     /// </summary>
     public bool CheckForWin(IBoardPresenter board)
     {
-        // There must be no clearable Blobs on the board to win.
-        var clearableBlobsCount = board.GetAllBlobs().Count(b => b.Model is IClearable);
-        if (clearableBlobsCount == 0)
-        {
-            return true;
-        }
-        return false;
-
+        // Query the board model directly — GetAllBlobs() includes removed presenters
+        // still in the dictionary, so use GetPlayableBlobCount() instead.
+        return board.GetPlayableBlobCount() == 0;
     }
     public void StartLevel(LevelData level)
     {
@@ -136,9 +133,9 @@ public class GameManager : MonoBehaviour
         }
 
         OnLevelStarted?.Invoke(_startingLevel);
-        
 
-        
 
-    }   
+
+
+    }
 }

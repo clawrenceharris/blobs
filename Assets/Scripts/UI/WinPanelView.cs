@@ -20,17 +20,21 @@ namespace Blobs.Core.UI
         public Button RetryButton => _retryButton;
         public Button MenuButton => _menuButton;
 
-      
+
 
         /// <summary>
         /// Show win panel with star animation.
         /// </summary>
         public void ShowWinPanel(int stars, int score)
         {
-           
+            Debug.Log($"[WinPanelView] ShowWinPanel called — stars: {stars}, score: {score}");
+            // Activate gameObject first — this triggers PanelView.Awake() if the panel
+            // started inactive in the scene, so _canvasGroup and _rectTransform get initialized.
+            gameObject.SetActive(true);
+
             // Play win SFX
-            AudioManager.Instance.PlaySFX("win");
-            AudioManager.Instance.PlaySFX("win2");
+            AudioManager.Instance?.PlaySFX("win");
+            AudioManager.Instance?.PlaySFX("win2");
 
             // Update score text
             if (_winScoreText != null)
@@ -42,11 +46,10 @@ namespace Blobs.Core.UI
             UpdateWinStars(stars);
 
             // Show panel with animation
-            _canvasGroup.gameObject.SetActive(true);
-            
+            _canvasGroup.alpha = 1f;
             _rectTransform.localScale = Vector3.zero;
             _rectTransform.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
-        
+
             // Animate stars sequentially
             AnimateStars(stars);
         }

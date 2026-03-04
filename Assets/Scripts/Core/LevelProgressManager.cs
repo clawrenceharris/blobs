@@ -49,18 +49,12 @@ namespace Blobs.Core
 
         /// <summary>
         /// Check if a level is unlocked.
-        /// Level 0 is always unlocked.
-        /// Other levels unlock when the previous level has at least 1 star.
+        /// Currently all levels are unlocked.
         /// </summary>
         /// <param name="levelIndex">Level index (0-8)</param>
         public static bool IsLevelUnlocked(int levelIndex)
         {
-            // Level 0 (first level) is always unlocked
-            if (levelIndex <= 0)
-                return true;
-
-            // Other levels require previous level to be completed (1+ stars)
-            return GetStars(levelIndex - 1) > 0;
+            return true;
         }
 
         /// <summary>

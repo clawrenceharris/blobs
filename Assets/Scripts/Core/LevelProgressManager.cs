@@ -49,12 +49,13 @@ namespace Blobs.Core
 
         /// <summary>
         /// Check if a level is unlocked.
-        /// Currently all levels are unlocked.
+        /// Level 0 is always unlocked. Level N is unlocked if level N-1 has been completed.
         /// </summary>
         /// <param name="levelIndex">Level index (0-8)</param>
         public static bool IsLevelUnlocked(int levelIndex)
         {
-            return true;
+            if (levelIndex <= 0) return true;
+            return IsLevelCompleted(levelIndex - 1);
         }
 
         /// <summary>

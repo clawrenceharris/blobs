@@ -27,6 +27,7 @@ namespace Blobs.Core
         [Header("Level Selection")]
         [SerializeField] private Button[] levelButtons = new Button[9];
         [SerializeField] private Image[] levelStarContainers = new Image[9]; // Parent for stars per level
+        [SerializeField] private TMPro.TextMeshProUGUI totalStarsText;
         [SerializeField] private Sprite starFilledSprite;
         [SerializeField] private Sprite starEmptySprite;
         [SerializeField] private Color lockedLevelColor = new Color(0.5f, 0.5f, 0.5f, 0.7f);
@@ -352,6 +353,14 @@ namespace Blobs.Core
 
                 // Update star display
                 UpdateStarDisplay(i, stars, isUnlocked);
+            }
+
+            // Update total stars counter
+            if (totalStarsText != null)
+            {
+                int total = LevelProgressManager.GetTotalStars();
+                int maxTotal = 9 * 3; // 9 levels x 3 stars each
+                totalStarsText.text = $"{total} / {maxTotal}";
             }
         }
 

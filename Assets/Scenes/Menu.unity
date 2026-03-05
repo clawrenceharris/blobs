@@ -2300,15 +2300,16 @@ MonoBehaviour:
   - {fileID: 1335469258}
   - {fileID: 1737036916}
   levelStarContainers:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 2127215786}
+  - {fileID: 1502706240}
+  - {fileID: 1433788794}
+  - {fileID: 587850482}
+  - {fileID: 1530580661}
+  - {fileID: 1094341562}
+  - {fileID: 1930220579}
+  - {fileID: 1500765557}
+  - {fileID: 917028185}
+  totalStarsText: {fileID: 0}
   starFilledSprite: {fileID: 21300000, guid: 06c487ef7d0a52e45affa9b5203e224b, type: 3}
   starEmptySprite: {fileID: 21300000, guid: 67f584718dfc4a142bfe20e5962fdef4, type: 3}
   lockedLevelColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.7}

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEditor;
 public class LevelLoader : MonoBehaviour
 {
     [SerializeField] private LevelData[] _levels = Array.Empty<LevelData>();
@@ -48,17 +47,17 @@ public class LevelLoader : MonoBehaviour
         LevelData[] resourcesRoot = Resources.LoadAll<LevelData>("Levels");
         assetsList.AddRange(resourcesRoot);
 
-        // Also search deeper, e.g. Resources/Levels/* (Unity limitation workaround)
+#if UNITY_EDITOR
+        // Also search deeper via AssetDatabase in Editor (not available in build)
         LevelData[] deepAssets = Resources.LoadAll<LevelData>("");
         foreach (var asset in deepAssets)
         {
-            if (asset != null && AssetDatabase.GetAssetPath(asset).Contains("/Levels/") && !assetsList.Contains(asset))
+            if (asset != null && UnityEditor.AssetDatabase.GetAssetPath(asset).Contains("/Levels/") && !assetsList.Contains(asset))
             {
                 assetsList.Add(asset);
             }
         }
-#if UNITY_EDITOR
-        // If still empty, try Assets/Levels in Editor mode via AssetDatabase (not available in build)
+
         if (assetsList.Count == 0)
         {
             string[] guids = UnityEditor.AssetDatabase.FindAssets("t:LevelData", new[] { "Assets/Levels" });

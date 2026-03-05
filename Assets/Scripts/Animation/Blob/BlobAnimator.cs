@@ -131,7 +131,7 @@ namespace Blobs.Animation
             _currentState = BlobState.Selected;
 
             // Smoothly transition to selection scale before starting the loop
-            transform.DOScale(_originalScale, 0.1f).SetEase(Ease.OutQuad).OnComplete(() =>
+            transform.DOScale(_originalScale, 0.033f).SetEase(Ease.OutQuad).OnComplete(() =>
             {
                 if (_currentState == BlobState.Selected)
                     StartSelectionLoop();
@@ -143,7 +143,7 @@ namespace Blobs.Animation
             _currentState = BlobState.Idle;
             StopSelectionLoop();
             // Don't jump straight to idle — smoothly blend back first, then start idle
-            transform.DOScale(_originalScale, 0.12f).SetEase(Ease.OutQuad).OnComplete(() =>
+            transform.DOScale(_originalScale, 0.04f).SetEase(Ease.OutQuad).OnComplete(() =>
             {
                 if (_currentState == BlobState.Idle)
                     StartIdleAnimation();
@@ -282,9 +282,19 @@ namespace Blobs.Animation
             mergeSeq.Append(targetTransform.DOScale(targetStartScale * Recipe.mergeOvershootAmount, Recipe.mergeImpactOutDuration).SetEase(Ease.OutBack));
             mergeSeq.Join(targetTransform.DOMove(targetStartPosition, Recipe.mergeImpactOutDuration).SetEase(Ease.OutQuad));
 
-            // Absorb: target shrinks away while the mover settles back to normal scale.
-            mergeSeq.Append(targetTransform.DOScale(Vector3.zero, Recipe.mergeDuration).SetEase(Ease.InQuad));
-            mergeSeq.Join(moverTransform.DOScale(moverStartScale * Recipe.mergeSettleAmount, Recipe.mergeSettleDuration).SetEase(Recipe.mergeSettleEase));
+            // Hide the target blob so only the mover remains visible at overlap.
+            // Deactivate the GameObject instead of using sorting layers.
+            SpriteRenderer targetRenderer = blobToRemove.View.GetComponent<BlobVisuals>()?.SpriteRenderer;
+            mergeSeq.AppendCallback(() =>
+            {
+                if (targetRenderer != null) targetRenderer.enabled = false;
+                // Also hide children sprites (highlight, etc.)
+                foreach (var sr in targetTransform.GetComponentsInChildren<SpriteRenderer>())
+                    sr.enabled = false;
+            });
+
+            // Mover settles back to normal scale (target is already hidden).
+            mergeSeq.Append(moverTransform.DOScale(moverStartScale * Recipe.mergeSettleAmount, Recipe.mergeSettleDuration).SetEase(Recipe.mergeSettleEase));
             mergeSeq.Append(moverTransform.DOScale(moverStartScale, Recipe.mergeSettleDuration).SetEase(Recipe.mergeSettleEase));
 
             mergeSeq.OnComplete(() =>

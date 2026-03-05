@@ -12,33 +12,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dfb8f3640a9d4e77b367cc698909d91, type: 3}
   m_Name: BlobAnimationRecipe
   m_EditorClassIdentifier: Assembly-CSharp::Blobs.Merge.Animation.BlobAnimationRecipeSO
-  spawnDuration: 0.35
-  despawnDuration: 0.2
+  spawnDuration: 0.117
+  despawnDuration: 0.067
   spawnEase: 27
   despawnEase: 26
   idleScaleAmount: 0.02
-  idleScaleDuration: 1.5
+  idleScaleDuration: 0.5
   idleFloatAmount: 0.03
-  idleFloatDuration: 2
-  selectionSquishDuration: 0.4
+  idleFloatDuration: 0.667
+  selectionSquishDuration: 0.133
   selectionSquishAmount: 1.3
   selectionStretchAmount: 1.08
-  moveDuration: 1
+  moveDuration: 0.333
   moveArcHeight: 0.4
   moveEase: 27
-  moveInterval: 0.8
-  mergeDuration: 0.25
-  mergeAnticipationDuration: 0.1
+  moveInterval: 0.267
+  mergeDuration: 0.083
+  mergeAnticipationDuration: 0.033
   mergeAnticipationAmount: 0.85
   mergeAnticipationStretchAmount: 1.08
-  mergeOvershootDuration: 0.15
+  mergeImpactInDuration: 0.027
+  mergeImpactOutDuration: 0.04
+  mergeOvershootDuration: 0.05
   mergeOvershootAmount: 0.5
   mergeSquashAmount: 0.8
   mergeStretchAmount: 1.08
-  mergeSettleDuration: 0.2
+  mergeSettleDuration: 0.067
   mergeSettleAmount: 1
   mergeSettleEase: 6
-  resizeDuration: 0.25
+  resizeDuration: 0.083
   resizeEase: 27
   beforeRemoveExpression: 
-  beforeRemoveExpressionDuration: 0.2
+  beforeRemoveExpressionDuration: 0.067

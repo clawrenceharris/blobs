@@ -76,6 +76,11 @@ public class BlobPresenter : IBlobPresenter
     public Sequence Respawn()
     {
         _view.gameObject.SetActive(true);
+
+        // Re-enable SpriteRenderers that were hidden during the merge animation.
+        foreach (var sr in _view.GetComponentsInChildren<SpriteRenderer>(true))
+            sr.enabled = true;
+
         return _animator.PlaySpawnAnimation();
     }
 
@@ -106,7 +111,6 @@ public class BlobPresenter : IBlobPresenter
             return DOTween.Sequence();
         }
 
-        _view.Visuals.ChangeSortingLayer("Foreground", blobToRemove.View.transform);
         return _animator.PlayMergeAnimation(blobToRemove, this, GridUtility.GridToWorldWithBlobOffset(_model.GridPosition));
 
     }

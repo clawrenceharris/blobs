@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76bd4bb8612f94df3aa83507b24de7b7, type: 3}
   m_Name: GhostBlobAnimationRecipe
   m_EditorClassIdentifier: Assembly-CSharp::Blobs.Animation.GhostBlobAnimationRecipe
-  spawnDuration: 0.25
-  despawnDuration: 0.2
+  spawnDuration: 0.083
+  despawnDuration: 0.067
   spawnEase: 27
   despawnEase: 26
-  fadeOutDuration: 0.2
-  fadeInDuration: 0.2
+  fadeOutDuration: 0.067
+  fadeInDuration: 0.067

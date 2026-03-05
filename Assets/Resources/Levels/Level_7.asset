@@ -22,7 +22,7 @@ MonoBehaviour:
     StarThresholds: 000000000000000064000000
     GemBonus: 0
     UndoPenalty: 0
-  IsTutorial: 1
+  IsTutorial: 0
   TutorialSteps:
   - TopText: Rock Blobs have entered the board! Mergable blobs will try to merge
       with Rocks but it won't work. Instead, Rocks will block direct merges.
@@ -31,60 +31,42 @@ MonoBehaviour:
     StartY: 0
     EndX: 1
     EndY: 2
-  - TopText: The Rock Blob prevented the merge! This also means they can never be
-      cleared, but they can still be helpful for positioning other Blobs.
-    BottomText: Rocks will be cleared on their own after no other blobs remain. Try
-      positioning the purple blob in line with the blue blob.
-    StartX: 2
-    StartY: 2
-    EndX: 2
-    EndY: 0
-  - TopText: Finish the level by merging the pink blob with the Flag!
-    BottomText: 
-    StartX: 0
-    StartY: 1
-    EndX: 3
-    EndY: 1
   Blobs:
-  - GridPosition: {x: 0, y: 1}
-    Type: 1
-    Color: 3
-    Size: 2
-  - GridPosition: {x: 1, y: 0}
-    Type: 1
-    Color: 2
-    Size: 2
-  - GridPosition: {x: 2, y: 0}
-    Type: 8
-    Color: 3
-    Size: 2
-  - GridPosition: {x: 3, y: 1}
-    Type: 4
-    Color: 3
-    Size: 2
-  - GridPosition: {x: 2, y: 2}
+  - GridPosition: {x: 3, y: 0}
     Type: 1
     Color: 4
     Size: 2
-  - GridPosition: {x: 1, y: 2}
-    Type: 8
+  - GridPosition: {x: 3, y: 2}
+    Type: 1
     Color: 3
+    Size: 2
+  - GridPosition: {x: 0, y: 2}
+    Type: 4
+    Color: 3
+    Size: 2
+  - GridPosition: {x: 0, y: 0}
+    Type: 3
+    Color: 1
     Size: 2
   Tiles:
   - GridPosition: {x: 0, y: 1}
     Type: 0
-  - GridPosition: {x: 2, y: 1}
-    Type: 0
   - GridPosition: {x: 3, y: 1}
-    Type: 0
-  - GridPosition: {x: 1, y: 1}
-    Type: 0
-  - GridPosition: {x: 1, y: 0}
     Type: 0
   - GridPosition: {x: 2, y: 0}
     Type: 0
   - GridPosition: {x: 2, y: 2}
     Type: 0
   - GridPosition: {x: 1, y: 2}
+    Type: 0
+  - GridPosition: {x: 3, y: 0}
+    Type: 0
+  - GridPosition: {x: 3, y: 2}
+    Type: 0
+  - GridPosition: {x: 0, y: 2}
+    Type: 0
+  - GridPosition: {x: 0, y: 0}
+    Type: 0
+  - GridPosition: {x: 1, y: 0}
     Type: 0
   MinMoves: 2

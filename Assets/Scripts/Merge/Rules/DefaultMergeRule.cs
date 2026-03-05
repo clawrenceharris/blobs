@@ -19,22 +19,16 @@ namespace Blobs.Core.Merge
                 fail = MergeFailReason.NoTargetInDirection;
                 return false;
             }
-            var blobToRemove = ctx.HitBlob;
-             // If source blob is smaller than target blob, remove the source blob
-            if (ctx.Source.Size < ctx.HitBlob.Size)
-            {
-                UnityEngine.Debug.Log("Source is smaller");
-                blobToRemove = ctx.Source;
-            }
-            // Resize source blob to big if both are small and remove target blob
+            // Source (first-clicked) always moves & survives.
+            // HitBlob (second-clicked / target) always gets removed.
+            // When both are small, resize source to big after merge.
             if (ctx.Source.Size == BlobSize.Small && ctx.HitBlob.Size == BlobSize.Small)
             {
-
                 plan.Events.Add(new ResizeBlobEvent { BlobId = ctx.Source.ID, From = ctx.Source.Size, To = BlobSize.Big });
             }
             plan.Events.Add(new MergeBlobsEvent
             {
-                BlobToRemoveId = blobToRemove.ID,
+                BlobToRemoveId = ctx.HitBlob.ID,
                 BlobToMoveId = ctx.Source.ID,
                 To = ctx.HitBlob.GridPosition,
                 From = ctx.Source.GridPosition,

@@ -15,7 +15,7 @@ MonoBehaviour:
   LevelNumber: 9
   LevelName: 
   Width: 6
-  Height: 1
+  Height: 3
   Scoring:
     BaseScore: 2000
     MovePenalty: 30
@@ -25,21 +25,21 @@ MonoBehaviour:
   IsTutorial: 0
   TutorialSteps: []
   Blobs:
+  - GridPosition: {x: 5, y: 2}
+    Type: 1
+    Color: 2
+    Size: 2
   - GridPosition: {x: 0, y: 0}
-    Type: 5
-    Color: 3
+    Type: 4
+    Color: 2
     Size: 2
-  - GridPosition: {x: 4, y: 0}
-    Type: 6
-    Color: 3
-    Size: 2
-  - GridPosition: {x: 5, y: 0}
+  - GridPosition: {x: 3, y: 0}
     Type: 1
     Color: 3
     Size: 2
-  - GridPosition: {x: 2, y: 0}
-    Type: 4
-    Color: 3
+  - GridPosition: {x: 3, y: 2}
+    Type: 6
+    Color: 4
     Size: 2
   Tiles:
   - GridPosition: {x: 0, y: 0}
@@ -48,10 +48,28 @@ MonoBehaviour:
     Type: 0
   - GridPosition: {x: 2, y: 0}
     Type: 0
-  - GridPosition: {x: 4, y: 0}
-    Type: 0
   - GridPosition: {x: 3, y: 0}
     Type: 0
+  - GridPosition: {x: 0, y: 2}
+    Type: 0
+  - GridPosition: {x: 0, y: 1}
+    Type: 0
+  - GridPosition: {x: 1, y: 2}
+    Type: 0
+  - GridPosition: {x: 2, y: 2}
+    Type: 0
+  - GridPosition: {x: 3, y: 2}
+    Type: 0
+  - GridPosition: {x: 5, y: 2}
+    Type: 0
+  - GridPosition: {x: 4, y: 2}
+    Type: 0
+  - GridPosition: {x: 3, y: 1}
+    Type: 0
+  - GridPosition: {x: 4, y: 0}
+    Type: 0
   - GridPosition: {x: 5, y: 0}
-    Type: 3
+    Type: 0
+  - GridPosition: {x: 5, y: 1}
+    Type: 0
   MinMoves: 2

@@ -1,5 +1,4 @@
 using System;
-using Blobs.Animation;
 using Blobs.Core.Merge;
 using DG.Tweening;
 
@@ -18,12 +17,6 @@ namespace Blobs.Merge.Animation
             var blobToMove = board.GetBlob(evt.BlobToMoveId);
             var blobToRemove = board.GetBlob(evt.BlobToRemoveId);
             if (blobToMove == null || blobToRemove == null) return null;
-            var rec = AnimationRecipeProvider.Instance.GetBlobRecipe<BlobAnimationRecipe>(blobToMove.Model.Type);
-            
-            if (blobToRemove.Model.ID == blobToMove.Model.ID)
-            {
-                return blobToMove.MoveToGrid(evt.To).Append(blobToRemove.Remove());
-            }
             
             var mergeSeq = blobToMove.Merge(blobToRemove);
             if (mergeSeq == null) return null;

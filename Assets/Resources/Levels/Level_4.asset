@@ -53,6 +53,10 @@ MonoBehaviour:
     Type: 1
     Color: 1
     Size: 2
+  - GridPosition: {x: 2, y: 1}
+    Type: 4
+    Color: 4
+    Size: 2
   Tiles:
   - GridPosition: {x: 0, y: 2}
     Type: 0

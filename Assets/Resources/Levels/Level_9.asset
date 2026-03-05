@@ -37,6 +37,10 @@ MonoBehaviour:
     Type: 1
     Color: 3
     Size: 2
+  - GridPosition: {x: 2, y: 0}
+    Type: 4
+    Color: 3
+    Size: 2
   Tiles:
   - GridPosition: {x: 0, y: 0}
     Type: 0

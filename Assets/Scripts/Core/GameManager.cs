@@ -69,11 +69,17 @@ public class GameManager : MonoBehaviour
         // Skip win check during tutorials — TutorialState handles its own win transition
         if (_stateManager.CurrentState is TutorialState) return;
 
+        // Prevent duplicate win transitions from spam-clicking
+        if (_stateManager.CurrentState is WinState) return;
+
         bool didWin = CheckForWin(_board);
         if (didWin)
         {
             CoroutineHandler.StartStaticCoroutine(_stateManager.Board.AnimateEndTurnSequence(), () =>
             {
+                // Double-check we haven't already transitioned to WinState
+                // (another coroutine callback may have beaten us here)
+                if (_stateManager.CurrentState is WinState) return;
                 _stateManager.ChangeState(new WinState(_stateManager));
             });
         }

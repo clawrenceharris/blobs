@@ -15,8 +15,9 @@ public class PanelView : MonoBehaviour
     }
     public virtual void ShowPanel()
         {
-
-            _canvasGroup.gameObject.SetActive(true);
+            // Activate first so Awake() runs if the panel started inactive,
+            // ensuring _canvasGroup and _rectTransform are initialized.
+            gameObject.SetActive(true);
             Time.timeScale = 0f;
 
             _canvasGroup.alpha = 0f;

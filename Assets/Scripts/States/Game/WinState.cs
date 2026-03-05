@@ -49,9 +49,11 @@ public class WinState : State<GameStateManager>
         int levelIndex = PlayerPrefs.GetInt("SelectedLevel", 0);
         LevelProgressManager.SetStars(levelIndex, stars);
 
-        // Show win panel
-        Debug.Log($"[WinState] Calling ShowWinPanel — UIManager: {context.UIManager != null}, WinView: {context.UIManager?.WinView != null}");
-        context.UIManager?.WinView.ShowWinPanel(stars, score);
+        // Show win panel (use explicit Unity null check — C# ?. does not catch destroyed-but-not-GC'd objects)
+        var winView = context.UIManager != null ? context.UIManager.WinView : null;
+        Debug.Log($"[WinState] Calling ShowWinPanel — UIManager: {context.UIManager != null}, WinView: {winView != null}");
+        if (winView != null)
+            winView.ShowWinPanel(stars, score);
     }
 
 

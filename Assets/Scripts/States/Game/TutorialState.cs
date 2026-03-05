@@ -118,6 +118,7 @@ public class TutorialState : State<GameStateManager>
     public override void ExitState()
     {
         try { context.Tutorial.StopTutorial(); } catch (System.Exception e) { Debug.LogError("[TutorialState] StopTutorial threw: " + e); }
+        try { context.UIManager.HudView.gameObject.SetActive(true); } catch (System.Exception e) { Debug.LogError("[TutorialState] HudView SetActive threw: " + e); }
         try { context.UIManager.HudView.UndoButton.gameObject.SetActive(true); } catch (System.Exception e) { Debug.LogError("[TutorialState] UndoButton threw: " + e); }
         try { context.UIManager.TutorialView.HideTutorialView(); } catch (System.Exception e) { Debug.LogError("[TutorialState] HideTutorialView threw: " + e); }
         context.Tutorial.OnNextTutorialStep -= OnNextTutorialStep;

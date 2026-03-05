@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3399742769679583475}
   - component: {fileID: 6111696923431916385}
-  - component: {fileID: 3492563350622678284}
   m_Layer: 0
   m_Name: Halo
   m_TagString: Untagged
@@ -59,7 +58,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0d4bbaa10c675466891253ebb5c3895b, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -78,7 +77,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 1839430605
+  m_SortingLayerID: 1381305635
   m_SortingLayer: 2
   m_SortingOrder: 2
   m_MaskInteraction: 0
@@ -92,22 +91,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &3492563350622678284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3942341544303062725}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee158225ee1e59f4791627785501d950, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentShaderType: 0
-  normalStrength: 5
-  normalSmoothing: 1
-  computingNormal: 0
 --- !u!1001 &4906576934258824666
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -186,9 +169,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1468080444204028906, guid: 018c5f23b791d4bfa97bbd780a5e2cbc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8246436865046865391}
-    - targetCorrespondingSourceObject: {fileID: 3808715570948269502, guid: 018c5f23b791d4bfa97bbd780a5e2cbc, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5487175279102719110}
   m_SourcePrefab: {fileID: 100100000, guid: 018c5f23b791d4bfa97bbd780a5e2cbc, type: 3}
 --- !u!1 &5784876863124260400 stripped
 GameObject:
@@ -212,24 +192,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1889189986113857665, guid: 018c5f23b791d4bfa97bbd780a5e2cbc, type: 3}
   m_PrefabInstance: {fileID: 4906576934258824666}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8128134315419742308 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3808715570948269502, guid: 018c5f23b791d4bfa97bbd780a5e2cbc, type: 3}
-  m_PrefabInstance: {fileID: 4906576934258824666}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5487175279102719110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8128134315419742308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee158225ee1e59f4791627785501d950, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentShaderType: 0
-  normalStrength: 5
-  normalSmoothing: 1
-  computingNormal: 0

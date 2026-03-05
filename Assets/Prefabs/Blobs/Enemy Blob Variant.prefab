@@ -34,6 +34,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1406153609069688969
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -52,6 +53,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -73,9 +76,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1839430605
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 1381305635
   m_SortingLayer: 2
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 1590066e62cc54d25b8fc358d8eb7026, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -85,7 +90,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1001 &760355849604744169
 PrefabInstance:
@@ -178,9 +182,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1468080444204028906, guid: 018c5f23b791d4bfa97bbd780a5e2cbc, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4524675836703029265}
-    - targetCorrespondingSourceObject: {fileID: 1468080444204028906, guid: 018c5f23b791d4bfa97bbd780a5e2cbc, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 7150662450917335534}
   m_SourcePrefab: {fileID: 100100000, guid: 018c5f23b791d4bfa97bbd780a5e2cbc, type: 3}
 --- !u!1 &2221111340832804867 stripped
@@ -188,18 +189,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1468080444204028906, guid: 018c5f23b791d4bfa97bbd780a5e2cbc, type: 3}
   m_PrefabInstance: {fileID: 760355849604744169}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4524675836703029265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2221111340832804867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a57f96a30121442dabfccb086b08da99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7150662450917335534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,6 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 6167074784596821246}
+  Highlight: {fileID: 0}
   Particles: {fileID: 3589974769046533848, guid: 4eb5887f694df468e9074691bbc2de67, type: 3}
   Spikes: {fileID: 1406153609069688969}
 --- !u!212 &6167074784596821246 stripped

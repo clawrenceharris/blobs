@@ -61,28 +61,42 @@ namespace Blobs.Input
         {
             TryGetPointerHit(out BlobView endBlobView, out bool hitBoard);
 
+            // Validate stale _pointerDownBlob reference (blob may have been
+            // destroyed or deactivated during a merge animation)
+            if (_pointerDownBlob != null &&
+                (_pointerDownBlob.gameObject == null || !_pointerDownBlob.gameObject.activeInHierarchy
+                 || _pointerDownBlob.Model == null))
+            {
+                _pointerDownBlob = null;
+            }
+
             if (!hitBoard)
             {
+                _pointerDownBlob = null;
                 EmptyClicked?.Invoke();
                 return;
             }
 
-            if (_pointerDownBlob != null && endBlobView != null &&
-                _pointerDownBlob.Model.ID != endBlobView.Model.ID)
+            if (_pointerDownBlob != null && endBlobView != null
+                && _pointerDownBlob.Model != null && endBlobView.Model != null
+                && _pointerDownBlob.Model.ID != endBlobView.Model.ID)
             {
                 BlobClicked?.Invoke(_pointerDownBlob);
                 BlobClicked?.Invoke(endBlobView);
+                _pointerDownBlob = null;
                 return;
             }
             // if the blob is the same 
-            if (_pointerDownBlob != null && (endBlobView == null || _pointerDownBlob.Model.ID == endBlobView.Model?.ID))
+            if (_pointerDownBlob != null && _pointerDownBlob.Model != null
+                && (endBlobView == null || endBlobView.Model == null
+                    || _pointerDownBlob.Model.ID == endBlobView.Model.ID))
             {
                 BlobClicked?.Invoke(_pointerDownBlob);
+                _pointerDownBlob = null;
                 return;
             }
 
-
-
+            _pointerDownBlob = null;
             EmptyClicked?.Invoke();
         }
 

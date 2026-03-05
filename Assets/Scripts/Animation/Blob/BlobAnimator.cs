@@ -86,8 +86,9 @@ namespace Blobs.Animation
             // Kill any existing loop
             StopSelectionLoop();
 
-            // Store current scale as base (in case it was modified)
-            _originalScale = transform.localScale;
+            // Reset to the true original scale before starting selection loop
+            // (don't capture mid-animation scale)
+            transform.localScale = _originalScale;
 
             // Create squish in/out loop: squash down (Y smaller, X larger) then return to base
             _selectionSequence = DOTween.Sequence();
@@ -127,13 +128,26 @@ namespace Blobs.Animation
         {
             if (_currentState == BlobState.Selected) return;
             KillAllTweens();
-            StartSelectionLoop();
+            _currentState = BlobState.Selected;
+
+            // Smoothly transition to selection scale before starting the loop
+            transform.DOScale(_originalScale, 0.1f).SetEase(Ease.OutQuad).OnComplete(() =>
+            {
+                if (_currentState == BlobState.Selected)
+                    StartSelectionLoop();
+            });
         }
 
         public void PlayDeselectAnimation()
         {
+            _currentState = BlobState.Idle;
             StopSelectionLoop();
-            StartIdleAnimation();
+            // Don't jump straight to idle — smoothly blend back first, then start idle
+            transform.DOScale(_originalScale, 0.12f).SetEase(Ease.OutQuad).OnComplete(() =>
+            {
+                if (_currentState == BlobState.Idle)
+                    StartIdleAnimation();
+            });
         }
 
         #endregion
@@ -150,13 +164,16 @@ namespace Blobs.Animation
             _currentState = BlobState.Moving;
             _isAnimating = true;
 
-         
+            // Reset scale to original before moving (in case we were mid-selection-squish)
+            transform.localScale = _originalScale;
+
             Sequence moveSeq = DOTween.Sequence();
             moveSeq.Join(transform.DOScale(Recipe.mergeAnticipationStretchAmount, Recipe.mergeAnticipationDuration).SetEase(Ease.OutQuad));
             moveSeq.Join(transform.DOMove(targetPosition, Recipe.moveDuration).SetEase(Recipe.moveEase));
             moveSeq.OnComplete(() =>
             {
                 _isAnimating = false;
+                transform.localScale = _originalScale;
                 _originalPosition = transform.localPosition;
                 StartIdleAnimation();
             });
@@ -204,14 +221,26 @@ namespace Blobs.Animation
             _currentState = BlobState.Merging;
             _isAnimating = true;
 
-            if (blobToRemove == null || blobToMove == null)
+            if (blobToRemove == null || blobToMove == null
+                || blobToRemove.View == null || blobToMove.View == null)
             {
                 _isAnimating = false;
+                _currentState = BlobState.Idle;
                 return DOTween.Sequence();
             }
 
             Transform moverTransform = blobToMove.View.transform;
             Transform targetTransform = blobToRemove.View.transform;
+
+            if (moverTransform == null || targetTransform == null)
+            {
+                _isAnimating = false;
+                _currentState = BlobState.Idle;
+                return DOTween.Sequence();
+            }
+
+            // Reset mover scale to original before starting merge
+            moverTransform.localScale = _originalScale;
             Vector3 moverStartPosition = moverTransform.position;
             Vector3 targetStartPosition = targetTransform.position;
             Vector3 moverStartScale = moverTransform.localScale;

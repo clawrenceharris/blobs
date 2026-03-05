@@ -7,7 +7,9 @@ using UnityEditor;
 public class ColorScheme : ScriptableObject
 {
     public Color Purple;
-        public Color Pink;
+    public Color Pink;
+    public Color Orange;
+    public Color LightBlue;
 
     public Color TileColor;
     public Color TileEdgeColor;

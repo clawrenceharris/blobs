@@ -105,6 +105,8 @@ public static class LevelDataKeys
         public const string TrailColor = "tc";
 
         public const string Blank = "x";  
+        public const string Orange = "o";
+
  public static readonly Dictionary<string, BlobColor> blobColorMap = new Dictionary<string, BlobColor>()
         {
             { Red, BlobColor.Red },
@@ -113,6 +115,7 @@ public static class LevelDataKeys
             { LightBlue, BlobColor.LightBlue },
             { Green, BlobColor.Green },
             { Purple, BlobColor.Purple },
+            { Orange, BlobColor.Orange },
             { Blank, BlobColor.Blank },
             { Pink, BlobColor.Pink },
 

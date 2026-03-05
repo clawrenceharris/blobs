@@ -29,10 +29,6 @@ MonoBehaviour:
     Type: 4
     Color: 0
     Size: 2
-  - GridPosition: {x: 0, y: 1}
-    Type: 1
-    Color: 7
-    Size: 2
   - GridPosition: {x: 1, y: 1}
     Type: 1
     Color: 0
@@ -49,37 +45,21 @@ MonoBehaviour:
     Type: 1
     Color: 3
     Size: 2
-  - GridPosition: {x: 0, y: 3}
-    Type: 1
-    Color: 0
-    Size: 2
   - GridPosition: {x: 1, y: 3}
     Type: 1
     Color: 0
     Size: 2
-  - GridPosition: {x: 2, y: 3}
-    Type: 1
-    Color: 3
-    Size: 1
   Tiles:
-  - GridPosition: {x: 1, y: 0}
+  - GridPosition: {x: 1, y: 3}
     Type: 0
-  - GridPosition: {x: 0, y: 1}
+  - GridPosition: {x: 2, y: 2}
+    Type: 0
+  - GridPosition: {x: 1, y: 2}
     Type: 0
   - GridPosition: {x: 1, y: 1}
     Type: 0
   - GridPosition: {x: 2, y: 1}
     Type: 0
-  - GridPosition: {x: 0, y: 2}
-    Type: 0
-  - GridPosition: {x: 1, y: 2}
-    Type: 0
-  - GridPosition: {x: 2, y: 2}
-    Type: 0
-  - GridPosition: {x: 0, y: 3}
-    Type: 0
-  - GridPosition: {x: 1, y: 3}
-    Type: 0
-  - GridPosition: {x: 2, y: 3}
+  - GridPosition: {x: 1, y: 0}
     Type: 0
   MinMoves: 5

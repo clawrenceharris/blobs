@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
     {
         BoardPresenter.OnMergeAnimationStart += HandleMergeAnimationStart;
         BoardPresenter.OnMergeAnimationComplete += HandleMergeAnimationComplete;
+        BoardPresenter.OnMergeUndo += HandleMergeAnimationStart;
+        BoardPresenter.OnMergeUndoComplete += HandleMergeUndoAnimationComplete;
         MergeInvoker.OnMergeExecuted += HandleMergeExecuted;
         _stateManager.OnMoveCountChanged += moveCount => OnMoveCountChanged?.Invoke(moveCount);
         InitializeGame();
@@ -83,6 +85,11 @@ public class GameManager : MonoBehaviour
                 _stateManager.ChangeState(new WinState(_stateManager));
             });
         }
+    }
+
+    private void HandleMergeUndoAnimationComplete(MergeAction action)
+    {
+        InputService.Gate.SetEnabled(true);
     }
 
     private void InitializeGame()

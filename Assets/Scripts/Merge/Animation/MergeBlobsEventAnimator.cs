@@ -14,7 +14,7 @@ namespace Blobs.Merge.Animation
         
         public Sequence BuildSequence(IMergeEvent e, IBoardPresenter board)
         {
-            if (e is not MergeBlobsEvent evt) return null     ;
+            if (e is not MergeBlobsEvent evt) return null;
             var blobToMove = board.GetBlob(evt.BlobToMoveId);
             var blobToRemove = board.GetBlob(evt.BlobToRemoveId);
             if (blobToMove == null || blobToRemove == null) return null;
@@ -25,8 +25,14 @@ namespace Blobs.Merge.Animation
                 return blobToMove.MoveToGrid(evt.To).Append(blobToRemove.Remove());
             }
             
-            return blobToMove.Merge(blobToRemove).AppendCallback(() => blobToRemove.PlayMergeEffect());
-            
+            var mergeSeq = blobToMove.Merge(blobToRemove);
+            if (mergeSeq == null) return null;
+            mergeSeq.AppendCallback(() =>
+            {
+                try { blobToRemove.PlayMergeEffect(); }
+                catch (System.Exception ex) { UnityEngine.Debug.LogWarning($"[MergeBlobsEventAnimator] PlayMergeEffect failed: {ex.Message}"); }
+            });
+            return mergeSeq;
         }
 
         public Sequence BuildUndoSequence(IMergeEvent e, IBoardPresenter board)

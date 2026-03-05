@@ -35,9 +35,9 @@ public class ColorSchemeManager : MonoBehaviour
             BlobColor.Green => CurrentColorScheme.Green,
             BlobColor.Blue => CurrentColorScheme.Blue,
             BlobColor.Purple => CurrentColorScheme.Purple,
-            BlobColor.LightBlue => CurrentColorScheme.Blue,
+            BlobColor.LightBlue => CurrentColorScheme.LightBlue,
             BlobColor.Pink => CurrentColorScheme.Pink,
-
+            BlobColor.Orange => CurrentColorScheme.Orange,
 
             _ => CurrentColorScheme.Blank,
         };

@@ -154,19 +154,46 @@ public class BoardPresenter : MonoBehaviour, IBoardPresenter
     private void HandleMergeExecuted(MergeAction action)
     {
         OnMergeAnimationStart?.Invoke(action);
-        CoroutineHandler.StartStaticCoroutine(MergePlanAnimator.AnimatePlan(action.Plan, this), () =>
-        {
-            OnMergeAnimationComplete?.Invoke(action);
-        });
+        CoroutineHandler.StartStaticCoroutine(SafeAnimateCoroutine(
+            MergePlanAnimator.AnimatePlan(action.Plan, this),
+            () => OnMergeAnimationComplete?.Invoke(action)
+        ));
     }
 
     private void HandleMergeUndone(MergeAction action)
     {
         OnMergeUndo?.Invoke(action);
-        CoroutineHandler.StartStaticCoroutine(MergePlanAnimator.AnimateUndo(action.Plan, this), () =>
+        CoroutineHandler.StartStaticCoroutine(SafeAnimateCoroutine(
+            MergePlanAnimator.AnimateUndo(action.Plan, this),
+            () => OnMergeUndoComplete?.Invoke(action)
+        ));
+    }
+
+    /// <summary>
+    /// Wraps an animation coroutine so that the callback fires even if
+    /// the inner coroutine throws (e.g., DOTween accessing a destroyed transform).
+    /// This prevents the InputGate from getting stuck in the disabled state.
+    /// </summary>
+    private static System.Collections.IEnumerator SafeAnimateCoroutine(
+        System.Collections.IEnumerator inner, System.Action onComplete)
+    {
+        while (true)
         {
-            OnMergeUndoComplete?.Invoke(action);
-        });
+            bool hasNext;
+            try
+            {
+                hasNext = inner.MoveNext();
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"[BoardPresenter] Animation coroutine error (recovered): {ex.Message}\n{ex.StackTrace}");
+                hasNext = false;
+            }
+
+            if (!hasNext) break;
+            yield return inner.Current;
+        }
+        onComplete?.Invoke();
     }
 
     private void HandleBlobSpawned(Blob blob)

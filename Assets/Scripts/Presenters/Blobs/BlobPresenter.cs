@@ -100,6 +100,12 @@ public class BlobPresenter : IBlobPresenter
 
     public Sequence Merge(IBlobPresenter blobToRemove) {
 
+        if (blobToRemove?.View == null || _view == null)
+        {
+            Debug.LogWarning("[BlobPresenter] Merge skipped — null view reference");
+            return DOTween.Sequence();
+        }
+
         _view.Visuals.ChangeSortingLayer("Foreground", blobToRemove.View.transform);
         return _animator.PlayMergeAnimation(blobToRemove, this, GridUtility.GridToWorldWithBlobOffset(_model.GridPosition));
 

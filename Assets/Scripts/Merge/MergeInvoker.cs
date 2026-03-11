@@ -1,60 +1,63 @@
 using System;
 using System.Collections.Generic;
-using Blobs.Core.Merge;
 using UnityEngine;
 
 /// <summary>
-/// Manages a history of commands to enable undo functionality.
+/// Manages command history for moves and undo. Uses MoveResolver + MoveCommand (effects-driven);
+/// accepts ICommand so both MoveCommand and legacy MergeAction can be pushed.
 /// </summary>
 public class MergeInvoker : MonoBehaviour
 {
-    private static readonly Stack<MergeAction> _mergeHistory = new();
+    private static readonly Stack<ICommand> _history = new();
 
-    public static event Action<MergeAction> OnMergeExecuted;
-    public static event Action<MergeAction> OnMergeUndone;
-    public static bool CanUndo => _mergeHistory.Count > 0;
-
-    public static int HistoryCount => _mergeHistory.Count;
-
+    public static event Action<ICommand> OnMergeExecuted;
+    public static event Action<ICommand> OnMergeUndone;
+    public static bool CanUndo => _history.Count > 0;
+    public static int HistoryCount => _history.Count;
 
     /// <summary>
-    /// Execute a merge action and add it to history.
+    /// Execute a command and add it to history.
     /// </summary>
-    public static void ExecuteMerge(MergeAction action)
+    public static void Execute(ICommand command)
     {
-        if (action == null)
+        if (command == null)
         {
-            Debug.LogWarning("[CommandManager] Null command");
+            Debug.LogWarning("[MergeInvoker] Null command");
             return;
         }
-        action.Execute();
-        _mergeHistory.Push(action);
-
-        OnMergeExecuted?.Invoke(action);
+        command.Execute();
+        _history.Push(command);
+        OnMergeExecuted?.Invoke(command);
     }
 
     /// <summary>
-    /// Undo the last merge.
+    /// Execute a merge action (legacy). Prefer Execute(ICommand) with MoveCommand.
+    /// </summary>
+    public static void ExecuteMerge(ICommand command)
+    {
+        Execute(command);
+    }
+
+    /// <summary>
+    /// Undo the last move.
     /// </summary>
     public static void UndoMerge()
     {
-        if (_mergeHistory.Count == 0)
+        if (_history.Count == 0)
         {
-            Debug.Log("[CommandManager] Nothing to undo");
+            Debug.Log("[MergeInvoker] Nothing to undo");
             return;
         }
-
-        MergeAction action = _mergeHistory.Pop();
-        action.Undo();
-
-        OnMergeUndone?.Invoke(action);
+        var command = _history.Pop();
+        command.Undo();
+        OnMergeUndone?.Invoke(command);
     }
 
     /// <summary>
     /// Clear all command history.
     /// </summary>
-    public void ClearHistory()
+    public static void ClearHistory()
     {
-        _mergeHistory.Clear();
+        _history.Clear();
     }
 }

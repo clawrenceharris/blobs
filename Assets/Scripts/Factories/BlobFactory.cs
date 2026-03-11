@@ -12,18 +12,6 @@ public class BlobFactory
     /// </summary>
     public static Blob CreateBlobModel(BlobSpawnData data)
     {
-        
-        if (data.Properties != null)
-        {
-            foreach (var p in data.Properties)
-            {
-                if (!string.IsNullOrEmpty(p.Key))
-                    data.SetProperty(p.Key, p.Value);
-            }
-        }
-
-
-
         switch (data.Type)
         {
             case BlobType.Normal:
@@ -42,8 +30,8 @@ public class BlobFactory
                 BlobColor trailColor = data.GetProperty<BlobColor>(LevelDataKeys.Properties.TrailColor);
                 return new TrailBlob(data.Color, data.Size, trailColor, data.GridPosition);
 
-            case BlobType.Flag:
-                return new FlagBlob(data.Color, data.GridPosition);
+            case BlobType.Target:
+                return new TargetBlob(data.Color, data.GridPosition);
 
             case BlobType.Switch:
                 return new SwitchBlob(data.Color, data.GridPosition);
@@ -55,6 +43,7 @@ public class BlobFactory
         }
     }
 
+
     public static BlobPresenter CreateBlobPresenter(Blob model, BlobView view)
     {
         switch (model.Type)
@@ -64,6 +53,7 @@ public class BlobFactory
         }
     }
     
+
 
 }
 

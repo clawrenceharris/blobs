@@ -2,13 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Blobs.Utilities;
 
-public class TileVisuals : MonoBehaviour, IVisuals
+namespace Blobs.Visuals
 {
-    public SpriteRenderer SpriteRenderer;
+    
+    public class TileVisuals : Visuals
+    {
 
+       
 
-
+    }
 }
 
 

@@ -34,7 +34,12 @@ public static class LevelDataKeys
     public static class Types
     {
         public const string NormalBlob = "nb";
-        public const string FlagBlob = "fb";
+        
+       /// <summary>
+        /// This field is deprecated. Use TargetBlob instead.
+        /// </summary>
+        public const string FlagBlob = "fb"; 
+        public const string TargetBlob = "tb";
         public const string SwitchBlob = "sb";
         public const string TrailBlob = "tb";
         public const string BombBlob = "bb";
@@ -59,7 +64,7 @@ public static class LevelDataKeys
             { NormalBlob, BlobType.Normal },
             { TrailBlob, BlobType.Trail },
             { SwitchBlob, BlobType.Switch },
-            { FlagBlob, BlobType.Flag  },
+            { FlagBlob, BlobType.Target  },
             { BombBlob, BlobType.Bomb },
             { GhostBlob, BlobType.Ghost },
             { EnemyBlob, BlobType.Enemy },
@@ -75,23 +80,33 @@ public static class LevelDataKeys
             { LaserTile, TileType.Laser },
 
         };
-
+       
         public static BlobType GetBlobTypeFromKey(string key)
         {
             if (blobTypeMap.TryGetValue(key, out BlobType value))
-            {
                 return value;
-            }
             throw new ArgumentException($"Blob type key '{key}' not found.");
+        }
+
+        public static string GetKeyFromBlobType(BlobType type)
+        {
+            foreach (var kv in blobTypeMap)
+                if (kv.Value == type) return kv.Key;
+            return NormalBlob;
         }
 
         public static TileType GetTileTypeFromKey(string key)
         {
             if (tileTypeMap.TryGetValue(key, out TileType value))
-            {
                 return value;
-            }
-            throw new ArgumentException($"Tile type key '{key}' not found.");
+            return TileType.Normal;
+        }
+
+        public static string GetKeyFromTileType(TileType type)
+        {
+            foreach (var kv in tileTypeMap)
+                if (kv.Value == type) return kv.Key;
+            return NormalTile;
         }
     }
     public static class  BlobColors{
@@ -121,13 +136,16 @@ public static class LevelDataKeys
         public static BlobColor GetBlobColorFromKey(string key)
         {
             if (blobColorMap.TryGetValue(key, out BlobColor value))
-            {
                 return value;
-            }
-            throw new ArgumentException($"Blob color key '{key}' not found.");
+            return BlobColor.Blank;
         }
 
-        
+        public static string GetKeyFromBlobColor(BlobColor color)
+        {
+            foreach (var kv in blobColorMap)
+                if (kv.Value == color) return kv.Key;
+            return Blank;
+        }
     }
     public static class BlobSizes
     {
@@ -145,12 +163,17 @@ public static class LevelDataKeys
         public static BlobSize GetBlobSizeFromKey(string key)
         {
             if (blobSizeMap.TryGetValue(key, out BlobSize value))
-            {
                 return value;
-            }
-            throw new ArgumentException($"Blob size key '{key}' not found.");
+            return BlobSize.Normal;
         }
 
+        public static string GetKeyFromBlobSize(BlobSize size)
+        {
+            if (size == BlobSize.None) return Normal;
+            foreach (var kv in blobSizeMap)
+                if (kv.Value == size) return kv.Key;
+            return Normal;
+        }
     }
     
 }

@@ -10,7 +10,7 @@ public class PrefabLibrary : MonoBehaviour
     [Header("Blobs")]
     public BlobView NormalBlob;
     public BlobView SwitchBlob;
-    public BlobView FlagBlob;
+    public BlobView TargetBlob;
     public BlobView TrailBlob;
     public BlobView BombBlob;
     public BlobView GhostBlob;
@@ -25,6 +25,7 @@ public class PrefabLibrary : MonoBehaviour
     public TileView LaserTile;
     public TileView SigilTile;
     public GameObject TutorialPointer;
+    public SpriteRenderer TrailSplatter;
 
     private void Awake()
     {
@@ -41,7 +42,7 @@ public class PrefabLibrary : MonoBehaviour
         {
             BlobType.Normal => NormalBlob,
             BlobType.Trail => TrailBlob,
-            BlobType.Flag => FlagBlob,
+            BlobType.Target => TargetBlob,
             BlobType.Switch => SwitchBlob,
             BlobType.Bomb => BombBlob,
             BlobType.Ghost => GhostBlob,

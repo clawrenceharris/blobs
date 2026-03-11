@@ -14,6 +14,9 @@ public class PlayingState : State<GameStateManager>
 {
     public PlayingState(GameStateManager context) : base(context)
     {
+        InputService.Gate.SetEnabled(true);
+        context.UIManager.HudView.gameObject.SetActive(true);
+
     }
 
     public override void EnterState()

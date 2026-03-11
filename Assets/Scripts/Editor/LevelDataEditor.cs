@@ -40,15 +40,17 @@ namespace Blobs.Editor
             public static readonly Color CellBorder = new Color(0.35f, 0.35f, 0.4f);
             public static readonly Color CellBorderHighlight = new Color(0.5f, 0.5f, 0.55f);
             
-            // Blob Type Colors
+            // Blob Type Colors (index matches LevelEditorSchemas.BlobTypeSchema.All order: N,T,G,F,B,S,E,R)
             public static readonly Color[] BlobTypeColors = new Color[]
             {
                 new Color(0.5f, 0.8f, 1f),      // Normal - light blue
                 new Color(0.8f, 0.6f, 1f),      // Trail - purple
                 new Color(0.9f, 0.9f, 0.9f),    // Ghost - white
-                new Color(0.4f, 0.9f, 0.4f),    // Flag - green
-                new Color(0.5f, 0.5f, 0.5f),    // Rock - gray
+                new Color(0.4f, 0.9f, 0.4f),    // Target - green
+                new Color(0.6f, 0.35f, 0.35f),  // Bomb - dark red
                 new Color(1f, 0.8f, 0.3f),      // Switch - gold
+                new Color(0.9f, 0.4f, 0.3f),    // Enemy - orange-red
+                new Color(0.5f, 0.5f, 0.5f),    // Rock - gray
             };
             
             // Blob Color Palette
@@ -123,9 +125,15 @@ namespace Blobs.Editor
         private LevelData levelData;
         private BlobType selectedBlobType = BlobType.Normal;
         private BlobColor selectedBlobColor = BlobColor.Pink;
+        private BlobColor selectedTrailColor = BlobColor.LightBlue;
+        private BlobSize selectedBlobSize = BlobSize.Normal;
         private TileType selectedTileType = TileType.Normal;
         private bool isPlacingBlob = true;
         private Vector2 scrollPosition;
+
+        private enum EditorMode { PaintBlob, PaintTile, Inspect }
+        private EditorMode editorMode = EditorMode.PaintBlob;
+        private Vector2Int? selectedCell;
 
         // Foldout states
         private bool showLevelInfo = true;
@@ -396,6 +404,30 @@ namespace Blobs.Editor
                 EditorGUI.indentLevel++;
                 DrawSectionBox(() =>
                 {
+                    EditorGUILayout.BeginHorizontal();
+                    if (GUILayout.Button("Export JSON", GUILayout.Width(100), GUILayout.Height(BUTTON_HEIGHT)))
+                    {
+                        string path = EditorUtility.SaveFilePanel("Export Level JSON", "Assets/Resources/Levels", "level_" + levelData.LevelNumber + ".json", "json");
+                        if (!string.IsNullOrEmpty(path))
+                        {
+                            System.IO.File.WriteAllText(path, LevelDataJsonSerializer.ToJson(levelData));
+                            AssetDatabase.Refresh();
+                        }
+                    }
+                    if (GUILayout.Button("Import JSON", GUILayout.Width(100), GUILayout.Height(BUTTON_HEIGHT)))
+                    {
+                        string path = EditorUtility.OpenFilePanel("Import Level JSON", "Assets/Levels", "json");
+                        if (!string.IsNullOrEmpty(path))
+                        {
+                            string json = System.IO.File.ReadAllText(path);
+                            Undo.RecordObject(levelData, "Import JSON");
+                            LevelDataJsonSerializer.FromJson(levelData, json);
+                            
+                            EditorUtility.SetDirty(levelData);
+                        }
+                    }
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.Space(SPACING_SMALL);
                     DrawPropertyFieldSafe(GetPropertySafe("Blobs"), "Blobs");
                     EditorGUILayout.Space(SPACING_SMALL);
                     DrawPropertyFieldSafe(GetPropertySafe("Tiles"), "Tiles");
@@ -429,15 +461,135 @@ namespace Blobs.Editor
                     EditorGUILayout.Space(SPACING_MEDIUM);
                     
                     DrawGrid();
+
+                    if (editorMode == EditorMode.Inspect && selectedCell.HasValue)
+                    {
+                        EditorGUILayout.Space(SPACING_MEDIUM);
+                        DrawInspectPanel();
+                    }
                 });
                 EditorGUI.indentLevel--;
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
         }
+
+        private void DrawInspectPanel()
+        {
+            if (!selectedCell.HasValue) return;
+            Vector2Int pos = selectedCell.Value;
+            BlobSpawnData blob = GetBlobAt(pos);
+            TileSpawnData tile = GetTileAt(pos);
+
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            EditorGUILayout.LabelField("Cell " + pos.x + ", " + pos.y, EditorStyleConfig.GetSubtitleStyle());
+
+            if (blob != null)
+            {
+                EditorGUILayout.Space(SPACING_SMALL);
+                EditorGUILayout.LabelField("Blob", EditorStyles.boldLabel);
+                EditorGUI.BeginChangeCheck();
+                Undo.RecordObject(levelData, "Edit Blob");
+                var schema = BlobTypeSchema.Get(blob.Type);
+                blob.Type = (BlobType)EditorGUILayout.EnumPopup("Type", blob.Type);
+                var newSchema = BlobTypeSchema.Get(blob.Type);
+                if (newSchema.UsesColor)
+                    blob.Color = (BlobColor)EditorGUILayout.EnumPopup("Color", blob.Color);
+                else
+                    blob.Color = newSchema.DefaultColor;
+                if (newSchema.UsesSize)
+                    blob.Size = (BlobSize)EditorGUILayout.EnumPopup("Size", blob.Size);
+                else
+                    blob.Size = newSchema.DefaultSize;
+                if (newSchema.UsesTrailColor)
+                {
+                    var trailColor = blob.GetProperty<BlobColor>(LevelDataKeys.Properties.TrailColor);
+                    var newTrail = (BlobColor)EditorGUILayout.EnumPopup("Trail color", trailColor);
+                    blob.SetProperty(LevelDataKeys.Properties.TrailColor, newTrail);
+                }
+                if (EditorGUI.EndChangeCheck())
+                    EditorUtility.SetDirty(levelData);
+                if (GUILayout.Button("Remove Blob", GUILayout.Width(100)))
+                {
+                    levelData.Blobs.RemoveAll(b => b.GridPosition == pos);
+                    selectedCell = null;
+                    EditorUtility.SetDirty(levelData);
+                }
+            }
+            else
+            {
+                if (GUILayout.Button("Add Blob", GUILayout.Width(90)))
+                {
+                    Undo.RecordObject(levelData, "Add Blob");
+                    if (levelData.Blobs == null) levelData.Blobs = new System.Collections.Generic.List<BlobSpawnData>();
+                    var schema = BlobTypeSchema.Get(selectedBlobType);
+                    var newBlob = new BlobSpawnData
+                    {
+                        GridPosition = pos,
+                        Type = selectedBlobType,
+                        Color = schema.UsesColor ? selectedBlobColor : schema.DefaultColor,
+                        Size = schema.UsesSize ? selectedBlobSize : schema.DefaultSize
+                    };
+                    if (schema.UsesTrailColor)
+                        newBlob.SetProperty(LevelDataKeys.Properties.TrailColor, selectedTrailColor);
+                    levelData.Blobs.Add(newBlob);
+                    levelData.Tiles ??= new System.Collections.Generic.List<TileSpawnData>();
+                    if (GetTileAt(pos) == null)
+                        levelData.Tiles.Add(new TileSpawnData { GridPosition = pos, Type = TileType.Normal });
+                    EditorUtility.SetDirty(levelData);
+                }
+            }
+
+            EditorGUILayout.Space(SPACING_SMALL);
+            if (tile != null)
+            {
+                EditorGUILayout.LabelField("Tile", EditorStyles.boldLabel);
+                EditorGUI.BeginChangeCheck();
+                Undo.RecordObject(levelData, "Edit Tile");
+                tile.Type = (TileType)EditorGUILayout.EnumPopup("Type", tile.Type);
+                var tSchema = TileTypeSchema.Get(tile.Type);
+                if (tSchema.UsesLaserId)
+                {
+                    var id = tile.GetProperty<string>(LevelDataKeys.Properties.LaserId);
+                    var newId = EditorGUILayout.TextField("Laser ID", id ?? "");
+                    tile.SetProperty(LevelDataKeys.Properties.LaserId, newId);
+                }
+                if (tSchema.UsesLaserColor)
+                {
+                    var lc = tile.GetProperty<BlobColor>(LevelDataKeys.Properties.Color);
+                    var newLc = (BlobColor)EditorGUILayout.EnumPopup("Laser color", lc);
+                    tile.SetProperty(LevelDataKeys.Properties.Color, newLc);
+                }
+                if (EditorGUI.EndChangeCheck())
+                    EditorUtility.SetDirty(levelData);
+                if (GUILayout.Button("Remove Tile", GUILayout.Width(100)))
+                {
+                    levelData.Tiles.RemoveAll(t => t.GridPosition == pos);
+                    EditorUtility.SetDirty(levelData);
+                }
+            }
+            else
+            {
+                if (GUILayout.Button("Add Tile", GUILayout.Width(90)))
+                {
+                    Undo.RecordObject(levelData, "Add Tile");
+                    levelData.Tiles ??= new System.Collections.Generic.List<TileSpawnData>();
+                    var tileData = new TileSpawnData { GridPosition = pos, Type = selectedTileType };
+                    var tSchema = TileTypeSchema.Get(selectedTileType);
+                    if (tSchema.UsesLaserId)
+                        tileData.SetProperty(LevelDataKeys.Properties.LaserId, "laser_" + pos.x + "_" + pos.y);
+                    if (tSchema.UsesLaserColor)
+                        tileData.SetProperty(LevelDataKeys.Properties.Color, BlobColor.Pink);
+                    levelData.Tiles.Add(tileData);
+                    EditorUtility.SetDirty(levelData);
+                }
+            }
+
+            EditorGUILayout.EndVertical();
+        }
         
         private void DrawInstructions()
         {
-            EditorGUILayout.LabelField("💡 Left-click: Place | Right-click: Remove | Keyboard: N=Normal T=Trail G=Ghost F=Flag R=Rock S=Switch", 
+            EditorGUILayout.LabelField("💡 Blob/Tile: Left-click place, Right-click remove. Inspect: click cell to select and edit.", 
                 EditorStyleConfig.GetHintStyle());
         }
         
@@ -447,11 +599,18 @@ namespace Blobs.Editor
             
             EditorGUILayout.LabelField("Tool:", GUILayout.Width(50));
             
-            if (DrawToggleButton("🔵 Blob", isPlacingBlob, 80, BUTTON_HEIGHT))
+            if (DrawToggleButton("Blob", editorMode == EditorMode.PaintBlob, 60, BUTTON_HEIGHT))
+            {
+                editorMode = EditorMode.PaintBlob;
                 isPlacingBlob = true;
-            
-            if (DrawToggleButton("⬛ Tile", !isPlacingBlob, 80, BUTTON_HEIGHT))
+            }
+            if (DrawToggleButton("Tile", editorMode == EditorMode.PaintTile, 60, BUTTON_HEIGHT))
+            {
+                editorMode = EditorMode.PaintTile;
                 isPlacingBlob = false;
+            }
+            if (DrawToggleButton("Inspect", editorMode == EditorMode.Inspect, 60, BUTTON_HEIGHT))
+                editorMode = EditorMode.Inspect;
             
             GUILayout.FlexibleSpace();
             
@@ -480,69 +639,90 @@ namespace Blobs.Editor
         
         private void DrawPalette()
         {
+            if (editorMode == EditorMode.Inspect)
+                return;
             if (isPlacingBlob)
-            {
                 DrawBlobPalette();
-            }
             else
-            {
                 DrawTilePalette();
-            }
         }
-        
+
         private void DrawBlobPalette()
         {
+            var schema = BlobTypeSchema.Get(selectedBlobType);
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             
-            // Type Selection
+            // Type Selection (from schema)
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Type:", GUILayout.Width(50));
-            
-            BlobType[] blobTypes = { BlobType.Normal, BlobType.Trail, BlobType.Ghost, BlobType.Flag, BlobType.Bomb, BlobType.Switch };
-            for (int i = 0; i < blobTypes.Length; i++)
+            var allBlob = BlobTypeSchema.All;
+            for (int i = 0; i < allBlob.Count; i++)
             {
-                bool isSelected = selectedBlobType == blobTypes[i];
+                var s = allBlob[i];
+                bool isSelected = selectedBlobType == s.Type;
                 var originalColor = GUI.backgroundColor;
-                GUI.backgroundColor = EditorStyleConfig.BlobTypeColors[i];
-                
+                if (i < EditorStyleConfig.BlobTypeColors.Length)
+                    GUI.backgroundColor = EditorStyleConfig.BlobTypeColors[i];
                 if (isSelected)
-                {
-                    GUI.backgroundColor = Color.Lerp(EditorStyleConfig.BlobTypeColors[i], Color.white, 0.3f);
-                }
-                
+                    GUI.backgroundColor = Color.Lerp(GUI.backgroundColor, Color.white, 0.3f);
                 var btnStyle = new GUIStyle(GUI.skin.button);
-                if (isSelected)
-                    btnStyle.fontStyle = FontStyle.Bold;
-                
-                if (GUILayout.Button(blobTypes[i].ToString()[..1], btnStyle, GUILayout.Width(28), GUILayout.Height(BUTTON_HEIGHT)))
+                if (isSelected) btnStyle.fontStyle = FontStyle.Bold;
+                if (GUILayout.Button(s.ShortLabel, btnStyle, GUILayout.Width(28), GUILayout.Height(BUTTON_HEIGHT)))
                 {
-                    selectedBlobType = blobTypes[i];
+                    selectedBlobType = s.Type;
+                    selectedBlobColor = s.DefaultColor;
+                    selectedBlobSize = s.DefaultSize;
+                    selectedTrailColor = BlobColor.LightBlue;
                 }
-                
                 GUI.backgroundColor = originalColor;
             }
-            
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
             
             EditorGUILayout.Space(SPACING_SMALL);
             
-            // Color Selection
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Color:", GUILayout.Width(50));
-            
-            string[] colorNames = { "Pk", "Bl", "Rd", "Cy", "Gr", "Yl", "Wh", "Gy" };
-            for (int i = 0; i < colorNames.Length; i++)
+            if (schema.UsesColor)
             {
-                bool isSelected = selectedBlobColor == (BlobColor)i;
-                DrawColorSwatch(EditorStyleConfig.BlobColorPalette[i], isSelected, 
-                    () => selectedBlobColor = (BlobColor)i, 24f);
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("Color:", GUILayout.Width(50));
+                var colorOrder = new[] { BlobColor.Pink, BlobColor.Blue, BlobColor.Red, BlobColor.LightBlue, BlobColor.Green, BlobColor.Yellow, BlobColor.Purple, BlobColor.Orange };
+                for (int i = 0; i < colorOrder.Length && i < EditorStyleConfig.BlobColorPalette.Length; i++)
+                {
+                    var c = colorOrder[i];
+                    bool isSelected = selectedBlobColor == c;
+                    DrawColorSwatch(EditorStyleConfig.BlobColorPalette[i], isSelected, () => selectedBlobColor = c, 24f);
+                }
+                GUILayout.FlexibleSpace();
+                EditorGUILayout.EndHorizontal();
+            }
+            else
+            {
+                EditorGUILayout.LabelField("Color: (none)", EditorStyles.miniLabel);
+            }
+
+            if (schema.UsesSize)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("Size:", GUILayout.Width(50));
+                selectedBlobSize = (BlobSize)EditorGUILayout.EnumPopup(selectedBlobSize, GUILayout.Width(80));
+                EditorGUILayout.EndHorizontal();
+            }
+
+            if (schema.UsesTrailColor)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("Trail color:", GUILayout.Width(70));
+                var trailColorOrder = new[] { BlobColor.Pink, BlobColor.Blue, BlobColor.Red, BlobColor.LightBlue, BlobColor.Green, BlobColor.Yellow, BlobColor.Purple, BlobColor.Orange };
+                for (int i = 0; i < trailColorOrder.Length && i < EditorStyleConfig.BlobColorPalette.Length; i++)
+                {
+                    var c = trailColorOrder[i];
+                    bool isSelected = selectedTrailColor == c;
+                    DrawColorSwatch(EditorStyleConfig.BlobColorPalette[i], isSelected, () => selectedTrailColor = c, 22f);
+                }
+                EditorGUILayout.EndHorizontal();
             }
             
-            GUILayout.FlexibleSpace();
-            EditorGUILayout.LabelField($"[{selectedBlobType} - {selectedBlobColor}]", EditorStyles.miniLabel, GUILayout.Width(120));
-            EditorGUILayout.EndHorizontal();
-            
+            EditorGUILayout.LabelField($"[{selectedBlobType}" + (schema.UsesColor ? $" - {selectedBlobColor}" : "") + "]", EditorStyles.miniLabel);
             EditorGUILayout.EndVertical();
         }
 
@@ -626,7 +806,13 @@ namespace Blobs.Editor
                         DrawBlobInCell(cellRect, blobData);
                     }
 
-                    // Draw border with better contrast
+                    if (selectedCell.HasValue && selectedCell.Value == pos)
+                    {
+                        var highlightRect = new Rect(cellRect.x - 1, cellRect.y - 1, cellRect.width + 2, cellRect.height + 2);
+                        Handles.color = EditorStyleConfig.SelectionActive;
+                        Handles.DrawSolidRectangleWithOutline(highlightRect, new Color(0.2f, 0.6f, 0.9f, 0.2f), EditorStyleConfig.SelectionActive);
+                    }
+
                     DrawCellBorder(cellRect);
 
                     // Handle clicks
@@ -650,6 +836,16 @@ namespace Blobs.Editor
             EditorGUILayout.EndScrollView();
         }
 
+        private static Color GetDisplayColorForBlobColor(BlobColor c)
+        {
+            if (c == BlobColor.Blank || c == BlobColor.None)
+                return new Color(0.5f, 0.5f, 0.5f);
+            var order = new[] { BlobColor.Pink, BlobColor.Blue, BlobColor.Red, BlobColor.LightBlue, BlobColor.Green, BlobColor.Yellow, BlobColor.Purple, BlobColor.Orange };
+            for (int i = 0; i < order.Length && i < EditorStyleConfig.BlobColorPalette.Length; i++)
+                if (order[i] == c) return EditorStyleConfig.BlobColorPalette[i];
+            return EditorStyleConfig.BlobColorPalette[0];
+        }
+
         private void DrawBlobInCell(Rect cellRect, BlobSpawnData blob)
         {
             float padding = 6f;
@@ -660,34 +856,33 @@ namespace Blobs.Editor
                 cellRect.height - padding * 2
             );
 
-            Color blobColor = EditorStyleConfig.BlobColorPalette[(int)blob.Color];
-            
-            // Modify for special types
+            Color blobColor = GetDisplayColorForBlobColor(blob.Color);
             if (blob.Type == BlobType.Ghost)
-            {
                 blobColor.a = 0.6f;
-            }
-            else if (blob.Type == BlobType.Rock)
-            {
+            else if (blob.Type == BlobType.Rock || blob.Type == BlobType.Bomb)
                 blobColor = new Color(0.4f, 0.35f, 0.3f);
-            }
 
-            // Draw blob circle
             EditorGUI.DrawRect(blobRect, blobColor);
 
-            // Draw type indicator with shadow
-            string typeLabel = blob.Type.ToString()[..1];
+            string typeLabel = BlobTypeSchema.Get(blob.Type).ShortLabel;
             GUIStyle centerStyle = new GUIStyle(EditorStyles.boldLabel)
             {
                 alignment = TextAnchor.MiddleCenter,
                 fontSize = 16,
                 normal = { textColor = Color.white }
             };
-            
             Rect shadowRect = new Rect(blobRect.x + 1, blobRect.y + 1, blobRect.width, blobRect.height);
             GUIStyle shadowStyle = new GUIStyle(centerStyle) { normal = { textColor = Color.black } };
             GUI.Label(shadowRect, typeLabel, shadowStyle);
             GUI.Label(blobRect, typeLabel, centerStyle);
+
+            if (blob.Type == BlobType.Trail)
+            {
+                var trailColor = blob.GetProperty<BlobColor>(LevelDataKeys.Properties.TrailColor);
+                var tc = GetDisplayColorForBlobColor(trailColor);
+                Rect trailMarker = new Rect(blobRect.xMax - 8, blobRect.y, 6, 6);
+                EditorGUI.DrawRect(trailMarker, tc);
+            }
         }
 
         private void DrawCellBorder(Rect cellRect)
@@ -717,22 +912,32 @@ namespace Blobs.Editor
         
         private void HandleCellClick(Vector2Int pos, int mouseButton)
         {
+            if (editorMode == EditorMode.Inspect)
+            {
+                if (mouseButton == 0)
+                    selectedCell = pos;
+                return;
+            }
+
             Undo.RecordObject(levelData, "Edit Level");
 
             if (mouseButton == 0) // Left click - place
             {
                 if (isPlacingBlob)
                 {
+                    var schema = BlobTypeSchema.Get(selectedBlobType);
                     if (levelData.Blobs == null) levelData.Blobs = new System.Collections.Generic.List<BlobSpawnData>();
                     levelData.Blobs.RemoveAll(b => b.GridPosition == pos);
-                    levelData.Blobs.Add(new BlobSpawnData
+                    var blob = new BlobSpawnData
                     {
                         GridPosition = pos,
                         Type = selectedBlobType,
-                        Color = selectedBlobColor,
-                        Size = BlobSize.Normal
-                    });
-                    // Ensure a tile exists at blob position (default Normal unless already set)
+                        Color = schema.UsesColor ? selectedBlobColor : schema.DefaultColor,
+                        Size = schema.UsesSize ? selectedBlobSize : schema.DefaultSize
+                    };
+                    if (schema.UsesTrailColor)
+                        blob.SetProperty(LevelDataKeys.Properties.TrailColor, selectedTrailColor);
+                    levelData.Blobs.Add(blob);
                     levelData.Tiles ??= new System.Collections.Generic.List<TileSpawnData>();
                     if (GetTileAt(pos) == null)
                         levelData.Tiles.Add(new TileSpawnData { GridPosition = pos, Type = TileType.Normal });
@@ -741,23 +946,21 @@ namespace Blobs.Editor
                 {
                     levelData.Tiles ??= new System.Collections.Generic.List<TileSpawnData>();
                     levelData.Tiles.RemoveAll(t => t.GridPosition == pos);
-                    levelData.Tiles.Add(new TileSpawnData
-                    {
-                        GridPosition = pos,
-                        Type = selectedTileType
-                    });
+                    var tile = new TileSpawnData { GridPosition = pos, Type = selectedTileType };
+                    var tileSchema = TileTypeSchema.Get(selectedTileType);
+                    if (tileSchema.UsesLaserId)
+                        tile.SetProperty(LevelDataKeys.Properties.LaserId, "laser_" + pos.x + "_" + pos.y);
+                    if (tileSchema.UsesLaserColor)
+                        tile.SetProperty(LevelDataKeys.Properties.Color, BlobColor.Pink);
+                    levelData.Tiles.Add(tile);
                 }
             }
             else if (mouseButton == 1) // Right click - remove
             {
                 if (isPlacingBlob && levelData.Blobs != null)
-                {
                     levelData.Blobs.RemoveAll(b => b.GridPosition == pos);
-                }
                 else if (!isPlacingBlob && levelData.Tiles != null)
-                {
                     levelData.Tiles.RemoveAll(t => t.GridPosition == pos);
-                }
             }
 
             EditorUtility.SetDirty(levelData);

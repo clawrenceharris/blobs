@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class RockBlob : Blob
 {
-    public RockBlob(Vector2Int position) : base(BlobType.Rock, BlobColor.Blank, BlobSize.Normal, position)
-    {
-    }
+    public override IMoveBehavior MoveBehavior => new RockBlobMoveBehavior();
+    public RockBlob(Vector2Int position, string id = null) : base(BlobType.Rock, BlobColor.Blank, BlobSize.Normal, position, id) { }
 
 }

@@ -9,8 +9,8 @@ namespace Blobs.Utilities
 
         public static Vector2Int WorldToGrid(float worldX, float worldY)
         {
-            float x = (worldX / (TilePresenter.TileSize / 2) + worldY / (TilePresenter.TileSize / 4)) / 2f;
-            float y = (worldY / (TilePresenter.TileSize / 2) - worldX / (TilePresenter.TileSize / 4)) / 2f;
+            float x = (worldX / (BoardView.TileSize / 2) + worldY / (BoardView.TileSize / 4)) / 2f;
+            float y = (worldY / (BoardView.TileSize / 2) - worldX / (BoardView.TileSize / 4)) / 2f;
             return new Vector2Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
         }
         public static Vector2Int WorldToGrid(Vector3 worldPos)
@@ -26,8 +26,8 @@ namespace Blobs.Utilities
         public static Vector3 GridToWorld(int gridX, int gridY)
         {
             return new Vector3(
-                (gridX - gridY) * TilePresenter.TileSize / 2f,
-                (gridX + gridY) * TilePresenter.TileSize / 4f, 0
+                (gridX - gridY) * BoardView.TileSize / 2f,
+                (gridX + gridY) * BoardView.TileSize / 4f, 0
             );
         }
         public static Vector2Int WorldToGridWithBlobOffset(Vector3 worldPos)
@@ -37,7 +37,7 @@ namespace Blobs.Utilities
         }
         public static Vector2Int WorldToGridWithBlobOffset(float worldX, float worldY)
         {
-            return WorldToGrid(new Vector3(worldX, worldY - BlobPresenter.BlobOffsetY, 0));
+            return WorldToGrid(new Vector3(worldX, worldY - BoardView.BlobOffsetY, 0));
         }
         public static Vector3 GridToWorldWithBlobOffset(Vector2Int gridPos)
         {
@@ -46,7 +46,7 @@ namespace Blobs.Utilities
         public static Vector3 GridToWorldWithBlobOffset(int x, int y)
         {
             var worldPos = GridToWorld(x, y);
-            return new Vector3(worldPos.x, worldPos.y + BlobPresenter.BlobOffsetY, 0);
+            return new Vector3(worldPos.x, worldPos.y + BoardView.BlobOffsetY, 0);
         }
     }
 }

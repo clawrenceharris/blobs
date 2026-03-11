@@ -84,34 +84,4 @@ public class LevelLoader : MonoBehaviour
 
 
 
-[Serializable]
-public class SpawnData
-{
-    public Vector2Int GridPosition;   
-    
-    // Dictionary to hold dynamic properties
-    public readonly Dictionary<string, object> Properties = new();
-
-    public T GetProperty<T>(string key)
-    {
-        if (Properties.ContainsKey(key))
-        {
-            return (T)Properties[key];
-        }
-        return default;
-    }
-
-    public void SetProperty<T>(string key, T value)
-    {
-        if (Properties.ContainsKey(key))
-        {
-            Properties[key] = value;
-        }
-        else
-        {
-            Properties.Add(key, value);
-        }
-    }
-
-}
 

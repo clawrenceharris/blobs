@@ -24,17 +24,18 @@ MonoBehaviour:
     UndoPenalty: 0
   IsTutorial: 1
   TutorialSteps:
-  - TopText: Welcome to Blobs. The goal of the game is to clear all blobs off the
-      board. You can clear a Blob by merging it with another one of a different color
+  - TopText: Welcome to Blobber! The goal of the game is to clear all blobs off the
+      board. You can clear a blob by merging it into another one of a different color
       as long as they are on a shared row or column.
-    BottomText: Try merging the purple Blob onto the one next to it.
+    BottomText: Try merging that pink blob into the blue one.
     StartX: 0
     StartY: 2
     EndX: 2
     EndY: 2
-  - TopText: "See that Flag Blob? You win by merging onto it\u2014but only when the
-      moving blob is the last blob on the board and matches the flag\u2019s color."
-    BottomText: Finish by merging with the Flag Blob!
+  - TopText: "See that flag pole? That's a Target blob. A regular blob that sits
+      on top of it will clear and win the level\u2014but only when it's the last
+      one on the board and matches the target's color."
+    BottomText: Glide your last blob into the target to finish it off!
     StartX: 2
     StartY: 2
     EndX: 2

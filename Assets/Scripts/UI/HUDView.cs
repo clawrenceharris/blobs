@@ -16,7 +16,7 @@ public class HUDView : MonoBehaviour
 
     private void Start()
     {
-        GameManager.OnMoveCountChanged += HandleMoveCountChanged;
+        GameManager.OnMoveCountChanged += OnMoveCountChanged;
         GameManager.OnLevelStarted += OnLevelStarted;
 
     }
@@ -39,7 +39,7 @@ public class HUDView : MonoBehaviour
 
   
    
-    private void HandleMoveCountChanged(int moveCount)
+    private void OnMoveCountChanged(int moveCount)
     {
         UpdateMoves(moveCount);
     }
@@ -65,7 +65,7 @@ public class HUDView : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManager.OnMoveCountChanged -= HandleMoveCountChanged;
+        GameManager.OnMoveCountChanged -= OnMoveCountChanged;
         GameManager.OnLevelStarted -= OnLevelStarted;
     }
 

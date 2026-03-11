@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-
+using Blobs.Visuals;
 
 [RequireComponent(typeof(LaserTileVisuals))]
 public class LaserTile : Tile

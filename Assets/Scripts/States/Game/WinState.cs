@@ -19,7 +19,7 @@ public class WinState : State<GameStateManager>
     public override void EnterState()
     {
         InputService.Gate.SetEnabled(false);
-
+        // TODO: Save player data for this level 
     }
 
 
@@ -29,6 +29,7 @@ public class WinState : State<GameStateManager>
     }
     public override void ExitState()
     {
+        context.UIManager.WinView.HidePanel();
 
     }
 

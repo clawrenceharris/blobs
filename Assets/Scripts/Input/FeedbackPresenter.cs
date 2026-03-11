@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Blobs.Animation;
-using Blobs.Core.Merge;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -22,14 +21,17 @@ public class FeedbackPresenter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI feedbackText;
     public Dictionary<MergeFailReason, string> feedbackMap = new()
     {
-        {MergeFailReason.ColorRuleRejected, "Can't merge same colors!"},
         {MergeFailReason.InvalidSource, "This blob can't initiate a merge!"},
         {MergeFailReason.InvalidTarget,"Can't merge with that!" },
         {MergeFailReason.NoTargetInDirection, "No blob there!" },
         {MergeFailReason.TileBlocked, "Path is blocked!" },
         {MergeFailReason.NotAligned, "Blobs must share the same column or row to merge"},
-        {MergeFailReason.FlagColorRuleRejected, "A flag only accepts a blob that matches its color!"},
-        {MergeFailReason.FlagMergeRuleRejected, "Only your last blob (same color) can merge with a flag!"}
+        {MergeFailReason.LaserBlocked, "Laser is blocking the path!"},
+        {MergeFailReason.ColorRuleRejected, "Can't merge same colors!"},
+        {MergeFailReason.TargetColorRuleRejected, "A Target only accepts blobs that match its color!"},
+        {MergeFailReason.TargetMergeRuleRejected, "Only your last blob can merge with a Target!"},
+        {MergeFailReason.BlobBlocked, "Path is blocked!"},
+        {MergeFailReason.OffBoard, "Blob is off the board!"}
 
     };
 
@@ -111,14 +113,19 @@ public class FeedbackPresenter : MonoBehaviour
             });
         }
 
-    public void ShowInvalid( MergeFailReason failReason, string blobId)
+    public void ShowInvalid(MoveFailContext context)
     {
-        if (feedbackMap.TryGetValue(failReason, out var feedback))
+        if (feedbackMap.TryGetValue(context.Reason, out var feedback))
         {
             ShowFeedback(feedback);
-            _board.GetBlob(blobId)?.View.GetComponent<BlobAnimator>().PlayShakeAnimation();
+            NudgeBlobInDirection(context.Intent.SourceId, context.Intent.Direction);
         }
-
     }
-       
+
+    private void NudgeBlobInDirection(string blobId, Vector2Int direction)
+    {
+        var blob = _board.GetBlob(blobId);
+        blob.View.ExpressionController.ShowExpression(ExpressionType.Sad);
+        blob?.NudgeInDirection(direction).AppendCallback(() => blob.View.ExpressionController.ShowExpression(ExpressionType.Normal));
+    }
 }

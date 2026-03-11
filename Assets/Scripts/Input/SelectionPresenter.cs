@@ -1,22 +1,19 @@
-using Blobs.Core.Merge;
 using UnityEngine;
 
 namespace Blobs.Input
 {
-
     public class SelectionPresenter : MonoBehaviour
     {
         private FeedbackPresenter _feedback;
-        
-        private IMergeService _mergeService;  
         private IBoardPresenter _board;
+        private MoveResolver _moveResolver;
         private string _selectedId;
-        
+
         private void Awake()
         {
             _feedback = FindFirstObjectByType<FeedbackPresenter>();
             _board = FindFirstObjectByType<BoardPresenter>();
-            _mergeService = new MergeService(_board);
+            _moveResolver = new MoveResolver(null);
         }
 
         private void OnEnable()
@@ -30,13 +27,16 @@ namespace Blobs.Input
         {
             InputService.BlobClicked -= OnBlobClicked;
             InputService.EmptyClicked -= OnEmptyClicked;
+            InputService.UndoPressed -= OnUndoPressed;
         }
 
-        private void OnBlobClicked(BlobView view)
+        private void OnBlobClicked(BlobView clicked)
         {
-            var clicked = view.Model;
+
             if (clicked == null) return;
             if (!clicked.Enabled) return;
+            if(!_board.BlobExists(clicked.ID)) return;
+
             if (_selectedId == null)
             {
                 Select(clicked.ID);
@@ -48,8 +48,7 @@ namespace Blobs.Input
                 Deselect();
                 return;
             }
-            
-            // attempt merge
+
             TryMerge(_selectedId, clicked.ID);
         }
 
@@ -61,41 +60,44 @@ namespace Blobs.Input
 
         private void TryMerge(string sourceId, string targetId)
         {
-            var result = _mergeService.TryCreateMergeCommand(sourceId, targetId);            
+            if (_board is not BoardPresenter board)
+                return;
+            var source = _board.GetBlob(sourceId);
+            var target = _board.GetBlob(targetId);
+            var direction = target.Model.GridPosition - source.Model.GridPosition;
+            var intent = MoveIntent.Merge(sourceId, targetId, direction);
+            var result = _moveResolver.Resolve(intent, board);
 
-            if (!result.Ok)
+            if (!result.IsValid)
             {
-                _feedback.ShowInvalid(result.FailReason, sourceId);
+                var failContext = new MoveFailContext(result.MoveFailReason, intent);
+                _feedback.ShowInvalid(failContext);
                 Deselect();
                 return;
             }
-            var action = new MergeAction(result.Plan, _board);
-            MergeInvoker.ExecuteMerge(action);
+
+            var command = new MergeCommand(result, board);
+            MergeInvoker.Execute(command);
             Deselect();
         }
 
         private void Select(string id)
         {
             var blob = _board.GetBlob(id);
-            
-            if(blob == null) return;
+            if (blob == null) return;
             if (!blob.Model.Type.CanInitiateMerge()) return;
-          
+
             _selectedId = id;
             blob.Select();
-
         }
 
         private void Deselect()
         {
-
-            if (_selectedId == null) return; 
+            if (_selectedId == null) return;
             _board.GetBlob(_selectedId)?.Deselect();
             _selectedId = null;
-
         }
 
         private void OnEmptyClicked() => Deselect();
-
     }
 }

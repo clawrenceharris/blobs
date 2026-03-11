@@ -1,12 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Blobs.Core.Merge;
 using Blobs.Input;
-using Blobs.Utilities;
-using DG.Tweening;
-using TMPro;
-using UnityEngine;
 
 /// <summary>
 /// Rsponsible for managing the tutorial flow and interactions.
@@ -31,18 +25,23 @@ public class TutorialPresenter
     {
         _tutorialSteps = steps;
         _model = new TutorialModel();
-        _blobs = board.GetAllBlobs();
+        _blobs = board.GetBlobsOnBoard();
         _tutorialSteps = steps;
         _model.InitializeTutorial(_tutorialSteps, board);
         _model.OnNextTutorialStep += step => OnNextTutorialStep?.Invoke(step);
         _model.OnTutorialComplete += () => OnTutorialComplete?.Invoke();
     }
+    // private void OnDestroy()
+    // {
+    //     BoardPresenter.OnMergeAnimationComplete -= OnMergeAnimationComplete;
+    //     InputService.BlobClicked -= HandleBlobClicked;
+    // }
     public void StartTutorial(IBoardPresenter board, LevelData level)
     {
-        
+
         InitializeTutorial(board, level.TutorialSteps);
         DisableAllBlobs();
-        
+
         BoardPresenter.OnMergeAnimationComplete += OnMergeAnimationComplete;
         InputService.BlobClicked += HandleBlobClicked;
         CurrentStartBlob?.EnableBlob();
@@ -52,7 +51,7 @@ public class TutorialPresenter
     private void HandleBlobClicked(BlobView view)
     {
         if (CurrentEndBlob == null || CurrentStartBlob == null) return;
-        if (view.Model.ID == CurrentStartBlob.Model.ID && !CurrentEndBlob.Enabled && CurrentStartBlob.Enabled)
+        if (view.ID == CurrentStartBlob.Model.ID && !CurrentEndBlob.Enabled && CurrentStartBlob.Enabled)
         {
             CurrentEndBlob.EnableBlob();
         }
@@ -63,7 +62,7 @@ public class TutorialPresenter
 
     }
 
-    private void OnMergeAnimationComplete(IAction cmd)
+    private void OnMergeAnimationComplete(ICommand cmd)
     {
     
         // Disable all blobs to prevent player from interacting with the wrong blob
@@ -73,17 +72,16 @@ public class TutorialPresenter
         CurrentStartBlob?.EnableBlob();
        
     }
-  
-    
-    
-    
+
+
+
+
     public void StopTutorial()
     {
         MergeInvoker.OnMergeExecuted -= OnMergeAnimationComplete;
 
         EnableAllBlobs();
         
-        Debug.Log("Tutorial stopped");
     }
     
    

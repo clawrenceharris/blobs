@@ -5,7 +5,7 @@ public enum BlobType
     Normal,
     Switch,
     Trail,
-    Flag,
+    Target,
     Bomb,
     Ghost,
     Enemy,

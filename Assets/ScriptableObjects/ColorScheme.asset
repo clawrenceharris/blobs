@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Purple: {r: 0.7395098, g: 0.1273585, b: 0.8235294, a: 1}
   Pink: {r: 1, g: 0.3066038, b: 0.77862096, a: 1}
+  LightBlue: {r: 0.3820755, g: 1, b: 0.9941838, a: 1}
   TileColor: {r: 0.23541276, g: 0.22961909, b: 0.3773585, a: 1}
   TileEdgeColor: {r: 0.33495015, g: 0.34245172, b: 0.3679245, a: 1}
   BackgroundColor: {r: 0.105882354, g: 0.08235294, b: 0.16078432, a: 1}

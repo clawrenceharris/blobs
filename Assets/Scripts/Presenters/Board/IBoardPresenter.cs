@@ -11,7 +11,6 @@ public interface IBoardPresenter
     //Board State
     int Width { get; }
     int Height { get; }
-    LevelData CurrentLevel { get; }
     
     // Initialization
     void Initialize(LevelData levelData);
@@ -23,7 +22,7 @@ public interface IBoardPresenter
 
 
     // Tile management
-    void PlaceTile(Tile tile);
+    void SpawnTile(Tile tile);
     void RemoveTile(string tile);
 
 
@@ -31,8 +30,9 @@ public interface IBoardPresenter
     IBlobPresenter GetBlobAt(Vector2Int position);
     IBlobPresenter GetBlobAt(int x, int y);
     IBlobPresenter GetBlob(string id);
+    bool BlobExists(string id);
 
-    List<IBlobPresenter> GetAllBlobs();
+    List<IBlobPresenter> GetBlobPresenters();
 
     // Tile queries
     ITilePresenter GetTileAt(Vector2Int gridPos);
@@ -41,11 +41,13 @@ public interface IBoardPresenter
     List<ITilePresenter> GetAllTiles();
 
     // Grid queries
-    int GetPlayableBlobCount();
+    List<IBlobPresenter> GetBlobsOnBoard();
+    List<IBlobPresenter> GetBlobsBetween(Vector2Int gridPosition1, Vector2Int gridPosition2);
 
     bool IsValidPosition(Vector2Int position);
-    bool IsLaserBlocking(IBlobPresenter source, Vector2Int position);
-    void RespawnBlob(string id);
-    void SpawnBlob(Blob blob);
+    bool IsLaserBlocking(string sourceId, Vector2Int position);
+    
+    IBlobPresenter SpawnBlob(Blob blob);
+    
     IEnumerator AnimateEndTurnSequence();
 }

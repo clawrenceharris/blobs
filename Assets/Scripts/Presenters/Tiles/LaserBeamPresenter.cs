@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+using Blobs.Visuals;
 public class LaserBeamPresenter : MonoBehaviour
 {
     private readonly List<GameObject> _activeBeams = new();
@@ -70,7 +70,7 @@ public class LaserBeamPresenter : MonoBehaviour
 
     private static GameObject SpawnLaserBeamAt(LaserTileView laser, Vector2Int gridPos, Vector2Int direction)
     {
-        Vector3 worldPos = new Vector3(gridPos.x, gridPos.y, 0) * TilePresenter.TileSize;
+        Vector3 worldPos = new Vector3(gridPos.x, gridPos.y, 0) * BoardView.TileSize;
         GameObject beam = Object.Instantiate(laser.GetVisuals<LaserTileVisuals>().LaserBeam, worldPos, Quaternion.identity, laser.transform);
         beam.name = "Laser Beam";
         // Rotate beam based on direction

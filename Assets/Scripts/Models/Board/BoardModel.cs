@@ -17,8 +17,8 @@ public class BoardModel
     public int Height { get; private set; }
     public int BlobCount => _blobsById.Count;
 
-    private readonly Dictionary<string, Blob> _blobsById;
-    private readonly Dictionary<string, Tile> _tilesById;
+    private readonly Dictionary<string, Blob> _blobsById = new();
+    private readonly Dictionary<string, Tile> _tilesById = new();
 
     // Board Queries
     public List<Blob> GetAllBlobs() => _blobsById.Values.ToList();
@@ -32,34 +32,47 @@ public class BoardModel
     public event Action<Blob> OnBlobSpawned;
     public event Action<Tile> OnTileRemoved;
     public event Action<Tile> OnTileCreated;
-
-
-    public BoardModel(int width, int height)
+    public BoardModel(LevelData level)
     {
-        Width = width;
-        Height = height;
-        _blobsById = new Dictionary<string, Blob>();
-        _tilesById = new Dictionary<string, Tile>();
-
-    }
-
-    // Called by the Presenter to start a level.
-    public void CreateInitialBoard(List<Blob> blobs, List<Tile> tiles)
-    {
+        Width = level.Width;
+        Height = level.Height;
         BlobGrid = new Blob[Width, Height];
         TileGrid = new Tile[Width, Height];
-
-        _blobsById.Clear();
-        _tilesById.Clear();
-        foreach (var blob in blobs)
-        {
-            SpawnBlob(blob);
-        }
-        foreach (var tile in tiles)
-        {
-            PlaceTile(tile);
-        }
+       
     }
+
+    public List<Blob> CreateBlobs(LevelData level)
+    {
+        var blobs = new List<Blob>();
+
+        if (level.Blobs != null)
+        {
+            foreach (var spawn in level.Blobs)
+            {
+                var blob = BlobFactory.CreateBlobModel(spawn);
+                if (blob != null)
+                    blobs.Add(blob);
+            }
+        }
+
+        return blobs;
+    }
+    public List<Tile> CreateTiles(LevelData level)
+    {
+        var tiles = new List<Tile>();
+        foreach (var spawn in level.Tiles)
+        {
+            var tile = TileFactory.CreateTileModel(spawn);
+            if (tile != null)
+                tiles.Add(tile);
+            
+        }
+        return tiles;
+    }
+
+   
+
+    
     public bool IsLaserBlocking(string id, Vector2Int sourcePosition)
     {
         if (_blobsById.TryGetValue(id, out var blob))
@@ -157,7 +170,7 @@ public class BoardModel
 
         return false;
     }
-    public void PlaceTile(Tile tile)
+    public void SpawnTile(Tile tile)
     {
         if (!IsValidPosition(tile.GridPosition))
         {
@@ -183,13 +196,13 @@ public class BoardModel
     }
     public void RespawnBlob(Blob blob)
     {
-        if (IsValidPosition(blob.GridPosition)) 
+        if (IsValidPosition(blob.GridPosition))
         {
-            _blobsById.TryAdd(blob.ID, blob);
+            _blobsById[blob.ID] = blob;
             BlobGrid[blob.GridPosition.x, blob.GridPosition.y] = blob;
+            Debug.Log("[BoardModel] RespawnBlob: " + blob);
             OnBlobRespawned?.Invoke(blob);
         }
-        
     }
     public bool TryPlaceBlob(Blob blob)
     {
@@ -385,7 +398,13 @@ public class BoardModel
     public Blob GetBlob(string id) => _blobsById.TryGetValue(id, out var blob) ? blob : null;
        
     public Tile GetTile(string id) => _tilesById.TryGetValue(id, out var tile) ? tile : null;
-    
-   
+
+    public void ClearBoard()
+    {
+        _blobsById?.Clear();
+        _tilesById?.Clear();
+        BlobGrid = new Blob[Width, Height];
+        TileGrid = new Tile[Width, Height];
+    }
 }
 

@@ -8,10 +8,9 @@ public class TutorialState : State<GameStateManager>
 {
     private SpriteRenderer _tutorialPointer;
     private readonly float _offsetX = -0.2f;
-    private readonly float _offsetY = -0.7f + BlobPresenter.BlobOffsetY;
+    private readonly float _offsetY = -0.7f;
     private float _elapsedTime = 0;
     private readonly float _cooldown = 6f;
-    private Coroutine _updateMessagesCoroutine;
     private TutorialStep _currentStep;
     public TutorialState(GameStateManager context) : base(context)
     {
@@ -39,9 +38,13 @@ public class TutorialState : State<GameStateManager>
         // Show tutorial pointer
         _tutorialPointer = Object.Instantiate(context.UIManager.TutorialView.TutorialPointerPrefab).GetComponent<SpriteRenderer>();
         _tutorialPointer.transform.SetParent(context.UIManager.transform);
-        UpdateTutorialText(_currentStep);
+        BoardPresenter.OnBoardSetupComplete += OnBoardSetupComplete;
     }
-  
+    private void OnBoardSetupComplete(IBoardPresenter board)
+    {
+        UpdateTutorialText(_currentStep);
+        BoardPresenter.OnBoardSetupComplete -= OnBoardSetupComplete;
+    }
     public override void UpdateState()
     {
         _elapsedTime += Time.deltaTime;
@@ -49,7 +52,6 @@ public class TutorialState : State<GameStateManager>
         if (_elapsedTime > _cooldown)
         {
             _elapsedTime = 0;
-            Debug.Log("[TutorialState] Showing pointer");
             CoroutineHandler.StartStaticCoroutine(ShowPointer(_currentStep));
         }
 
@@ -108,6 +110,7 @@ public class TutorialState : State<GameStateManager>
         context.UIManager.HudView.UndoButton.gameObject.SetActive(true);
         context.UIManager.TutorialView.HideTutorialView();
         context.Tutorial.OnNextTutorialStep -= OnNextTutorialStep;
+        context.Tutorial.OnTutorialComplete -= OnTutorialComplete;
         Object.Destroy(_tutorialPointer.gameObject);
 
     }

@@ -1,7 +1,6 @@
 
 using UnityEngine;
 using System;
-using Blobs.Core.Merge;
 using Blobs.Input;
 using System.Linq;
 
@@ -11,11 +10,11 @@ public class GameManager : MonoBehaviour
 
 {
     public static event Action<LevelData> OnLevelStarted;
-    private LevelData _startingLevel;
+    private LevelData _currentLevel;
     public bool IsHighscore { get; private set; }
     private GameStateManager _stateManager;
     public static Action<int> OnMoveCountChanged;
-    
+    [SerializeField] private LevelData _level;
     private BoardPresenter _board;
 
     private static ColorScheme _theme;
@@ -32,7 +31,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public LevelData StartingLevel => _startingLevel;
+    public LevelData StartingLevel => _currentLevel;
 
     private void Awake()
     {
@@ -44,40 +43,54 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        BoardPresenter.OnMergeAnimationStart += HandleMergeAnimationStart;
-        BoardPresenter.OnMergeAnimationComplete += HandleMergeAnimationComplete;
-        MergeInvoker.OnMergeExecuted += HandleMergeExecuted;
+        BoardPresenter.OnMergeAnimationStart += OnMergeAnimationStart;
+        BoardPresenter.OnMergeAnimationComplete += OnMergeAnimationComplete;
+        MergeInvoker.OnMergeExecuted += OnMergeExecuted;
         _stateManager.OnMoveCountChanged += moveCount => OnMoveCountChanged?.Invoke(moveCount);
         InitializeGame();
 
     }
 
-    private void HandleMergeExecuted(MergeAction action)
+    private void OnMergeExecuted(ICommand command)
     {
         _stateManager.IncrementMoveCount();
     }
 
-    private void HandleMergeAnimationStart(MergeAction action)
+    private void OnMergeAnimationStart(ICommand command)
     {
         InputService.Gate.SetEnabled(false);
     }
 
-    private void HandleMergeAnimationComplete(MergeAction action)
+    private void OnDestroy()
+    {
+        BoardPresenter.OnMergeAnimationStart -= OnMergeAnimationStart;
+        BoardPresenter.OnMergeAnimationComplete -= OnMergeAnimationComplete;
+        MergeInvoker.OnMergeExecuted -= OnMergeExecuted;
+    }
+
+    private void OnMergeAnimationComplete(ICommand command)
     {
         InputService.Gate.SetEnabled(true);
-        bool didWin = CheckForWin(_board);
+        bool didWin = CheckForWin();
          if (didWin)
         {
             CoroutineHandler.StartStaticCoroutine(_stateManager.Board.AnimateEndTurnSequence(), () =>
             {
-                _stateManager.ChangeState(new WinState(_stateManager));
+                ProcessWin();
+                MergeInvoker.ClearHistory();
+                LevelLoader.SelectLevel(_currentLevel.LevelNumber + 1);
+                InitializeGame();
 
             });
 
         }
        
     }
-    
+    private void ProcessWin()
+    {
+        // TODO: Save player data for this level 
+        _stateManager.ChangeState(new WinState(_stateManager));
+    }
     private void InitializeGame()
         {
             _stateManager.Reset();
@@ -95,9 +108,14 @@ public class GameManager : MonoBehaviour
         {
             StartLevel(startingLevel);
         }
+        else if (LevelLoader.AllLevels.Length > 0)
+        {
+            StartLevel(_level);
+        }
         else
         {
-            StartLevel(LevelLoader.AllLevels[0]);
+            Debug.LogError("No levels found");
+            return;
         }
 
             // Play gameplay BGM
@@ -109,10 +127,14 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Checks the board state for a win.
     /// </summary>
-    public bool CheckForWin(IBoardPresenter board)
+    public bool CheckForWin()
     {
+        if (_board == null)
+        {
+            return false;
+        }
         // There must be no clearable Blobs on the board to win.
-        var clearableBlobsCount = board.GetAllBlobs().Count(b => b.Model is IClearable);
+        var clearableBlobsCount = _board.GetBlobsOnBoard().Count(b => b.Model.Type.IsClearable());
         if (clearableBlobsCount == 0)
         {
             return true;
@@ -122,7 +144,7 @@ public class GameManager : MonoBehaviour
     }
     public void StartLevel(LevelData level)
     {
-        _startingLevel = level;
+        _currentLevel = level;
         _board.Initialize(level);
 
 
@@ -135,7 +157,7 @@ public class GameManager : MonoBehaviour
             _stateManager.ChangeState(new PlayingState(_stateManager));
         }
 
-        OnLevelStarted?.Invoke(_startingLevel);
+        OnLevelStarted?.Invoke(_currentLevel);
         
 
         

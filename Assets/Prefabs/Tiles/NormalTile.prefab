@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3841719109782480865}
   - component: {fileID: 4896847821445407573}
   - component: {fileID: 4289921565797223452}
+  - component: {fileID: 8781122911090535269}
   m_Layer: 3
   m_Name: NormalTile
   m_TagString: Untagged
@@ -82,7 +83,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 239408943
   m_SortingLayer: 1
-  m_SortingOrder: 2
+  m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: e0f6b90eba82045119678c1ddebe868f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -131,4 +132,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdca4a33261b24d2fa8efac22e880b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Blobs.Animation.TileAnimator
-  _originalScale: {x: 0, y: 0, z: 0}
+  _enterDuration: 1
+  _exitDuration: 1
+  _enterEase: 27
+  _exitEase: 26
+--- !u!114 &8781122911090535269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8215780169145972993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df0add3089a974cfaa2d9f986751257c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileSpriteController
+  _tileSpriteSet: {fileID: 11400000, guid: 5e3c2d1d9d5e742f0b01718b6d03a408, type: 2}

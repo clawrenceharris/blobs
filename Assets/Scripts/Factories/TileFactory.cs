@@ -13,15 +13,6 @@ public class TileFactory
     /// </summary>
     public static Tile CreateTileModel(TileSpawnData data)
     {
-       if (data.Properties != null)
-        {
-            foreach (var p in data.Properties)
-            {
-                if (!string.IsNullOrEmpty(p.Key))
-                    data.SetProperty(p.Key, p.Value);
-            }
-        }
-
         switch (data.Type)
         {
             case TileType.Spike:

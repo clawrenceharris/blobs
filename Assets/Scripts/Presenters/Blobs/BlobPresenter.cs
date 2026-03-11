@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Blobs.Animation;
 using Blobs.Utilities;
 using DG.Tweening;
@@ -7,103 +8,201 @@ using UnityEngine;
 
 public class BlobPresenter : IBlobPresenter
 {
-
-    /// <summary>
-    /// Maps blob IDs to their GameObject views
-    /// </summary>
-    private static readonly Dictionary<string, BlobView> _blobViews = new();
-    private readonly BlobView _view;
-    protected readonly Blob _model;
-    public static readonly float BlobOffsetY = -0.9f;
-
-    protected IBoardPresenter _board;
-
+    private BlobView _view;
+    protected Blob _model;
     public Blob Model => _model;
-    private readonly BlobAnimator _animator;
-    public bool Enabled => _model.Enabled;
-
+    private BlobAnimator _animator;
+    public bool Enabled => _model != null && _model.Enabled;
+    public event Action<IBlobPresenter> OnBlobRemoved;
+    public event Action<IBlobPresenter> OnBlobSpawned;
+    public event Action<IBlobPresenter, IBlobPresenter> OnBlobMerged;
+    public event Action<IBlobPresenter> OnBlobMoved;
+    public event Action<IBlobPresenter> OnBlobResized;
+    public event Action<IBlobPresenter> OnBlobSelected;
+    public event Action<IBlobPresenter> OnBlobDeselected;
+    public event Action<IBlobPresenter> OnBlobEnabled;
+    public event Action<IBlobPresenter> OnBlobDisabled;
     public BlobView View => _view;
+
+    public void SetModel(Blob model)
+    {
+        _model = model;
+    }
+
+    public void BindView(BlobView view)
+    {
+        _view = view;
+        _animator = view != null ? view.GetComponent<BlobAnimator>() : null;
+        if (_animator != null)
+        {
+          _animator.Initialize();
+        }
+      
+        if (view != null)
+        {
+            view.Initialize(_model);
+
+            view.transform.localScale = Vector2.zero;
+        }
+
+
+    }
 
     public BlobPresenter(Blob model, BlobView view)
     {
         _model = model;
-        _view = view;
-        _animator = view.GetComponent<BlobAnimator>();
-
-
+        BindView(view);
+        BoardPresenter.OnMergeAnimationStart += OnMergeAnimationStart;
+        
     }
-
-    public void Initialize(IBoardPresenter board)
+    private void OnMergeAnimationStart(ICommand command)
     {
-        _board = board;
-        _blobViews.TryAdd(_model.ID, _view);
-        _animator.Initialize();
-
-        _view.transform.localScale = Vector2.zero;
-
-
+        if (command is not MergeCommand merge)
+        {
+            return;
+        }
+        if (merge.Source.ID == _model.ID)
+        {
+            _view?.ExpressionController.ShowExpression(ExpressionType.Merging);
+            _view.ChangeSortingLayer("Foreground");
+        }
+        else if (merge.Target != null && merge.Target.ID == _model.ID)
+        {
+            _view.ShowExpression(ExpressionType.Surprised);
+        }
+        
+       
     }
-
-
+   
 
     public Sequence MoveToGrid(Vector2Int gridPos)
     {
-        _view.Visuals.ChangeSortingLayer("Foreground", _view.transform);
+        if (_animator == null) return null;
         Vector3 worldPos = GridUtility.GridToWorldWithBlobOffset(gridPos);
-        return _animator.AnimateMoveTo(worldPos);
-    }
-
-    public Sequence ScaleTo(float targetScale) {
-        return _animator.PlayResizeAnimation(targetScale);
-    }
-
-    public Sequence Remove()
-    {
-        return _animator.PlayDespawnAnimation().OnComplete(() =>
+        return _animator.AnimateMoveTo(worldPos).OnComplete(() =>
         {
-            _blobViews.Remove(_model.ID);
-            _view.gameObject.SetActive(false);
-
+            OnBlobMoved?.Invoke(this);
         });
     }
+    public Sequence MoveToPath(List<Vector2Int> moveGroup)
+    {
+        if (_animator == null) return null;
+        var path = moveGroup.Select(GridUtility.GridToWorldWithBlobOffset).ToList();
+        return _animator.AnimateMovePath(path).OnComplete(() =>
+        {
+            OnBlobMoved?.Invoke(this);
+        });
+    }
+
+    public Sequence ScaleTo(float targetScale)
+    {
+        if (_animator == null) return null;
+        return _animator.PlayResizeAnimation(targetScale)
+        .OnComplete(() =>
+        {
+            OnBlobResized?.Invoke(this);
+        });
+    }
+
+    /// <summary>
+    /// Play despawn animation only
+    /// </summary>
+    public Sequence Remove()
+    {
+        if (_animator == null) return null;
+        return _animator.PlayDespawnAnimation()
+        .OnComplete(() =>
+        {
+            OnBlobRemoved?.Invoke(this);
+        });
+    }
+
     public Sequence Spawn()
     {
+        if (_animator == null) return null;
+        var initialScale = Vector2.one * _model.GetScaleFromBlobSize();
+        var color = ColorSchemeManager.FromBlobColor(_model.Color);
+        return _animator.PlaySpawnAnimation(initialScale).JoinCallback(() => {
+            _animator.SpawnMergeParticles(color);
+        })
+        .OnComplete(() =>
+        {
+            OnBlobSpawned?.Invoke(this);
+        });
+    }
 
-        _blobViews.TryAdd(_model.ID, _view);
-        return _animator.PlaySpawnAnimation();
-    }
-    
-    public Sequence Respawn()
-    {
-        _view.gameObject.SetActive(true);
-        return _animator.PlaySpawnAnimation();
-    }
+
 
     public void Select()
     {
+        if (_animator == null) return;
         _animator.PlaySelectAnimation();
+        OnBlobSelected?.Invoke(this);
     }
 
     public void Deselect()
     {
-       
-        
+        if (_animator == null) return;
         _animator.PlayDeselectAnimation();
-        
+        OnBlobDeselected?.Invoke(this);
+    }
+
+    public void EnableBlob()
+    {
+        _model.EnableBlob();
+        OnBlobEnabled?.Invoke(this);
+    }
+
+    public void DisableBlob()
+    {
+        _model.DisableBlob();
+        OnBlobDisabled?.Invoke(this);
+    }
+    public Sequence MergeWith(IBlobPresenter blobToRemove, Vector2Int to)
+    {
+        if (_animator == null) return null;
+        var targetWorldPos = GridUtility.GridToWorldWithBlobOffset(to);
+        return _animator.PlayMoveForMerge(targetWorldPos)
+        .AppendCallback(() =>
+        {
             
+            PlayMergeEffect(blobToRemove);
+            OnBlobMerged?.Invoke(this, blobToRemove);
+
+            blobToRemove.View.ExpressionController.RemoveExpression();
+            blobToRemove.Remove().OnComplete(() =>
+            {
+                OnBlobRemoved?.Invoke(blobToRemove);
+                _view.ExpressionController.ShowExpression(ExpressionType.Normal);
+                
+            });
+
+
+
+        });
     }
-    
 
-    public void EnableBlob() => _model.EnableBlob();
-
-    public void DisableBlob() => _model.DisableBlob();
-
-    public Sequence Merge(IBlobPresenter blobToRemove) {
-
-        _view.Visuals.ChangeSortingLayer("Foreground", blobToRemove.View.transform);
-        return _animator.PlayMergeAnimation(blobToRemove, this, GridUtility.GridToWorldWithBlobOffset(_model.GridPosition));
-
+    public void PlayMergeEffect(IBlobPresenter blobToRemove)
+    {
+        if (_animator != null)
+            _animator.PlayMergeEffect(this, blobToRemove);
     }
+    public void SpawnParticles()
+    {
+        if (_animator != null)
+            _animator.SpawnMergeParticles(ColorSchemeManager.FromBlobColor(_model.Color));
+    }
+    public Sequence NudgeInDirection(Vector2Int direction)
+    {
+        if (_animator == null) return null;
+        Debug.Log("Nudging blob in direction: " + direction);
+        var worldDirection = GridUtility.GridToWorld(direction);
+        _view.ChangeSortingLayer("Foreground");
+        return _animator.PlayNudgeInDirectionAnimation(worldDirection)
+        .OnComplete(() =>
+        {
+            _view.ChangeSortingLayer("Blobs");
 
-    public void PlayMergeEffect() => _animator.SpawnMergeParticles(ColorSchemeManager.FromBlobColor(_model.Color));
+        });
+    }
 }

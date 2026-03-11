@@ -68,14 +68,14 @@ namespace Blobs.Input
             }
 
             if (_pointerDownBlob != null && endBlobView != null &&
-                _pointerDownBlob.Model.ID != endBlobView.Model.ID)
+                _pointerDownBlob.ID != endBlobView.ID)
             {
                 BlobClicked?.Invoke(_pointerDownBlob);
                 BlobClicked?.Invoke(endBlobView);
                 return;
             }
             // if the blob is the same 
-            if (_pointerDownBlob != null && (endBlobView == null || _pointerDownBlob.Model.ID == endBlobView.Model?.ID))
+            if (_pointerDownBlob != null && (endBlobView == null || _pointerDownBlob.ID == endBlobView.ID))
             {
                 BlobClicked?.Invoke(_pointerDownBlob);
                 return;
@@ -85,16 +85,7 @@ namespace Blobs.Input
 
             EmptyClicked?.Invoke();
         }
-
-       
-        private bool IsUndoPressed()
-        {
-            if (Keyboard.current == null) return false;
-            if (!TryMapKeyCode(undoKey, out Key key)) return false;
-            return Keyboard.current[key].wasPressedThisFrame;
-        }
-
-        private bool IsPointerPressDown()
+  private bool IsPointerPressDown()
         {
             return Pointer.current != null && Pointer.current.press.wasPressedThisFrame;
         }
@@ -112,6 +103,15 @@ namespace Blobs.Input
             return true;
         }
 
+       
+        private bool IsUndoPressed()
+        {
+            if (Keyboard.current == null) return false;
+            if (!TryMapKeyCode(undoKey, out Key key)) return false;
+            return Keyboard.current[key].wasPressedThisFrame;
+        }
+
+      
         private static bool TryMapKeyCode(KeyCode keyCode, out Key key)
         {
             if (Enum.TryParse(keyCode.ToString(), out key))

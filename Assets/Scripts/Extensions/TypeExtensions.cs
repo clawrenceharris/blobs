@@ -4,14 +4,21 @@ public static class TypeExtensions
 
     public static bool IsColorBlob(this BlobType type)
     {
-        return type == BlobType.Normal || type == BlobType.Switch || type == BlobType.Flag || type == BlobType.Trail;
+        return type == BlobType.Normal || type == BlobType.Switch || type == BlobType.Target || type == BlobType.Trail;
     }
 
     public static bool IsTrailBlob(this BlobType type)
     {
         return type == BlobType.Trail;
     }
-
+    public static bool IsClearable(this BlobType type)
+    {
+        return type == BlobType.Normal || type == BlobType.Trail;
+    }
+    public static bool IsMultiMergeable(this BlobType type)
+    {
+        return type == BlobType.Normal || type == BlobType.Trail;
+    }
     public static bool IsNormalBlob(this BlobType type)
     {
         return type == BlobType.Normal;
@@ -22,27 +29,27 @@ public static class TypeExtensions
         return type == BlobType.Switch;
     }
 
-    public static bool IsFlagBlob(this BlobType type)
+    public static bool IsTargetBlob(this BlobType type)
     {
-        return type == BlobType.Flag;
+        return type == BlobType.Target;
     }
      public static bool CanInitiateMerge(this BlobType type)
     {
-        return type != BlobType.Flag && type != BlobType.Rock && type != BlobType.Ghost && type != BlobType.Switch && type != BlobType.Enemy;
+        return type != BlobType.Target && type != BlobType.Rock && type != BlobType.Ghost && type != BlobType.Switch && type != BlobType.Enemy;
     }
     
     public static bool IsBlob(this BlobType type)
     {
         return type == BlobType.Normal ||
             type == BlobType.Switch ||
-            type == BlobType.Flag ||
+            type == BlobType.Target ||
             type == BlobType.Trail;
     }
 
    
     public static bool IsMaxSizedBlob(this BlobType type)
     {
-        return type == BlobType.Flag || type == BlobType.Switch;
+        return type == BlobType.Target || type == BlobType.Switch;
     }
    
     

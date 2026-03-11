@@ -1,10 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using DG.Tweening;
 using UnityEngine.SceneManagement;
-using Blobs.Core.Merge;
-using System.Collections;
 
 namespace Blobs.Core.UI
 {
@@ -89,7 +84,6 @@ namespace Blobs.Core.UI
             LevelData nextLevel = LevelLoader.SelectLevel(nextIndex);
             if (nextLevel != null)
             {
-                Debug.Log($"[UIManager] Loading next level: {nextLevel.LevelName}");
                 SceneManager.LoadScene("Blobs");
             }
             else

@@ -58,8 +58,8 @@ Material:
     - _MiddlePosition: 0.432
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
-    - _BottomColor: {r: 0.11311854, g: 0.3931911, b: 0.7735849, a: 1}
+    - _BottomColor: {r: 0.069686726, g: 0.2714802, b: 0.5471698, a: 1}
     - _MiddleColor: {r: 0, g: 0.6717624, b: 0.8490566, a: 1}
-    - _TopColor: {r: 0.525297, g: 0.9716981, b: 0.29792625, a: 1}
+    - _TopColor: {r: 0.7227225, g: 1, b: 0.7216981, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

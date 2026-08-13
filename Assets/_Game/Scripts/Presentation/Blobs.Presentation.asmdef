@@ -1,0 +1,17 @@
+{
+    "name": "Blobs.Presentation",
+    "rootNamespace": "Blobs.Presentation",
+    "references": [
+        "GUID:bbe9820592b98467fac5b3d84d8143b5",
+        "GUID:94b946a7de00b4d90bc540ba65a7edbf"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

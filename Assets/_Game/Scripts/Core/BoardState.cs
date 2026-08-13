@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Blobs.Core
 {
     public sealed class BoardState
     {
         private readonly Dictionary<string, BlobState> _blobsById;
+        private readonly Dictionary<string, TileState> _tilesById;
         private readonly Dictionary<GridPosition, string> _blobIdsByPosition;
+        private readonly Dictionary<GridPosition, string> _tileIdsByPosition;
 
-        public BoardState(int width, int height, IEnumerable<BlobState> blobs)
+        public BoardState(int width, int height, IEnumerable<BlobState> blobs, IEnumerable<TileState> tiles)
         {
             if (width <= 0)
                 throw new ArgumentOutOfRangeException(nameof(width), "Board width must be positive.");
@@ -18,13 +21,16 @@ namespace Blobs.Core
             Width = width;
             Height = height;
             _blobsById = new Dictionary<string, BlobState>();
+            _tilesById = new Dictionary<string, TileState>();
             _blobIdsByPosition = new Dictionary<GridPosition, string>();
-
+            _tileIdsByPosition = new Dictionary<GridPosition, string>();    
             if (blobs == null)
                 return;
 
             foreach (var blob in blobs)
                 AddBlob(blob);
+            foreach (var tile in tiles)
+                AddTile(tile);
         }
 
         private BoardState(int width, int height, Dictionary<string, BlobState> blobsById)
@@ -42,14 +48,14 @@ namespace Blobs.Core
         public int Height { get; }
         public int BlobCount => _blobsById.Count;
 
-        public IEnumerable<BlobState> Blobs => _blobsById.Values;
-
+        public IReadOnlyList<BlobState> Blobs => _blobsById.Values.ToList();
+        public IReadOnlyList<TileState> Tiles => _tilesById.Values.ToList();
         public BoardState Clone()
         {
             return new BoardState(Width, Height, _blobsById);
         }
 
-        public bool IsInBounds(GridPosition position)
+        public bool IsInside(GridPosition position)
         {
             return position.X >= 0 && position.Y >= 0 && position.X < Width && position.Y < Height;
         }
@@ -75,7 +81,7 @@ namespace Blobs.Core
         {
             if (blob == null)
                 throw new ArgumentNullException(nameof(blob));
-            if (!IsInBounds(blob.Position))
+            if (!IsInside(blob.Position))
                 throw new ArgumentOutOfRangeException(nameof(blob), "Blob position is outside the board.");
             if (_blobsById.ContainsKey(blob.Id))
                 throw new ArgumentException("Duplicate blob id: " + blob.Id, nameof(blob));
@@ -84,6 +90,20 @@ namespace Blobs.Core
 
             _blobsById.Add(blob.Id, blob);
             _blobIdsByPosition.Add(blob.Position, blob.Id);
+        }
+        public void AddTile(TileState tile)
+        {
+            if (tile == null)
+                throw new ArgumentNullException(nameof(tile));
+            if (!IsInside(tile.Position))
+                throw new ArgumentOutOfRangeException(nameof(tile), "Tile position is outside the board.");
+            if (_tilesById.ContainsKey(tile.Id))
+                throw new ArgumentException("Duplicate tile id: " + tile.Id, nameof(tile));
+            if (_tileIdsByPosition.ContainsKey(tile.Position))
+                throw new ArgumentException("Multiple tiles cannot occupy " + tile.Position + ".", nameof(tile));
+
+            _tilesById.Add(tile.Id, tile);
+            _tileIdsByPosition.Add(tile.Position, tile.Id);
         }
 
         public void RemoveBlob(string id)
@@ -101,7 +121,7 @@ namespace Blobs.Core
             var blob = GetBlob(id);
             if (blob == null)
                 throw new InvalidOperationException("Blob does not exist: " + id);
-            if (!IsInBounds(to))
+            if (!IsInside(to))
                 throw new ArgumentOutOfRangeException(nameof(to), "Move target is outside the board.");
             if (_blobIdsByPosition.TryGetValue(to, out var occupantId) && occupantId != id)
                 throw new InvalidOperationException("Target position is occupied: " + to);

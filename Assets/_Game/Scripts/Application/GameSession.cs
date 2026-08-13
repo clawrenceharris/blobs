@@ -10,13 +10,14 @@ namespace Blobs.Application
         private readonly List<ResolvedMoveCommand> _history;
         private readonly LevelDefinition _level;
         private BoardState _board;
+        public BoardState CurrentState => _board;
 
         public GameSession(LevelDefinition level, MoveResolver resolver = null)
         {
             _level = level ?? throw new ArgumentNullException(nameof(level));
             _resolver = resolver ?? new MoveResolver();
             _history = new List<ResolvedMoveCommand>();
-            _board = _level.CreateInitialBoard();
+            _board = LevelFactory.CreateInitialBoard(level);
             IsComplete = ObjectiveEvaluator.IsComplete(_board);
         }
 
@@ -52,7 +53,7 @@ namespace Blobs.Application
         public void Restart()
         {
             _history.Clear();
-            _board = _level.CreateInitialBoard();
+            _board = LevelFactory.CreateInitialBoard(_level);
             IsComplete = ObjectiveEvaluator.IsComplete(_board);
         }
 
@@ -61,6 +62,7 @@ namespace Blobs.Application
             return new GameSessionSnapshot(
                 _level.Id,
                 new List<BlobState>(_board.Blobs),
+                new List<TileState>(_board.Tiles),
                 MoveCount,
                 CanUndo,
                 IsComplete);

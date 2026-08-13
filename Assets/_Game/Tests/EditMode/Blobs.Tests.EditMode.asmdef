@@ -1,17 +1,25 @@
 {
     "name": "Blobs.Tests.EditMode",
-    "rootNamespace": "",
+    "rootNamespace": "Blobs.Tests.EditMode",
     "references": [
-        "GUID:fcfdbdbd56579461989017b52b4a0eb4",
-        "GUID:bbe9820592b98467fac5b3d84d8143b5"
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "Blobs.Core",
+        "Blobs.Application"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }

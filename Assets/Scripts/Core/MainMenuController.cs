@@ -100,7 +100,7 @@ namespace Blobs.Core
 
         private void SetupIdleAnimations()
         {
-            // Title Animation (Scale Pulse)
+            // Title Animation (Scale Blob)
             if (titleImage != null)
             {
                 titleImage.DOScale(1.05f, 2f)

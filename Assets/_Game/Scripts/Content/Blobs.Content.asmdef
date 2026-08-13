@@ -1,7 +1,9 @@
 {
     "name": "Blobs.Content",
     "rootNamespace": "Blobs.Content",
-    "references": [],
+    "references": [
+        "GUID:fcfdbdbd56579461989017b52b4a0eb4"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
@@ -10,5 +12,5 @@
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": true
+    "noEngineReferences": false
 }

@@ -24,24 +24,36 @@ namespace Blobs.Core
             _tilesById = new Dictionary<string, TileState>();
             _blobIdsByPosition = new Dictionary<GridPosition, string>();
             _tileIdsByPosition = new Dictionary<GridPosition, string>();    
-            if (blobs == null)
-                return;
+            if (blobs != null)
+            {
+                foreach (var blob in blobs)
+                    AddBlob(blob);
+            }
 
-            foreach (var blob in blobs)
-                AddBlob(blob);
-            foreach (var tile in tiles)
-                AddTile(tile);
+            if (tiles != null)
+            {
+                foreach (var tile in tiles)
+                    AddTile(tile);
+            }
         }
 
-        private BoardState(int width, int height, Dictionary<string, BlobState> blobsById)
+        private BoardState(
+            int width,
+            int height,
+            Dictionary<string, BlobState> blobsById,
+            Dictionary<string, TileState> tilesById)
         {
             Width = width;
             Height = height;
             _blobsById = new Dictionary<string, BlobState>(blobsById);
+            _tilesById = new Dictionary<string, TileState>(tilesById);
             _blobIdsByPosition = new Dictionary<GridPosition, string>();
+            _tileIdsByPosition = new Dictionary<GridPosition, string>();
 
             foreach (var blob in _blobsById.Values)
                 _blobIdsByPosition.Add(blob.Position, blob.Id);
+            foreach (var tile in _tilesById.Values)
+                _tileIdsByPosition.Add(tile.Position, tile.Id);
         }
 
         public int Width { get; }
@@ -52,7 +64,7 @@ namespace Blobs.Core
         public IReadOnlyList<TileState> Tiles => _tilesById.Values.ToList();
         public BoardState Clone()
         {
-            return new BoardState(Width, Height, _blobsById);
+            return new BoardState(Width, Height, _blobsById, _tilesById);
         }
 
         public bool IsInside(GridPosition position)

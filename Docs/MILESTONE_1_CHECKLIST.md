@@ -25,7 +25,7 @@
 - [x] Confirm asmdef GUID references match the intended Core -> Application -> Tests architecture on disk.
 - [x] Confirm asmdef references match the intended architecture after Unity regenerates project files.
 - [x] Decide whether Milestone 1 sample content stays code-only or moves into a plain data fixture.
-- [x] Add a small developer-facing usage example for booting `GameSession` with `ProductionSampleLevels.CreateMilestoneOnePuzzle()`.
+- [x] Add a small developer-facing usage example for booting `GameSession` from production level data.
 - [x] Document known limitations of Milestone 1 normal merge behavior before starting Milestone 2.
 - [x] Document the remaining Unity Test Runner and in-editor verification steps.
 

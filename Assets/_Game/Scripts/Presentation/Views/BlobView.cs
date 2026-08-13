@@ -12,16 +12,25 @@ namespace Blobs.Presentation
         public event Action<BlobView> Selected;
 
         public string BlobId { get; private set; }
+        private float _cellSize;
+        private Vector2 _origin;
 
         public void Initialize(BlobState blob,  LevelVisualThemeAsset theme, float cellSize, Vector2 origin)
         {
             BlobId = blob.Id;
+            _cellSize = cellSize;
+            _origin = origin;
             name = "Blob " + blob.Id;
-            transform.localPosition = GridToLocal(blob.Position, cellSize, origin);
+            SetGridPosition(blob.Position);
             transform.localScale = Vector3.one * Mathf.Max(0.1f, cellSize * 0.8f);
             BlobRenderer = GetComponent<BlobRenderer>();
             ApplySkin(blob, theme);
             EnsureCollider();
+        }
+
+        public void SetGridPosition(GridPosition position)
+        {
+            transform.localPosition = GridToLocal(position, _cellSize, _origin);
         }
 
         public void ApplySkin(BlobState blob, LevelVisualThemeAsset theme)

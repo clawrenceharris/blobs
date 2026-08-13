@@ -18,8 +18,8 @@ MonoBehaviour:
   green: {r: 0.47843137, g: 0.9764706, b: 0.69411767, a: 1}
   blue: {r: 0.33490568, g: 1, b: 0.987236, a: 1}
   purple: {r: 0.52712584, g: 0.39999998, b: 1, a: 1}
-  topColor: {r: 0, g: 0.10980392, b: 0.25490198, a: 1}
-  middleColor: {r: 0, g: 0.37254903, b: 0.3882353, a: 1}
-  bottomColor: {r: 0.003921569, g: 0.83137256, b: 0.6313726, a: 1}
+  topColor: {r: 0.72156864, g: 1, b: 0.72156864, a: 1}
+  middleColor: {r: 0, g: 0.67058825, b: 0.8509804, a: 1}
+  bottomColor: {r: 0.07058824, g: 0.27058825, b: 0.54901963, a: 1}
   middlePosition: 0.5
   blendSoftness: 0.73

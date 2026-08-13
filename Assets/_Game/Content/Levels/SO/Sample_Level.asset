@@ -12,14 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 228f01d3da5254622b9b1236a3d1c0ff, type: 3}
   m_Name: Sample_Level
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
-  levelId: level-new
+  levelId: level-sample
   schemaVersion: 1
-  width: 6
-  height: 6
+  width: 3
+  height: 1
   maximumBeats: 12
-  pulses: []
+  blobs:
+  - rid: 7441116775194820694
+  - rid: 7441116775194820697
   tiles: []
-  visualTheme: {fileID: 0}
+  visualTheme: {fileID: 11400000, guid: b5998ed730be04ebe92db77229a4677f, type: 2}
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 7441116775194820694
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: 0
+        position: {x: 0, y: 0}
+        color: 1
+        type: 0
+        size: 0
+    - rid: 7441116775194820697
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: 1
+        position: {x: 2, y: 0}
+        color: 2
+        type: 0
+        size: 0

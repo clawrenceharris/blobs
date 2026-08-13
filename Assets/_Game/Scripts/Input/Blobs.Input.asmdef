@@ -1,0 +1,17 @@
+{
+    "name": "Blobs.Input",
+    "rootNamespace": "Blobs.Input",
+    "references": [
+        "GUID:bbe9820592b98467fac5b3d84d8143b5",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

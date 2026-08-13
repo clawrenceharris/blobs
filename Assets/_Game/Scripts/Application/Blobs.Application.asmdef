@@ -1,0 +1,16 @@
+{
+    "name": "Blobs.Application",
+    "rootNamespace": "Blobs.Application",
+    "references": [
+        "GUID:fcfdbdbd56579461989017b52b4a0eb4"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

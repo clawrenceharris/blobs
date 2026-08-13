@@ -28,10 +28,32 @@ namespace Blobs.Presentation
         {
             Clear();
 
-            foreach (var blob in snapshot.Blobs)
-                CreateBlobView(blob, _theme);
             foreach (var tile in snapshot.Tiles)
                 CreateTileView(tile, _theme);
+            foreach (var blob in snapshot.Blobs)
+                CreateBlobView(blob, _theme);
+        }
+
+        public void ApplyEffects(IReadOnlyList<IBoardEffect> effects, GameSessionSnapshot fallbackSnapshot)
+        {
+            foreach (var effect in effects)
+            {
+                switch (effect)
+                {
+                    case RemoveBlobEffect remove:
+                        RemoveBlobView(remove.BlobId);
+                        break;
+                    case MoveBlobEffect move:
+                        MoveBlobView(move.BlobId, move.To);
+                        break;
+                    case SpawnBlobEffect spawn:
+                        CreateBlobView(spawn.Blob, _theme);
+                        break;
+                    default:
+                        Rebuild(fallbackSnapshot);
+                        return;
+                }
+            }
         }
 
         public void Clear()
@@ -48,6 +70,19 @@ namespace Blobs.Presentation
             }
 
             _blobViews.Clear();
+
+            foreach (var view in _tileViews.Values)
+            {
+                if (view == null)
+                    continue;
+
+                if (ApplicationIsPlaying())
+                    Destroy(view.gameObject);
+                else
+                    DestroyImmediate(view.gameObject);
+            }
+
+            _tileViews.Clear();
         }
 
         private void CreateTileView(TileState tile, LevelVisualThemeAsset theme)
@@ -59,10 +94,34 @@ namespace Blobs.Presentation
 
         private void CreateBlobView(BlobState blob, LevelVisualThemeAsset theme)
         {
+            RemoveBlobView(blob.Id);
             var view = InstantiateBlobView();
             view.Initialize(blob, theme, _cellSize, _origin);
             view.Selected += HandleBlobSelected;
             _blobViews.Add(blob.Id, view);
+        }
+
+        private void MoveBlobView(string blobId, GridPosition to)
+        {
+            if (_blobViews.TryGetValue(blobId, out var view) && view != null)
+                view.SetGridPosition(to);
+        }
+
+        private void RemoveBlobView(string blobId)
+        {
+            if (!_blobViews.TryGetValue(blobId, out var view))
+                return;
+
+            if (view != null)
+            {
+                view.Selected -= HandleBlobSelected;
+                if (ApplicationIsPlaying())
+                    Destroy(view.gameObject);
+                else
+                    DestroyImmediate(view.gameObject);
+            }
+
+            _blobViews.Remove(blobId);
         }
 
         private TileView InstantiateTileView()

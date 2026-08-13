@@ -18,12 +18,12 @@ namespace Blobs.Tests.EditMode
                 new[]
                 {
                     NormalBlob("red_a", BlobColor.Red, 0, 0),
-                    NormalBlob("red_b", BlobColor.Red, 0, 2)
+                    NormalBlob("red_b", BlobColor.Red, 2, 0)
                 },
                 new[]
                 {
                     NormalTile("tile_a", 0, 0),
-                    NormalTile("tile_b", 0, 2)
+                    NormalTile("tile_b", 2, 0)
                 }));
 
             var result = session.ExecuteMove(new MoveIntent("red_a", "red_b"));
@@ -46,8 +46,8 @@ namespace Blobs.Tests.EditMode
             var session = new GameSession(new LevelDefinition(
                 "same_column",
                 1,
-                3,
                 1,
+                3,
                 new[]
                 {
                     NormalBlob("red_a", BlobColor.Red, 0, 0),
@@ -157,6 +157,34 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
+        public void UndoLastMoveReturnsInverseEffectsForPresentation()
+        {
+            var session = new GameSession(new LevelDefinition(
+                "undo_result",
+                1,
+                2,
+                1,
+                new[]
+                {
+                    NormalBlob("red_a", BlobColor.Red, 0, 0),
+                    NormalBlob("red_b", BlobColor.Red, 1, 0)
+                },
+                new[]
+                {
+                    NormalTile("tile_a", 0, 0),
+                    NormalTile("tile_b", 1, 0)
+                }));
+            session.ExecuteMove(new MoveIntent("red_a", "red_b"));
+
+            var result = session.UndoLastMove();
+
+            Assert.That(result.Succeeded, Is.True);
+            Assert.That(result.Effects.Count, Is.EqualTo(3));
+            Assert.That(result.IsComplete, Is.False);
+            Assert.That(session.CreateSnapshot().Blobs.Count, Is.EqualTo(2));
+        }
+
+        [Test]
         public void RestartRestoresAuthoredInitialStateAndClearsHistory()
         {
             var session = new GameSession(new LevelDefinition(
@@ -186,6 +214,28 @@ namespace Blobs.Tests.EditMode
             Assert.That(snapshot.Tiles.Count, Is.EqualTo(2));
             Assert.That(snapshot.Tiles.Select(tile => tile.Id), Is.EquivalentTo(new[] { "tile_a", "tile_b" }));
             Assert.That(snapshot.CanUndo, Is.False);
+        }
+
+        [Test]
+        public void BoardClonePreservesTilesAndBlobs()
+        {
+            var board = new BoardState(
+                2,
+                1,
+                new[]
+                {
+                    new BlobState("red_a", BlobType.Normal, BlobColor.Red, BlobSize.Normal, new GridPosition(0, 0))
+                },
+                new[]
+                {
+                    new TileState("tile_a", new GridPosition(0, 0), TileType.Normal),
+                    new TileState("tile_b", new GridPosition(1, 0), TileType.Normal)
+                });
+
+            var clone = board.Clone();
+
+            Assert.That(clone.Blobs.Select(blob => blob.Id), Is.EquivalentTo(new[] { "red_a" }));
+            Assert.That(clone.Tiles.Select(tile => tile.Id), Is.EquivalentTo(new[] { "tile_a", "tile_b" }));
         }
 
         private static NormalBlobDefinition NormalBlob(string id, BlobColor color, int x, int y)

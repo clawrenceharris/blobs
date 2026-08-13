@@ -178,13 +178,12 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7abd5d4be88614d21a2635c0c8ccfdd3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.ProductionGameBootstrap
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.GameBootstrapper
   boardPresenter: {fileID: 1341500224}
   startSampleLevelOnStart: 1
   levelAsset: {fileID: 11400000, guid: 7c66cfcb451404bd2820ee9461683367, type: 2}
   backgroundView: {fileID: 946229878}
   cameraPresenter: {fileID: 983718534}
-  inputAdapter: {fileID: 1046084939}
 --- !u!4 &896816962
 Transform:
   m_ObjectHideFlags: 0

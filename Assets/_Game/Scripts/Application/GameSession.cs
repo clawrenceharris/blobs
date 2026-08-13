@@ -39,15 +39,20 @@ namespace Blobs.Application
 
         public bool Undo()
         {
+            return UndoLastMove().Succeeded;
+        }
+
+        public UndoResult UndoLastMove()
+        {
             if (_history.Count == 0)
-                return false;
+                return UndoResult.Failed(IsComplete);
 
             var index = _history.Count - 1;
             var command = _history[index];
             _history.RemoveAt(index);
             _resolver.ApplyEffects(_board, command.InverseEffects);
             IsComplete = ObjectiveEvaluator.IsComplete(_board);
-            return true;
+            return new UndoResult(true, command.InverseEffects, IsComplete);
         }
 
         public void Restart()

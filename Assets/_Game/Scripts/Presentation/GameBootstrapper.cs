@@ -1,9 +1,9 @@
 using System;
+using System.Collections.Generic;
 using Blobs.Application;
 using Blobs.Core;
 using UnityEngine;
 using Blobs.Content;
-using Blobs.Input;
 
 namespace Blobs.Presentation
 {
@@ -16,7 +16,6 @@ namespace Blobs.Presentation
         [SerializeField] private LevelDefinitionAsset levelAsset;
         [SerializeField] private BackgroundView backgroundView;
         [SerializeField] private CameraPresenter cameraPresenter;
-        [SerializeField] private GameplayInputAdapter inputAdapter;
 
         private GameSession _session;
         private string _selectedBlobId;
@@ -29,13 +28,19 @@ namespace Blobs.Presentation
 
         private void Start()
         {
-           StartLevel(levelAsset);
+           if (startSampleLevelOnStart)
+               StartLevel(levelAsset);
         }
 
        
          public void StartLevel(LevelDefinitionAsset asset)
         {
-            
+            if (asset == null)
+            {
+                Debug.LogError("GameBootstrapper cannot start without a level asset.", this);
+                return;
+            }
+
             _selectedBlobId = null;
 
             LevelDefinition level = LevelAssetMapper.ToCore(asset);
@@ -48,24 +53,32 @@ namespace Blobs.Presentation
             EnsureBoardPresenter();
 
             boardPresenter.Initialize(asset.VisualTheme);
-            cameraPresenter.FitCameraToBoard(_session.CurrentState, boardPresenter.CellSize);
+            if (cameraPresenter != null)
+                cameraPresenter.FitCameraToBoard(_session.CurrentState, boardPresenter.CellSize);
            
             RenderSnapshot();
         }
 
         public void Undo()
         {
-            if (_session == null || !_session.Undo())
+            if (_session == null)
+                return;
+
+            var result = _session.UndoLastMove();
+            if (!result.Succeeded)
                 return;
 
             _selectedBlobId = null;
-            RenderSnapshot();
+            ApplyEffects(result.Effects);
         }
 
         public void Restart()
         {
             if (_session == null)
+            {
                 StartLevel(levelAsset);
+                return;
+            }
             else
                 _session.Restart();
 
@@ -77,6 +90,8 @@ namespace Blobs.Presentation
         {
             if (_session == null)
                 StartLevel(levelAsset);
+            if (_session == null)
+                return;
 
             if (string.IsNullOrEmpty(_selectedBlobId))
             {
@@ -100,7 +115,15 @@ namespace Blobs.Presentation
             MoveResolved?.Invoke(result);
 
             if (result.Succeeded)
-                RenderSnapshot();
+                ApplyEffects(result.Effects);
+        }
+
+        private void ApplyEffects(IReadOnlyList<IBoardEffect> effects)
+        {
+            var snapshot = _session.CreateSnapshot();
+            EnsureBoardPresenter();
+            boardPresenter.ApplyEffects(effects, snapshot);
+            SnapshotChanged?.Invoke(snapshot);
         }
 
         private void RenderSnapshot()

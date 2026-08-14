@@ -4,18 +4,48 @@ using Blobs.Core;
 
 namespace Blobs.Application
 {
+    /// <summary>
+    /// Command surface for gameplay input. Input and UI adapters use this interface so they do not
+    /// need direct access to board state or Presentation objects.
+    /// </summary>
     public interface IGameplayCommands
     {
+        /// <summary>
+        /// Selects a blob at a grid position or completes a source-to-target move if a source is already selected.
+        /// </summary>
         BlobSelectionResult SelectBlobAt(GridPosition position);
+
+        /// <summary>
+        /// Restores the authored initial level state and clears transient session state.
+        /// </summary>
         void Restart();
     }
 
+    /// <summary>
+    /// Read/event surface for presenters. Presentation observes this interface instead of issuing commands.
+    /// </summary>
     public interface IGameplayState
     {
+        /// <summary>
+        /// Creates an immutable snapshot for rebuilding views or UI.
+        /// </summary>
         GameSessionSnapshot CreateSnapshot();
+
+        /// <summary>
+        /// Raised after a successful move has updated Core state.
+        /// </summary>
         event Action<MoveResult> MoveResolved;
+
+        /// <summary>
+        /// Raised after restart reconstructs the authored initial state.
+        /// </summary>
         event Action<GameSessionSnapshot> StateRestored;
     }
+
+    /// <summary>
+    /// Application-level gameplay session. Owns source/target selection, move execution, restart,
+    /// move count, and completion state while delegating rules to Core.
+    /// </summary>
     public sealed class GameSession : IGameplayCommands, IGameplayState
     {
         private readonly MoveResolver _resolver;
@@ -24,7 +54,14 @@ namespace Blobs.Application
         private BoardState _board;
         private string _selectedBlobId;
         public BoardState CurrentState => _board;
+        /// <summary>
+        /// Raised after a move succeeds and the Core board has already been mutated.
+        /// </summary>
         public event Action<MoveResult> MoveResolved;
+
+        /// <summary>
+        /// Raised after restart so Presentation can rebuild from the restored snapshot.
+        /// </summary>
         public event Action<GameSessionSnapshot> StateRestored;
 
         public string LevelId => _level.Id;
@@ -32,6 +69,9 @@ namespace Blobs.Application
         public bool IsComplete { get; private set; }
         public string SelectedBlobId => _selectedBlobId;
 
+        /// <summary>
+        /// Creates a gameplay session from validated level data.
+        /// </summary>
         public GameSession(LevelDefinition level, MoveResolver resolver = null)
         {
             _level = level ?? throw new ArgumentNullException(nameof(level));
@@ -41,6 +81,7 @@ namespace Blobs.Application
             IsComplete = ObjectiveEvaluator.IsComplete(_board);
         }
 
+        /// <inheritdoc />
         public BlobSelectionResult SelectBlobAt(GridPosition position)
         {
             var blob = _board.GetBlobAt(position);
@@ -68,6 +109,10 @@ namespace Blobs.Application
             return BlobSelectionResult.Move(result);
         }
 
+        /// <summary>
+        /// Executes an explicit move intent. This bypasses the selection state and is primarily used by tests
+        /// or future input modes that already know source and target ids.
+        /// </summary>
         public MoveResult ExecuteMove(MoveIntent intent)
         {
             var result = _resolver.Resolve(_board, intent);
@@ -80,6 +125,7 @@ namespace Blobs.Application
         }
 
 
+        /// <inheritdoc />
         public void Restart()
         {
             _history.Clear();
@@ -89,6 +135,7 @@ namespace Blobs.Application
             StateRestored?.Invoke(CreateSnapshot());
         }
 
+        /// <inheritdoc />
         public GameSessionSnapshot CreateSnapshot()
         {
             return new GameSessionSnapshot(

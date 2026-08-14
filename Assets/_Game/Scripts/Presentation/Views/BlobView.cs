@@ -6,6 +6,10 @@ using Blobs.Input;
 using DG.Tweening;
 namespace Blobs.Presentation
 {
+    /// <summary>
+    /// Unity view for one blob. It converts Core grid positions into transform state and owns
+    /// blob-specific animation primitives.
+    /// </summary>
     [RequireComponent(typeof(BlobRenderer))]
     public sealed class BlobView : MonoBehaviour
     {
@@ -17,6 +21,9 @@ namespace Blobs.Presentation
         private Vector2 _origin;
         private Vector3 _baseScale;
 
+        /// <summary>
+        /// Initializes the view from immutable Core blob state.
+        /// </summary>
         public void Initialize(BlobState blob, LevelVisualThemeAsset theme, float cellSize, Vector2 origin)
         {
             BlobId = blob.Id;
@@ -31,12 +38,18 @@ namespace Blobs.Presentation
             EnsureInputTarget(blob.Id);
         }
 
+        /// <summary>
+        /// Immediately places the view at a logical grid position.
+        /// </summary>
         public void SetGridPosition(GridPosition position)
         {
             transform.DOKill();
             transform.localPosition = GridToLocal(position, _cellSize, _origin);
         }
 
+        /// <summary>
+        /// Animates this view to a logical grid position without changing Core state.
+        /// </summary>
         public void AnimateMoveTo(GridPosition position, float duration)
         {
             var target = GridToLocal(position, _cellSize, _origin);
@@ -44,6 +57,9 @@ namespace Blobs.Presentation
             transform.DOMove(target, duration).SetEase(Ease.OutQuad);
         }
 
+        /// <summary>
+        /// Plays the spawn scale-in animation.
+        /// </summary>
         public void PlaySpawn(float duration)
         {
             transform.DOKill();
@@ -51,12 +67,18 @@ namespace Blobs.Presentation
             transform.DOScale(_baseScale, duration).SetEase(Ease.OutBack);
         }
 
+        /// <summary>
+        /// Plays the despawn animation and returns the tween so the caller can destroy the view on completion.
+        /// </summary>
         public Tween PlayDespawn(float duration)
         {
             transform.DOKill();
             return transform.DOScale(Vector3.zero, duration).SetEase(Ease.InBack);
         }
 
+        /// <summary>
+        /// Applies visual skinning for the supplied blob state and level theme.
+        /// </summary>
         public void ApplySkin(BlobState blob, LevelVisualThemeAsset theme)
         {
             var skinApplier = new BlobSkinApplier();

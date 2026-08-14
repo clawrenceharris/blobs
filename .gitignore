@@ -80,13 +80,11 @@ Network Trash Folder/
 ### Vscode ###
 # Visual Studio Code editor settings and workspace files
 
-# Visual Studio Code and Cursor
-
+# Share formatter/debug/extension recommendations; ignore the rest of .vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
-
 !.vscode/extensions.json
 !.vscode/*.code-snippets
 .history/
@@ -98,11 +96,15 @@ Network Trash Folder/
 .vscode-test
 .vscodeignore
 .vscode/chrome
-
 .vscode-server/
 .vscode/sftp.json
 .vscode/tags
 .devcontainer/
+
+# Windows
+Thumbs.db
+Desktop.ini
+ehthumbs.db
 
 # Gradle cache directory
 .gradle/
@@ -113,6 +115,7 @@ ExportedObj/
 *.csproj
 *.unityproj
 *.sln
+*.slnx
 *.suo
 *.tmp
 *.user
@@ -167,3 +170,9 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# Auto-generated cache in Assets folder
+/[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Burst compiler debug output
+/[Bb]urst[Dd]ebug[Ii]nformation/

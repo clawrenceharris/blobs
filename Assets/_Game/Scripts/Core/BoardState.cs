@@ -23,7 +23,7 @@ namespace Blobs.Core
             _blobsById = new Dictionary<string, BlobState>();
             _tilesById = new Dictionary<string, TileState>();
             _blobIdsByPosition = new Dictionary<GridPosition, string>();
-            _tileIdsByPosition = new Dictionary<GridPosition, string>();    
+            _tileIdsByPosition = new Dictionary<GridPosition, string>();
             if (blobs != null)
             {
                 foreach (var blob in blobs)
@@ -83,6 +83,9 @@ namespace Blobs.Core
 
         public BlobState GetBlobAt(GridPosition position)
         {
+            if (!IsInside(position))
+                return null;
+
             if (!_blobIdsByPosition.TryGetValue(position, out var id))
                 return null;
 

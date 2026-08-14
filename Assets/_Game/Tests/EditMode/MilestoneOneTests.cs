@@ -18,7 +18,7 @@ namespace Blobs.Tests.EditMode
                 new[]
                 {
                     NormalBlob("red_a", BlobColor.Red, 0, 0),
-                    NormalBlob("red_b", BlobColor.Red, 2, 0)
+                    NormalBlob("blue_a", BlobColor.Blue, 2, 0)
                 },
                 new[]
                 {
@@ -26,7 +26,7 @@ namespace Blobs.Tests.EditMode
                     NormalTile("tile_b", 2, 0)
                 }));
 
-            var result = session.ExecuteMove(new MoveIntent("red_a", "red_b"));
+            var result = session.ExecuteMove(new MoveIntent("red_a", "blue_a"));
             var snapshot = session.CreateSnapshot();
 
             Assert.That(result.Succeeded, Is.True);
@@ -51,7 +51,7 @@ namespace Blobs.Tests.EditMode
                 new[]
                 {
                     NormalBlob("red_a", BlobColor.Red, 0, 0),
-                    NormalBlob("red_b", BlobColor.Red, 0, 2)
+                    NormalBlob("blue_a", BlobColor.Blue, 0, 2)
                 },
                 new[]
                 {
@@ -59,7 +59,7 @@ namespace Blobs.Tests.EditMode
                     NormalTile("tile_b", 0, 2)
                 }));
 
-            var result = session.ExecuteMove(new MoveIntent("red_a", "red_b"));
+            var result = session.ExecuteMove(new MoveIntent("red_a", "blue_a"));
 
             Assert.That(result.Succeeded, Is.True);
             Assert.That(session.CreateSnapshot().IsComplete, Is.True);
@@ -95,17 +95,17 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void ColorMismatchIsRejectedWithoutMutatingBoard()
+        public void SameColorMoveIsRejectedWithoutMutatingBoard()
         {
             var session = new GameSession(new LevelDefinition(
-                "color_mismatch",
+                "same_color_mismatch",
                 1,
                 2,
                 1,
                 new[]
                 {
                     NormalBlob("red_a", BlobColor.Red, 0, 0),
-                    NormalBlob("blue_a", BlobColor.Blue, 1, 0)
+                    NormalBlob("red_b", BlobColor.Red, 1, 0)
                 },
                 new[]
                 {
@@ -113,7 +113,7 @@ namespace Blobs.Tests.EditMode
                     NormalTile("tile_b", 1, 0)
                 }));
 
-            var result = session.ExecuteMove(new MoveIntent("red_a", "blue_a"));
+            var result = session.ExecuteMove(new MoveIntent("red_a", "red_b"));
             var snapshot = session.CreateSnapshot();
 
             Assert.That(result.Succeeded, Is.False);
@@ -134,21 +134,21 @@ namespace Blobs.Tests.EditMode
                 new[]
                 {
                     NormalBlob("red_a", BlobColor.Red, 0, 0),
-                    NormalBlob("red_b", BlobColor.Red, 1, 0)
+                    NormalBlob("blue_a", BlobColor.Blue, 1, 0)
                 },
                 new[]
                 {
                     NormalTile("tile_a", 0, 0),
                     NormalTile("tile_b", 1, 0)
                 }));
-            session.ExecuteMove(new MoveIntent("red_a", "red_b"));
+            session.ExecuteMove(new MoveIntent("red_a", "blue_a"));
 
             var undone = session.Undo();
             var snapshot = session.CreateSnapshot();
 
             Assert.That(undone, Is.True);
             Assert.That(snapshot.Blobs.Count, Is.EqualTo(2));
-            Assert.That(snapshot.Blobs.Select(blob => blob.Id), Is.EquivalentTo(new[] { "red_a", "red_b" }));
+            Assert.That(snapshot.Blobs.Select(blob => blob.Id), Is.EquivalentTo(new[] { "red_a", "blue_a" }));
             Assert.That(snapshot.IsComplete, Is.False);
             Assert.That(snapshot.MoveCount, Is.EqualTo(0));
             Assert.That(snapshot.Tiles.Count, Is.EqualTo(2));
@@ -167,14 +167,14 @@ namespace Blobs.Tests.EditMode
                 new[]
                 {
                     NormalBlob("red_a", BlobColor.Red, 0, 0),
-                    NormalBlob("red_b", BlobColor.Red, 1, 0)
+                    NormalBlob("blue_a", BlobColor.Blue, 1, 0)
                 },
                 new[]
                 {
                     NormalTile("tile_a", 0, 0),
                     NormalTile("tile_b", 1, 0)
                 }));
-            session.ExecuteMove(new MoveIntent("red_a", "red_b"));
+            session.ExecuteMove(new MoveIntent("red_a", "blue_a"));
 
             var result = session.UndoLastMove();
 
@@ -195,7 +195,7 @@ namespace Blobs.Tests.EditMode
                 new[]
                 {
                     NormalBlob("red_a", BlobColor.Red, 0, 0),
-                    NormalBlob("red_b", BlobColor.Red, 1, 0)
+                    NormalBlob("blue_a", BlobColor.Blue, 1, 0)
                 },
                 new[]
                 {
@@ -203,8 +203,8 @@ namespace Blobs.Tests.EditMode
                     NormalTile("tile_b", 1, 0)
                 }));
 
-            var first = session.SelectBlob(new GridPosition(0, 0));
-            var second = session.SelectBlob(new GridPosition(1, 0));
+            var first = session.SelectBlobAt(new GridPosition(0, 0));
+            var second = session.SelectBlobAt(new GridPosition(1, 0));
 
             Assert.That(first.HasSelection, Is.True);
             Assert.That(first.MoveAttempted, Is.False);
@@ -224,16 +224,16 @@ namespace Blobs.Tests.EditMode
                 new[]
                 {
                     NormalBlob("red_a", BlobColor.Red, 0, 0),
-                    NormalBlob("red_b", BlobColor.Red, 1, 0)
+                    NormalBlob("blue_a", BlobColor.Blue, 1, 0)
                 },
                 new[]
                 {
                     NormalTile("tile_a", 0, 0),
                     NormalTile("tile_b", 1, 0)
-                }));
+            }));
 
-            session.SelectBlob(new GridPosition(0, 0));
-            var second = session.SelectBlob(new GridPosition(1, 0));
+            session.SelectBlobAt(new GridPosition(0, 0));
+            var second = session.SelectBlobAt(new GridPosition(0, 0));
 
             Assert.That(second.HasSelection, Is.False);
             Assert.That(second.MoveAttempted, Is.False);
@@ -251,20 +251,20 @@ namespace Blobs.Tests.EditMode
                 new[]
                 {
                     NormalBlob("red_a", BlobColor.Red, 0, 0),
-                    NormalBlob("red_b", BlobColor.Red, 1, 0)
+                    NormalBlob("blue_a", BlobColor.Blue, 1, 0)
                 },
                 new[]
                 {
                     NormalTile("tile_a", 0, 0),
                     NormalTile("tile_b", 1, 0)
                 }));
-            session.ExecuteMove(new MoveIntent("red_a", "red_b"));
+            session.ExecuteMove(new MoveIntent("red_a", "blue_a"));
 
             session.Restart();
             var snapshot = session.CreateSnapshot();
 
             Assert.That(snapshot.Blobs.Count, Is.EqualTo(2));
-            Assert.That(snapshot.Blobs.Select(blob => blob.Id), Is.EquivalentTo(new[] { "red_a", "red_b" }));
+            Assert.That(snapshot.Blobs.Select(blob => blob.Id), Is.EquivalentTo(new[] { "red_a", "blue_a" }));
             Assert.That(snapshot.IsComplete, Is.False);
             Assert.That(snapshot.MoveCount, Is.EqualTo(0));
             Assert.That(snapshot.Tiles.Count, Is.EqualTo(2));

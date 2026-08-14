@@ -13,17 +13,18 @@
 - [x] Keep scene shell logic out of Core and Application.
 - [x] Verify Presentation compiles with Unity references.
 - [x] Wire `Assets/_Game/Scenes/Game.unity` to `GameBootstrapper`, `BoardPresenter`, and `Sample_Level.asset`.
-- [x] Make `Sample_Level.asset` solvable with two same-color normal blobs.
+- [x] Make `Sample_Level.asset` solvable with two different-color normal blobs.
 - [x] Wire `GameplayInputAdapter` to the active Application `GameSession`.
 - [x] Move source/target selection state and move execution policy into `GameSession`.
+- [x] Move effect application and undo/restart presentation flow out of `GameBootstrapper`.
 
 ## Acceptance Checks
 
-- [ ] Play Mode shows two sample blobs in `Assets/_Game/Scenes/Game.unity`.
+- [x] Play Mode shows two sample blobs in `Assets/_Game/Scenes/Game.unity`.
 - [x] Selecting the first blob and then the second blob executes a production merge through `GameSession`.
-- [ ] A successful merge clears the visible blobs.
-- [ ] Undo restores the visible blobs.
-- [ ] Restart restores the initial visible blobs and clears selection.
+- [x] A successful merge clears the visible blobs.
+- [x] Undo restores the visible blobs.
+- [x] Restart restores the initial visible blobs and clears selection.
 - [x] The scene shell uses `GameSession` and does not call prototype managers.
 
 ## Current Scope
@@ -33,14 +34,14 @@ The first implementation group is intentionally visual-minimal. It should establ
 ## Implementation Notes
 
 - `Assets/_Game/Scenes/Game.unity` contains a `GameBootstrapper` scene object wired to `Sample_Level.asset`.
-- `Sample_Level.asset` contains two matching normal blobs.
-- `GameBootstrapper` creates and owns the Application `GameSession`.
-- `GameplayInputAdapter` is initialized with the active `GameSession`.
-- `GameSession.SelectBlob` owns the source/target selection flow and calls `ExecuteMove`.
-- `BoardPresenter` rebuilds visible blob views from `GameSessionSnapshot`.
-- `BlobView` exposes a `BlobInputTarget` and reports selection through Presentation events; it does not call Core or Application directly.
-- `Undo()` and `Restart()` are public methods on `GameBootstrapper` for temporary editor wiring or future UI buttons.
-- Forward moves and undo now apply Core effect lists to visible blob views before falling back to full snapshot rebuilds for unsupported effects.
+- `Sample_Level.asset` contains two different color normal blobs.
+- `GameBootstrapper` is the composition root: it creates the Application `GameSession` and wires scene collaborators.
+- `GameplayInputAdapter` is initialized with `IGameplayCommands` and sends select intents to Application.
+- `GameplayCommandAdapter` exposes undo/restart command entry points for UI buttons or editor wiring.
+- `GameSession.SelectBlobAt` owns the source/target selection flow and calls `ExecuteMove`.
+- `BoardPresenter` listens to `IGameplayState` events and updates visible board views.
+- Restart restores the board through an Application state-restored event and snapshot rebuild.
+- Forward moves and undo apply Core effect lists through `BoardPresenter` before falling back to full snapshot rebuilds for unsupported effects.
 
 ## Verification Log
 
@@ -50,7 +51,12 @@ The first implementation group is intentionally visual-minimal. It should establ
 - [x] EditMode test source compile passed after adding `GameSession.SelectBlob` coverage.
 - [x] Pure C# smoke check passed for selection-driven merge execution.
 - [x] Pure C# smoke check passed for merge completion and `UndoLastMove` effect output.
+- [x] `MilestoneTwoSceneShellTests` covers visible blob clearing after merge.
+- [x] `MilestoneTwoSceneShellTests` covers visible blob restoration after undo.
+- [x] `MilestoneTwoSceneShellTests` covers visible blob restoration and selection clearing after restart.
+- [x] Expanded EditMode test source compile passed against Unity references.
+- [x] Source scan confirms `GameBootstrapper` does not apply effects, subscribe to move results, or own undo/restart gameplay flow.
 - [x] Source scan found no references from the scene shell to legacy `GameManager`, `MergeInvoker`, `LevelData`, or `Assets/Scripts` paths.
 - [x] Scene serialization points at `Blobs.Presentation.GameBootstrapper`.
 - [x] Normal blob prefab serialization points at `Blobs.Presentation.BlobView`.
-- [x] Scene sample content has two same-color blobs, so the first source-to-target merge is solvable.
+- [x] Scene sample content has two different-color blobs, so the first source-to-target merge is solvable.

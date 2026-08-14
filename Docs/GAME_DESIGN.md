@@ -33,6 +33,7 @@ A target is never inferred automatically: every merge always begins with an expl
 For a standard merge:
 
 - The source and target must be aligned on the same **row or column**.
+- The source and target cannot be the same color.
 - The source travels along the path toward the target.
 - The move may be rejected or modified by blobs, tiles, hazards, or other mechanics on that path.
 - A successful merge clears or transforms blobs according to the active blob rules.

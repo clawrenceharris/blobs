@@ -4,7 +4,21 @@ using Blobs.Core;
 
 namespace Blobs.Application
 {
-    public sealed class GameSession
+    public interface IGameplayCommands
+    {
+        UndoResult UndoLastMove();
+        BlobSelectionResult SelectBlobAt(GridPosition position);
+        void Restart();
+    }
+
+    public interface IGameplayState
+    {
+        GameSessionSnapshot CreateSnapshot();
+        event Action<MoveResult> MoveResolved;
+        event Action<UndoResult> MoveUndone;
+        event Action<GameSessionSnapshot> StateRestored;
+    }
+    public sealed class GameSession : IGameplayCommands, IGameplayState
     {
         private readonly MoveResolver _resolver;
         private readonly List<ResolvedMoveCommand> _history;
@@ -12,6 +26,15 @@ namespace Blobs.Application
         private BoardState _board;
         private string _selectedBlobId;
         public BoardState CurrentState => _board;
+        public event Action<MoveResult> MoveResolved;
+        public event Action<UndoResult> MoveUndone;
+        public event Action<GameSessionSnapshot> StateRestored;
+
+        public string LevelId => _level.Id;
+        public int MoveCount => _history.Count;
+        public bool CanUndo => _history.Count > 0;
+        public bool IsComplete { get; private set; }
+        public string SelectedBlobId => _selectedBlobId;
 
         public GameSession(LevelDefinition level, MoveResolver resolver = null)
         {
@@ -22,13 +45,7 @@ namespace Blobs.Application
             IsComplete = ObjectiveEvaluator.IsComplete(_board);
         }
 
-        public string LevelId => _level.Id;
-        public int MoveCount => _history.Count;
-        public bool CanUndo => _history.Count > 0;
-        public bool IsComplete { get; private set; }
-        public string SelectedBlobId => _selectedBlobId;
-
-        public BlobSelectionResult SelectBlob(GridPosition position)
+        public BlobSelectionResult SelectBlobAt(GridPosition position)
         {
             var blob = _board.GetBlobAt(position);
             if (blob == null)
@@ -49,6 +66,7 @@ namespace Blobs.Application
                 return BlobSelectionResult.Cleared();
             }
 
+
             var result = ExecuteMove(new MoveIntent(_selectedBlobId, blob.Id));
             _selectedBlobId = null;
             return BlobSelectionResult.Move(result);
@@ -62,6 +80,7 @@ namespace Blobs.Application
 
             _history.Add(new ResolvedMoveCommand(intent, result.InverseEffects));
             IsComplete = result.IsComplete;
+            MoveResolved?.Invoke(result);
             return result;
         }
 
@@ -81,7 +100,9 @@ namespace Blobs.Application
             _resolver.ApplyEffects(_board, command.InverseEffects);
             _selectedBlobId = null;
             IsComplete = ObjectiveEvaluator.IsComplete(_board);
-            return new UndoResult(true, command.InverseEffects, IsComplete);
+            var result = new UndoResult(true, command.InverseEffects, IsComplete);
+            MoveUndone?.Invoke(result);
+            return result;
         }
 
         public void Restart()
@@ -90,6 +111,7 @@ namespace Blobs.Application
             _board = LevelFactory.CreateInitialBoard(_level);
             _selectedBlobId = null;
             IsComplete = ObjectiveEvaluator.IsComplete(_board);
+            StateRestored?.Invoke(CreateSnapshot());
         }
 
         public GameSessionSnapshot CreateSnapshot()

@@ -1,5 +1,6 @@
 using Blobs.Application;
 using Blobs.Core;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,24 +8,33 @@ namespace Blobs.Input
 {
     public sealed class GameplayInputAdapter : MonoBehaviour
     {
-        private GameSession _session;
+        private IGameplayCommands _commands;
         [SerializeField] private InputActionReference selectBlobAction;
         [SerializeField] private Camera boardCamera;
         [SerializeField, Min(0.01f)] private float cellSize = 1f;
         [SerializeField] private Vector2 boardOrigin;
         private InputAction _runtimePointAction;
         private bool _subscribed;
+        public event Action<BlobSelectionResult> BlobSelectionResolved;
 
         private InputAction SelectBlobAction =>
             selectBlobAction != null ? selectBlobAction.action : _runtimePointAction;
 
-        public void Initialize(GameSession session, float boardCellSize)
+        public void Initialize(IGameplayCommands commands, float boardCellSize)
         {
             UnsubscribeInputActions();
-            _session = session;
+            _commands = commands;
             cellSize = boardCellSize;
             EnsureRuntimeAction();
             Subscribe();
+        }
+
+        public BlobSelectionResult SelectBlobAt(GridPosition gridPosition)
+        {
+            if (_commands == null)
+                return BlobSelectionResult.Cleared();
+
+            return _commands.SelectBlobAt(gridPosition);
         }
 
         private void OnEnable()
@@ -41,7 +51,7 @@ namespace Blobs.Input
         {
             UnsubscribeInputActions();
             DisposeRuntimeAction();
-            _session = null;
+            _commands = null;
         }
 
         private void EnsureRuntimeAction()
@@ -60,7 +70,7 @@ namespace Blobs.Input
 
         private void Subscribe()
         {
-            if (_session == null)
+            if (_commands == null)
                 return;
 
             EnsureRuntimeAction();
@@ -97,7 +107,7 @@ namespace Blobs.Input
 
         private void OnSelectBlob(InputAction.CallbackContext context)
         {
-            if (!context.performed || _session == null)
+            if (!context.performed || _commands == null)
                 return;
 
             if (!TryGetPointerScreenPosition(out Vector2 screenPosition))
@@ -117,11 +127,8 @@ namespace Blobs.Input
                 Mathf.RoundToInt((worldPosition.x - boardOrigin.x) / cellSize),
                 Mathf.RoundToInt((worldPosition.y - boardOrigin.y) / cellSize));
 
-            if (!_session.CurrentState.IsInside(gridPosition))
-                return;
+            SelectBlobAt(gridPosition);
 
-             var result = _session.SelectBlob(gridPosition);
-             Debug.Log($"Selected blob at: {gridPosition}, result: {result}");
         }
 
         private static bool TryGetPointerScreenPosition(out Vector2 screenPosition)

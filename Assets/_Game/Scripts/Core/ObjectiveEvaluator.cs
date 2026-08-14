@@ -2,10 +2,22 @@ namespace Blobs.Core
 {
     public static class ObjectiveEvaluator
     {
-        public static bool IsComplete(BoardState board)
+        public static bool IsComplete(
+            BoardState board,
+            LevelObjectiveDefinition objective = null)
         {
-            return board != null && board.Blobs.Count == 1; // TODO: Remove this once we have a proper objective evaluator
-            // return board != null && !board.HasAnyClearableBlobs();
+            if (board == null)
+                return false;
+
+            objective = objective ?? LevelObjectiveDefinition.ClearAllClearableBlobs;
+            switch (objective.Type)
+            {
+                case LevelObjectiveType.ClearAllClearableBlobs:
+                    return !board.HasAnyClearableBlobs();
+                default:
+                    throw new System.InvalidOperationException(
+                        $"Unsupported level objective: {objective.Type}.");
+            }
         }
     }
 }

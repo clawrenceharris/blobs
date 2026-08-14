@@ -23,6 +23,9 @@ namespace Blobs.Content
         [SerializeReference] private List<BlobAssetData> blobs = new();
         [SerializeReference] private List<TileAssetData> tiles = new();
 
+        [Header("Objective")]
+        [SerializeField] private LevelObjectiveType objective =
+            LevelObjectiveType.ClearAllClearableBlobs;
 
         [Header("Presentation")]
         [SerializeField] private LevelVisualThemeAsset visualTheme;
@@ -32,8 +35,10 @@ namespace Blobs.Content
         public int SchemaVersion => schemaVersion;
         public int Width => width;
         public int Height => height;
+        public int MaximumBeats => maximumBeats;
         public IReadOnlyList<BlobAssetData> Blobs => blobs;
         public IReadOnlyList<TileAssetData> Tiles => tiles;
+        public LevelObjectiveType Objective => objective;
     }
 
 

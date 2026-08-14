@@ -44,7 +44,8 @@ Presentation timing must never decide whether a move is valid. Core and Applicat
 - `Docs/GAME_DESIGN.md` describes game rules, merge feel, restart-over-undo direction, and planned mechanics.
 - `Docs/TECHNICAL_ARCHITECTURE.md` describes layer responsibilities and dependency boundaries.
 - `Docs/PRODUCTION_PLAN.md` describes production milestones.
-- `Docs/MILESTONE_1_CHECKLIST.md` and `Docs/MILESTONE_2_CHECKLIST.md` track completed production targets.
+- `Docs/MILESTONE_1_CHECKLIST.md`, `Docs/MILESTONE_2_CHECKLIST.md`, and
+  `Docs/MILESTONE_3_CHECKLIST.md` track production targets.
 
 ## Tests
 

@@ -6,6 +6,10 @@ using UnityEngine.InputSystem;
 
 namespace Blobs.Input
 {
+    /// <summary>
+    /// Converts pointer selection into gameplay commands. This adapter maps screen/world input
+    /// to grid positions but does not update board visuals directly.
+    /// </summary>
     public sealed class GameplayInputAdapter : MonoBehaviour
     {
         private IGameplayCommands _commands;
@@ -20,6 +24,9 @@ namespace Blobs.Input
         private InputAction SelectBlobAction =>
             selectBlobAction != null ? selectBlobAction.action : _runtimePointAction;
 
+        /// <summary>
+        /// Connects pointer input to the active gameplay command surface.
+        /// </summary>
         public void Initialize(IGameplayCommands commands, float boardCellSize)
         {
             UnsubscribeInputActions();
@@ -29,6 +36,9 @@ namespace Blobs.Input
             Subscribe();
         }
 
+        /// <summary>
+        /// Testable entry point for selecting a logical grid position without hardware input.
+        /// </summary>
         public BlobSelectionResult SelectBlobAt(GridPosition gridPosition)
         {
             if (_commands == null)

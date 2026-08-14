@@ -2,9 +2,16 @@ using System;
 using UnityEngine;
 namespace Blobs.Presentation
 {
+    /// <summary>
+    /// Applies resolved presentation skins to one or more SpriteRenderers that compose a blob prefab.
+    /// This keeps blob prefab color binding separate from Core blob state.
+    /// </summary>
     public class BlobRenderer : MonoBehaviour
     {
         [Serializable]
+        /// <summary>
+        /// Maps a skin color role to one or more sprite renderers in a blob prefab.
+        /// </summary>
         public class Target
         {
             public SkinColorRole Role = SkinColorRole.Base;
@@ -27,6 +34,9 @@ namespace Blobs.Presentation
                 _fallbackBaseRenderer = TryGetComponent(out SpriteRenderer renderer) ? renderer : null;
         }
 
+        /// <summary>
+        /// Applies base, accent, and detail colors to the configured renderer targets.
+        /// </summary>
         public void ApplySkin(Skin skin)
         {
             ApplyRoleColor(SkinColorRole.Base, skin.BaseColor);
@@ -55,6 +65,9 @@ namespace Blobs.Presentation
             if (!applied && role == SkinColorRole.Base && _fallbackBaseRenderer != null)
                 _fallbackBaseRenderer.color = color;
         }
+        /// <summary>
+        /// Applies one color to all configured renderers. Useful for simple fallback visuals.
+        /// </summary>
         public void SetColor(Color color)
         {
             if (_targets != null)
@@ -75,6 +88,9 @@ namespace Blobs.Presentation
             }
         }
 
+        /// <summary>
+        /// Sets alpha across the blob's configured renderers without changing their RGB values.
+        /// </summary>
         public void SetAlpha(float alpha)
         {
 
@@ -93,6 +109,9 @@ namespace Blobs.Presentation
             }
         }
 
+        /// <summary>
+        /// Sets sorting order across the blob's configured renderers.
+        /// </summary>
         public void SetSortingOrder(int sortingOrder)
         {
             SetRendererSortingOrder(BaseRenderer, sortingOrder);

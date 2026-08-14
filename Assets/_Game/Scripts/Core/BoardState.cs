@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace Blobs.Core
 {
+    /// <summary>
+    /// Mutable Core board model with single-occupant blob and tile registries.
+    /// This type is intentionally Unity-free so rules can be tested without a scene.
+    /// </summary>
     public sealed class BoardState
     {
         private readonly Dictionary<string, BlobState> _blobsById;
@@ -11,6 +15,9 @@ namespace Blobs.Core
         private readonly Dictionary<GridPosition, string> _blobIdsByPosition;
         private readonly Dictionary<GridPosition, string> _tileIdsByPosition;
 
+        /// <summary>
+        /// Creates a board from initial blob and tile state, enforcing bounds, unique ids, and occupancy.
+        /// </summary>
         public BoardState(int width, int height, IEnumerable<BlobState> blobs, IEnumerable<TileState> tiles)
         {
             if (width <= 0)
@@ -62,16 +69,25 @@ namespace Blobs.Core
 
         public IReadOnlyList<BlobState> Blobs => _blobsById.Values.ToList();
         public IReadOnlyList<TileState> Tiles => _tilesById.Values.ToList();
+        /// <summary>
+        /// Returns a board copy with the same logical state.
+        /// </summary>
         public BoardState Clone()
         {
             return new BoardState(Width, Height, _blobsById, _tilesById);
         }
 
+        /// <summary>
+        /// Returns true when a logical grid position is within board dimensions.
+        /// </summary>
         public bool IsInside(GridPosition position)
         {
             return position.X >= 0 && position.Y >= 0 && position.X < Width && position.Y < Height;
         }
 
+        /// <summary>
+        /// Looks up a blob by stable id.
+        /// </summary>
         public BlobState GetBlob(string id)
         {
             if (id == null)
@@ -81,6 +97,9 @@ namespace Blobs.Core
             return blob;
         }
 
+        /// <summary>
+        /// Looks up the blob occupying a grid position, or null if the cell has no blob.
+        /// </summary>
         public BlobState GetBlobAt(GridPosition position)
         {
             if (!IsInside(position))
@@ -92,6 +111,9 @@ namespace Blobs.Core
             return _blobsById[id];
         }
 
+        /// <summary>
+        /// Adds a blob while enforcing id uniqueness and single-blob cell occupancy.
+        /// </summary>
         public void AddBlob(BlobState blob)
         {
             if (blob == null)
@@ -106,6 +128,9 @@ namespace Blobs.Core
             _blobsById.Add(blob.Id, blob);
             _blobIdsByPosition.Add(blob.Position, blob.Id);
         }
+        /// <summary>
+        /// Adds a tile while enforcing id uniqueness and single-tile cell occupancy.
+        /// </summary>
         public void AddTile(TileState tile)
         {
             if (tile == null)
@@ -121,6 +146,9 @@ namespace Blobs.Core
             _tileIdsByPosition.Add(tile.Position, tile.Id);
         }
 
+        /// <summary>
+        /// Removes a blob by id.
+        /// </summary>
         public void RemoveBlob(string id)
         {
             var blob = GetBlob(id);
@@ -131,6 +159,9 @@ namespace Blobs.Core
             _blobIdsByPosition.Remove(blob.Position);
         }
 
+        /// <summary>
+        /// Moves an existing blob to an empty in-bounds cell.
+        /// </summary>
         public void MoveBlob(string id, GridPosition to)
         {
             var blob = GetBlob(id);
@@ -147,6 +178,9 @@ namespace Blobs.Core
             _blobIdsByPosition[to] = id;
         }
 
+        /// <summary>
+        /// Returns true when any remaining blob counts toward the clearable objective.
+        /// </summary>
         public bool HasAnyClearableBlobs()
         {
             foreach (var blob in _blobsById.Values)

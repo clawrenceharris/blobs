@@ -8,6 +8,10 @@ using UnityEngine;
 
 namespace Blobs.Presentation
 {
+    /// <summary>
+    /// Owns the Unity board view. It observes Application state/result events and translates Core effects
+    /// into blob/tile views and animation without deciding gameplay rules.
+    /// </summary>
     public sealed class BoardPresenter : MonoBehaviour
     {
         private readonly Dictionary<string, BlobView> _blobViews = new Dictionary<string, BlobView>();
@@ -25,10 +29,21 @@ namespace Blobs.Presentation
         public int VisibleBlobCount => _blobViews.Count;
         public int VisibleTileCount => _tileViews.Count;
         private LevelVisualThemeAsset _theme;
+
+        /// <summary>
+        /// Current session snapshot used by tests and UI. Null until the presenter is initialized.
+        /// </summary>
         public GameSessionSnapshot CurrentSnapshot => _state?.CreateSnapshot();
 
+        /// <summary>
+        /// Raised after this presenter applies effects from a move.
+        /// </summary>
         public event Action<GameSessionSnapshot> SnapshotChanged;
         private IGameplayState _state;
+
+        /// <summary>
+        /// Connects the presenter to gameplay state and builds the initial board views.
+        /// </summary>
         public void Initialize(IGameplayState state, LevelVisualThemeAsset theme)
         {
             Unsubscribe();
@@ -46,6 +61,9 @@ namespace Blobs.Presentation
         }
 
 
+        /// <summary>
+        /// Rebuilds all board views from a snapshot. Used for initial render, restart, and desync recovery.
+        /// </summary>
         public void Rebuild(GameSessionSnapshot snapshot)
         {
             Clear();
@@ -56,6 +74,9 @@ namespace Blobs.Presentation
                 CreateBlobView(blob, _theme);
         }
 
+        /// <summary>
+        /// Applies ordered Core effects to the existing board views, falling back to a full rebuild for unsupported effects.
+        /// </summary>
         public void ApplyEffects(IReadOnlyList<IBoardEffect> effects, GameSessionSnapshot fallbackSnapshot)
         {
             foreach (var effect in effects)
@@ -82,6 +103,9 @@ namespace Blobs.Presentation
             }
         }
 
+        /// <summary>
+        /// Destroys all current blob and tile views.
+        /// </summary>
         public void Clear()
         {
             foreach (var view in _blobViews.Values)

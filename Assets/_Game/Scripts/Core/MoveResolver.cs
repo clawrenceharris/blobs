@@ -2,8 +2,16 @@ using System.Collections.Generic;
 
 namespace Blobs.Core
 {
+    /// <summary>
+    /// Deterministic Core rule entry point for normal source-to-target merge resolution.
+    /// It validates the intent, emits ordered effects, and applies those effects to board state.
+    /// </summary>
     public sealed class MoveResolver
     {
+        /// <summary>
+        /// Resolves a move intent against the supplied board. A successful normal merge removes the
+        /// target blob, then moves the source blob into the target position.
+        /// </summary>
         public MoveResult Resolve(BoardState board, MoveIntent intent)
         {
             var source = board.GetBlob(intent.SourceId);
@@ -25,6 +33,7 @@ namespace Blobs.Core
             if (PathHasBlockingBlob(board, source.Position, target.Position))
                 return MoveResult.Failed(MoveFailureReason.BlockedPath);
 
+            // The target must be removed before the source moves so board occupancy remains valid.
             var effects = new List<IBoardEffect>
             {
                 new RemoveBlobEffect(target),
@@ -36,6 +45,10 @@ namespace Blobs.Core
             return new MoveResult(true, MoveFailureReason.None, effects, ObjectiveEvaluator.IsComplete(board));
         }
 
+        /// <summary>
+        /// Applies an ordered effect list to board state. This is intentionally validation-free
+        /// because effects are assumed to come from a completed resolution pass.
+        /// </summary>
         public void ApplyEffects(BoardState board, IReadOnlyList<IBoardEffect> effects)
         {
 

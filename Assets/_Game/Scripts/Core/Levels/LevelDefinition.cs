@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Blobs.Core
 {
+    /// <summary>
+    /// Immutable authored tile data after content has been converted into Core types.
+    /// </summary>
     public abstract class TileDefinition
     {
         public string Id { get; }
@@ -22,6 +25,9 @@ namespace Blobs.Core
 
    
 
+    /// <summary>
+    /// Basic traversable tile definition.
+    /// </summary>
     public sealed class NormalTileDefinition : TileDefinition
     {
         public NormalTileDefinition(
@@ -34,6 +40,9 @@ namespace Blobs.Core
 
     
 
+    /// <summary>
+    /// Immutable authored blob data after content has been converted into Core types.
+    /// </summary>
     public abstract class BlobDefinition
     {
         public string Id { get; }
@@ -56,6 +65,9 @@ namespace Blobs.Core
             Type = type;
         }
     }
+    /// <summary>
+    /// Basic blob definition used by the current source-to-target merge rules.
+    /// </summary>
     public sealed class NormalBlobDefinition : BlobDefinition
     {
         public NormalBlobDefinition(
@@ -69,6 +81,9 @@ namespace Blobs.Core
         }
     }
 
+    /// <summary>
+    /// Unity-free level data consumed by Core and Application when starting a session.
+    /// </summary>
     public sealed class LevelDefinition
     {
         public string Id { get; }

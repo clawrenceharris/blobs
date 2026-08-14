@@ -4,6 +4,9 @@ using Blobs.Core;
 namespace Blobs.Presentation
 {
     
+    /// <summary>
+    /// Positions and sizes an orthographic camera so the current board fits in view.
+    /// </summary>
     [RequireComponent(typeof(Camera))]
     public class CameraPresenter : MonoBehaviour
     {
@@ -20,6 +23,9 @@ namespace Blobs.Presentation
     
 
 
+        /// <summary>
+        /// Centers the camera on the board and adjusts orthographic size using board dimensions.
+        /// </summary>
         public void FitCameraToBoard(BoardState boardState, float cellSize)
         {
         

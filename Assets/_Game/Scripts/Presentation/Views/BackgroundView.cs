@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Blobs.Presentation
 {
+    /// <summary>
+    /// Applies level theme gradient values to the scene background and keeps it sized to the camera.
+    /// </summary>
     public sealed class BackgroundView : MonoBehaviour
     {
         private static readonly int TopColorId =
@@ -28,6 +31,9 @@ namespace Blobs.Presentation
         {
             _properties = new();
         }
+        /// <summary>
+        /// Applies background colors and gradient tuning from the current level theme.
+        /// </summary>
         public void Apply(LevelVisualThemeAsset theme)
         {
             if (theme == null || spriteRenderer == null)

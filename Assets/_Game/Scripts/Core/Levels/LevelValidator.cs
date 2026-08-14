@@ -3,8 +3,14 @@ using System.Collections.Generic;
 
 namespace Blobs.Core
 {
+    /// <summary>
+    /// Validates level definitions before they become playable board state.
+    /// </summary>
     public static class LevelValidator
     {
+        /// <summary>
+        /// Throws when level data is structurally invalid for Core simulation.
+        /// </summary>
         public static void ValidateOrThrow(LevelDefinition level)
         {
             if (level == null)

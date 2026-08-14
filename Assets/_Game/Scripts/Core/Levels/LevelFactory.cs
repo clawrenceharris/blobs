@@ -3,8 +3,14 @@ using System.Collections.Generic;
 
 namespace Blobs.Core
 {
+    /// <summary>
+    /// Builds mutable board state from immutable level definitions.
+    /// </summary>
     public static class LevelFactory
     {
+        /// <summary>
+        /// Validates level data and creates the authored initial board state used for start and restart.
+        /// </summary>
         public static BoardState CreateInitialBoard(LevelDefinition level)
         {
             LevelValidator.ValidateOrThrow(level);

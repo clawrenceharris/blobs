@@ -4,6 +4,9 @@ using UnityEngine;
 using Blobs.Content;
 namespace Blobs.Presentation
 {
+    /// <summary>
+    /// Unity view for one logical tile.
+    /// </summary>
     public sealed class TileView : MonoBehaviour
     {
 
@@ -11,6 +14,9 @@ namespace Blobs.Presentation
 
         public string TileId { get; private set; }
 
+        /// <summary>
+        /// Initializes tile transform/collider state from Core tile data.
+        /// </summary>
         public void Initialize(TileState tile,  LevelVisualThemeAsset theme, float cellSize, Vector2 origin)
         {
             TileId = tile.Id;

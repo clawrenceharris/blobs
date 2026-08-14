@@ -2,8 +2,14 @@ using System;
 
 namespace Blobs.Core
 {
+    /// <summary>
+    /// Immutable logical state for a blob in Core. Presentation should render this data but not mutate it.
+    /// </summary>
     public sealed class BlobState
     {
+        /// <summary>
+        /// Creates a blob state with a stable id and logical grid position.
+        /// </summary>
         public BlobState(string id, BlobType type, BlobColor color, BlobSize size, GridPosition position)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -23,6 +29,9 @@ namespace Blobs.Core
         public GridPosition Position { get; }
         public bool IsClearable => Type == BlobType.Normal;
 
+        /// <summary>
+        /// Creates a copy of this blob at a new grid position while preserving id and traits.
+        /// </summary>
         public BlobState WithPosition(GridPosition position)
         {
             return new BlobState(Id, Type, Color, Size, position);

@@ -6,6 +6,10 @@ using Blobs.Input;
 
 namespace Blobs.Presentation
 {
+    /// <summary>
+    /// Scene composition root for production gameplay. It creates the Application session and wires
+    /// Presentation/Input collaborators, but it must not apply effects or own gameplay flow.
+    /// </summary>
     public sealed class GameBootstrapper : MonoBehaviour
     {
         [SerializeField] private BoardPresenter boardPresenter;
@@ -24,6 +28,9 @@ namespace Blobs.Presentation
         }
 
 
+        /// <summary>
+        /// Starts a level from authored content by converting it to Core data and wiring scene collaborators.
+        /// </summary>
         public void StartLevel(LevelDefinitionAsset asset)
         {
             if (asset == null)

@@ -35,4 +35,4 @@ Blob and tile IDs are unique within their respective registries. A blob and its 
 - [x] Core, Application, and Content projects compile with zero warnings and errors.
 - [x] The new Milestone 3 Edit Mode test source compiles with zero warnings and errors against Unity and NUnit references.
 - [x] `git diff --check` passes.
-- [ ] Run the focused Edit Mode suite in the open Unity editor. A second batch-mode editor cannot open the project concurrently.
+- [x] Run the focused Edit Mode suite in the open Unity editor. A second batch-mode editor cannot open the project concurrently.

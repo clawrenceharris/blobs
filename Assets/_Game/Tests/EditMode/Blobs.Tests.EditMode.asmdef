@@ -8,7 +8,10 @@
         "Blobs.Application",
         "Blobs.Content",
         "Blobs.Input",
-        "Blobs.Presentation"
+        "Blobs.Presentation",
+        "Blobs.UI",
+        "Unity.TextMeshPro",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [
         "Editor"

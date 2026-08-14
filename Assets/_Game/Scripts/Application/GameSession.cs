@@ -32,6 +32,11 @@ namespace Blobs.Application
         GameSessionSnapshot CreateSnapshot();
 
         /// <summary>
+        /// Raised after any session state change that should refresh UI or snapshot-driven presenters.
+        /// </summary>
+        event Action<GameSessionSnapshot> SnapshotChanged;
+
+        /// <summary>
         /// Raised after a successful move has updated Core state.
         /// </summary>
         event Action<MoveResult> MoveResolved;
@@ -55,8 +60,11 @@ namespace Blobs.Application
         private string _selectedBlobId;
         public BoardState CurrentState => _board;
         /// <summary>
-        /// Raised after a move succeeds and the Core board has already been mutated.
+        /// Raised after a successful move or restart changes the session snapshot.
         /// </summary>
+        public event Action<GameSessionSnapshot> SnapshotChanged;
+
+        /// <inheritdoc />
         public event Action<MoveResult> MoveResolved;
 
         /// <summary>
@@ -121,6 +129,7 @@ namespace Blobs.Application
             IsComplete = result.IsComplete;
             _history.Add(new ResolvedMoveCommand(intent));
             MoveResolved?.Invoke(result);
+            SnapshotChanged?.Invoke(CreateSnapshot());
             return result;
         }
 
@@ -132,7 +141,9 @@ namespace Blobs.Application
             _board = LevelFactory.CreateInitialBoard(_level);
             _selectedBlobId = null;
             IsComplete = ObjectiveEvaluator.IsComplete(_board);
-            StateRestored?.Invoke(CreateSnapshot());
+            var snapshot = CreateSnapshot();
+            StateRestored?.Invoke(snapshot);
+            SnapshotChanged?.Invoke(snapshot);
         }
 
         /// <inheritdoc />

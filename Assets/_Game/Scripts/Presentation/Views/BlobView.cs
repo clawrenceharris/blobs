@@ -2,6 +2,7 @@ using System;
 using Blobs.Core;
 using UnityEngine;
 using Blobs.Content;
+using Blobs.Input;
 namespace Blobs.Presentation
 {
     [RequireComponent(typeof(BlobRenderer))]
@@ -9,7 +10,6 @@ namespace Blobs.Presentation
     {
         public BlobRenderer BlobRenderer { get; private set; }
 
-        public event Action<BlobView> Selected;
 
         public string BlobId { get; private set; }
         private float _cellSize;
@@ -25,7 +25,7 @@ namespace Blobs.Presentation
             transform.localScale = Vector3.one * Mathf.Max(0.1f, cellSize * 0.8f);
             BlobRenderer = GetComponent<BlobRenderer>();
             ApplySkin(blob, theme);
-            EnsureCollider();
+            EnsureInputTarget(blob.Id);
         }
 
         public void SetGridPosition(GridPosition position)
@@ -41,20 +41,15 @@ namespace Blobs.Presentation
             skinApplier.Apply(this, skin.Value);
         }
 
-        private void OnMouseDown()
+
+      
+        private void EnsureInputTarget(string blobId)
         {
-            Selected?.Invoke(this);
-        }
+            var target = GetComponent<BlobInputTarget>();
+            if (target == null)
+                target = gameObject.AddComponent<BlobInputTarget>();
 
-       
-
-        private void EnsureCollider()
-        {
-            if (GetComponent<Collider2D>() != null)
-                return;
-
-            var circle = gameObject.AddComponent<CircleCollider2D>();
-            circle.radius = 0.5f;
+            target.Initialize(blobId);
         }
 
         private static Vector3 GridToLocal(GridPosition position, float cellSize, Vector2 origin)

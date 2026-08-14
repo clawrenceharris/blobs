@@ -184,6 +184,7 @@ MonoBehaviour:
   levelAsset: {fileID: 11400000, guid: 7c66cfcb451404bd2820ee9461683367, type: 2}
   backgroundView: {fileID: 946229878}
   cameraPresenter: {fileID: 983718534}
+  inputAdapter: {fileID: 1046084939}
 --- !u!4 &896816962
 Transform:
   m_ObjectHideFlags: 0
@@ -196,7 +197,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1341500225}
+  - {fileID: 1046084940}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &946229877
@@ -468,7 +471,7 @@ GameObject:
   - component: {fileID: 1046084940}
   - component: {fileID: 1046084939}
   m_Layer: 0
-  m_Name: InputAdapter
+  m_Name: GameplayInputAdapter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -486,16 +489,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 500c60569cd674482a092f813d20d83e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Blobs.Input::Blobs.Input.GameplayInputAdapter
-  pointAction: {fileID: 0}
-  timelineSwipeAction: {fileID: 0}
+  pointAction: {fileID: -6457585902854979141, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   boardCamera: {fileID: 983718530}
-  cellSize: 1
+  cellSize: 1.25
   boardOrigin: {x: 0, y: 0}
-  minimumSwipeDistancePixels: 48
-  pixelsPerBeat: 96
-  horizontalDominanceRatio: 1.5
-  maximumSwipeDurationSeconds: 0
-  tapMovementTolerancePixels: 16
 --- !u!4 &1046084940
 Transform:
   m_ObjectHideFlags: 0
@@ -504,12 +501,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1046084938}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 896816962}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1066094398
 GameObject:
@@ -574,7 +571,7 @@ MonoBehaviour:
   _blobViewPrefab: {fileID: 2149106020715233295, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
   _tileViewPrefab: {fileID: 0}
   _blobRoot: {fileID: 633203431}
-  _tileRoot: {fileID: 0}
+  _tileRoot: {fileID: 1066094399}
   _cellSize: 1.25
   _origin: {x: 0, y: 0}
 --- !u!4 &1341500225
@@ -585,14 +582,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1341500223}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 633203431}
   - {fileID: 1066094399}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 896816962}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -600,6 +597,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 983718531}
   - {fileID: 896816962}
-  - {fileID: 1341500225}
   - {fileID: 946229880}
-  - {fileID: 1046084940}

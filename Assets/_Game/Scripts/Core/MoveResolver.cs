@@ -20,7 +20,7 @@ namespace Blobs.Core
                 return MoveResult.Failed(MoveFailureReason.NotAligned);
             if (source.Type != BlobType.Normal || target.Type != BlobType.Normal)
                 return MoveResult.Failed(MoveFailureReason.UnsupportedBlobType);
-            if (source.Color != target.Color)
+            if (source.Color == target.Color)
                 return MoveResult.Failed(MoveFailureReason.ColorMismatch);
             if (PathHasBlockingBlob(board, source.Position, target.Position))
                 return MoveResult.Failed(MoveFailureReason.BlockedPath);

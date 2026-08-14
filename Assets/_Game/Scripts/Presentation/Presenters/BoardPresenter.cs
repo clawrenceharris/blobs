@@ -17,7 +17,6 @@ namespace Blobs.Presentation
         [SerializeField] private Transform _tileRoot;
         [SerializeField] private float _cellSize = 1.25f;
         [SerializeField] private Vector2 _origin;
-        public event Action<string> BlobSelected;
         public float CellSize => _cellSize;
         private LevelVisualThemeAsset _theme;
         public void Initialize(LevelVisualThemeAsset theme)
@@ -97,7 +96,6 @@ namespace Blobs.Presentation
             RemoveBlobView(blob.Id);
             var view = InstantiateBlobView();
             view.Initialize(blob, theme, _cellSize, _origin);
-            view.Selected += HandleBlobSelected;
             _blobViews.Add(blob.Id, view);
         }
 
@@ -114,7 +112,6 @@ namespace Blobs.Presentation
 
             if (view != null)
             {
-                view.Selected -= HandleBlobSelected;
                 if (ApplicationIsPlaying())
                     Destroy(view.gameObject);
                 else
@@ -147,11 +144,7 @@ namespace Blobs.Presentation
             return instance.AddComponent<BlobView>();
         }
 
-        private void HandleBlobSelected(BlobView view)
-        {
-            BlobSelected?.Invoke(view.BlobId);
-        }
-
+      
         private static bool ApplicationIsPlaying()
         {
             return UnityEngine.Application.isPlaying;

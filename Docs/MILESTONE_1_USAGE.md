@@ -32,7 +32,7 @@ if (result.Succeeded && session.IsComplete)
 - The sample level has two matching normal blobs on one row.
 - A valid merge removes both clearable blobs and completes the level.
 - Invalid moves return a `MoveFailureReason` and do not record history.
-- Undo applies inverse effects and restores the prior board state.
+- Superseded direction: Milestone 1 originally proved inverse effects for undo, but current production design favors restart over player-facing undo.
 - Restart rebuilds the authored initial state and clears command history.
 
 ## Known Limitations

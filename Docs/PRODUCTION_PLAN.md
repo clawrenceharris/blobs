@@ -14,7 +14,7 @@ Owns deterministic puzzle rules and board mutation.
 
 - Allowed references: .NET / C# only.
 - Must not reference Unity, Application, Input, Presentation, UI, Platform, scene objects, or assets.
-- Owns board state, level definitions after validation, blobs, tiles, move intents, resolution, effects, inverse effects, and objective evaluation.
+- Owns board state, level definitions after validation, blobs, tiles, move intents, resolution, ordered effects, and objective evaluation.
 - Provides stable data and effect results for outer layers.
 
 ### Application
@@ -22,7 +22,7 @@ Owns deterministic puzzle rules and board mutation.
 Owns the playable session around Core.
 
 - Allowed references: Core.
-- Coordinates level start, command history, execute / undo / restart, move count, and completion state.
+- Coordinates level start, move execution, restart, move count, and completion state.
 - Does not animate, read hardware input, or know Unity scene objects.
 - Exposes state snapshots and command results to Presentation and UI.
 
@@ -48,7 +48,7 @@ Owns board views and feedback.
 Owns screen-level game UI.
 
 - Allowed references: Application, and Platform where needed for safe areas/settings.
-- Displays moves, undo availability, objectives, tutorial text, pause/settings, and win flow.
+- Displays moves, restart, objectives, tutorial text, pause/settings, and win flow.
 - Sends user actions to Application commands.
 
 ### Platform
@@ -77,9 +77,9 @@ Completion means one authored puzzle can be solved through production Core and A
 
 - Create minimal Core domain model: grid positions, blobs, board state, level definition, objective state.
 - Create deterministic normal merge resolution for source-to-target moves.
-- Emit ordered effects for successful moves and inverse effects for undo.
+- Emit ordered effects for successful moves.
 - Reject invalid moves without mutating board state.
-- Create Application session command flow: start level, execute move, undo, restart, completion.
+- Create Application session command flow: start level, execute move, restart, completion.
 - Add one production sample level in code or plain data with two matching blobs that clears successfully.
 - Keep all code Unity-free in Core and Application.
 
@@ -89,7 +89,6 @@ Acceptance checks:
 - A non-aligned move is rejected and leaves state unchanged.
 - A color mismatch is rejected and leaves state unchanged.
 - Solving the sample level sets Application completion state.
-- Undo after completion restores the previous board and incomplete state.
 - Restart restores the authored initial level.
 
 ### Milestone 2 - Production Scene Shell
@@ -100,7 +99,7 @@ Completion means a Unity scene can boot the production session and display the s
 - Render the board from Application snapshots.
 - Convert view selection into Application merge commands.
 - Play basic effect-driven movement/removal feedback.
-- Show moves, undo, restart, and completion UI.
+- Show moves, restart, and completion UI.
 
 ### Milestone 3 - Content Pipeline
 
@@ -111,12 +110,13 @@ Completion means production levels can be authored outside code and validated be
 - Validate IDs, dimensions, coordinates, occupancy, colors, blob types, and objectives.
 - Load at least three handcrafted MVP levels.
 
-### Milestone 4 - Undo-Ready Presentation
+### Milestone 4 - Cascade-Ready Presentation
 
-Completion means Presentation and Core remain synchronized across execute, undo, and restart.
+Completion means Presentation and Core remain synchronized across execute, cascades, and restart.
 
 - Map blob IDs to views.
-- Apply forward effects and inverse effects in order.
+- Apply ordered forward effects in a readable source-to-target sequence.
+- Support cascaded effect chains without requiring player-facing undo.
 - Rebuild from Application snapshots after restart or desync.
 - Add smoke tests for model/view agreement.
 

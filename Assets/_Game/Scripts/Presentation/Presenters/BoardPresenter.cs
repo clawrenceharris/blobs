@@ -68,13 +68,17 @@ namespace Blobs.Presentation
             {
                 switch (effect)
                 {
-                    case RemoveBlobEffect remove:
-                        RemoveBlobView(remove.BlobId);
-                        break;
                     case MoveBlobEffect move:
+                        Debug.Log($"Moving blob {move.BlobId} to {move.To}");
                         MoveBlobView(move.BlobId, move.To, ShouldAnimateEffects());
                         break;
+                    case RemoveBlobEffect remove:
+                        Debug.Log($"Removing blob {remove.BlobId}");
+                        RemoveBlobView(remove.BlobId);
+                        break;
+
                     case SpawnBlobEffect spawn:
+                        Debug.Log($"Spawning blob {spawn.Blob.Id}");
                         CreateBlobView(spawn.Blob, _theme, ShouldAnimateEffects());
                         break;
                     default:
@@ -209,15 +213,6 @@ namespace Blobs.Presentation
         private bool ShouldAnimateEffects()
         {
             return ApplicationIsPlaying() && isActiveAndEnabled;
-        }
-
-
-
-        private void ApplyEffects(IReadOnlyList<IBoardEffect> effects)
-        {
-            var snapshot = _state.CreateSnapshot();
-            ApplyEffects(effects, snapshot);
-            SnapshotChanged?.Invoke(snapshot);
         }
 
         private void Unsubscribe()

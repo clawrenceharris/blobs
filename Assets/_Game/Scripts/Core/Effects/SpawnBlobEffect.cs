@@ -11,10 +11,9 @@ namespace Blobs.Core
         public string BlobId => Blob.Id;
         public GridPosition At => Blob.Position;
 
-        public IBoardEffect Apply(BoardState board)
+        public void Apply(BoardState board)
         {
             board.AddBlob(Blob);
-            return new RemoveBlobEffect(Blob);
         }
     }
 }

@@ -35,7 +35,6 @@ namespace Blobs.Presentation
             _state = state;
             _theme = theme;
             _state.MoveResolved += HandleMoveResolved;
-            _state.MoveUndone += HandleMoveUndone;
             _state.StateRestored += Rebuild;
             Rebuild(_state.CreateSnapshot());
         }
@@ -46,11 +45,6 @@ namespace Blobs.Presentation
                 ApplyEffects(result.Effects, _state.CreateSnapshot());
         }
 
-        private void HandleMoveUndone(UndoResult result)
-        {
-            if (result.Succeeded)
-                ApplyEffects(result.Effects, _state.CreateSnapshot());
-        }
 
         public void Rebuild(GameSessionSnapshot snapshot)
         {
@@ -220,7 +214,6 @@ namespace Blobs.Presentation
             if (_state == null)
                 return;
             _state.MoveResolved -= HandleMoveResolved;
-            _state.MoveUndone -= HandleMoveUndone;
             _state.StateRestored -= Rebuild;
             SnapshotChanged = null;
             _state = null;

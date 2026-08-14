@@ -8,7 +8,7 @@ namespace Blobs.Tests.EditMode
     public sealed class MilestoneOneTests
     {
         [Test]
-        public void SameRowMatchingNormalMergeCompletesSamplePuzzle()
+        public void SameRowNormalMergeMovesSourceToTargetAndRemovesTarget()
         {
             var session = new GameSession(new LevelDefinition(
                 "same_row_matching_normal_merge",
@@ -31,12 +31,13 @@ namespace Blobs.Tests.EditMode
 
             Assert.That(result.Succeeded, Is.True);
             Assert.That(result.FailureReason, Is.EqualTo(MoveFailureReason.None));
-            Assert.That(result.Effects.Count, Is.EqualTo(3));
-            Assert.That(result.InverseEffects.Count, Is.EqualTo(3));
-            Assert.That(snapshot.Blobs.Count, Is.EqualTo(0));
+            Assert.That(result.Effects.Count, Is.EqualTo(2));
+            Assert.That(snapshot.Blobs.Count, Is.EqualTo(1));
+            Assert.That(snapshot.Blobs.Single().Id, Is.EqualTo("red_a"));
+            Assert.That(snapshot.Blobs.Single().Position, Is.EqualTo(new GridPosition(2, 0)));
             Assert.That(snapshot.Tiles.Count, Is.EqualTo(2));
             Assert.That(snapshot.Tiles.Select(tile => tile.Id), Is.EquivalentTo(new[] { "tile_a", "tile_b" }));
-            Assert.That(snapshot.IsComplete, Is.True);
+            Assert.That(snapshot.IsComplete, Is.False);
             Assert.That(snapshot.MoveCount, Is.EqualTo(1));
         }
 
@@ -62,7 +63,12 @@ namespace Blobs.Tests.EditMode
             var result = session.ExecuteMove(new MoveIntent("red_a", "blue_a"));
 
             Assert.That(result.Succeeded, Is.True);
-            Assert.That(session.CreateSnapshot().IsComplete, Is.True);
+            var snapshot = session.CreateSnapshot();
+
+            Assert.That(snapshot.Blobs.Count, Is.EqualTo(1));
+            Assert.That(snapshot.Blobs.Single().Id, Is.EqualTo("red_a"));
+            Assert.That(snapshot.Blobs.Single().Position, Is.EqualTo(new GridPosition(0, 2)));
+            Assert.That(snapshot.IsComplete, Is.False);
         }
 
         [Test]
@@ -123,66 +129,6 @@ namespace Blobs.Tests.EditMode
             Assert.That(snapshot.IsComplete, Is.False);
         }
 
-        [Test]
-        public void UndoAfterCompletionRestoresPreviousBoardAndIncompleteState()
-        {
-            var session = new GameSession(new LevelDefinition(
-                "undo_after_completion",
-                1,
-                2,
-                1,
-                new[]
-                {
-                    NormalBlob("red_a", BlobColor.Red, 0, 0),
-                    NormalBlob("blue_a", BlobColor.Blue, 1, 0)
-                },
-                new[]
-                {
-                    NormalTile("tile_a", 0, 0),
-                    NormalTile("tile_b", 1, 0)
-                }));
-            session.ExecuteMove(new MoveIntent("red_a", "blue_a"));
-
-            var undone = session.Undo();
-            var snapshot = session.CreateSnapshot();
-
-            Assert.That(undone, Is.True);
-            Assert.That(snapshot.Blobs.Count, Is.EqualTo(2));
-            Assert.That(snapshot.Blobs.Select(blob => blob.Id), Is.EquivalentTo(new[] { "red_a", "blue_a" }));
-            Assert.That(snapshot.IsComplete, Is.False);
-            Assert.That(snapshot.MoveCount, Is.EqualTo(0));
-            Assert.That(snapshot.Tiles.Count, Is.EqualTo(2));
-            Assert.That(snapshot.Tiles.Select(tile => tile.Id), Is.EquivalentTo(new[] { "tile_a", "tile_b" }));
-            Assert.That(snapshot.CanUndo, Is.False);
-        }
-
-        [Test]
-        public void UndoLastMoveReturnsInverseEffectsForPresentation()
-        {
-            var session = new GameSession(new LevelDefinition(
-                "undo_result",
-                1,
-                2,
-                1,
-                new[]
-                {
-                    NormalBlob("red_a", BlobColor.Red, 0, 0),
-                    NormalBlob("blue_a", BlobColor.Blue, 1, 0)
-                },
-                new[]
-                {
-                    NormalTile("tile_a", 0, 0),
-                    NormalTile("tile_b", 1, 0)
-                }));
-            session.ExecuteMove(new MoveIntent("red_a", "blue_a"));
-
-            var result = session.UndoLastMove();
-
-            Assert.That(result.Succeeded, Is.True);
-            Assert.That(result.Effects.Count, Is.EqualTo(3));
-            Assert.That(result.IsComplete, Is.False);
-            Assert.That(session.CreateSnapshot().Blobs.Count, Is.EqualTo(2));
-        }
 
         [Test]
         public void SelectingTwoDifferentBlobsExecutesMoveInSession()
@@ -210,7 +156,12 @@ namespace Blobs.Tests.EditMode
             Assert.That(first.MoveAttempted, Is.False);
             Assert.That(second.MoveAttempted, Is.True);
             Assert.That(second.MoveResult.Succeeded, Is.True);
-            Assert.That(session.CreateSnapshot().IsComplete, Is.True);
+            var snapshot = session.CreateSnapshot();
+
+            Assert.That(snapshot.Blobs.Count, Is.EqualTo(1));
+            Assert.That(snapshot.Blobs.Single().Id, Is.EqualTo("red_a"));
+            Assert.That(snapshot.Blobs.Single().Position, Is.EqualTo(new GridPosition(1, 0)));
+            Assert.That(snapshot.IsComplete, Is.False);
         }
 
         [Test]
@@ -269,7 +220,6 @@ namespace Blobs.Tests.EditMode
             Assert.That(snapshot.MoveCount, Is.EqualTo(0));
             Assert.That(snapshot.Tiles.Count, Is.EqualTo(2));
             Assert.That(snapshot.Tiles.Select(tile => tile.Id), Is.EquivalentTo(new[] { "tile_a", "tile_b" }));
-            Assert.That(snapshot.CanUndo, Is.False);
         }
 
         [Test]

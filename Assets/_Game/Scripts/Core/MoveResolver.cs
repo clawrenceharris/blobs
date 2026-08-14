@@ -27,23 +27,21 @@ namespace Blobs.Core
 
             var effects = new List<IBoardEffect>
             {
-                new MoveBlobEffect(source.Id, source.Position, target.Position),
                 new RemoveBlobEffect(target),
-            };
+                new MoveBlobEffect(source.Id, source.Position, target.Position),
 
-            var inverseEffects = ApplyEffects(board, effects);
-            return new MoveResult(true, MoveFailureReason.None, effects, inverseEffects, ObjectiveEvaluator.IsComplete(board));
+            };
+            ApplyEffects(board, effects);
+
+            return new MoveResult(true, MoveFailureReason.None, effects, ObjectiveEvaluator.IsComplete(board));
         }
 
-        public IReadOnlyList<IBoardEffect> ApplyEffects(BoardState board, IReadOnlyList<IBoardEffect> effects)
+        public void ApplyEffects(BoardState board, IReadOnlyList<IBoardEffect> effects)
         {
-            var inverses = new List<IBoardEffect>();
 
             foreach (var effect in effects)
-                inverses.Add(effect.Apply(board));
+                effect.Apply(board);
 
-            inverses.Reverse();
-            return inverses;
         }
 
         private static bool PathHasBlockingBlob(BoardState board, GridPosition from, GridPosition to)

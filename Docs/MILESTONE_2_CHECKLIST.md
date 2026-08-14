@@ -22,7 +22,7 @@
 
 - [x] Play Mode shows two sample blobs in `Assets/_Game/Scenes/Game.unity`.
 - [x] Selecting the first blob and then the second blob executes a production merge through `GameSession`.
-- [x] A successful merge clears the visible blobs.
+- [x] A successful merge leaves the source visible at the target position and removes the target blob.
 - [x] Restart restores the initial visible blobs and clears selection.
 - [x] The scene shell uses `GameSession` and does not call prototype managers.
 
@@ -50,7 +50,7 @@ The first implementation group is intentionally visual-minimal. It should establ
 - [x] EditMode test source compile passed after adding `GameSession.SelectBlob` coverage.
 - [x] Pure C# smoke check passed for selection-driven merge execution.
 - [x] Pure C# smoke check passed for merge completion and restart behavior.
-- [x] `MilestoneTwoSceneShellTests` covers visible blob clearing after merge.
+- [x] `MilestoneTwoSceneShellTests` covers source-visible/target-removed behavior after merge.
 - [x] `MilestoneTwoSceneShellTests` covers visible blob restoration and selection clearing after restart.
 - [x] Expanded EditMode test source compile passed against Unity references.
 - [x] Source scan confirms `GameBootstrapper` does not apply effects, subscribe to move results, or own restart gameplay flow.

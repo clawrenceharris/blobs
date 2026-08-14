@@ -23,6 +23,8 @@ The production code follows the boundaries documented in `Docs/TECHNICAL_ARCHITE
 
 `GameBootstrapper` is a composition root only. It creates the session and wires scene collaborators; it should not execute moves, apply effects, or own gameplay presentation.
 
+Canvas UI binds through `IGameplaySessionHost` and Application interfaces. UI presenters should observe snapshots and call command interfaces; they should not reference Core rules, board presenters, or the concrete bootstrapper type.
+
 ## Key Runtime Flow
 
 ```text

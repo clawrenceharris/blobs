@@ -130,6 +130,8 @@ Current production split:
 - `GameplayInputAdapter` converts pointer/grid input into Application command calls; it does not mutate views.
 - `GameplayCommandAdapter` exposes non-pointer commands such as restart for UI buttons or editor wiring.
 - `BoardPresenter` listens to Application state/result events, owns board view state, applies ordered effects when available, and rebuilds from snapshots when required.
+- `GameplayHudPresenter` listens to Application snapshots and forwards UI button actions through `IGameplayCommands`.
+- `IGameplaySessionHost` lets scene UI bind to the active session without referencing the concrete bootstrapper type.
 - `GameBootstrapper` wires the above collaborators together and then gets out of the gameplay loop.
 
 ## Core concepts

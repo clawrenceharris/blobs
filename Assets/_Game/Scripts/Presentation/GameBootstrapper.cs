@@ -1,8 +1,9 @@
+using System;
 using Blobs.Application;
 using Blobs.Core;
-using UnityEngine;
 using Blobs.Content;
 using Blobs.Input;
+using UnityEngine;
 
 namespace Blobs.Presentation
 {
@@ -10,7 +11,7 @@ namespace Blobs.Presentation
     /// Scene composition root for production gameplay. It creates the Application session and wires
     /// Presentation/Input collaborators, but it must not apply effects or own gameplay flow.
     /// </summary>
-    public sealed class GameBootstrapper : MonoBehaviour
+    public sealed class GameBootstrapper : MonoBehaviour, IGameplaySessionHost
     {
         [SerializeField] private BoardPresenter boardPresenter;
 
@@ -21,6 +22,15 @@ namespace Blobs.Presentation
         [SerializeField] private GameplayCommandAdapter commandAdapter;
 
         private GameSession _session;
+
+        /// <inheritdoc />
+        public event Action<IGameplayCommands, IGameplayState> SessionStarted;
+
+        /// <inheritdoc />
+        public IGameplayCommands CurrentCommands => _session;
+
+        /// <inheritdoc />
+        public IGameplayState CurrentState => _session;
 
         private void Start()
         {
@@ -56,6 +66,7 @@ namespace Blobs.Presentation
             if (cameraPresenter != null)
                 cameraPresenter.FitCameraToBoard(_session.CurrentState, boardPresenter.CellSize);
 
+            SessionStarted?.Invoke(_session, _session);
         }
 
         private void EnsureBoardPresenter()

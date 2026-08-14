@@ -27,9 +27,8 @@ namespace Blobs.Core
 
             var effects = new List<IBoardEffect>
             {
-                new RemoveBlobEffect(target),
                 new MoveBlobEffect(source.Id, source.Position, target.Position),
-                new RemoveBlobEffect(source.WithPosition(target.Position))
+                new RemoveBlobEffect(target),
             };
 
             var inverseEffects = ApplyEffects(board, effects);

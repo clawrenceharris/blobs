@@ -38,6 +38,10 @@ For a standard merge:
 - The move may be rejected or modified by blobs, tiles, hazards, or other mechanics on that path.
 - A successful merge clears or transforms blobs according to the active blob rules.
 
+Click order matters. The first selected blob is always the **source**, and the second selected blob is always the **target**. Reversing the click order creates a different merge intent with the opposite source and target, even if the same two blobs are involved.
+
+For a normal source-to-target merge, the target cell anchors the visual moment. The source blob should move toward the target blob, impact it, and then the target should clear or transform according to the resolved rule. In a production-ready presentation this should read as one fluid merge with squash, stretch, impact response, and other juice rather than as a discrete "move, then remove" technical sequence.
+
 The important distinction is:
 
 > The player chooses the intended destination, but the board determines what actually happens along the way.
@@ -302,6 +306,7 @@ The intended animation language includes:
 - subtle squash and stretch;
 - wobble and recovery;
 - target reaction on impact;
+- source-to-target merge motion where the first selected blob visibly travels into the second selected blob;
 - small particles or visual crumbs for important interactions;
 - synchronized path effects;
 - clear cascade timing.
@@ -411,28 +416,26 @@ The Effect Queue provides:
 - scalable special mechanics;
 - multi-merge support;
 - cascade support;
-- granular undo;
 - synchronization points for animation.
 
 Rules and reactions can enqueue new effects without placing every possible mechanic inside one giant merge function.
 
 ---
 
-# Undo / Redo
+# Restart Instead Of Undo
 
-The project uses a Command-based undo system.
+The current design direction does **not** include player-facing undo.
 
-The effects architecture is intended to make undo granular and deterministic:
+As cascades, multi-merges, Trail, Ghost, Sigil, and other reaction chains become more important, undo creates extra implementation and presentation complexity that does not support the intended game feel. If a player realizes they made the wrong move, the expected recovery action is to restart the puzzle.
 
-```text
-Forward:
-A → B → C → D
+Restart should:
 
-Undo:
-D → C → B → A
-```
+- restore the authored initial board state;
+- clear current selection;
+- reset move count and transient session state;
+- avoid replaying or reversing cascades.
 
-For example, if a Trail Blob spawns three blobs during a move, undo can remove those trail blobs individually in the reverse order rather than snapping the entire board back instantly.
+The effect architecture may still keep enough ordered information for animation, debugging, or future tooling, but production gameplay should not depend on inverse effects for player undo.
 
 ---
 

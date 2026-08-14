@@ -11,10 +11,10 @@
 - [x] Add production sample level with two matching blobs.
 - [x] Add deterministic normal-blob source-to-target merge resolution.
 - [x] Emit ordered board effects for successful moves.
-- [x] Emit inverse effects that can restore the previous board state.
+- [x] Emit ordered effects for successful moves. Superseded: inverse effects were prototyped for undo, but production design now favors restart over player-facing undo.
 - [x] Reject non-aligned moves without mutating the board.
 - [x] Reject color mismatches without mutating the board.
-- [x] Add Application session flow for execute move, undo, restart, move count, and completion state.
+- [x] Add Application session flow for execute move, restart, move count, and completion state.
 - [x] Smoke-check the sample puzzle through standalone Core/Application code.
 
 ## Remaining Work
@@ -35,13 +35,13 @@
 - [x] Same-column matching normal merge is supported by the same resolver path.
 - [x] Solving the sample level clears all clearable blobs.
 - [x] Solving the sample level sets Application completion state.
-- [x] Undo after completion restores two blobs and returns completion to false.
+- [x] Superseded direction captured: undo after completion restored two blobs, but production recovery is now restart.
 - [x] Restart restores the authored initial state and clears command history.
 - [x] Non-aligned move returns `MoveFailureReason.NotAligned`.
 - [x] Color mismatch returns `MoveFailureReason.ColorMismatch`.
 - [x] Automated tests cover the successful merge path.
 - [x] Automated tests cover invalid move immutability.
-- [x] Automated tests cover undo after completion.
+- [x] Superseded direction captured: automated tests covered undo after completion before the restart-only design decision.
 - [x] Automated tests cover restart.
 
 ## Boundary Checks

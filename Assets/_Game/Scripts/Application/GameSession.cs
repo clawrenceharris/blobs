@@ -86,7 +86,7 @@ namespace Blobs.Application
             _resolver = resolver ?? new MoveResolver();
             _history = new List<ResolvedMoveCommand>();
             _board = LevelFactory.CreateInitialBoard(level);
-            IsComplete = ObjectiveEvaluator.IsComplete(_board);
+            IsComplete = ObjectiveEvaluator.IsComplete(_board, _level.Objective);
         }
 
         /// <inheritdoc />
@@ -123,7 +123,7 @@ namespace Blobs.Application
         /// </summary>
         public MoveResult ExecuteMove(MoveIntent intent)
         {
-            var result = _resolver.Resolve(_board, intent);
+            var result = _resolver.Resolve(_board, intent, _level.Objective);
             if (!result.Succeeded)
                 return result;
             IsComplete = result.IsComplete;
@@ -140,7 +140,7 @@ namespace Blobs.Application
             _history.Clear();
             _board = LevelFactory.CreateInitialBoard(_level);
             _selectedBlobId = null;
-            IsComplete = ObjectiveEvaluator.IsComplete(_board);
+            IsComplete = ObjectiveEvaluator.IsComplete(_board, _level.Objective);
             var snapshot = CreateSnapshot();
             StateRestored?.Invoke(snapshot);
             SnapshotChanged?.Invoke(snapshot);

@@ -23,5 +23,9 @@ namespace Blobs.Core
         {
             return new MoveResult(false, reason, new List<IBoardEffect>(), new List<IBoardEffect>(), false);
         }
+        public override string ToString()
+        {
+            return $"MoveResult: Succeeded = {Succeeded}, FailureReason = {FailureReason}, Effects = {Effects.Count}, InverseEffects = {InverseEffects.Count}, IsComplete = {IsComplete}";
+        }
     }
 }

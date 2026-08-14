@@ -4,6 +4,7 @@ using Blobs.Application;
 using Blobs.Core;
 using UnityEngine;
 using Blobs.Content;
+using Blobs.Input;
 
 namespace Blobs.Presentation
 {
@@ -16,9 +17,9 @@ namespace Blobs.Presentation
         [SerializeField] private LevelDefinitionAsset levelAsset;
         [SerializeField] private BackgroundView backgroundView;
         [SerializeField] private CameraPresenter cameraPresenter;
+        [SerializeField] private GameplayInputAdapter inputAdapter;
 
         private GameSession _session;
-        private string _selectedBlobId;
 
         public event Action<GameSessionSnapshot> SnapshotChanged;
         public event Action<MoveResult> MoveResolved;
@@ -41,8 +42,6 @@ namespace Blobs.Presentation
                 return;
             }
 
-            _selectedBlobId = null;
-
             LevelDefinition level = LevelAssetMapper.ToCore(asset);
             if (backgroundView != null)
             {
@@ -51,6 +50,7 @@ namespace Blobs.Presentation
             }
             _session = new GameSession(level, new MoveResolver());
             EnsureBoardPresenter();
+            EnsureInputAdapter();
 
             boardPresenter.Initialize(asset.VisualTheme);
             if (cameraPresenter != null)
@@ -68,7 +68,6 @@ namespace Blobs.Presentation
             if (!result.Succeeded)
                 return;
 
-            _selectedBlobId = null;
             ApplyEffects(result.Effects);
         }
 
@@ -82,42 +81,10 @@ namespace Blobs.Presentation
             else
                 _session.Restart();
 
-            _selectedBlobId = null;
             RenderSnapshot();
         }
 
-        private void HandleBlobSelected(string blobId)
-        {
-            if (_session == null)
-                StartLevel(levelAsset);
-            if (_session == null)
-                return;
-
-            if (string.IsNullOrEmpty(_selectedBlobId))
-            {
-                _selectedBlobId = blobId;
-                return;
-            }
-
-            if (_selectedBlobId == blobId)
-            {
-                _selectedBlobId = null;
-                return;
-            }
-
-            ExecuteMove(_selectedBlobId, blobId);
-        }
-
-        private void ExecuteMove(string sourceId, string targetId)
-        {
-            var result = _session.ExecuteMove(new MoveIntent(sourceId, targetId));
-            _selectedBlobId = null;
-            MoveResolved?.Invoke(result);
-
-            if (result.Succeeded)
-                ApplyEffects(result.Effects);
-        }
-
+      
         private void ApplyEffects(IReadOnlyList<IBoardEffect> effects)
         {
             var snapshot = _session.CreateSnapshot();
@@ -141,8 +108,21 @@ namespace Blobs.Presentation
             if (boardPresenter == null)
                 boardPresenter = gameObject.AddComponent<BoardPresenter>();
 
-            boardPresenter.BlobSelected -= HandleBlobSelected;
-            boardPresenter.BlobSelected += HandleBlobSelected;
+            // boardPresenter.BlobSelected -= HandleBlobSelected;
+            // boardPresenter.BlobSelected += HandleBlobSelected;
+        }
+
+        private void EnsureInputAdapter()
+        {
+            if (inputAdapter == null)
+                inputAdapter = GetComponentInChildren<GameplayInputAdapter>();
+
+            if (inputAdapter == null)
+                return;
+
+            // inputAdapter.BlobSelectionResolved -= HandleBlobSelectionResult;
+            // inputAdapter.BlobSelectionResolved += HandleBlobSelectionResult;
+            inputAdapter.Initialize(_session, boardPresenter.CellSize);
         }
     }
 }

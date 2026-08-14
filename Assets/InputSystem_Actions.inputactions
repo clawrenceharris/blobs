@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "InputSystem_Actions",
     "maps": [
         {
@@ -986,6 +987,34 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Gameplay",
+            "id": "422bb909-9711-427c-a9e3-7878dcaef938",
+            "actions": [
+                {
+                    "name": "SelectBlob",
+                    "type": "Button",
+                    "id": "b3e5de98-3834-4cfb-8b13-b9ace4e26a84",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0da82267-182f-4bb2-9b75-fdae2c399468",
+                    "path": "<Pointer>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectBlob",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

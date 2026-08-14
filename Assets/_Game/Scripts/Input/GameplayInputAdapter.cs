@@ -1,60 +1,139 @@
 using Blobs.Application;
+using Blobs.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Blobs.Core;
+
 namespace Blobs.Input
 {
     public sealed class GameplayInputAdapter : MonoBehaviour
     {
         private GameSession _session;
-        [SerializeField] private InputActionReference pointAction;
-        [SerializeField] private InputActionReference timelineSwipeAction;
+        [SerializeField] private InputActionReference selectBlobAction;
         [SerializeField] private Camera boardCamera;
         [SerializeField, Min(0.01f)] private float cellSize = 1f;
         [SerializeField] private Vector2 boardOrigin;
-
-        [Header("Timeline swipe tuning")]
-        [SerializeField, Min(1f)] private float minimumSwipeDistancePixels = 48f;
-        [SerializeField, Min(1f)] private float pixelsPerBeat = 96f;
-        [SerializeField, Min(1f)] private float horizontalDominanceRatio = 1.5f;
-        [SerializeField, Min(0f)] private float maximumSwipeDurationSeconds;
-        [SerializeField, Min(0f)] private float tapMovementTolerancePixels = 16f;
-
         private InputAction _runtimePointAction;
-        private InputAction _runtimeTimelineSwipeAction;
-        private InputAction PointAction =>
-            pointAction != null ? pointAction.action : _runtimePointAction;
+        private bool _subscribed;
 
-        private InputAction TimelineSwipeAction =>
-            timelineSwipeAction != null
-                ? timelineSwipeAction.action
-                : _runtimeTimelineSwipeAction;
+        private InputAction SelectBlobAction =>
+            selectBlobAction != null ? selectBlobAction.action : _runtimePointAction;
 
-        public void Initialize(
-            GameSession session,
-            float boardCellSize
-)
+        public void Initialize(GameSession session, float boardCellSize)
         {
-            Unsubscribe();
+            UnsubscribeInputActions();
             _session = session;
             cellSize = boardCellSize;
-
+            EnsureRuntimeAction();
+            Subscribe();
         }
 
-       
+        private void OnEnable()
+        {
+            Subscribe();
+        }
+
+        private void OnDisable()
+        {
+            UnsubscribeInputActions();
+        }
 
         private void OnDestroy()
         {
-            Unsubscribe();
-            _runtimePointAction?.Dispose();
-            _runtimeTimelineSwipeAction?.Dispose();
-        }
-
-        private void Unsubscribe()
-        {
-           
+            UnsubscribeInputActions();
+            DisposeRuntimeAction();
             _session = null;
         }
-    }
 
+        private void EnsureRuntimeAction()
+        {
+            if (selectBlobAction != null)
+                return;
+
+            if (_runtimePointAction != null)
+                return;
+
+            _runtimePointAction = new InputAction(
+                "SelectBlob",
+                InputActionType.Button,
+                "<Pointer>/press");
+        }
+
+        private void Subscribe()
+        {
+            if (_session == null)
+                return;
+
+            EnsureRuntimeAction();
+            var action = SelectBlobAction;
+            if (action == null)
+                return;
+
+            if (!_subscribed)
+            {
+                action.performed += OnSelectBlob;
+                _subscribed = true;
+            }
+
+            action.Enable();
+        }
+
+        private void UnsubscribeInputActions()
+        {
+            var action = SelectBlobAction;
+            if (action != null && _subscribed)
+            {
+                action.performed -= OnSelectBlob;
+                action.Disable();
+            }
+
+            _subscribed = false;
+        }
+
+        private void DisposeRuntimeAction()
+        {
+            _runtimePointAction?.Dispose();
+            _runtimePointAction = null;
+        }
+
+        private void OnSelectBlob(InputAction.CallbackContext context)
+        {
+            if (!context.performed || _session == null)
+                return;
+
+            if (!TryGetPointerScreenPosition(out Vector2 screenPosition))
+                return;
+
+            Camera cameraToUse = boardCamera != null ? boardCamera : Camera.main;
+            if (cameraToUse == null)
+                return;
+
+            Ray ray = cameraToUse.ScreenPointToRay(screenPosition);
+            var boardPlane = new Plane(Vector3.forward, Vector3.zero);
+            if (!boardPlane.Raycast(ray, out float distance))
+                return;
+
+            Vector3 worldPosition = ray.GetPoint(distance);
+            var gridPosition = new GridPosition(
+                Mathf.RoundToInt((worldPosition.x - boardOrigin.x) / cellSize),
+                Mathf.RoundToInt((worldPosition.y - boardOrigin.y) / cellSize));
+
+            if (!_session.CurrentState.IsInside(gridPosition))
+                return;
+
+             var result = _session.SelectBlob(gridPosition);
+             Debug.Log($"Selected blob at: {gridPosition}, result: {result}");
+        }
+
+        private static bool TryGetPointerScreenPosition(out Vector2 screenPosition)
+        {
+            if (Pointer.current != null)
+            {
+                screenPosition = Pointer.current.position.ReadValue();
+                return true;
+            }
+
+            screenPosition = default;
+            return false;
+        }
+    }
 }

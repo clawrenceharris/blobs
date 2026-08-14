@@ -14,11 +14,13 @@
 - [x] Verify Presentation compiles with Unity references.
 - [x] Wire `Assets/_Game/Scenes/Game.unity` to `GameBootstrapper`, `BoardPresenter`, and `Sample_Level.asset`.
 - [x] Make `Sample_Level.asset` solvable with two same-color normal blobs.
+- [x] Wire `GameplayInputAdapter` to the active Application `GameSession`.
+- [x] Move source/target selection state and move execution policy into `GameSession`.
 
 ## Acceptance Checks
 
 - [ ] Play Mode shows two sample blobs in `Assets/_Game/Scenes/Game.unity`.
-- [ ] Selecting the first blob and then the second blob executes a production merge.
+- [x] Selecting the first blob and then the second blob executes a production merge through `GameSession`.
 - [ ] A successful merge clears the visible blobs.
 - [ ] Undo restores the visible blobs.
 - [ ] Restart restores the initial visible blobs and clears selection.
@@ -33,8 +35,10 @@ The first implementation group is intentionally visual-minimal. It should establ
 - `Assets/_Game/Scenes/Game.unity` contains a `GameBootstrapper` scene object wired to `Sample_Level.asset`.
 - `Sample_Level.asset` contains two matching normal blobs.
 - `GameBootstrapper` creates and owns the Application `GameSession`.
+- `GameplayInputAdapter` is initialized with the active `GameSession`.
+- `GameSession.SelectBlob` owns the source/target selection flow and calls `ExecuteMove`.
 - `BoardPresenter` rebuilds visible blob views from `GameSessionSnapshot`.
-- `BlobView` reports selection through Presentation events and does not call Core or Application directly.
+- `BlobView` exposes a `BlobInputTarget` and reports selection through Presentation events; it does not call Core or Application directly.
 - `Undo()` and `Restart()` are public methods on `GameBootstrapper` for temporary editor wiring or future UI buttons.
 - Forward moves and undo now apply Core effect lists to visible blob views before falling back to full snapshot rebuilds for unsupported effects.
 
@@ -43,6 +47,8 @@ The first implementation group is intentionally visual-minimal. It should establ
 - [x] Presentation compile passed from shell against Unity 6000.3.6f1 reference assemblies.
 - [x] Core/Application compile passed after adding `UndoResult`.
 - [x] EditMode test source compile passed after adding undo-effect coverage.
+- [x] EditMode test source compile passed after adding `GameSession.SelectBlob` coverage.
+- [x] Pure C# smoke check passed for selection-driven merge execution.
 - [x] Pure C# smoke check passed for merge completion and `UndoLastMove` effect output.
 - [x] Source scan found no references from the scene shell to legacy `GameManager`, `MergeInvoker`, `LevelData`, or `Assets/Scripts` paths.
 - [x] Scene serialization points at `Blobs.Presentation.GameBootstrapper`.

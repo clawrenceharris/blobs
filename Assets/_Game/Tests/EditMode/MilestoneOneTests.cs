@@ -185,6 +185,62 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
+        public void SelectingTwoDifferentBlobsExecutesMoveInSession()
+        {
+            var session = new GameSession(new LevelDefinition(
+                "selection_executes_move",
+                1,
+                2,
+                1,
+                new[]
+                {
+                    NormalBlob("red_a", BlobColor.Red, 0, 0),
+                    NormalBlob("red_b", BlobColor.Red, 1, 0)
+                },
+                new[]
+                {
+                    NormalTile("tile_a", 0, 0),
+                    NormalTile("tile_b", 1, 0)
+                }));
+
+            var first = session.SelectBlob(new GridPosition(0, 0));
+            var second = session.SelectBlob(new GridPosition(1, 0));
+
+            Assert.That(first.HasSelection, Is.True);
+            Assert.That(first.MoveAttempted, Is.False);
+            Assert.That(second.MoveAttempted, Is.True);
+            Assert.That(second.MoveResult.Succeeded, Is.True);
+            Assert.That(session.CreateSnapshot().IsComplete, Is.True);
+        }
+
+        [Test]
+        public void SelectingSameBlobTwiceClearsSelectionWithoutMove()
+        {
+            var session = new GameSession(new LevelDefinition(
+                "selection_toggle",
+                1,
+                2,
+                1,
+                new[]
+                {
+                    NormalBlob("red_a", BlobColor.Red, 0, 0),
+                    NormalBlob("red_b", BlobColor.Red, 1, 0)
+                },
+                new[]
+                {
+                    NormalTile("tile_a", 0, 0),
+                    NormalTile("tile_b", 1, 0)
+                }));
+
+            session.SelectBlob(new GridPosition(0, 0));
+            var second = session.SelectBlob(new GridPosition(1, 0));
+
+            Assert.That(second.HasSelection, Is.False);
+            Assert.That(second.MoveAttempted, Is.False);
+            Assert.That(session.CreateSnapshot().Blobs.Count, Is.EqualTo(2));
+        }
+
+        [Test]
         public void RestartRestoresAuthoredInitialStateAndClearsHistory()
         {
             var session = new GameSession(new LevelDefinition(

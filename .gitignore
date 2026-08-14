@@ -81,7 +81,7 @@ Network Trash Folder/
 # Visual Studio Code editor settings and workspace files
 
 # Visual Studio Code and Cursor
-.vscode/
+
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json

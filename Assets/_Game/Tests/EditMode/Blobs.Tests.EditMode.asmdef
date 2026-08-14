@@ -5,7 +5,10 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Blobs.Core",
-        "Blobs.Application"
+        "Blobs.Application",
+        "Blobs.Content",
+        "Blobs.Input",
+        "Blobs.Presentation"
     ],
     "includePlatforms": [
         "Editor"

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Blobs.Application;
 using Blobs.Core;
 using Blobs.Content;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Blobs.Presentation
@@ -17,12 +18,40 @@ namespace Blobs.Presentation
         [SerializeField] private Transform _tileRoot;
         [SerializeField] private float _cellSize = 1.25f;
         [SerializeField] private Vector2 _origin;
+        [SerializeField, Min(0f)] private float _moveDuration = 0.16f;
+        [SerializeField, Min(0f)] private float _spawnDuration = 0.14f;
+        [SerializeField, Min(0f)] private float _despawnDuration = 0.12f;
         public float CellSize => _cellSize;
+        public int VisibleBlobCount => _blobViews.Count;
+        public int VisibleTileCount => _tileViews.Count;
         private LevelVisualThemeAsset _theme;
-        public void Initialize(LevelVisualThemeAsset theme)
+        public GameSessionSnapshot CurrentSnapshot => _state?.CreateSnapshot();
+
+        public event Action<GameSessionSnapshot> SnapshotChanged;
+        private IGameplayState _state;
+        public void Initialize(IGameplayState state, LevelVisualThemeAsset theme)
         {
+            Unsubscribe();
+            _state = state;
             _theme = theme;
+            _state.MoveResolved += HandleMoveResolved;
+            _state.MoveUndone += HandleMoveUndone;
+            _state.StateRestored += Rebuild;
+            Rebuild(_state.CreateSnapshot());
         }
+
+        private void HandleMoveResolved(MoveResult result)
+        {
+            if (result.Succeeded)
+                ApplyEffects(result.Effects, _state.CreateSnapshot());
+        }
+
+        private void HandleMoveUndone(UndoResult result)
+        {
+            if (result.Succeeded)
+                ApplyEffects(result.Effects, _state.CreateSnapshot());
+        }
+
         public void Rebuild(GameSessionSnapshot snapshot)
         {
             Clear();
@@ -43,10 +72,10 @@ namespace Blobs.Presentation
                         RemoveBlobView(remove.BlobId);
                         break;
                     case MoveBlobEffect move:
-                        MoveBlobView(move.BlobId, move.To);
+                        MoveBlobView(move.BlobId, move.To, ShouldAnimateEffects());
                         break;
                     case SpawnBlobEffect spawn:
-                        CreateBlobView(spawn.Blob, _theme);
+                        CreateBlobView(spawn.Blob, _theme, ShouldAnimateEffects());
                         break;
                     default:
                         Rebuild(fallbackSnapshot);
@@ -62,6 +91,7 @@ namespace Blobs.Presentation
                 if (view == null)
                     continue;
 
+                view.transform.DOKill();
                 if (ApplicationIsPlaying())
                     Destroy(view.gameObject);
                 else
@@ -93,16 +123,28 @@ namespace Blobs.Presentation
 
         private void CreateBlobView(BlobState blob, LevelVisualThemeAsset theme)
         {
+            CreateBlobView(blob, theme, false);
+        }
+
+        private void CreateBlobView(BlobState blob, LevelVisualThemeAsset theme, bool animate)
+        {
             RemoveBlobView(blob.Id);
             var view = InstantiateBlobView();
             view.Initialize(blob, theme, _cellSize, _origin);
             _blobViews.Add(blob.Id, view);
+            if (animate)
+                view.PlaySpawn(_spawnDuration);
         }
 
-        private void MoveBlobView(string blobId, GridPosition to)
+        private void MoveBlobView(string blobId, GridPosition to, bool animate)
         {
             if (_blobViews.TryGetValue(blobId, out var view) && view != null)
-                view.SetGridPosition(to);
+            {
+                if (animate)
+                    view.AnimateMoveTo(to, _moveDuration);
+                else
+                    view.SetGridPosition(to);
+            }
         }
 
         private void RemoveBlobView(string blobId)
@@ -110,15 +152,29 @@ namespace Blobs.Presentation
             if (!_blobViews.TryGetValue(blobId, out var view))
                 return;
 
+            _blobViews.Remove(blobId);
+
             if (view != null)
             {
-                if (ApplicationIsPlaying())
+                view.transform.DOKill();
+                if (ShouldAnimateEffects())
+                {
+                    view.PlayDespawn(_despawnDuration)
+                        .OnComplete(() =>
+                        {
+                            if (view != null)
+                                Destroy(view.gameObject);
+                        });
+                }
+                else if (ApplicationIsPlaying())
+                {
                     Destroy(view.gameObject);
+                }
                 else
+                {
                     DestroyImmediate(view.gameObject);
+                }
             }
-
-            _blobViews.Remove(blobId);
         }
 
         private TileView InstantiateTileView()
@@ -144,10 +200,43 @@ namespace Blobs.Presentation
             return instance.AddComponent<BlobView>();
         }
 
-      
+
         private static bool ApplicationIsPlaying()
         {
             return UnityEngine.Application.isPlaying;
         }
+
+        private bool ShouldAnimateEffects()
+        {
+            return ApplicationIsPlaying() && isActiveAndEnabled;
+        }
+
+
+
+        private void ApplyEffects(IReadOnlyList<IBoardEffect> effects)
+        {
+            var snapshot = _state.CreateSnapshot();
+            ApplyEffects(effects, snapshot);
+            SnapshotChanged?.Invoke(snapshot);
+        }
+
+        private void Unsubscribe()
+        {
+            if (_state == null)
+                return;
+            _state.MoveResolved -= HandleMoveResolved;
+            _state.MoveUndone -= HandleMoveUndone;
+            _state.StateRestored -= Rebuild;
+            SnapshotChanged = null;
+            _state = null;
+            _theme = null;
+            Clear();
+        }
+
+        private void OnDestroy()
+        {
+            Unsubscribe();
+        }
+
     }
 }

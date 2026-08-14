@@ -101,6 +101,37 @@ Create assembly definitions when implementation begins:
 
 Dependencies flow inward. Core never references another game assembly.
 
+## Scene composition and MVP split
+
+The production scene keeps setup separate from gameplay presentation. The composition root may build and connect objects, but it must not become a presenter or controller.
+
+### Composition root
+
+`GameBootstrapper` is limited to scene composition and startup:
+
+- Locate or create scene collaborators (`BoardPresenter`, `GameplayInputAdapter`, gameplay presenter, camera/background helpers, UI roots).
+- Convert authored content assets into validated Core/Application level data.
+- Create the active Application `GameSession`.
+- Initialize collaborators with the active session and initial level presentation data.
+
+It must not apply Core effects, own source/target selection, execute moves, process undo/restart outcomes, subscribe to gameplay-result streams, mutate board views, or update HUD state. If a behavior depends on move results, snapshots, or undo/restart outcomes, it belongs in Application, Presentation, or UI, not the bootstrapper.
+
+### MVP responsibilities
+
+The MVP pattern remains dependency-safe by treating Application as the gameplay-facing model boundary:
+
+- Model: Core state/rules plus Application session state and command history.
+- Presenter: Presentation classes that observe Application outcomes and drive views.
+- View: Unity scene objects and `MonoBehaviour` views that expose rendering/input surfaces without deciding rules.
+
+Current production split:
+
+- `GameSession` owns move execution, source/target selection policy, undo, restart, and completion state.
+- `GameplayInputAdapter` converts pointer/grid input into Application command calls; it does not mutate views.
+- `GameplayCommandAdapter` exposes non-pointer commands such as undo and restart for UI buttons or editor wiring.
+- `BoardPresenter` listens to Application state/result events, owns board view state, applies ordered effects when available, and rebuilds from snapshots when required.
+- `GameBootstrapper` wires the above collaborators together and then gets out of the gameplay loop.
+
 ## Core concepts
 
 Likely starting concepts (align with existing types where they already fit):

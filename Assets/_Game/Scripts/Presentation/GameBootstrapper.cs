@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Blobs.Application;
 using Blobs.Core;
 using UnityEngine;
@@ -10,31 +8,23 @@ namespace Blobs.Presentation
 {
     public sealed class GameBootstrapper : MonoBehaviour
     {
-        [SerializeField] private BoardPresenter boardPresenter; 
-   
-   
-        [SerializeField] private bool startSampleLevelOnStart = true;
+        [SerializeField] private BoardPresenter boardPresenter;
+
         [SerializeField] private LevelDefinitionAsset levelAsset;
         [SerializeField] private BackgroundView backgroundView;
         [SerializeField] private CameraPresenter cameraPresenter;
         [SerializeField] private GameplayInputAdapter inputAdapter;
+        [SerializeField] private GameplayCommandAdapter commandAdapter;
 
         private GameSession _session;
 
-        public event Action<GameSessionSnapshot> SnapshotChanged;
-        public event Action<MoveResult> MoveResolved;
-
-
-        public GameSessionSnapshot CurrentSnapshot => _session?.CreateSnapshot();
-
         private void Start()
         {
-           if (startSampleLevelOnStart)
-               StartLevel(levelAsset);
+            StartLevel(levelAsset);
         }
 
-       
-         public void StartLevel(LevelDefinitionAsset asset)
+
+        public void StartLevel(LevelDefinitionAsset asset)
         {
             if (asset == null)
             {
@@ -51,54 +41,14 @@ namespace Blobs.Presentation
             _session = new GameSession(level, new MoveResolver());
             EnsureBoardPresenter();
             EnsureInputAdapter();
+            EnsureCommandAdapter();
 
-            boardPresenter.Initialize(asset.VisualTheme);
+            boardPresenter.Initialize(_session, asset.VisualTheme);
+            inputAdapter.Initialize(_session, boardPresenter.CellSize);
+            commandAdapter.Initialize(_session);
             if (cameraPresenter != null)
                 cameraPresenter.FitCameraToBoard(_session.CurrentState, boardPresenter.CellSize);
-           
-            RenderSnapshot();
-        }
 
-        public void Undo()
-        {
-            if (_session == null)
-                return;
-
-            var result = _session.UndoLastMove();
-            if (!result.Succeeded)
-                return;
-
-            ApplyEffects(result.Effects);
-        }
-
-        public void Restart()
-        {
-            if (_session == null)
-            {
-                StartLevel(levelAsset);
-                return;
-            }
-            else
-                _session.Restart();
-
-            RenderSnapshot();
-        }
-
-      
-        private void ApplyEffects(IReadOnlyList<IBoardEffect> effects)
-        {
-            var snapshot = _session.CreateSnapshot();
-            EnsureBoardPresenter();
-            boardPresenter.ApplyEffects(effects, snapshot);
-            SnapshotChanged?.Invoke(snapshot);
-        }
-
-        private void RenderSnapshot()
-        {
-            var snapshot = _session.CreateSnapshot();
-            EnsureBoardPresenter();
-            boardPresenter.Rebuild(snapshot);
-            SnapshotChanged?.Invoke(snapshot);
         }
 
         private void EnsureBoardPresenter()
@@ -108,8 +58,14 @@ namespace Blobs.Presentation
             if (boardPresenter == null)
                 boardPresenter = gameObject.AddComponent<BoardPresenter>();
 
-            // boardPresenter.BlobSelected -= HandleBlobSelected;
-            // boardPresenter.BlobSelected += HandleBlobSelected;
+        }
+        private void EnsureCommandAdapter()
+        {
+            if (commandAdapter == null)
+                commandAdapter = GetComponentInChildren<GameplayCommandAdapter>();
+            if (commandAdapter == null)
+                commandAdapter = gameObject.AddComponent<GameplayCommandAdapter>();
+
         }
 
         private void EnsureInputAdapter()
@@ -118,11 +74,8 @@ namespace Blobs.Presentation
                 inputAdapter = GetComponentInChildren<GameplayInputAdapter>();
 
             if (inputAdapter == null)
-                return;
-
-            // inputAdapter.BlobSelectionResolved -= HandleBlobSelectionResult;
-            // inputAdapter.BlobSelectionResolved += HandleBlobSelectionResult;
-            inputAdapter.Initialize(_session, boardPresenter.CellSize);
+                inputAdapter = gameObject.AddComponent<GameplayInputAdapter>();
         }
+
     }
 }

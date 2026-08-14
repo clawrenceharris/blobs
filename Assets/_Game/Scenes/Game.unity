@@ -180,11 +180,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.GameBootstrapper
   boardPresenter: {fileID: 1341500224}
-  startSampleLevelOnStart: 1
   levelAsset: {fileID: 11400000, guid: 7c66cfcb451404bd2820ee9461683367, type: 2}
   backgroundView: {fileID: 946229878}
   cameraPresenter: {fileID: 983718534}
   inputAdapter: {fileID: 1046084939}
+  commandAdapter: {fileID: 0}
 --- !u!4 &896816962
 Transform:
   m_ObjectHideFlags: 0
@@ -200,8 +200,53 @@ Transform:
   m_Children:
   - {fileID: 1341500225}
   - {fileID: 1046084940}
+  - {fileID: 912528541}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &912528540
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 912528541}
+  - component: {fileID: 912528542}
+  m_Layer: 0
+  m_Name: CommandAdapter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &912528541
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912528540}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 896816962}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &912528542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912528540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf0b6b0a773fb4e378356268eeb3a16c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Blobs.Presentation::GameplayCommandAdapter
 --- !u!1 &946229877
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,7 +516,7 @@ GameObject:
   - component: {fileID: 1046084940}
   - component: {fileID: 1046084939}
   m_Layer: 0
-  m_Name: GameplayInputAdapter
+  m_Name: InputAdapter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -574,6 +619,9 @@ MonoBehaviour:
   _tileRoot: {fileID: 1066094399}
   _cellSize: 1.25
   _origin: {x: 0, y: 0}
+  _moveDuration: 0.16
+  _spawnDuration: 0.14
+  _despawnDuration: 0.12
 --- !u!4 &1341500225
 Transform:
   m_ObjectHideFlags: 0

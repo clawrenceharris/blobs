@@ -8,7 +8,7 @@
 - [x] Keep Milestone 1 implementation inside `Assets/_Game/Scripts/Core` and `Assets/_Game/Scripts/Application`.
 - [x] Keep Core and Application free of Unity scene/object dependencies.
 - [x] Add minimal Core model for grid positions, blobs, board state, level definitions, and objective evaluation.
-- [x] Add production sample level with two matching blobs.
+- [x] Add production sample level with two different-color blobs.
 - [x] Add deterministic normal-blob source-to-target merge resolution.
 - [x] Emit ordered board effects for successful moves.
 - [x] Emit ordered effects for successful moves. Superseded: inverse effects were prototyped for undo, but production design now favors restart over player-facing undo.

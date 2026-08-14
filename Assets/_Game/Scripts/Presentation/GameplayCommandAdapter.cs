@@ -12,11 +12,6 @@ namespace Blobs.Presentation
             _commands = commands;
         }
 
-        public void Undo()
-        {
-            _commands?.UndoLastMove();
-        }
-
         public void Restart()
         {
             _commands?.Restart();

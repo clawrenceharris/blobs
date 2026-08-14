@@ -6,7 +6,6 @@ namespace Blobs.Application
 {
     public interface IGameplayCommands
     {
-        UndoResult UndoLastMove();
         BlobSelectionResult SelectBlobAt(GridPosition position);
         void Restart();
     }
@@ -15,7 +14,6 @@ namespace Blobs.Application
     {
         GameSessionSnapshot CreateSnapshot();
         event Action<MoveResult> MoveResolved;
-        event Action<UndoResult> MoveUndone;
         event Action<GameSessionSnapshot> StateRestored;
     }
     public sealed class GameSession : IGameplayCommands, IGameplayState
@@ -27,12 +25,10 @@ namespace Blobs.Application
         private string _selectedBlobId;
         public BoardState CurrentState => _board;
         public event Action<MoveResult> MoveResolved;
-        public event Action<UndoResult> MoveUndone;
         public event Action<GameSessionSnapshot> StateRestored;
 
         public string LevelId => _level.Id;
         public int MoveCount => _history.Count;
-        public bool CanUndo => _history.Count > 0;
         public bool IsComplete { get; private set; }
         public string SelectedBlobId => _selectedBlobId;
 
@@ -77,33 +73,12 @@ namespace Blobs.Application
             var result = _resolver.Resolve(_board, intent);
             if (!result.Succeeded)
                 return result;
-
-            _history.Add(new ResolvedMoveCommand(intent, result.InverseEffects));
             IsComplete = result.IsComplete;
+            _history.Add(new ResolvedMoveCommand(intent));
             MoveResolved?.Invoke(result);
             return result;
         }
 
-        public bool Undo()
-        {
-            return UndoLastMove().Succeeded;
-        }
-
-        public UndoResult UndoLastMove()
-        {
-            if (_history.Count == 0)
-                return UndoResult.Failed(IsComplete);
-
-            var index = _history.Count - 1;
-            var command = _history[index];
-            _history.RemoveAt(index);
-            _resolver.ApplyEffects(_board, command.InverseEffects);
-            _selectedBlobId = null;
-            IsComplete = ObjectiveEvaluator.IsComplete(_board);
-            var result = new UndoResult(true, command.InverseEffects, IsComplete);
-            MoveUndone?.Invoke(result);
-            return result;
-        }
 
         public void Restart()
         {
@@ -121,20 +96,17 @@ namespace Blobs.Application
                 new List<BlobState>(_board.Blobs),
                 new List<TileState>(_board.Tiles),
                 MoveCount,
-                CanUndo,
                 IsComplete);
         }
 
         private sealed class ResolvedMoveCommand
         {
-            public ResolvedMoveCommand(MoveIntent intent, IReadOnlyList<IBoardEffect> inverseEffects)
+            public ResolvedMoveCommand(MoveIntent intent)
             {
                 Intent = intent;
-                InverseEffects = inverseEffects;
             }
 
             public MoveIntent Intent { get; }
-            public IReadOnlyList<IBoardEffect> InverseEffects { get; }
         }
     }
 }

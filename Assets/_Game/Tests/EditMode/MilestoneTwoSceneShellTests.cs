@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Blobs.Content;
 using Blobs.Core;
@@ -26,29 +27,19 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void SuccessfulMergeClearsVisibleBlobs()
+        public void SuccessfulMergeLeavesSourceVisibleAtTargetPosition()
         {
             var shell = CreateSceneShell();
 
             shell.Input.SelectBlobAt(new GridPosition(0, 0));
             shell.Input.SelectBlobAt(new GridPosition(2, 0));
 
-            Assert.That(shell.Board.VisibleBlobCount, Is.EqualTo(0));
-            Assert.That(shell.Board.CurrentSnapshot.IsComplete, Is.True);
-        }
-
-        [Test]
-        public void UndoRestoresVisibleBlobs()
-        {
-            var shell = CreateSceneShell();
-            shell.Input.SelectBlobAt(new GridPosition(0, 0));
-            shell.Input.SelectBlobAt(new GridPosition(2, 0));
-
-            shell.Commands.Undo();
-
-            Assert.That(shell.Board.VisibleBlobCount, Is.EqualTo(2));
+            Assert.That(shell.Board.VisibleBlobCount, Is.EqualTo(1));
+            Assert.That(shell.Board.CurrentSnapshot.Blobs.Single().Id, Is.EqualTo("0"));
+            Assert.That(shell.Board.CurrentSnapshot.Blobs.Single().Position, Is.EqualTo(new GridPosition(2, 0)));
             Assert.That(shell.Board.CurrentSnapshot.IsComplete, Is.False);
         }
+
 
         [Test]
         public void RestartRestoresInitialVisibleBlobsAndClearsSelection()

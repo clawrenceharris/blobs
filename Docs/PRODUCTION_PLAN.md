@@ -80,7 +80,7 @@ Completion means one authored puzzle can be solved through production Core and A
 - Emit ordered effects for successful moves.
 - Reject invalid moves without mutating board state.
 - Create Application session command flow: start level, execute move, restart, completion.
-- Add one production sample level in code or plain data with two matching blobs that clears successfully.
+- Add one production sample level in code or plain data with two different-color blobs that demonstrates source-to-target merge behavior.
 - Keep all code Unity-free in Core and Application.
 
 Acceptance checks:
@@ -88,7 +88,7 @@ Acceptance checks:
 - A same-row or same-column matching normal merge resolves successfully.
 - A non-aligned move is rejected and leaves state unchanged.
 - A color mismatch is rejected and leaves state unchanged.
-- Solving the sample level sets Application completion state.
+- A successful sample merge leaves the source at the target position and removes the target blob.
 - Restart restores the authored initial level.
 
 ### Milestone 2 - Production Scene Shell

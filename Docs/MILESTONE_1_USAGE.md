@@ -29,11 +29,11 @@ if (result.Succeeded && session.IsComplete)
 
 ## Current Behavior
 
-- The sample level has two matching normal blobs on one row.
-- A valid merge removes both clearable blobs and completes the level.
+- The sample level has two different-color normal blobs on one row.
+- A valid normal merge moves the source to the target position and removes the target blob.
 - Invalid moves return a `MoveFailureReason` and do not record history.
 - Superseded direction: Milestone 1 originally proved inverse effects for undo, but current production design favors restart over player-facing undo.
-- Restart rebuilds the authored initial state and clears command history.
+- Restart rebuilds the authored initial state and clears move history.
 
 ## Known Limitations
 

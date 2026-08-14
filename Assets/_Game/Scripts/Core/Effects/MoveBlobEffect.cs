@@ -13,10 +13,9 @@ namespace Blobs.Core
         public GridPosition From { get; }
         public GridPosition To { get; }
 
-        public IBoardEffect Apply(BoardState board)
+        public void Apply(BoardState board)
         {
             board.MoveBlob(BlobId, To);
-            return new MoveBlobEffect(BlobId, To, From);
         }
     }
 }

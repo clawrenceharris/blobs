@@ -184,7 +184,7 @@ MonoBehaviour:
   backgroundView: {fileID: 946229878}
   cameraPresenter: {fileID: 983718534}
   inputAdapter: {fileID: 1046084939}
-  commandAdapter: {fileID: 0}
+  commandAdapter: {fileID: 912528542}
 --- !u!4 &896816962
 Transform:
   m_ObjectHideFlags: 0

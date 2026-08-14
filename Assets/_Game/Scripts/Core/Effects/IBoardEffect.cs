@@ -2,6 +2,6 @@ namespace Blobs.Core
 {
     public interface IBoardEffect
     {
-        IBoardEffect Apply(BoardState board);
+        void Apply(BoardState board);
     }
 }

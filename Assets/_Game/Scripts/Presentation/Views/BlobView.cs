@@ -17,6 +17,7 @@ namespace Blobs.Presentation
 
 
         public string BlobId { get; private set; }
+        public GridPosition GridPosition { get; private set; }
         private float _cellSize;
         private Vector2 _origin;
         private Vector3 _baseScale;
@@ -44,27 +45,29 @@ namespace Blobs.Presentation
         public void SetGridPosition(GridPosition position)
         {
             transform.DOKill();
+            GridPosition = position;
             transform.localPosition = GridToLocal(position, _cellSize, _origin);
         }
 
         /// <summary>
         /// Animates this view to a logical grid position without changing Core state.
         /// </summary>
-        public void AnimateMoveTo(GridPosition position, float duration)
+        public Tween AnimateMoveTo(GridPosition position, float duration)
         {
             var target = GridToLocal(position, _cellSize, _origin);
             transform.DOKill();
-            transform.DOMove(target, duration).SetEase(Ease.OutQuad);
+            GridPosition = position;
+            return transform.DOLocalMove(target, duration).SetEase(Ease.OutQuad);
         }
 
         /// <summary>
         /// Plays the spawn scale-in animation.
         /// </summary>
-        public void PlaySpawn(float duration)
+        public Tween PlaySpawn(float duration)
         {
             transform.DOKill();
             transform.localScale = Vector3.zero;
-            transform.DOScale(_baseScale, duration).SetEase(Ease.OutBack);
+            return transform.DOScale(_baseScale, duration).SetEase(Ease.OutBack);
         }
 
         /// <summary>

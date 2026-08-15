@@ -38,6 +38,7 @@ namespace Blobs.Tests.EditMode
             Assert.That(shell.Board.CurrentSnapshot.Blobs.Single().Id, Is.EqualTo("0"));
             Assert.That(shell.Board.CurrentSnapshot.Blobs.Single().Position, Is.EqualTo(new GridPosition(2, 0)));
             Assert.That(shell.Board.CurrentSnapshot.IsComplete, Is.False);
+            Assert.That(shell.Board.IsSynchronizedWith(shell.Board.CurrentSnapshot), Is.True);
         }
 
 
@@ -56,6 +57,7 @@ namespace Blobs.Tests.EditMode
             Assert.That(shell.Board.CurrentSnapshot.MoveCount, Is.EqualTo(0));
             Assert.That(secondSelection.HasSelection, Is.False);
             Assert.That(secondSelection.MoveAttempted, Is.False);
+            Assert.That(shell.Board.IsSynchronizedWith(shell.Board.CurrentSnapshot), Is.True);
         }
 
         private SceneShell CreateSceneShell()

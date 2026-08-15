@@ -13,6 +13,7 @@ namespace Blobs.Presentation
         public event Action<BlobView> Selected;
 
         public string TileId { get; private set; }
+        public GridPosition GridPosition { get; private set; }
 
         /// <summary>
         /// Initializes tile transform/collider state from Core tile data.
@@ -20,7 +21,8 @@ namespace Blobs.Presentation
         public void Initialize(TileState tile,  LevelVisualThemeAsset theme, float cellSize, Vector2 origin)
         {
             TileId = tile.Id;
-            name = "Blob " + tile.Id;
+            GridPosition = tile.Position;
+            name = "Tile " + tile.Id;
             transform.localPosition = GridToLocal(tile.Position, cellSize, origin);
             transform.localScale = Vector3.one * Mathf.Max(0.1f, cellSize * 0.8f);
             EnsureCollider();

@@ -22,7 +22,22 @@ namespace Blobs.Presentation
         /// <inheritdoc />
         public Skin? ResolveSkin(BlobState blob, LevelVisualThemeAsset theme)
         {
-            var color = blob.Color switch
+            var color = ResolveThemeColor(blob.Color, theme);
+
+            // Trail blobs indicate their trail color through the Detail role,
+            // which the trail prefab binds to its puddle renderer.
+            var detailColor = blob.TrailColor.HasValue
+                ? ResolveThemeColor(blob.TrailColor.Value, theme)
+                : color;
+
+            return new Skin(color, color, detailColor);
+        }
+
+        private static UnityEngine.Color ResolveThemeColor(
+            BlobColor color,
+            LevelVisualThemeAsset theme)
+        {
+            return color switch
             {
                 BlobColor.Red => theme.Red,
                 BlobColor.Green => theme.Green,
@@ -31,7 +46,6 @@ namespace Blobs.Presentation
                 BlobColor.Purple => theme.Purple,
                 _ => throw new ArgumentException("Invalid blob color"),
             };
-            return new Skin(color, color, color);
         }
 
     }

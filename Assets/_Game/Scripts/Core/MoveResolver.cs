@@ -3,16 +3,22 @@ using System.Collections.Generic;
 namespace Blobs.Core
 {
     /// <summary>
-    /// Deterministic Core rule entry point for normal source-to-target merge resolution.
-    /// It validates the intent, emits ordered effects, and applies those effects to board state.
+    /// Deterministic Core rule entry point for move resolution. A move intent is decomposed
+    /// into a per-tile timeline of steps: the mover traverses empty tiles (firing movement
+    /// behaviors such as trail spawning) and chain-merges with every occupant on its path.
+    /// The whole intent is validated on a simulation board and committed atomically.
     /// </summary>
     public sealed class MoveResolver
     {
         private readonly IBlobRuleBook _rules;
+        private readonly IBlobIdFactory _idFactory;
 
-        public MoveResolver(IBlobRuleBook rules = null)
+        public MoveResolver(
+            IBlobRuleBook rules = null,
+            IBlobIdFactory idFactory = null)
         {
             _rules = rules ?? BlobRuleBook.CreateDefault();
+            _idFactory = idFactory ?? new SequentialBlobIdFactory();
         }
 
         public MoveFailureReason ValidateSourceSelection(
@@ -51,39 +57,110 @@ namespace Blobs.Core
             if (!source.Position.IsAlignedWith(target.Position))
                 return MoveResult.Failed(MoveFailureReason.NotAligned);
 
-            if (PathHasBlockingBlob(
-                    board,
-                    source.Position,
-                    target.Position))
+            // Plan the whole move on a simulation board so mid-path collisions observe
+            // true occupancy and failures leave the real board untouched.
+            BoardState simulation = board.Clone();
+            _rules.TryGetMoveBehavior(source.Type, out IMoveBehavior behavior);
+
+            var steps = new List<MoveStep>();
+            var followUpSteps = new List<MoveStep>();
+            var mergeSites = new HashSet<GridPosition>();
+
+            BlobState mover = source;
+            GridPosition current = source.Position;
+            GridPosition goal = target.Position;
+            int stepX = goal.X == current.X ? 0 : goal.X > current.X ? 1 : -1;
+            int stepY = goal.Y == current.Y ? 0 : goal.Y > current.Y ? 1 : -1;
+
+            while (current != goal)
             {
-                return MoveResult.Failed(MoveFailureReason.BlockedPath);
+                var next = new GridPosition(current.X + stepX, current.Y + stepY);
+                BlobState occupant = simulation.GetBlobAt(next);
+
+                var stepEffects = new List<IBoardEffect>();
+                MoveStepKind kind;
+                bool moverConsumed = false;
+
+                if (occupant == null)
+                {
+                    kind = MoveStepKind.Traverse;
+                    stepEffects.Add(new MoveBlobEffect(mover.Id, current, next));
+                }
+                else
+                {
+                    kind = MoveStepKind.Merge;
+
+                    if (!_rules.TryGetMergeStrategy(
+                            mover.Type,
+                            occupant.Type,
+                            out IMergeStrategy strategy))
+                    {
+                        return MoveResult.Failed(
+                            MoveFailureReason.UnsupportedInteraction);
+                    }
+
+                    var context = new MoveContext(
+                        simulation,
+                        mover,
+                        occupant,
+                        isFinalTarget: occupant.Id == target.Id);
+
+                    CollisionPlan plan = strategy.BuildPlan(context);
+                    if (!plan.Succeeded)
+                        return MoveResult.Failed(plan.FailureReason);
+
+                    // Resolve the collision tile first so the mover can enter it.
+                    stepEffects.AddRange(plan.Effects);
+
+                    moverConsumed = plan.ConsumesMover;
+                    if (!moverConsumed)
+                        stepEffects.Add(new MoveBlobEffect(mover.Id, current, next));
+
+                    if (plan.FollowUpSteps.Count > 0)
+                        followUpSteps.AddRange(plan.FollowUpSteps);
+
+                    mergeSites.Add(next);
+                }
+
+                // Departure hooks fire after the mover has left the tile, so spawned
+                // blobs never contest occupancy with the mover itself. Tiles that
+                // hosted a merge earlier in this move never receive departure spawns.
+                behavior?.OnTileDeparted(
+                    new MoveBehaviorContext(
+                        simulation,
+                        mover,
+                        current,
+                        mergeSites.Contains(current),
+                        _idFactory),
+                    stepEffects);
+
+                ApplyEffects(simulation, stepEffects);
+                steps.Add(new MoveStep(kind, stepEffects));
+
+                // A consuming merge or reaching the intent's target ends locomotion.
+                if (moverConsumed || (occupant != null && occupant.Id == target.Id))
+                    break;
+
+                mover = simulation.GetBlob(mover.Id);
+                current = next;
             }
 
-            if (!_rules.TryGetMergeStrategy(
-                    source.Type,
-                    target.Type,
-                    out IMergeStrategy strategy))
-            {
-                return MoveResult.Failed(
-                    MoveFailureReason.UnsupportedInteraction);
-            }
+            steps.AddRange(followUpSteps);
 
-            var context = new MoveContext(board, source, target);
-            MergePlan plan = strategy.BuildPlan(context);
+            // Commit atomically: replay the validated timeline onto the real board.
+            var flattened = new List<IBoardEffect>();
+            foreach (MoveStep step in steps)
+                flattened.AddRange(step.Effects);
 
-            if (!plan.Succeeded)
-                return MoveResult.Failed(plan.FailureReason);
-
-            ApplyEffects(board, plan.Effects);
+            ApplyEffects(board, flattened);
 
             return new MoveResult(
                 true,
                 MoveFailureReason.None,
-                plan.Effects,
-                ObjectiveEvaluator.IsComplete(board, objective));
+                flattened,
+                ObjectiveEvaluator.IsComplete(board, objective),
+                steps);
         }
-
-
 
         /// <summary>
         /// Applies an ordered effect list to board state. This is intentionally validation-free
@@ -91,27 +168,8 @@ namespace Blobs.Core
         /// </summary>
         public void ApplyEffects(BoardState board, IReadOnlyList<IBoardEffect> effects)
         {
-
             foreach (var effect in effects)
                 effect.Apply(board);
-
-        }
-
-        private static bool PathHasBlockingBlob(BoardState board, GridPosition from, GridPosition to)
-        {
-            var stepX = to.X == from.X ? 0 : to.X > from.X ? 1 : -1;
-            var stepY = to.Y == from.Y ? 0 : to.Y > from.Y ? 1 : -1;
-            var current = new GridPosition(from.X + stepX, from.Y + stepY);
-
-            while (current != to)
-            {
-                if (board.GetBlobAt(current) != null)
-                    return true;
-
-                current = new GridPosition(current.X + stepX, current.Y + stepY);
-            }
-
-            return false;
         }
     }
 }

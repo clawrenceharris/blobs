@@ -116,6 +116,29 @@ namespace Blobs.Core
     }
 
     /// <summary>
+    /// Trail blob definition. Moves like a normal blob but leaves normal blobs of
+    /// <see cref="TrailColor"/> on the empty tiles it departs during a move.
+    /// </summary>
+    public sealed class TrailBlobDefinition : BlobDefinition
+    {
+        public TrailBlobDefinition(
+            string id,
+            GridPosition position,
+            BlobColor color,
+            BlobColor trailColor)
+            : base(
+                id,
+                position,
+                color,
+                BlobType.Trail)
+        {
+            TrailColor = trailColor;
+        }
+
+        public BlobColor TrailColor { get; }
+    }
+
+    /// <summary>
     /// Unity-free level data consumed by Core and Application when starting a session.
     /// </summary>
     public sealed class LevelDefinition

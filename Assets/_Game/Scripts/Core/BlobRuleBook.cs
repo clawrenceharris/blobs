@@ -42,20 +42,29 @@ namespace Blobs.Core
             BlobType sourceType,
             BlobType targetType,
             out IMergeStrategy strategy);
+
+        bool TryGetMoveBehavior(
+            BlobType type,
+            out IMoveBehavior behavior);
     }
 
     public sealed class BlobRuleBook : IBlobRuleBook
     {
         private readonly Dictionary<BlobType, BlobTraits> _traits;
         private readonly Dictionary<MergeKey, IMergeStrategy> _strategies;
+        private readonly Dictionary<BlobType, IMoveBehavior> _moveBehaviors;
 
         public BlobRuleBook(
             IDictionary<BlobType, BlobTraits> traits,
-            IDictionary<MergeKey, IMergeStrategy> strategies)
+            IDictionary<MergeKey, IMergeStrategy> strategies,
+            IDictionary<BlobType, IMoveBehavior> moveBehaviors = null)
         {
             _traits = new Dictionary<BlobType, BlobTraits>(traits);
             _strategies =
                 new Dictionary<MergeKey, IMergeStrategy>(strategies);
+            _moveBehaviors = moveBehaviors != null
+                ? new Dictionary<BlobType, IMoveBehavior>(moveBehaviors)
+                : new Dictionary<BlobType, IMoveBehavior>();
         }
 
         public BlobTraits GetTraits(BlobType type)
@@ -79,10 +88,17 @@ namespace Blobs.Core
                 out strategy);
         }
 
+        public bool TryGetMoveBehavior(
+            BlobType type,
+            out IMoveBehavior behavior)
+        {
+            return _moveBehaviors.TryGetValue(type, out behavior);
+        }
+
         public static BlobRuleBook CreateDefault()
         {
-            var normalMerge = new NormalToNormalMergeStrategy();
-            var flagMerge = new NormalToFlagMergeStrategy();
+            var normalMerge = new NormalMergeStrategy();
+            var flagMerge = new FlagMergeStrategy();
 
             return new BlobRuleBook(
                 new Dictionary<BlobType, BlobTraits>
@@ -91,15 +107,29 @@ namespace Blobs.Core
                         new BlobTraits(canBeSource: true, isClearable: true),
 
                     [BlobType.Flag] =
-                        new BlobTraits(canBeSource: false, isClearable: false)
+                        new BlobTraits(canBeSource: false, isClearable: false),
+                    [BlobType.Trail] =
+                        new BlobTraits(canBeSource: true, isClearable: true)
                 },
                 new Dictionary<MergeKey, IMergeStrategy>
                 {
                     [new MergeKey(BlobType.Normal, BlobType.Normal)] =
                         normalMerge,
+                    [new MergeKey(BlobType.Trail, BlobType.Normal)] =
+                        normalMerge,
+                    [new MergeKey(BlobType.Normal, BlobType.Trail)] =
+                        normalMerge,
+                    [new MergeKey(BlobType.Trail, BlobType.Trail)] =
+                        normalMerge,
 
                     [new MergeKey(BlobType.Normal, BlobType.Flag)] =
+                        flagMerge,
+                    [new MergeKey(BlobType.Trail, BlobType.Flag)] =
                         flagMerge
+                },
+                new Dictionary<BlobType, IMoveBehavior>
+                {
+                    [BlobType.Trail] = new TrailMoveBehavior()
                 });
         }
     }

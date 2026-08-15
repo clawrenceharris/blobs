@@ -124,10 +124,13 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void FlagMergeStillRejectsABlockedPath()
+        public void BlobOnPathChainMergesBeforeFinalFlagCapture()
         {
+            // Chain merging replaced BlockedPath: the mover merges with every
+            // occupant on the path, so a valid intermediate merge followed by a
+            // flag capture resolves in a single move.
             GameSession session = CreateSession(
-                "flag_requires_clear_path",
+                "flag_chain_merge_path",
                 3,
                 1,
                 NormalBlob("purple_normal", BlobColor.Purple, 0, 0),
@@ -136,11 +139,42 @@ namespace Blobs.Tests.EditMode
 
             MoveResult result = session.ExecuteMove(
                 new MoveIntent("purple_normal", "purple_flag"));
+            GameSessionSnapshot snapshot = session.CreateSnapshot();
+
+            Assert.That(result.Succeeded, Is.True);
+            Assert.That(result.Steps.Count, Is.EqualTo(2));
+            Assert.That(
+                result.Steps[0].Kind,
+                Is.EqualTo(MoveStepKind.Merge));
+            Assert.That(
+                result.Steps[1].Kind,
+                Is.EqualTo(MoveStepKind.Merge));
+            Assert.That(snapshot.Blobs.Count, Is.EqualTo(1));
+            Assert.That(snapshot.Blobs.Single().Id, Is.EqualTo("purple_flag"));
+            Assert.That(snapshot.MoveCount, Is.EqualTo(1));
+            Assert.That(snapshot.IsComplete, Is.True);
+        }
+
+        [Test]
+        public void InvalidIntermediateMergeRejectsWholeFlagMove()
+        {
+            // The blocker matches the mover's color, so the intermediate merge is
+            // invalid and the whole intent fails atomically.
+            GameSession session = CreateSession(
+                "flag_invalid_chain_link",
+                3,
+                1,
+                NormalBlob("purple_normal", BlobColor.Purple, 0, 0),
+                NormalBlob("purple_blocker", BlobColor.Purple, 1, 0),
+                FlagBlob("purple_flag", BlobColor.Purple, 2, 0));
+
+            MoveResult result = session.ExecuteMove(
+                new MoveIntent("purple_normal", "purple_flag"));
 
             Assert.That(result.Succeeded, Is.False);
             Assert.That(
                 result.FailureReason,
-                Is.EqualTo(MoveFailureReason.BlockedPath));
+                Is.EqualTo(MoveFailureReason.NormalMergeRequiresDifferentColors));
             Assert.That(session.CreateSnapshot().Blobs.Count, Is.EqualTo(3));
             Assert.That(session.CreateSnapshot().MoveCount, Is.Zero);
         }
@@ -163,15 +197,16 @@ namespace Blobs.Tests.EditMode
 
             Assert.That(result.Succeeded, Is.True);
             Assert.That(result.FailureReason, Is.EqualTo(MoveFailureReason.None));
-            Assert.That(result.Effects.Count, Is.EqualTo(1));
+            // Per-tile timeline: traverse 0,0 -> 1,0, then the capture beat.
+            Assert.That(result.Effects.Count, Is.EqualTo(2));
 
             MergeIntoFlagEffect effect =
-                result.Effects.Single() as MergeIntoFlagEffect;
+                result.Effects[1] as MergeIntoFlagEffect;
 
             Assert.That(effect, Is.Not.Null);
             Assert.That(effect.SourceId, Is.EqualTo("purple_normal"));
             Assert.That(effect.FlagId, Is.EqualTo("purple_flag"));
-            Assert.That(effect.From, Is.EqualTo(sourcePosition));
+            Assert.That(effect.From, Is.EqualTo(new GridPosition(1, 0)));
             Assert.That(effect.To, Is.EqualTo(flagPosition));
 
             Assert.That(snapshot.Blobs.Count, Is.EqualTo(1));

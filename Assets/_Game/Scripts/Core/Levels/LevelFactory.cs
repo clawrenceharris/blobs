@@ -24,7 +24,8 @@ namespace Blobs.Core
                     blob.Id,
                     blob.Type,
                     blob.Color,
-                    blob.Position
+                    blob.Position,
+                    (blob as TrailBlobDefinition)?.TrailColor
                    ));
             }
 

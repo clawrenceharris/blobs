@@ -3418,15 +3418,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf691289ecdd44f3b9a70d52eb0f9443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BoardPresenter
-  _blobViewPrefab: {fileID: 2149106020715233295, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+  _blobViewCatalog: {fileID: 11400000, guid: 3b14907ac9d6d44bcabc9ff726677847, type: 2}
   _tileViewPrefab: {fileID: 0}
   _blobRoot: {fileID: 633203431}
   _tileRoot: {fileID: 1066094399}
   _cellSize: 1.25
   _origin: {x: 0, y: 0}
-  _moveDuration: 0.16
-  _spawnDuration: 0.14
-  _despawnDuration: 0.12
+  _moveDuration: 0.3
+  _spawnDuration: 0.2
+  _despawnDuration: 0.2
 --- !u!4 &1341500225
 Transform:
   m_ObjectHideFlags: 0

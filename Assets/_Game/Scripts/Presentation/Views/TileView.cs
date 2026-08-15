@@ -10,15 +10,13 @@ namespace Blobs.Presentation
     public sealed class TileView : MonoBehaviour
     {
 
-        public event Action<BlobView> Selected;
-
         public string TileId { get; private set; }
         public GridPosition GridPosition { get; private set; }
 
         /// <summary>
         /// Initializes tile transform/collider state from Core tile data.
         /// </summary>
-        public void Initialize(TileState tile,  LevelVisualThemeAsset theme, float cellSize, Vector2 origin)
+        public void Initialize(TileState tile, LevelVisualThemeAsset theme, float cellSize, Vector2 origin)
         {
             TileId = tile.Id;
             GridPosition = tile.Position;
@@ -28,9 +26,9 @@ namespace Blobs.Presentation
             EnsureCollider();
         }
 
-       
-       
-       
+
+
+
 
         private void EnsureCollider()
         {

@@ -97,7 +97,10 @@ namespace Blobs.Tests.EditMode
             var theme = ScriptableObject.CreateInstance<LevelVisualThemeAsset>();
             _createdObjects.Add(theme);
             var presenter = gameObject.AddComponent<BoardPresenter>();
-            presenter.Initialize(new FakeGameplayState(initialSnapshot), theme);
+            presenter.Initialize(
+                new FakeGameplayState(initialSnapshot),
+                theme,
+                new TestBlobViewFactory());
             return presenter;
         }
 
@@ -107,7 +110,6 @@ namespace Blobs.Tests.EditMode
                 id,
                 BlobType.Normal,
                 color,
-                BlobSize.Normal,
                 new GridPosition(x, y));
         }
 
@@ -125,6 +127,23 @@ namespace Blobs.Tests.EditMode
         {
             public void Apply(BoardState board)
             {
+            }
+        }
+
+        private sealed class TestBlobViewFactory : IBlobViewFactory
+        {
+            public BlobView Create(
+                BlobState blob,
+                LevelVisualThemeAsset theme,
+                Transform parent,
+                float cellSize,
+                Vector2 origin)
+            {
+                var gameObject = new GameObject("Test Blob " + blob.Id);
+                gameObject.transform.SetParent(parent, false);
+                BlobView view = gameObject.AddComponent<BlobView>();
+                view.Initialize(blob, theme, cellSize, origin);
+                return view;
             }
         }
 

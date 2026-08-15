@@ -64,6 +64,10 @@ namespace Blobs.Application
         {
             return new BlobSelectionResult(null, true, result);
         }
+        public static BlobSelectionResult Rejected(MoveFailureReason reason)
+        {
+            return new BlobSelectionResult(null, false, MoveResult.Failed(reason));
+        }
 
         public override string ToString()
         {

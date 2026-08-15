@@ -170,8 +170,7 @@ namespace Blobs.Tests.EditMode
             return new NormalBlobDefinition(
                 id,
                 new GridPosition(x, y),
-                color,
-                BlobSize.Normal);
+                color);
         }
 
         private static NormalTileDefinition Tile(string id, int x, int y)

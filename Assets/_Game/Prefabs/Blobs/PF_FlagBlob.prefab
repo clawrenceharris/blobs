@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2657119610928150024}
   - component: {fileID: 257091627349198181}
+  - component: {fileID: 1298498725502875035}
   m_Layer: 0
   m_Name: Checkers
   m_TagString: Untagged
@@ -58,7 +59,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 67d4f62ca65af4605bcf0257e28a7aa2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -82,7 +83,7 @@ SpriteRenderer:
   m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: ef4513f53d06a4d378a17092960536b0, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.627451}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -91,6 +92,19 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1298498725502875035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155616898291128852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c4c0306b8ea4a8b9e0851f6d153809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.FlagBlobColorBinding
+  targetRenderer: {fileID: 257091627349198181}
 --- !u!1 &5297690396068903574
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,6 +115,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4777367084790657100}
   - component: {fileID: 3609697410622918580}
+  - component: {fileID: 6686443099471879822}
   m_Layer: 3
   m_Name: Finial
   m_TagString: Untagged
@@ -117,8 +132,8 @@ Transform:
   m_GameObject: {fileID: 5297690396068903574}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: -0.06, z: 0}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3687930029367419390}
@@ -149,7 +164,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 67d4f62ca65af4605bcf0257e28a7aa2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -172,16 +187,29 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 535009dc16ca24dc88643251d0765bdf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d52fe822e632c42dd8da122a45d49280, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.171875, y: 1.171875}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &6686443099471879822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5297690396068903574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c4c0306b8ea4a8b9e0851f6d153809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.FlagBlobColorBinding
+  targetRenderer: {fileID: 3609697410622918580}
 --- !u!1001 &5632845988614433003
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -235,7 +263,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: _defaultMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 67d4f62ca65af4605bcf0257e28a7aa2, type: 2}
+    - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: _targets.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: _targets.Array.data[0].ColorBinding
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
@@ -252,23 +288,27 @@ PrefabInstance:
       objectReference: {fileID: 3609697410622918580}
     - target: {fileID: 6357215200294275352, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6357215200294275352, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6357215200294275352, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.025
+      value: 0.073
       objectReference: {fileID: 0}
     - target: {fileID: 6357215200294275352, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.35
+      value: 0.364
       objectReference: {fileID: 0}
     - target: {fileID: 6357215200294275352, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.92387956
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6357215200294275352, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6357215200294275352, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_LocalRotation.y
@@ -276,16 +316,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6357215200294275352, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.38268343
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6357215200294275352, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6852378884847781655, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: f14f23da93a4148958f8c3852fcf7ca5, type: 3}
+    - target: {fileID: 6852378884847781655, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 9008830136990566677, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.5

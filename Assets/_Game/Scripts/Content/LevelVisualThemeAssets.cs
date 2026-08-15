@@ -10,18 +10,6 @@ namespace Blobs.Content
         [Header("Board")]
         [SerializeField] private Color cellColor =
             new(0.01f, 0.08f, 0.18f);
-        [Header("Game Colors")]
-        [SerializeField] private Color red =
-            new(0.8f, 0.05f, 0.05f);     // red ≈ (1, 0, 0)
-        [SerializeField] private Color yellow =
-            new(0.8f, 0.8f, 0.05f);     // yellow ≈ (1, 1, 0)
-        [SerializeField] private Color green =
-            new(0.05f, 0.8f, 0.05f);    // green ≈ (0, 1, 0)
-        [SerializeField] private Color blue =
-            new(0.05f, 0.05f, 0.8f);    // blue ≈ (0, 0, 1)
-        [SerializeField] private Color purple =
-            new(0.8f, 0.05f, 0.8f);     // purple ≈ (1, 0, 1)
-    
         [Header("Background Gradient")]
         [SerializeField] private Color topColor =
             new(0.01f, 0.08f, 0.18f);
@@ -44,10 +32,5 @@ namespace Blobs.Content
         public float MiddlePosition => middlePosition;
         public float BlendSoftness => blendSoftness;
         public Color CellColor => cellColor;
-        public Color Red => red;
-        public Color Yellow => yellow;
-        public Color Green => green;
-        public Color Blue => blue;
-        public Color Purple => purple;
     }
 }

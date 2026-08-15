@@ -1147,57 +1147,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 423296232}
   m_CullTransparentMesh: 1
---- !u!1 &427617053
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 427617055}
-  - component: {fileID: 427617054}
-  m_Layer: 0
-  m_Name: HUDPresenter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &427617054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 427617053}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 113e0d905eb34d2285e6dbbcc50c407d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Blobs.UI::Blobs.UI.GameplayHudPresenter
-  sessionHostBehaviour: {fileID: 896816961}
-  moveCountText: {fileID: 1508395821}
-  statusText: {fileID: 0}
-  restartButton: {fileID: 456420002}
-  completionRoot: {fileID: 965240318}
-  playingStatus: Playing...
-  completeStatus: Complete!
---- !u!4 &427617055
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 427617053}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &456419998
 GameObject:
   m_ObjectHideFlags: 0
@@ -2133,6 +2082,14 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &778420410
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778420407}
+  m_CullTransparentMesh: 1
 --- !u!114 &778420411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2143,7 +2100,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0112af23fac4df68ee325579c0f6bcf, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.GameplayFeedbackPresenter
   feedbackText: {fileID: 778420409}
   fadeInDuration: 0.2
@@ -2155,14 +2112,6 @@ MonoBehaviour:
   shakeRandomness: 45
   moveUpAmount: 30
   popScale: 1.1
---- !u!222 &778420410
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 778420407}
-  m_CullTransparentMesh: 1
 --- !u!1 &894402378
 GameObject:
   m_ObjectHideFlags: 0
@@ -5470,4 +5419,3 @@ SceneRoots:
   - {fileID: 896816962}
   - {fileID: 946229880}
   - {fileID: 1741978561}
-  - {fileID: 427617055}

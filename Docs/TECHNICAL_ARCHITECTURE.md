@@ -160,20 +160,21 @@ Design the exact API alongside representative merge and cascade tests. Do not cr
 
 ## Move resolution
 
-A forward player move conceptually:
+A forward player move in production Core:
 
-1. Input produces a `MoveIntent` (today: merge source → target; no validation at the input boundary).
-2. Core builds a `MoveContext` from the intent and a board snapshot (path, ice/portals/sticky adjustments, etc.).
-3. The resolution pipeline runs ordered rules: validate intent, path, lasers, merge eligibility, cascades.
-4. Rules emit atomic `IEffect` values (`MoveBlob`, `RemoveBlob`, `SpawnBlob`, `ResizeBlob`, `SetTileState`, `Trigger`, …) without touching views.
-5. A `BoardTransaction` applies effects to board state in deterministic order.
-6. Win / clearable evaluation runs on the post-resolution state.
-7. Application records move count/progression state and can restart from the authored initial state.
-8. Presentation plays the ordered effect list as one readable source-to-target action, including cascades when present.
+1. Input produces a `MoveIntent` (source id → target id; no validation at the input boundary).
+2. `MoveResolver` validates source/target, `CanBeSource`, and rook alignment.
+3. The resolver walks the path **one tile at a time on a cloned board**. Empty cells emit a `Traverse` `MoveStep`; occupied cells look up `IMergeStrategy` for `(mover, occupant)` and emit a `Merge` step from the `CollisionPlan`.
+4. Per-type `IMoveBehavior.OnTileDeparted` may add effects to the current step (Trail `SpawnBlobEffect` on non-merge sites).
+5. `CollisionPlan.FollowUpSteps` are appended after locomotion (Ghost haunt hook).
+6. On any failed collision or missing strategy the real board is untouched. On success, flattened step effects are applied atomically.
+7. Win / clearable evaluation runs on the post-resolution state (`Trail` and `Normal` are clearable; `Flag` is not).
+8. Application records move count and can restart from the authored initial state.
+9. Presentation plays `MoveResult.Steps` as sequential beats. Effects inside a step may run in parallel (Trail spawn joined to the tile-leave move).
 
-A merge is valid only when Core rules allow it (alignment, color/size rules, special blob/tile rules). Invalid intents return a reason without mutating state. Cascades must remain deterministic: same board + intent → same effect sequence.
+A merge is valid only when Core rules allow it. Invalid intents return a `MoveFailureReason` without mutating state. Same board + intent always yields the same step sequence.
 
-Blob IDs stay stable within a resolved action so presenters can resolve moves, removals, and spawns; see `Assets/Documentation/BLOB_LIFECYCLE.md`.
+Blob IDs stay stable within a resolved action so presenters can resolve moves, removals, and spawns. Spawned trail blobs use `IBlobIdFactory` (`{sourceId}-trail-{n}`). See `Assets/Documentation/BLOB_LIFECYCLE.md`.
 
 ## Restart and session history
 

@@ -62,6 +62,13 @@ namespace Blobs.Content
     {
     }
 
+    [Serializable]
+    public sealed class TrailBlobAssetData : BlobAssetData
+    {
+        [Tooltip("Color of the normal blobs left behind on tiles this blob departs.")]
+        public BlobColor trailColor;
+    }
+
 
 
     [Serializable]

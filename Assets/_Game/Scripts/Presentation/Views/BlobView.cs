@@ -52,13 +52,15 @@ namespace Blobs.Presentation
 
         /// <summary>
         /// Animates this view to a logical grid position without changing Core state.
+        /// Intermediate tiles of a multi-tile move should use <see cref="Ease.Linear"/>
+        /// so consecutive per-tile tweens read as one continuous slide.
         /// </summary>
-        public Tween AnimateMoveTo(GridPosition position, float duration)
+        public Tween AnimateMoveTo(GridPosition position, float duration, Ease ease = Ease.OutQuad)
         {
             var target = GridToLocal(position, _cellSize, _origin);
             transform.DOKill();
             GridPosition = position;
-            return transform.DOLocalMove(target, duration).SetEase(Ease.OutQuad);
+            return transform.DOLocalMove(target, duration).SetEase(ease);
         }
 
         /// <summary>

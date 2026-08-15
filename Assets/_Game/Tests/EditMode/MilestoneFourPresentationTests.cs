@@ -56,6 +56,72 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
+        public void StepTimelineWithTraverseSpawnAndMergeBeatsMatchesFinalSnapshot()
+        {
+            BlobState source = Blob("source", BlobColor.Red, 0, 0);
+            BlobState target = Blob("target", BlobColor.Blue, 2, 0);
+            BlobState spawned = Blob("spawned", BlobColor.Green, 0, 0);
+            BoardPresenter presenter = CreatePresenter(Snapshot(source, target));
+
+            var steps = new[]
+            {
+                // Traverse beat: mover leaves 0,0 while the trail blob spawns there.
+                new MoveStep(
+                    MoveStepKind.Traverse,
+                    new IBoardEffect[]
+                    {
+                        new MoveBlobEffect(source.Id, source.Position, new GridPosition(1, 0)),
+                        new SpawnBlobEffect(spawned)
+                    }),
+                // Merge beat: occupant clears as the mover arrives on its tile.
+                new MoveStep(
+                    MoveStepKind.Merge,
+                    new IBoardEffect[]
+                    {
+                        new RemoveBlobEffect(target),
+                        new MoveBlobEffect(source.Id, new GridPosition(1, 0), target.Position)
+                    })
+            };
+            GameSessionSnapshot finalSnapshot = Snapshot(
+                source.WithPosition(target.Position),
+                spawned);
+
+            presenter.ApplySteps(steps, finalSnapshot);
+
+            Assert.That(presenter.VisibleBlobCount, Is.EqualTo(2));
+            Assert.That(presenter.TryGetBlobView("target", out _), Is.False);
+            Assert.That(presenter.TryGetBlobView("source", out BlobView sourceView), Is.True);
+            Assert.That(sourceView.GridPosition, Is.EqualTo(new GridPosition(2, 0)));
+            Assert.That(presenter.TryGetBlobView("spawned", out BlobView spawnedView), Is.True);
+            Assert.That(spawnedView.GridPosition, Is.EqualTo(new GridPosition(0, 0)));
+            Assert.That(presenter.IsSynchronizedWith(finalSnapshot), Is.True);
+        }
+
+        [Test]
+        public void StepWithMissingViewFallsBackToSnapshotRebuild()
+        {
+            GameSessionSnapshot snapshot = Snapshot(Blob("source", BlobColor.Red, 0, 0));
+            BoardPresenter presenter = CreatePresenter(snapshot);
+            presenter.TryGetBlobView("source", out BlobView originalView);
+
+            presenter.ApplySteps(
+                new[]
+                {
+                    new MoveStep(
+                        MoveStepKind.Traverse,
+                        new IBoardEffect[]
+                        {
+                            new MoveBlobEffect("missing", new GridPosition(0, 0), new GridPosition(1, 0))
+                        })
+                },
+                snapshot);
+
+            Assert.That(presenter.TryGetBlobView("source", out BlobView rebuiltView), Is.True);
+            Assert.That(rebuiltView, Is.Not.SameAs(originalView));
+            Assert.That(presenter.IsSynchronizedWith(snapshot), Is.True);
+        }
+
+        [Test]
         public void MissingMappedViewFallsBackToSnapshotRebuild()
         {
             GameSessionSnapshot snapshot = Snapshot(Blob("source", BlobColor.Red, 0, 0));

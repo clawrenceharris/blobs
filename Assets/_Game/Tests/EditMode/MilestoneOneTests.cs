@@ -31,7 +31,9 @@ namespace Blobs.Tests.EditMode
 
             Assert.That(result.Succeeded, Is.True);
             Assert.That(result.FailureReason, Is.EqualTo(MoveFailureReason.None));
-            Assert.That(result.Effects.Count, Is.EqualTo(2));
+            // Per-tile timeline: traverse 0,0 -> 1,0, then merge beat (remove target + move into 2,0).
+            Assert.That(result.Effects.Count, Is.EqualTo(3));
+            Assert.That(result.Steps.Count, Is.EqualTo(2));
             Assert.That(snapshot.Blobs.Count, Is.EqualTo(1));
             Assert.That(snapshot.Blobs.Single().Id, Is.EqualTo("red_a"));
             Assert.That(snapshot.Blobs.Single().Position, Is.EqualTo(new GridPosition(2, 0)));

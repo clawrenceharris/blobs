@@ -1,50 +1,59 @@
 namespace Blobs.Core
 {
+    /// <summary>
+    /// Resolves what happens when a moving blob collides with an occupant on its path.
+    /// Strategies emit collision-tile effects only; the resolver owns locomotion, so the
+    /// same strategy works for intermediate chain merges and for the final target.
+    /// </summary>
     public interface IMergeStrategy
     {
-        MergePlan BuildPlan(MoveContext context);
+        CollisionPlan BuildPlan(MoveContext context);
     }
-    public sealed class NormalToNormalMergeStrategy : IMergeStrategy
+
+    /// <summary>
+    /// Standard color-clash merge: occupant is removed, the mover survives on its tile
+    /// and may continue along its path. Requires differing colors.
+    /// </summary>
+    public sealed class NormalMergeStrategy : IMergeStrategy
     {
-        public MergePlan BuildPlan(MoveContext context)
+        public CollisionPlan BuildPlan(MoveContext context)
         {
             if (context.Source.Color == context.Target.Color)
             {
-                return MergePlan.Failed(
+                return CollisionPlan.Failed(
                     MoveFailureReason.NormalMergeRequiresDifferentColors);
             }
 
-            return MergePlan.Success(
-                new RemoveBlobEffect(context.Target),
-                new MoveBlobEffect(
-                    context.Source.Id,
-                    context.Source.Position,
-                    context.Target.Position));
+            return CollisionPlan.Continue(
+                new RemoveBlobEffect(context.Target));
         }
     }
 
-    public sealed class NormalToFlagMergeStrategy : IMergeStrategy
+    /// <summary>
+    /// Flag capture: requires matching color and a board containing only the mover and
+    /// the flag. Consumes the mover; the flag stays in place.
+    /// </summary>
+    public sealed class FlagMergeStrategy : IMergeStrategy
     {
-        public MergePlan BuildPlan(MoveContext context)
+        public CollisionPlan BuildPlan(MoveContext context)
         {
             if (context.Source.Color != context.Target.Color)
             {
-                return MergePlan.Failed(
+                return CollisionPlan.Failed(
                     MoveFailureReason.FlagRequiresMatchingColor);
             }
 
-            // The board may contain exactly the source and flag.
+            // The board may contain exactly the mover and the flag at capture time.
             if (context.Board.BlobCount != 2)
             {
-                return MergePlan.Failed(
+                return CollisionPlan.Failed(
                     MoveFailureReason.FlagRequiresNoOtherBlobs);
             }
 
-            return MergePlan.Success(
+            return CollisionPlan.ConsumeMover(
                 new MergeIntoFlagEffect(
                     context.Source,
                     context.Target));
         }
     }
-
 }

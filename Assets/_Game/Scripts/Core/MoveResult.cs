@@ -11,12 +11,18 @@ namespace Blobs.Core
         /// <summary>
         /// Creates a resolved move result.
         /// </summary>
-        public MoveResult(bool succeeded, MoveFailureReason failureReason, IReadOnlyList<IBoardEffect> effects, bool isComplete)
+        public MoveResult(
+            bool succeeded,
+            MoveFailureReason failureReason,
+            IReadOnlyList<IBoardEffect> effects,
+            bool isComplete,
+            IReadOnlyList<MoveStep> steps = null)
         {
             Succeeded = succeeded;
             FailureReason = failureReason;
             Effects = effects ?? new List<IBoardEffect>();
             IsComplete = isComplete;
+            Steps = steps ?? new List<MoveStep>();
         }
 
         /// <summary>
@@ -38,6 +44,13 @@ namespace Blobs.Core
         /// Completion state after the move has been applied.
         /// </summary>
         public bool IsComplete { get; }
+
+        /// <summary>
+        /// Sequential timeline beats for this move. Effects inside one step are
+        /// logically simultaneous; steps play in order. Empty for failed moves and
+        /// for results produced by callers that only supply flat effects.
+        /// </summary>
+        public IReadOnlyList<MoveStep> Steps { get; }
 
         /// <summary>
         /// Creates a failed result with no board effects.

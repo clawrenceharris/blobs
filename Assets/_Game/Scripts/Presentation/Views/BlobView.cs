@@ -15,6 +15,7 @@ namespace Blobs.Presentation
     {
         public BlobRenderer BlobRenderer { get; private set; }
 
+        private IMergeTargetFeedback _mergeTargetFeedback;
 
         public string BlobId { get; private set; }
         public GridPosition GridPosition { get; private set; }
@@ -58,6 +59,38 @@ namespace Blobs.Presentation
             transform.DOKill();
             GridPosition = position;
             return transform.DOLocalMove(target, duration).SetEase(Ease.OutQuad);
+        }
+
+        /// <summary>
+        /// Animates this view to be consumed into the target position.
+        /// </summary>
+        /// <param name="targetPosition">The target position to animate to</param>
+        /// <param name="moveDuration">The duration of the move animation</param>
+        /// <param name="despawnDuration">The duration of the despawn animation</param>
+        /// <returns>The tween for the animation</returns>
+        public Tween PlayConsumedInto(
+            GridPosition targetPosition,
+            float moveDuration,
+            float despawnDuration)
+        {
+            transform.DOKill();
+
+            GridPosition = targetPosition;
+
+            Vector3 target = GridToLocal(
+                targetPosition,
+                _cellSize,
+                _origin);
+
+            return DOTween.Sequence()
+                .Append(
+                    transform
+                        .DOLocalMove(target, moveDuration)
+                        .SetEase(Ease.InQuad))
+                .Append(
+                    transform
+                        .DOScale(Vector3.zero, despawnDuration)
+                        .SetEase(Ease.InBack));
         }
 
         /// <summary>
@@ -109,6 +142,27 @@ namespace Blobs.Presentation
         private void OnDestroy()
         {
             transform.DOKill();
+        }
+
+        private void CacheOptionalBehaviors()
+        {
+            _mergeTargetFeedback = null;
+
+            MonoBehaviour[] components =
+                GetComponents<MonoBehaviour>();
+
+            foreach (MonoBehaviour component in components)
+            {
+                if (component is IMergeTargetFeedback feedback)
+                {
+                    _mergeTargetFeedback = feedback;
+                    break;
+                }
+            }
+        }
+        public Tween PlaySourceAccepted(float duration)
+        {
+            return _mergeTargetFeedback?.PlaySourceAccepted(duration);
         }
 
     }

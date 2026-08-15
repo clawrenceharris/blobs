@@ -6,7 +6,6 @@ namespace Blobs.Core
         Blue,
         Green,
         Yellow,
-        Pink,
         Purple
     }
 }

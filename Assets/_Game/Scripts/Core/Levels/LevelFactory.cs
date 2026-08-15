@@ -24,7 +24,6 @@ namespace Blobs.Core
                     blob.Id,
                     blob.Type,
                     blob.Color,
-                    blob.Size,
                     blob.Position
                    ));
             }

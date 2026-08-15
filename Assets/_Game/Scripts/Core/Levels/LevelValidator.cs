@@ -29,7 +29,7 @@ namespace Blobs.Core
             if (level.Width <= 0 || level.Height <= 0)
                 throw new InvalidOperationException("Board dimensions must be positive.");
 
-           
+
             var blobIds = new HashSet<string>(StringComparer.Ordinal);
             var tileIds = new HashSet<string>(StringComparer.Ordinal);
             var blobPositions = new HashSet<GridPosition>();
@@ -48,7 +48,6 @@ namespace Blobs.Core
 
                 RequireEnumValue(blob.Color, "blob color");
                 RequireEnumValue(blob.Type, "blob type");
-                RequireEnumValue(blob.Size, "blob size");
             }
 
 

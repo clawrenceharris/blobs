@@ -20,7 +20,7 @@ MonoBehaviour:
   blobs:
   - rid: 830000000000000001
   - rid: 830000000000000002
-  - rid: 830000000000000003
+  - rid: 7441116775194820813
   tiles: []
   objective: 0
   visualTheme: {fileID: 11400000, guid: b5998ed730be04ebe92db77229a4677f, type: 2}
@@ -34,7 +34,6 @@ MonoBehaviour:
         position: {x: 0, y: 0}
         color: 1
         type: 0
-        size: 0
     - rid: 830000000000000002
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
@@ -42,12 +41,10 @@ MonoBehaviour:
         position: {x: 3, y: 0}
         color: 2
         type: 0
-        size: 0
-    - rid: 830000000000000003
-      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+    - rid: 7441116775194820813
+      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: level03-purple
+        id: level03-flag
         position: {x: 3, y: 3}
-        color: 5
-        type: 0
-        size: 0
+        color: 1
+        type: 1

@@ -45,6 +45,9 @@ namespace Blobs.Editor
             {
                 if (GUILayout.Button("Add Normal Blob"))
                     AddBlob(new NormalBlobAssetData());
+
+                if (GUILayout.Button("Add Flag Blob"))
+                    AddBlob(new FlagBlobAssetData());
             }
 
             serializedObject.ApplyModifiedProperties();

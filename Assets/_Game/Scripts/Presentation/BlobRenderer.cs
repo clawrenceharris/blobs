@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 namespace Blobs.Presentation
 {
     /// <summary>
@@ -10,23 +11,28 @@ namespace Blobs.Presentation
     {
         [Serializable]
         /// <summary>
-        /// Maps a skin color role to one or more sprite renderers in a blob prefab.
+        /// Maps a color-binding mode to one or more sprite renderers in a blob prefab.
         /// </summary>
         public class Target
         {
-            public SkinColorRole Role = SkinColorRole.Base;
+            [FormerlySerializedAs("Role")]
+            public BlobColorBindingMode ColorBinding = BlobColorBindingMode.Blob;
             public SpriteRenderer[] Renderers;
         }
         [SerializeField] private SpriteRenderer _fallbackBaseRenderer;
-        [SerializeField] private Material _defaultMaterial;
 
         [SerializeField] private Target[] _targets;
+
+        private MaterialPropertyBlock _properties;
+
+        private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+        private static readonly int ShadowColorId = Shader.PropertyToID("_ShadowColor");
+        private static readonly int HighlightColorId = Shader.PropertyToID("_HighlightColor");
 
 
         public Target[] Targets => _targets;
         public SpriteRenderer BaseRenderer => _fallbackBaseRenderer;
 
-        public Material DefaultMaterial => _defaultMaterial;
 
         private void Awake()
         {
@@ -35,15 +41,9 @@ namespace Blobs.Presentation
         }
 
         /// <summary>
-        /// Applies base, accent, and detail colors to the configured renderer targets.
+        /// Applies the blob's three-color shader skin to targets bound to the blob color.
         /// </summary>
         public void ApplySkin(Skin skin)
-        {
-            ApplyRoleColor(SkinColorRole.Base, skin.BaseColor);
-            ApplyRoleColor(SkinColorRole.Accent, skin.AccentColor);
-            ApplyRoleColor(SkinColorRole.Detail, skin.DetailColor);
-        }
-        private void ApplyRoleColor(SkinColorRole role, Color color)
         {
             bool applied = false;
             if (_targets != null)
@@ -51,41 +51,54 @@ namespace Blobs.Presentation
                 for (int i = 0; i < _targets.Length; i++)
                 {
                     var binding = _targets[i];
-                    if (binding == null || binding.Role != role || binding.Renderers == null) continue;
+                    if (binding == null ||
+                        binding.ColorBinding != BlobColorBindingMode.Blob ||
+                        binding.Renderers == null)
+                    {
+                        continue;
+                    }
 
                     for (int j = 0; j < binding.Renderers.Length; j++)
                     {
                         if (binding.Renderers[j] == null) continue;
-                        binding.Renderers[j].color = color;
+                        ApplyShaderSkin(binding.Renderers[j], binding.Renderers[j].material, skin, ref _properties);
                         applied = true;
                     }
                 }
             }
 
-            if (!applied && role == SkinColorRole.Base && _fallbackBaseRenderer != null)
-                _fallbackBaseRenderer.color = color;
+            if (!applied && _fallbackBaseRenderer != null)
+                ApplyShaderSkin(_fallbackBaseRenderer, _fallbackBaseRenderer.material, skin, ref _properties);
+        }
+
+        internal static void ApplyShaderSkin(
+            SpriteRenderer renderer,
+            Material material,
+            Skin skin,
+            ref MaterialPropertyBlock properties)
+        {
+            if (renderer == null)
+                return;
+
+            if (material != null && renderer.sharedMaterial != material)
+                renderer.sharedMaterial = material;
+
+            properties ??= new MaterialPropertyBlock();
+            renderer.GetPropertyBlock(properties);
+            properties.SetColor(BaseColorId, skin.BaseColor);
+            properties.SetColor(ShadowColorId, skin.ShadowColor);
+            properties.SetColor(HighlightColorId, skin.HighlightColor);
+            renderer.SetPropertyBlock(properties);
+
+            Color tint = renderer.color;
+            renderer.color = new Color(1f, 1f, 1f, tint.a);
         }
         /// <summary>
         /// Applies one color to all configured renderers. Useful for simple fallback visuals.
         /// </summary>
         public void SetColor(Color color)
         {
-            if (_targets != null)
-            {
-                for (int i = 0; i < _targets.Length; i++)
-                {
-                    var binding = _targets[i];
-                    foreach (var sprite in binding.Renderers)
-                    {
-                        sprite.color = color;
-                    }
-                }
-
-            }
-            if (_fallbackBaseRenderer != null)
-            {
-                _fallbackBaseRenderer.color = color;
-            }
+            ApplySkin(new Skin(color, color, color));
         }
 
         /// <summary>

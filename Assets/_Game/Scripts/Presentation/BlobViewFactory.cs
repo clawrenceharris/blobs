@@ -40,7 +40,7 @@ namespace Blobs.Presentation
 
             instance.Initialize(
                 blob,
-                theme,
+                _catalog.GetRequiredColorPalette(),
                 cellSize,
                 origin);
 

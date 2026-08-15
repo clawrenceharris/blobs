@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 571611068098925856}
   - component: {fileID: 7049613652742966449}
+  - component: {fileID: 2208385865553281441}
   m_Layer: 3
   m_Name: Puddle
   m_TagString: Untagged
@@ -58,7 +59,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 67d4f62ca65af4605bcf0257e28a7aa2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -78,7 +79,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1381305635
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: -1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: f0283e3fc0fb64832a9400b7ac9b3d2e, type: 3}
@@ -91,6 +92,20 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &2208385865553281441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6546976005354869763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4308dfb561940f3a16025e7c52cdcc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.TrailBlobColorBinding
+  blobMaterial: {fileID: 2100000, guid: 67d4f62ca65af4605bcf0257e28a7aa2, type: 2}
+  targetRenderer: {fileID: 7049613652742966449}
 --- !u!1001 &3912473897929030523
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -148,7 +163,7 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
-      propertyPath: _targets.Array.data[1].Role
+      propertyPath: _targets.Array.data[1].ColorBinding
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}

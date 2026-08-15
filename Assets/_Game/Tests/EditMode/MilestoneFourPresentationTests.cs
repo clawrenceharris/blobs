@@ -162,11 +162,13 @@ namespace Blobs.Tests.EditMode
             _createdObjects.Add(gameObject);
             var theme = ScriptableObject.CreateInstance<LevelVisualThemeAsset>();
             _createdObjects.Add(theme);
+            var blobColorPalette = ScriptableObject.CreateInstance<BlobColorPaletteAsset>();
+            _createdObjects.Add(blobColorPalette);
             var presenter = gameObject.AddComponent<BoardPresenter>();
             presenter.Initialize(
                 new FakeGameplayState(initialSnapshot),
                 theme,
-                new TestBlobViewFactory());
+                new TestBlobViewFactory(blobColorPalette));
             return presenter;
         }
 
@@ -198,6 +200,13 @@ namespace Blobs.Tests.EditMode
 
         private sealed class TestBlobViewFactory : IBlobViewFactory
         {
+            private readonly BlobColorPaletteAsset _colorPalette;
+
+            public TestBlobViewFactory(BlobColorPaletteAsset colorPalette)
+            {
+                _colorPalette = colorPalette;
+            }
+
             public BlobView Create(
                 BlobState blob,
                 LevelVisualThemeAsset theme,
@@ -208,7 +217,7 @@ namespace Blobs.Tests.EditMode
                 var gameObject = new GameObject("Test Blob " + blob.Id);
                 gameObject.transform.SetParent(parent, false);
                 BlobView view = gameObject.AddComponent<BlobView>();
-                view.Initialize(blob, theme, cellSize, origin);
+                view.Initialize(blob, _colorPalette, cellSize, origin);
                 return view;
             }
         }

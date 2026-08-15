@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3108155989266402597
+--- !u!114 &-6462256253795533398
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MAT_Blob
-  m_Shader: {fileID: -6465566751694194690, guid: 772285b77052f4f2dacd3b113e5845ac, type: 3}
+  m_Name: MAT_FlagBlob
+  m_Shader: {fileID: -6465566751694194690, guid: b7c702fb7ed8f4c809b8a0ea2a38ca5b, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -41,7 +41,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 9d3efb634e0ab4904b99c2d4f684c3fa, type: 3}
+        m_Texture: {fileID: 2800000, guid: d52fe822e632c42dd8da122a45d49280, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
@@ -67,15 +67,11 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
-    - _HighlightBlend: 0.61
-    - _ShadowBlend: 0.44
     - _ZWrite: 0
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseColor: {r: 0, g: 0.7013531, b: 1, a: 1}
+    - _BaseColor: {r: 0.15566039, g: 0.22198476, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _HighlightColor: {r: 0.7122642, g: 0.98799604, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShadowColor: {r: 0, g: 0.2405997, b: 0.5754717, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

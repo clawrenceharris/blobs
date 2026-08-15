@@ -16,6 +16,8 @@ namespace Blobs.Presentation
         public BlobRenderer BlobRenderer { get; private set; }
 
         private IMergeTargetFeedback _mergeTargetFeedback;
+        private readonly BlobSkinApplier _skinApplier = new();
+        private readonly BlobSkinResolver _skinResolver = new();
 
         public string BlobId { get; private set; }
         public GridPosition GridPosition { get; private set; }
@@ -26,7 +28,11 @@ namespace Blobs.Presentation
         /// <summary>
         /// Initializes the view from immutable Core blob state.
         /// </summary>
-        public void Initialize(BlobState blob, LevelVisualThemeAsset theme, float cellSize, Vector2 origin)
+        public void Initialize(
+            BlobState blob,
+            BlobColorPaletteAsset colorPalette,
+            float cellSize,
+            Vector2 origin)
         {
             BlobId = blob.Id;
             _cellSize = cellSize;
@@ -37,7 +43,7 @@ namespace Blobs.Presentation
             transform.localScale = _baseScale;
             BlobRenderer = GetComponent<BlobRenderer>();
             CacheOptionalBehaviors();
-            ApplySkin(blob, theme);
+            ApplySkin(blob, colorPalette);
         }
 
         /// <summary>
@@ -115,14 +121,23 @@ namespace Blobs.Presentation
         }
 
         /// <summary>
-        /// Applies visual skinning for the supplied blob state and level theme.
+        /// Applies visual skinning for the supplied blob state and color palette.
         /// </summary>
-        public void ApplySkin(BlobState blob, LevelVisualThemeAsset theme)
+        public void ApplySkin(BlobState blob, BlobColorPaletteAsset colorPalette)
         {
-            var skinApplier = new BlobSkinApplier();
-            var skinResolver = new BlobSkinResolver();
-            var skin = skinResolver.ResolveSkin(blob, theme);
-            skinApplier.Apply(this, skin.Value);
+            Skin skin = _skinResolver.ResolveSkin(blob.Color, colorPalette);
+            _skinApplier.Apply(this, skin);
+
+            BlobColorBinding[] bindings =
+                GetComponentsInChildren<BlobColorBinding>(true);
+
+            foreach (BlobColorBinding binding in bindings)
+            {
+                binding.Apply(
+                    blob,
+                    colorPalette
+                );
+            }
         }
 
         private static Vector3 GridToLocal(GridPosition position, float cellSize, Vector2 origin)

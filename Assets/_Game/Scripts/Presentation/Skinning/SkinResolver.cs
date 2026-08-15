@@ -4,49 +4,43 @@ using System;
 namespace Blobs.Presentation
 {
     /// <summary>
-    /// Converts domain/content data into a concrete presentation skin.
+    /// Resolves a logical blob color through the authored presentation palette.
     /// </summary>
-    public interface ISkinResolver<T>
+    public interface IBlobSkinResolver
     {
-        /// <summary>
-        /// Resolves a skin for an entity using the current level theme.
-        /// </summary>
-        Skin? ResolveSkin(T entity, LevelVisualThemeAsset theme);
+        Skin ResolveSkin(BlobColor color, BlobColorPaletteAsset palette);
     }
 
     /// <summary>
-    /// Resolves normal blob colors from the current level visual theme.
+    /// Converts palette content into a concrete BlobColorShader skin.
+    /// Blob-type-specific color sources are deliberately handled by prefab bindings.
     /// </summary>
-    public class BlobSkinResolver : ISkinResolver<BlobState>
+    public sealed class BlobSkinResolver : IBlobSkinResolver
     {
-        /// <inheritdoc />
-        public Skin? ResolveSkin(BlobState blob, LevelVisualThemeAsset theme)
+        public Skin ResolveSkin(BlobColor color, BlobColorPaletteAsset palette)
         {
-            var color = ResolveThemeColor(blob.Color, theme);
+            if (palette == null)
+                throw new ArgumentNullException(nameof(palette));
 
-            // Trail blobs indicate their trail color through the Detail role,
-            // which the trail prefab binds to its puddle renderer.
-            var detailColor = blob.TrailColor.HasValue
-                ? ResolveThemeColor(blob.TrailColor.Value, theme)
-                : color;
-
-            return new Skin(color, color, detailColor);
+            BlobShaderColors colors = palette.GetRequired(color);
+            return new Skin(
+                colors.BaseColor,
+                colors.ShadowColor,
+                colors.HighlightColor);
         }
-
-        private static UnityEngine.Color ResolveThemeColor(
-            BlobColor color,
-            LevelVisualThemeAsset theme)
+    }
+    public sealed class FlagBlobSkinResolver : IBlobSkinResolver
+    {
+        public Skin ResolveSkin(BlobColor color, BlobColorPaletteAsset palette)
         {
-            return color switch
-            {
-                BlobColor.Red => theme.Red,
-                BlobColor.Green => theme.Green,
-                BlobColor.Blue => theme.Blue,
-                BlobColor.Yellow => theme.Yellow,
-                BlobColor.Purple => theme.Purple,
-                _ => throw new ArgumentException("Invalid blob color"),
-            };
-        }
+            if (palette == null)
+                throw new ArgumentNullException(nameof(palette));
 
+            BlobShaderColors colors = palette.GetRequired(color);
+            return new Skin(
+                colors.BaseColor,
+                colors.BaseColor,
+                colors.BaseColor);
+        }
     }
 }

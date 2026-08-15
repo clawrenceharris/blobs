@@ -34,8 +34,9 @@ For a standard merge:
 
 - The source and target must be aligned on the same **row or column**.
 - The source and target cannot be the same color.
-- The source travels along the path toward the target.
-- The move may be rejected or modified by blobs, tiles, hazards, or other mechanics on that path.
+- The source travels one tile at a time toward the target.
+- Every occupant on that path must itself be a valid merge for the moving blob. If any collision is invalid, the whole move is rejected and the board is unchanged.
+- After a surviving merge the mover continues; a merge that consumes the mover (Flag capture) ends the move at that tile even if the player selected a farther blob.
 - A successful merge clears or transforms blobs according to the active blob rules.
 
 Click order matters. The first selected blob is always the **source**, and the second selected blob is always the **target**. Reversing the click order creates a different merge intent with the opposite source and target, even if the same two blobs are involved.
@@ -46,43 +47,46 @@ The important distinction is:
 
 > The player chooses the intended destination, but the board determines what actually happens along the way.
 
-For example, a source blob might be stopped by a sticky tile, redirected by a future portal mechanic, blocked by a laser, or interact with another blob before reaching its selected target.
+For example, a source blob might be consumed by a Flag before reaching a farther selected blob, leave trail blobs on empty tiles, or chain-merge through several occupants on the way to the selected target.
 
 ---
 
 ## Path-Based Movement
 
-A merge is resolved across the complete path between the source and target.
+A merge is resolved as a **timeline of per-tile steps** between the source and the selected target.
+
+Each step is one tile of locomotion plus whatever happens at that beat:
+
+- **Traverse** — the next cell is empty. The mover steps onto it. Movement behaviors (Trail spawning) fire for the tile being left behind.
+- **Merge** — the next cell is occupied. The collision strategy for `(mover type, occupant type)` must succeed. The occupant is resolved, then the mover enters the cell unless the collision consumes the mover.
 
 This allows mechanics to react to positions the blob crosses rather than only the starting and ending cells.
 
 Examples include:
 
-- leaving blobs behind while traveling;
-- being blocked by an active laser;
-- being removed by a special tile;
-- sliding differently on ice;
-- stopping on sticky terrain;
-- triggering a multi-merge or chained interaction.
+- leaving Normal blobs behind on departed empty tiles (Trail);
+- chain-merging through every occupant on the way to the selected target;
+- ending early when a Flag consumes the mover;
+- future: being blocked by an active laser, sliding on ice, stopping on sticky terrain, or appending a Ghost haunt after locomotion.
 
-This path-based behavior is one of the main foundations for the game's puzzle depth.
+This path-based timeline is the foundation for the game's puzzle depth.
 
 ---
 
-## Multi-Merges
+## Multi-Merges (Chain Merging)
 
-Some moves may interact with more than one blob before the source reaches its selected target.
+Chain merging is a **universal path rule**, not a Trail-only exception. Occupants no longer block the path by default.
 
-A **multi-merge** allows a single player action to create several sequential interactions along the same route.
+A single player action walks the rook line. Every occupant must be a valid merge for the current mover. If any link fails (same color, unsupported pair, Flag rules not met), the entire intent fails atomically.
 
 This is intended to create the game's most satisfying puzzle moments:
 
 - one move;
-- several meaningful interactions;
+- several sequential interactions along one route;
 - clear visual cause and effect;
-- potentially larger cascades.
+- later, larger cascades.
 
-Multi-merges should still remain deterministic and readable so the player can understand why each result occurred.
+A merge that consumes the source stops the walk. A surviving merge continues locomotion, including Trail spawning on later empty tiles. A tile that hosted a merge never also receives a trail spawn — a successful merge should not leave a new blob on the same cell.
 
 ---
 
@@ -98,21 +102,28 @@ Normal blobs establish the basic merge rules and are the primary unit used to te
 
 ## Trail Blob
 
-A Trail Blob leaves additional normal blobs behind while moving.
+A Trail Blob moves under the same source-to-target rules as a Normal blob. It also has a **trail color**, shown as a puddle on the blob.
 
-When the Trail Blob travels across the board:
+When a Trail Blob travels:
 
-- it moves toward its selected target;
-- small normal blobs are created along its previous path;
-- the spawned blobs use the trail color associated with the Trail Blob.
+- it chain-merges like any other source;
+- on every tile it **departs** that was not a merge site during this move, it leaves a Normal blob of its trail color;
+- it never leaves a blob on the selected target's cell, and never on a cell where it just merged.
 
-This turns a single merge into a board-state-changing move and can create new opportunities or obstacles for later merges.
+Example: a red Trail Blob at `(0,0)` with trail color blue, targeting a blob at `(0,3)`:
+
+- empty path → blue Normal blobs spawn at `(0,0)`, `(0,1)`, and `(0,2)` as the Trail Blob leaves those tiles;
+- purple occupant at `(0,1)` → the Trail Blob merges into purple (no spawn at `(0,1)`), then continues and still spawns at `(0,0)` and `(0,2)`.
+
+Trail blobs are **clearable** and count toward the clear-all objective. Spawned trail leftovers are ordinary Normal blobs.
 
 ---
 
 ## Ghost Blob
 
-Ghost Blobs have a special post-merge behavior.
+Ghost Blobs are a planned post-merge behavior, not yet implemented in Core.
+
+The intended hook is already in the collision contract: a strategy may append **follow-up steps** after the main locomotion timeline. Those steps can move a *different* blob id (the Ghost) toward the vacated source position.
 
 After another blob merges with a Ghost Blob, the Ghost can move back toward the original source position, effectively **haunting** or taking over the position that was vacated.
 
@@ -125,17 +136,21 @@ Example:
 - the Ghost begins moving toward the Trail Blob's original position;
 - if the Ghost crosses a Sigil Tile, it is cleared before completing its normal haunt behavior.
 
-This is an example of why post-merge effects are treated as sequential interactions rather than one monolithic result.
+This is why post-merge effects are extra steps on the same timeline rather than one monolithic result.
 
 ---
 
 ## Flag / Goal Blob
 
-A special goal-oriented blob can be used as a level completion condition.
+A Flag blob is a level-completion piece, not a source.
 
-The current concept is that a compatible blob must merge into the goal blob to satisfy the level objective.
+Implemented rules:
 
-The exact naming and final rule set for this blob can evolve as the game is refined.
+- Flags cannot be selected as a source (`CanBeSource = false`).
+- Capture requires **matching color**.
+- Capture is allowed only when the board contains **exactly the mover and the flag** at the moment of collision (other blobs must already be gone, including via earlier chain-merge steps in the same move). Trail leftovers spawned on earlier tiles of the same move also count, so a Trail blob can capture a flag in one move only when it is adjacent (the origin spawn happens after the capture plan is accepted).
+- Capture **consumes the source**; the flag stays in place.
+- Flags are not clearable. Completing a flag capture that leaves only the flag satisfies the current clear-all-clearable objective.
 
 ---
 
@@ -246,12 +261,12 @@ A level can specify:
 
 - board width and height;
 - blob placement;
-- blob type;
+- blob type (Normal, Flag, Trail);
 - blob color;
-- blob size;
+- Trail color (Trail blobs only);
 - tile placement;
 - tile type;
-- linked lasers;
+- linked lasers (planned);
 - scoring data;
 - tutorial steps;
 - goal-specific setup.
@@ -322,32 +337,30 @@ This allows effects such as Trail spawns, Ghost movement, ice movement, and tile
 
 # Resolution Architecture
 
-The current architecture is moving toward a:
-
-**MoveResolver + Resolution Pipeline + Effect Queue**
-
-model.
+Production Core uses a **step-based move timeline**, not a single source-to-target merge object.
 
 ## Flow
 
 ```text
 Player Input
     ↓
-Merge Intent (Source + Target)
+MoveIntent (SourceId + TargetId)
     ↓
 MoveResolver
     ↓
-Build Path / Move Context
+Validate source/target, alignment
     ↓
-Validation + Rules
+Simulate per-tile walk on a cloned board
     ↓
-Resolution Pipeline
+Traverse step or Merge step (CollisionPlan)
     ↓
-Ordered Effect Queue
+IMoveBehavior.OnTileDeparted (Trail spawn)
     ↓
-Board Mutation / Command
+Commit flattened effects atomically
     ↓
-Animation & Feedback
+MoveResult.Steps + Effects
+    ↓
+BoardPresenter step beats
 ```
 
 ---
@@ -357,16 +370,11 @@ Animation & Feedback
 There is one canonical player move:
 
 ```csharp
-public readonly struct MergeIntent
+public readonly struct MoveIntent
 {
-    public readonly string SourceId;
-    public readonly string TargetId;
-
-    public MergeIntent(string sourceId, string targetId)
-    {
-        SourceId = sourceId;
-        TargetId = targetId;
-    }
+    public MoveIntent(string sourceId, string targetId);
+    public string SourceId { get; }
+    public string TargetId { get; }
 }
 ```
 
@@ -374,51 +382,53 @@ Clicking two blobs and swiping from one blob to another both produce this same i
 
 ---
 
-## Effects
+## Steps and effects
 
-Instead of one large merge object describing every special case, resolution produces small ordered effects.
+Resolution produces a sequential list of `MoveStep`s. Effects **inside** a step are logically simultaneous (Presentation may Join them). Steps play one after another.
 
-Examples:
+```text
+MoveStepKind.Traverse | MoveStepKind.Merge
+```
 
-```csharp
+Atomic board effects include:
+
+```text
 MoveBlobEffect
 RemoveBlobEffect
 SpawnBlobEffect
-ResizeBlobEffect
-SetTileStateEffect
-TriggerEffect
+MergeIntoFlagEffect
 ```
 
-This makes complex moves easier to reason about.
+Collision strategies (`IMergeStrategy`) emit only occupant resolution via `CollisionPlan`:
 
-For example:
+- `Continue` — occupant resolved; mover survives and may keep walking.
+- `ConsumeMover` — mover is consumed; locomotion ends at this tile.
+- `Failed` — the whole intent is rejected.
+- `FollowUpSteps` — extra steps after locomotion (Ghost haunt hook).
+
+Locomotion (`MoveBlobEffect`) is owned by the resolver so the same strategy works for intermediate chain merges and for the final target.
+
+Example Trail chain:
 
 ```text
-Move source
-→ spawn Trail blob
-→ continue moving
-→ merge
-→ remove target
-→ trigger Ghost haunt
-→ Ghost crosses Sigil
-→ remove Ghost
+Merge into purple at (0,1) + spawn blue at (0,0)
+→ Traverse to (0,2) + spawn blue at (0,2)
+→ Merge into green at (0,3)
 ```
-
-Each meaningful sub-action can be represented individually.
 
 ---
 
-## Why the Effect Queue Matters
+## Why the timeline matters
 
-The Effect Queue provides:
+The step list provides:
 
 - deterministic ordering;
-- scalable special mechanics;
-- multi-merge support;
-- cascade support;
-- synchronization points for animation.
+- scalable special mechanics without a giant merge function;
+- chain-merge support;
+- synchronization points for animation (Trail spawn joined to the tile-leave beat);
+- a place for follow-up motion after the source has finished moving.
 
-Rules and reactions can enqueue new effects without placing every possible mechanic inside one giant merge function.
+Rules and reactions enqueue effects onto the current step or append follow-up steps without placing every mechanic inside one merge function.
 
 ---
 
@@ -483,11 +493,11 @@ The base merge language should remain simple enough that future mechanics can ex
 
 # Current Development Priorities
 
-1. Finalize the basic merge rules.
-2. Complete the MoveResolver / Resolution Pipeline foundation.
-3. Make normal movement and merging feel excellent.
-4. Add one special mechanic at a time.
-5. Test multi-merges and cascades.
+1. Keep the step-based MoveResolver timeline stable.
+2. Make multi-tile movement and Trail spawn timing feel excellent.
+3. Author Trail levels and polish the puddle visual.
+4. Add Ghost as follow-up steps on the same timeline.
+5. Add tile constraints (lasers, sticky, ice) as path-step reactions.
 6. Build a small set of handcrafted levels.
 7. Refine board rendering and visual feedback.
 8. Expand the mechanic library only after the core loop consistently feels good.

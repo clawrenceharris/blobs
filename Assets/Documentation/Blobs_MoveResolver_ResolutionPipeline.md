@@ -1,5 +1,13 @@
 # Blobs Move Resolution Architecture
 
+**Status:** Prototype / historical design notes.
+
+Production Core under `Assets/_Game/Scripts/Core` uses a step-based `MoveResolver` (`MoveStep`, `CollisionPlan`, `IMoveBehavior`) rather than `BoardModel` / inverse effects / player undo. See `Docs/GAME_DESIGN.md` (Resolution Architecture) and `Docs/TECHNICAL_ARCHITECTURE.md` (Move resolution).
+
+The remainder of this document describes the older pipeline sketch.
+
+---
+
 **MoveResolver + Resolution Pipeline + Effect Queue**  
 _(Model-only. Animation/VFX are consumed later by presenters.)_
 

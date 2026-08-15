@@ -1178,7 +1178,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Blobs.UI::Blobs.UI.GameplayHudPresenter
   sessionHostBehaviour: {fileID: 896816961}
   moveCountText: {fileID: 1508395821}
-  statusText: {fileID: 778420409}
+  statusText: {fileID: 0}
   restartButton: {fileID: 456420002}
   completionRoot: {fileID: 965240318}
   playingStatus: Playing...
@@ -2014,6 +2014,7 @@ GameObject:
   - component: {fileID: 778420408}
   - component: {fileID: 778420410}
   - component: {fileID: 778420409}
+  - component: {fileID: 778420411}
   m_Layer: 0
   m_Name: FeedbackText
   m_TagString: Untagged
@@ -2132,6 +2133,28 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &778420411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778420407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0112af23fac4df68ee325579c0f6bcf, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.GameplayFeedbackPresenter
+  feedbackText: {fileID: 778420409}
+  fadeInDuration: 0.2
+  holdDuration: 1.5
+  fadeOutDuration: 0.3
+  shakeDuration: 0.25
+  shakeStrength: {x: 12, y: 4}
+  shakeVibrato: 20
+  shakeRandomness: 45
+  moveUpAmount: 30
+  popScale: 1.1
 --- !u!222 &778420410
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2250,6 +2273,7 @@ MonoBehaviour:
   cameraPresenter: {fileID: 983718534}
   inputAdapter: {fileID: 1046084939}
   commandAdapter: {fileID: 912528542}
+  feedbackPresenter: {fileID: 778420411}
 --- !u!4 &896816962
 Transform:
   m_ObjectHideFlags: 0

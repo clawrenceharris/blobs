@@ -16,6 +16,8 @@ namespace Blobs.Presentation
     {
         private readonly Dictionary<string, BlobView> _blobViews = new Dictionary<string, BlobView>();
         private readonly Dictionary<string, TileView> _tileViews = new Dictionary<string, TileView>();
+        private readonly List<BlobView> _retiringBlobViews = new List<BlobView>();
+        private Sequence _effectSequence;
         [SerializeField] private BlobView _blobViewPrefab;
         [SerializeField] private TileView _tileViewPrefab;
         [SerializeField] private Transform _blobRoot;
@@ -66,12 +68,17 @@ namespace Blobs.Presentation
         /// </summary>
         public void Rebuild(GameSessionSnapshot snapshot)
         {
+            if (snapshot == null)
+                throw new ArgumentNullException(nameof(snapshot));
+
             Clear();
 
             foreach (var tile in snapshot.Tiles)
                 CreateTileView(tile, _theme);
             foreach (var blob in snapshot.Blobs)
                 CreateBlobView(blob, _theme);
+
+            SnapshotChanged?.Invoke(snapshot);
         }
 
         /// <summary>
@@ -79,28 +86,121 @@ namespace Blobs.Presentation
         /// </summary>
         public void ApplyEffects(IReadOnlyList<IBoardEffect> effects, GameSessionSnapshot fallbackSnapshot)
         {
-            foreach (var effect in effects)
+            if (effects == null)
+                throw new ArgumentNullException(nameof(effects));
+            if (fallbackSnapshot == null)
+                throw new ArgumentNullException(nameof(fallbackSnapshot));
+
+            KillEffectSequence();
+            Sequence sequence = ShouldAnimateEffects() ? DOTween.Sequence() : null;
+            bool appliedAll = true;
+
+            for (int i = 0; i < effects.Count; i++)
             {
+                IBoardEffect effect = effects[i];
+
+                // Core removes an occupied target before moving the source into its cell. Present
+                // that adjacent pair as one readable merge beat: source arrives, then target clears.
+                if (effect is RemoveBlobEffect mergeTarget &&
+                    i + 1 < effects.Count &&
+                    effects[i + 1] is MoveBlobEffect mergeSource &&
+                    mergeSource.To == mergeTarget.At)
+                {
+                    appliedAll &= MoveBlobView(mergeSource.BlobId, mergeSource.To, sequence);
+                    appliedAll &= RemoveBlobView(mergeTarget.BlobId, sequence);
+                    i++;
+
+                    if (!appliedAll)
+                        break;
+
+                    continue;
+                }
+
                 switch (effect)
                 {
                     case MoveBlobEffect move:
-                        Debug.Log($"Moving blob {move.BlobId} to {move.To}");
-                        MoveBlobView(move.BlobId, move.To, ShouldAnimateEffects());
+                        appliedAll &= MoveBlobView(move.BlobId, move.To, sequence);
                         break;
                     case RemoveBlobEffect remove:
-                        Debug.Log($"Removing blob {remove.BlobId}");
-                        RemoveBlobView(remove.BlobId);
+                        appliedAll &= RemoveBlobView(remove.BlobId, sequence);
                         break;
 
                     case SpawnBlobEffect spawn:
-                        Debug.Log($"Spawning blob {spawn.Blob.Id}");
-                        CreateBlobView(spawn.Blob, _theme, ShouldAnimateEffects());
+                        appliedAll &= CreateBlobView(spawn.Blob, _theme, sequence);
                         break;
                     default:
-                        Rebuild(fallbackSnapshot);
-                        return;
+                        appliedAll = false;
+                        break;
+                }
+
+                if (!appliedAll)
+                    break;
+            }
+
+            if (!appliedAll || !IsSynchronizedWith(fallbackSnapshot))
+            {
+                sequence?.Kill();
+                DestroyRetiringBlobViews();
+                Rebuild(fallbackSnapshot);
+                return;
+            }
+
+            if (sequence != null && sequence.active && sequence.Duration() > 0f)
+            {
+                _effectSequence = sequence;
+                sequence.OnComplete(() => _effectSequence = null);
+            }
+            else
+            {
+                sequence?.Kill();
+            }
+
+            SnapshotChanged?.Invoke(fallbackSnapshot);
+        }
+
+        /// <summary>
+        /// Returns the view mapped to a stable Core blob ID.
+        /// </summary>
+        public bool TryGetBlobView(string blobId, out BlobView view)
+        {
+            return _blobViews.TryGetValue(blobId, out view) && view != null;
+        }
+
+        /// <summary>
+        /// Checks logical IDs and positions against a snapshot without depending on animation timing.
+        /// </summary>
+        public bool IsSynchronizedWith(GameSessionSnapshot snapshot)
+        {
+            if (snapshot == null ||
+                _blobViews.Count != snapshot.Blobs.Count ||
+                _tileViews.Count != snapshot.Tiles.Count)
+            {
+                return false;
+            }
+
+            foreach (BlobState blob in snapshot.Blobs)
+            {
+                if (!_blobViews.TryGetValue(blob.Id, out BlobView view) ||
+                    view == null ||
+                    view.BlobId != blob.Id ||
+                    view.GridPosition != blob.Position)
+                {
+                    return false;
                 }
             }
+
+            foreach (TileState tile in snapshot.Tiles)
+            {
+                if (!_tileViews.TryGetValue(tile.Id, out TileView view) ||
+                    view == null ||
+                    view.TileId != tile.Id ||
+                    view.GridPosition != tile.Position)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -108,6 +208,8 @@ namespace Blobs.Presentation
         /// </summary>
         public void Clear()
         {
+            KillEffectSequence();
+
             foreach (var view in _blobViews.Values)
             {
                 if (view == null)
@@ -145,48 +247,58 @@ namespace Blobs.Presentation
 
         private void CreateBlobView(BlobState blob, LevelVisualThemeAsset theme)
         {
-            CreateBlobView(blob, theme, false);
+            CreateBlobView(blob, theme, null);
         }
 
-        private void CreateBlobView(BlobState blob, LevelVisualThemeAsset theme, bool animate)
+        private bool CreateBlobView(
+            BlobState blob,
+            LevelVisualThemeAsset theme,
+            Sequence sequence)
         {
-            RemoveBlobView(blob.Id);
+            if (blob == null || _blobViews.ContainsKey(blob.Id))
+                return false;
+
             var view = InstantiateBlobView();
             view.Initialize(blob, theme, _cellSize, _origin);
             _blobViews.Add(blob.Id, view);
-            if (animate)
-                view.PlaySpawn(_spawnDuration);
+            if (sequence != null)
+                sequence.Append(view.PlaySpawn(_spawnDuration));
+
+            return true;
         }
 
-        private void MoveBlobView(string blobId, GridPosition to, bool animate)
+        private bool MoveBlobView(string blobId, GridPosition to, Sequence sequence)
         {
-            if (_blobViews.TryGetValue(blobId, out var view) && view != null)
-            {
-                if (animate)
-                    view.AnimateMoveTo(to, _moveDuration);
-                else
-                    view.SetGridPosition(to);
-            }
+            if (!_blobViews.TryGetValue(blobId, out var view) || view == null)
+                return false;
+
+            if (sequence != null)
+                sequence.Append(view.AnimateMoveTo(to, _moveDuration));
+            else
+                view.SetGridPosition(to);
+
+            return true;
         }
 
-        private void RemoveBlobView(string blobId)
+        private bool RemoveBlobView(string blobId, Sequence sequence = null)
         {
             if (!_blobViews.TryGetValue(blobId, out var view))
-                return;
+                return false;
 
             _blobViews.Remove(blobId);
 
             if (view != null)
             {
                 view.transform.DOKill();
-                if (ShouldAnimateEffects())
+                if (sequence != null)
                 {
-                    view.PlayDespawn(_despawnDuration)
-                        .OnComplete(() =>
-                        {
-                            if (view != null)
-                                Destroy(view.gameObject);
-                        });
+                    _retiringBlobViews.Add(view);
+                    sequence.Append(
+                        view.PlayDespawn(_despawnDuration)
+                            .OnComplete(() =>
+                            {
+                                DestroyRetiringBlobView(view);
+                            }));
                 }
                 else if (ApplicationIsPlaying())
                 {
@@ -197,6 +309,42 @@ namespace Blobs.Presentation
                     DestroyImmediate(view.gameObject);
                 }
             }
+
+            return true;
+        }
+
+        private void KillEffectSequence()
+        {
+            if (_effectSequence != null)
+            {
+                Sequence sequence = _effectSequence;
+                _effectSequence = null;
+                sequence.Complete(true);
+                sequence.Kill();
+            }
+
+            DestroyRetiringBlobViews();
+        }
+
+        private void DestroyRetiringBlobViews()
+        {
+            for (int i = _retiringBlobViews.Count - 1; i >= 0; i--)
+                DestroyRetiringBlobView(_retiringBlobViews[i]);
+
+            _retiringBlobViews.Clear();
+        }
+
+        private void DestroyRetiringBlobView(BlobView view)
+        {
+            _retiringBlobViews.Remove(view);
+            if (view == null)
+                return;
+
+            view.transform.DOKill();
+            if (ApplicationIsPlaying())
+                Destroy(view.gameObject);
+            else
+                DestroyImmediate(view.gameObject);
         }
 
         private TileView InstantiateTileView()

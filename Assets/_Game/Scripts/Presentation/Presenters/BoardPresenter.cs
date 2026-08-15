@@ -68,7 +68,12 @@ namespace Blobs.Presentation
 
         private void HandleMoveResolved(MoveResult result)
         {
-            if (result.Succeeded)
+            if (!result.Succeeded)
+                return;
+
+            if (result.Steps != null && result.Steps.Count > 0)
+                ApplySteps(result.Steps, _state.CreateSnapshot());
+            else
                 ApplyEffects(result.Effects, _state.CreateSnapshot());
         }
 
@@ -170,6 +175,149 @@ namespace Blobs.Presentation
             }
 
             SnapshotChanged?.Invoke(fallbackSnapshot);
+        }
+
+        /// <summary>
+        /// Applies a step-based move timeline. Steps play sequentially; effects within one
+        /// step compose into a single beat where locomotion and departure spawns run in
+        /// parallel (e.g. a Trail blob dropping a puddle blob as it leaves a tile) while
+        /// merge despawns play as arrival feedback at the end of the beat.
+        /// </summary>
+        public void ApplySteps(IReadOnlyList<MoveStep> steps, GameSessionSnapshot fallbackSnapshot)
+        {
+            if (steps == null)
+                throw new ArgumentNullException(nameof(steps));
+            if (fallbackSnapshot == null)
+                throw new ArgumentNullException(nameof(fallbackSnapshot));
+
+            KillEffectSequence();
+            Sequence sequence = ShouldAnimateEffects() ? DOTween.Sequence() : null;
+            bool appliedAll = true;
+
+            int lastMoveStepIndex = -1;
+            for (int i = 0; i < steps.Count; i++)
+            {
+                foreach (IBoardEffect effect in steps[i].Effects)
+                {
+                    if (effect is MoveBlobEffect || effect is MergeIntoFlagEffect)
+                        lastMoveStepIndex = i;
+                }
+            }
+
+            for (int i = 0; i < steps.Count && appliedAll; i++)
+            {
+                appliedAll &= ApplyStep(
+                    steps[i],
+                    isFinalMoveBeat: i == lastMoveStepIndex,
+                    sequence);
+            }
+
+            if (!appliedAll || !IsSynchronizedWith(fallbackSnapshot))
+            {
+                sequence?.Kill();
+                DestroyRetiringBlobViews();
+                Rebuild(fallbackSnapshot);
+                return;
+            }
+
+            if (sequence != null && sequence.active && sequence.Duration() > 0f)
+            {
+                _effectSequence = sequence;
+                sequence.OnComplete(() => _effectSequence = null);
+            }
+            else
+            {
+                sequence?.Kill();
+            }
+
+            SnapshotChanged?.Invoke(fallbackSnapshot);
+        }
+
+        private bool ApplyStep(MoveStep step, bool isFinalMoveBeat, Sequence outerSequence)
+        {
+            Sequence beat = outerSequence != null ? DOTween.Sequence() : null;
+            bool applied = true;
+
+            // Compose in visual order regardless of board-application order:
+            // locomotion anchors the beat, spawns join at the beat start, and
+            // merge despawns follow as arrival feedback.
+            foreach (IBoardEffect effect in step.Effects)
+            {
+                switch (effect)
+                {
+                    case MoveBlobEffect move:
+                        applied &= MoveBlobViewJoined(
+                            move.BlobId,
+                            move.To,
+                            beat,
+                            isFinalMoveBeat ? Ease.OutQuad : Ease.Linear);
+                        break;
+                    case MergeIntoFlagEffect mergeIntoFlag:
+                        applied &= MergeIntoFlagView(mergeIntoFlag, beat);
+                        break;
+                }
+
+                if (!applied)
+                    return false;
+            }
+
+            foreach (IBoardEffect effect in step.Effects)
+            {
+                if (effect is SpawnBlobEffect spawn)
+                    applied &= CreateBlobViewJoined(spawn.Blob, _theme, beat);
+
+                if (!applied)
+                    return false;
+            }
+
+            foreach (IBoardEffect effect in step.Effects)
+            {
+                if (effect is RemoveBlobEffect remove)
+                    applied &= RemoveBlobView(remove.BlobId, beat);
+
+                if (!applied)
+                    return false;
+            }
+
+            if (beat != null)
+                outerSequence.Append(beat);
+
+            return applied;
+        }
+
+        private bool MoveBlobViewJoined(
+            string blobId,
+            GridPosition to,
+            Sequence beat,
+            Ease ease)
+        {
+            if (!_blobViews.TryGetValue(blobId, out var view) || view == null)
+                return false;
+
+            if (beat != null)
+                beat.Join(view.AnimateMoveTo(to, _moveDuration, ease));
+            else
+                view.SetGridPosition(to);
+
+            return true;
+        }
+
+        private bool CreateBlobViewJoined(
+            BlobState blob,
+            LevelVisualThemeAsset theme,
+            Sequence beat)
+        {
+            if (!CreateBlobView(blob, theme, null))
+                return false;
+
+            if (beat != null &&
+                _blobViews.TryGetValue(blob.Id, out BlobView view) &&
+                view != null)
+            {
+                beat.Join(view.PlaySpawn(_spawnDuration));
+            }
+
+            return true;
         }
 
         /// <summary>

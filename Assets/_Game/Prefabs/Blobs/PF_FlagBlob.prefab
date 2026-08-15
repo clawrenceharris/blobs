@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2458278889496880848}
+  m_Father: {fileID: 3687930029367419390}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &257091627349198181
 SpriteRenderer:
@@ -121,7 +121,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2458278889496880848}
+  m_Father: {fileID: 3687930029367419390}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3609697410622918580
 SpriteRenderer:
@@ -192,7 +192,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1468080444204028906, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_Name
-      value: FlagBlob
+      value: PF_FlagBlob
       objectReference: {fileID: 0}
     - target: {fileID: 1889189986113857665, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_LocalPosition.x
@@ -290,16 +290,16 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 3518444785151482800, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7797538780777631291, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 2657119610928150024}
-    - targetCorrespondingSourceObject: {fileID: 7797538780777631291, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 9008830136990566677, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       insertIndex: 1
+      addedObject: {fileID: 2657119610928150024}
+    - targetCorrespondingSourceObject: {fileID: 9008830136990566677, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      insertIndex: 2
       addedObject: {fileID: 4777367084790657100}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
---- !u!4 &2458278889496880848 stripped
+--- !u!4 &3687930029367419390 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 7797538780777631291, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+  m_CorrespondingSourceObject: {fileID: 9008830136990566677, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
   m_PrefabInstance: {fileID: 5632845988614433003}
   m_PrefabAsset: {fileID: 0}

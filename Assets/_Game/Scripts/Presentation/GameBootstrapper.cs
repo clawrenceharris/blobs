@@ -20,6 +20,7 @@ namespace Blobs.Presentation
         [SerializeField] private CameraPresenter cameraPresenter;
         [SerializeField] private GameplayInputAdapter inputAdapter;
         [SerializeField] private GameplayCommandAdapter commandAdapter;
+        [SerializeField] private GameplayFeedbackPresenter feedbackPresenter;
 
         private GameSession _session;
 
@@ -59,10 +60,13 @@ namespace Blobs.Presentation
             EnsureBoardPresenter();
             EnsureInputAdapter();
             EnsureCommandAdapter();
+            EnsureFeedbackPresenter();
 
             boardPresenter.Initialize(_session, asset.VisualTheme);
             inputAdapter.Initialize(_session, boardPresenter.CellSize);
             commandAdapter.Initialize(_session);
+            if (feedbackPresenter != null)
+                feedbackPresenter.Initialize(inputAdapter);
             if (cameraPresenter != null)
                 cameraPresenter.FitCameraToBoard(_session.CurrentState, boardPresenter.CellSize);
 
@@ -93,6 +97,15 @@ namespace Blobs.Presentation
 
             if (inputAdapter == null)
                 inputAdapter = gameObject.AddComponent<GameplayInputAdapter>();
+        }
+
+        private void EnsureFeedbackPresenter()
+        {
+            if (feedbackPresenter == null)
+            {
+                feedbackPresenter = FindFirstObjectByType<GameplayFeedbackPresenter>(
+                    FindObjectsInactive.Include);
+            }
         }
 
     }

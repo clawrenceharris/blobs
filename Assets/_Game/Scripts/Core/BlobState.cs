@@ -10,7 +10,7 @@ namespace Blobs.Core
         /// <summary>
         /// Creates a blob state with a stable id and logical grid position.
         /// </summary>
-        public BlobState(string id, BlobType type, BlobColor color, BlobSize size, GridPosition position)
+        public BlobState(string id, BlobType type, BlobColor color, GridPosition position)
         {
             if (string.IsNullOrWhiteSpace(id))
                 throw new ArgumentException("Blob id cannot be empty.", nameof(id));
@@ -18,14 +18,12 @@ namespace Blobs.Core
             Id = id;
             Type = type;
             Color = color;
-            Size = size;
             Position = position;
         }
 
         public string Id { get; }
         public BlobType Type { get; }
         public BlobColor Color { get; }
-        public BlobSize Size { get; }
         public GridPosition Position { get; }
         public bool IsClearable => Type == BlobType.Normal;
 
@@ -34,7 +32,7 @@ namespace Blobs.Core
         /// </summary>
         public BlobState WithPosition(GridPosition position)
         {
-            return new BlobState(Id, Type, Color, Size, position);
+            return new BlobState(Id, Type, Color, position);
         }
     }
 }

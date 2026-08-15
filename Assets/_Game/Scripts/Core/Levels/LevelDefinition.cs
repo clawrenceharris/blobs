@@ -47,7 +47,7 @@ namespace Blobs.Core
         }
     }
 
-   
+
 
     /// <summary>
     /// Basic traversable tile definition.
@@ -62,7 +62,7 @@ namespace Blobs.Core
         }
     }
 
-    
+
 
     /// <summary>
     /// Immutable authored blob data after content has been converted into Core types.
@@ -71,7 +71,6 @@ namespace Blobs.Core
     {
         public string Id { get; }
         public GridPosition Position { get; }
-        public BlobSize Size { get; }
         public BlobColor Color { get; }
         public BlobType Type { get; }
 
@@ -79,12 +78,10 @@ namespace Blobs.Core
             string id,
             GridPosition position,
             BlobColor color,
-            BlobSize size,
             BlobType type)
         {
             Id = id;
             Position = position;
-            Size = size;
             Color = color;
             Type = type;
         }
@@ -97,10 +94,23 @@ namespace Blobs.Core
         public NormalBlobDefinition(
             string id,
             GridPosition position,
-            BlobColor color,
-            BlobSize size
+            BlobColor color
             )
-            : base(id, position, color, size, BlobType.Normal)
+            : base(id, position, color, BlobType.Normal)
+        {
+        }
+    }
+    public sealed class FlagBlobDefinition : BlobDefinition
+    {
+        public FlagBlobDefinition(
+            string id,
+            GridPosition position,
+            BlobColor color)
+            : base(
+                id,
+                position,
+                color,
+                BlobType.Flag)
         {
         }
     }
@@ -128,7 +138,7 @@ namespace Blobs.Core
             IReadOnlyList<BlobDefinition> blobs,
             IReadOnlyList<TileDefinition> tiles,
             LevelObjectiveDefinition objective = null
-           )        
+           )
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
             SchemaVersion = schemaVersion;
@@ -137,7 +147,7 @@ namespace Blobs.Core
             Blobs = blobs ?? throw new ArgumentNullException(nameof(blobs));
             Tiles = tiles ?? throw new ArgumentNullException(nameof(tiles));
             Objective = objective ?? LevelObjectiveDefinition.ClearAllClearableBlobs;
-            
+
         }
     }
 }

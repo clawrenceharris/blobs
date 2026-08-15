@@ -30,7 +30,9 @@ namespace Blobs.Tests.EditMode
         [Test]
         public void HudBindsToSessionHostUpdatesMoveCountAndForwardsRestart()
         {
-            var presenter = CreateGameObject("HUD").AddComponent<GameplayHudPresenter>();
+            GameObject hud = CreateGameObject("HUD");
+            hud.SetActive(false);
+            var presenter = hud.AddComponent<GameplayHudPresenter>();
             var moveText = CreateGameObject("Move Text").AddComponent<TextMeshProUGUI>();
             var restartButton = CreateGameObject("Restart Button").AddComponent<Button>();
             var completionRoot = CreateGameObject("Completion Root");
@@ -42,6 +44,7 @@ namespace Blobs.Tests.EditMode
             SetPrivateField(presenter, "restartButton", restartButton);
             SetPrivateField(presenter, "completionRoot", completionRoot);
 
+            hud.SetActive(true);
             presenter.Initialize(host);
 
             Assert.That(moveText.text, Is.EqualTo("0"));

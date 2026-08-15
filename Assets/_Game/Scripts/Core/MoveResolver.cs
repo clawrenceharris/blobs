@@ -12,7 +12,10 @@ namespace Blobs.Core
         /// Resolves a move intent against the supplied board. A successful normal merge removes the
         /// target blob, then moves the source blob into the target position.
         /// </summary>
-        public MoveResult Resolve(BoardState board, MoveIntent intent)
+        public MoveResult Resolve(
+            BoardState board,
+            MoveIntent intent,
+            LevelObjectiveDefinition objective = null)
         {
             var source = board.GetBlob(intent.SourceId);
             if (source == null)
@@ -42,7 +45,11 @@ namespace Blobs.Core
             };
             ApplyEffects(board, effects);
 
-            return new MoveResult(true, MoveFailureReason.None, effects, ObjectiveEvaluator.IsComplete(board));
+            return new MoveResult(
+                true,
+                MoveFailureReason.None,
+                effects,
+                ObjectiveEvaluator.IsComplete(board, objective));
         }
 
         /// <summary>

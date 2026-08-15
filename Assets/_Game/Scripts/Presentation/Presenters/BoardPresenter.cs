@@ -18,7 +18,10 @@ namespace Blobs.Presentation
         private readonly Dictionary<string, TileView> _tileViews = new Dictionary<string, TileView>();
         private readonly List<BlobView> _retiringBlobViews = new List<BlobView>();
         private Sequence _effectSequence;
-        [SerializeField] private BlobView _blobViewPrefab;
+        [SerializeField]
+        private BlobViewCatalogAsset _blobViewCatalog;
+
+        private IBlobViewFactory _blobViewFactory;
         [SerializeField] private TileView _tileViewPrefab;
         [SerializeField] private Transform _blobRoot;
         [SerializeField] private Transform _tileRoot;
@@ -46,11 +49,18 @@ namespace Blobs.Presentation
         /// <summary>
         /// Connects the presenter to gameplay state and builds the initial board views.
         /// </summary>
-        public void Initialize(IGameplayState state, LevelVisualThemeAsset theme)
+        public void Initialize(
+            IGameplayState state,
+            LevelVisualThemeAsset theme,
+            IBlobViewFactory blobViewFactory = null)
         {
             Unsubscribe();
             _state = state;
             _theme = theme;
+
+            _blobViewFactory =
+                blobViewFactory ?? new BlobViewFactory(_blobViewCatalog);
+
             _state.MoveResolved += HandleMoveResolved;
             _state.StateRestored += Rebuild;
             Rebuild(_state.CreateSnapshot());
@@ -127,6 +137,10 @@ namespace Blobs.Presentation
 
                     case SpawnBlobEffect spawn:
                         appliedAll &= CreateBlobView(spawn.Blob, _theme, sequence);
+                        break;
+                    case MergeIntoFlagEffect mergeIntoFlag:
+                        appliedAll &=
+                            MergeIntoFlagView(mergeIntoFlag, sequence);
                         break;
                     default:
                         appliedAll = false;
@@ -258,9 +272,18 @@ namespace Blobs.Presentation
             if (blob == null || _blobViews.ContainsKey(blob.Id))
                 return false;
 
-            var view = InstantiateBlobView();
-            view.Initialize(blob, theme, _cellSize, _origin);
+            Transform parent =
+                _blobRoot != null ? _blobRoot : transform;
+
+            BlobView view = _blobViewFactory.Create(
+                blob,
+                theme,
+                parent,
+                _cellSize,
+                _origin);
+
             _blobViews.Add(blob.Id, view);
+
             if (sequence != null)
                 sequence.Append(view.PlaySpawn(_spawnDuration));
 
@@ -279,40 +302,41 @@ namespace Blobs.Presentation
 
             return true;
         }
-
-        private bool RemoveBlobView(string blobId, Sequence sequence = null)
+        private static void DestroyBlobView(BlobView view)
         {
-            if (!_blobViews.TryGetValue(blobId, out var view))
+            if (view == null)
+                return;
+
+            if (ApplicationIsPlaying())
+                UnityEngine.Object.Destroy(view.gameObject);
+            else
+                UnityEngine.Object.DestroyImmediate(view.gameObject);
+        }
+        private bool RemoveBlobView(string blobId, Sequence sequence)
+        {
+            if (!_blobViews.TryGetValue(blobId, out BlobView view) ||
+                view == null)
+            {
                 return false;
+            }
 
             _blobViews.Remove(blobId);
 
-            if (view != null)
+            if (sequence == null)
             {
-                view.transform.DOKill();
-                if (sequence != null)
-                {
-                    _retiringBlobViews.Add(view);
-                    sequence.Append(
-                        view.PlayDespawn(_despawnDuration)
-                            .OnComplete(() =>
-                            {
-                                DestroyRetiringBlobView(view);
-                            }));
-                }
-                else if (ApplicationIsPlaying())
-                {
-                    Destroy(view.gameObject);
-                }
-                else
-                {
-                    DestroyImmediate(view.gameObject);
-                }
+                DestroyBlobView(view);
+                return true;
             }
+
+            _retiringBlobViews.Add(view);
+
+            sequence
+                .Append(view.PlayDespawn(_despawnDuration))
+                .AppendCallback(
+                    () => DestroyRetiringBlobView(view));
 
             return true;
         }
-
         private void KillEffectSequence()
         {
             if (_effectSequence != null)
@@ -333,18 +357,64 @@ namespace Blobs.Presentation
 
             _retiringBlobViews.Clear();
         }
+        private bool MergeIntoFlagView(MergeIntoFlagEffect effect, Sequence outerSequence)
+        {
+            if (!_blobViews.TryGetValue(
+                    effect.SourceId,
+                    out BlobView sourceView) ||
+                sourceView == null)
+            {
+                return false;
+            }
+
+            if (!_blobViews.TryGetValue(
+                    effect.FlagId,
+                    out BlobView flagView) ||
+                flagView == null)
+            {
+                return false;
+            }
+
+            // Update the logical view registry immediately. Core has already
+            // removed the source, so final snapshot comparison expects it gone.
+            _blobViews.Remove(effect.SourceId);
+
+            if (outerSequence == null)
+            {
+                sourceView.SetGridPosition(effect.To);
+                DestroyBlobView(sourceView);
+                return true;
+            }
+
+            _retiringBlobViews.Add(sourceView);
+
+            var captureBeat = DOTween.Sequence();
+
+            captureBeat.Append(
+                sourceView.PlayConsumedInto(
+                    effect.To,
+                    _moveDuration,
+                    _despawnDuration));
+
+            Tween targetFeedback =
+                flagView.PlaySourceAccepted(
+                    _moveDuration + _despawnDuration);
+
+            if (targetFeedback != null)
+                captureBeat.Join(targetFeedback);
+
+            captureBeat.OnComplete(
+                () => DestroyRetiringBlobView(sourceView));
+
+            outerSequence.Append(captureBeat);
+
+            return true;
+        }
 
         private void DestroyRetiringBlobView(BlobView view)
         {
             _retiringBlobViews.Remove(view);
-            if (view == null)
-                return;
-
-            view.transform.DOKill();
-            if (ApplicationIsPlaying())
-                Destroy(view.gameObject);
-            else
-                DestroyImmediate(view.gameObject);
+            DestroyBlobView(view);
         }
 
         private TileView InstantiateTileView()
@@ -358,17 +428,7 @@ namespace Blobs.Presentation
             instance.transform.SetParent(parent, false);
             return instance.AddComponent<TileView>();
         }
-        private BlobView InstantiateBlobView()
-        {
-            var parent = _blobRoot != null ? _blobRoot : transform;
 
-            if (_blobViewPrefab != null)
-                return Instantiate(_blobViewPrefab, parent);
-
-            var instance = new GameObject("Production Blob");
-            instance.transform.SetParent(parent, false);
-            return instance.AddComponent<BlobView>();
-        }
 
 
         private static bool ApplicationIsPlaying()

@@ -123,7 +123,7 @@ namespace Blobs.Tests.EditMode
             var snapshot = session.CreateSnapshot();
 
             Assert.That(result.Succeeded, Is.False);
-            Assert.That(result.FailureReason, Is.EqualTo(MoveFailureReason.ColorMismatch));
+            Assert.That(result.FailureReason, Is.EqualTo(MoveFailureReason.NormalMergeRequiresDifferentColors));
             Assert.That(snapshot.Blobs.Count, Is.EqualTo(2));
             Assert.That(snapshot.MoveCount, Is.EqualTo(0));
             Assert.That(snapshot.IsComplete, Is.False);
@@ -230,7 +230,7 @@ namespace Blobs.Tests.EditMode
                 1,
                 new[]
                 {
-                    new BlobState("red_a", BlobType.Normal, BlobColor.Red, BlobSize.Normal, new GridPosition(0, 0))
+                    new BlobState("red_a", BlobType.Normal, BlobColor.Red, new GridPosition(0, 0))
                 },
                 new[]
                 {
@@ -246,7 +246,7 @@ namespace Blobs.Tests.EditMode
 
         private static NormalBlobDefinition NormalBlob(string id, BlobColor color, int x, int y)
         {
-            return new NormalBlobDefinition(id, new GridPosition(x, y), color, BlobSize.Normal);
+            return new NormalBlobDefinition(id, new GridPosition(x, y), color);
         }
 
         private static TileDefinition NormalTile(string id, int x, int y)

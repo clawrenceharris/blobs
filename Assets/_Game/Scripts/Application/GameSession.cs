@@ -101,10 +101,15 @@ namespace Blobs.Application
 
             if (string.IsNullOrEmpty(_selectedBlobId))
             {
+                MoveFailureReason failure =
+                    _resolver.ValidateSourceSelection(_board, blob.Id);
+
+                if (failure != MoveFailureReason.None)
+                    return BlobSelectionResult.Rejected(failure);
+
                 _selectedBlobId = blob.Id;
                 return BlobSelectionResult.Selected(blob.Id);
             }
-
             if (_selectedBlobId == blob.Id)
             {
                 _selectedBlobId = null;

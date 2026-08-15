@@ -33,7 +33,6 @@ MonoBehaviour:
         position: {x: 0, y: 0}
         color: 1
         type: 0
-        size: 0
     - rid: 7441116775194820697
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
@@ -41,4 +40,3 @@ MonoBehaviour:
         position: {x: 2, y: 0}
         color: 2
         type: 0
-        size: 0

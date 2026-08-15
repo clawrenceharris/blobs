@@ -8,49 +8,82 @@ namespace Blobs.Core
     /// </summary>
     public sealed class MoveResolver
     {
-        /// <summary>
-        /// Resolves a move intent against the supplied board. A successful normal merge removes the
-        /// target blob, then moves the source blob into the target position.
-        /// </summary>
+        private readonly IBlobRuleBook _rules;
+
+        public MoveResolver(IBlobRuleBook rules = null)
+        {
+            _rules = rules ?? BlobRuleBook.CreateDefault();
+        }
+
+        public MoveFailureReason ValidateSourceSelection(
+            BoardState board,
+            string blobId)
+        {
+            BlobState blob = board.GetBlob(blobId);
+
+            if (blob == null)
+                return MoveFailureReason.SourceMissing;
+
+            return _rules.GetTraits(blob.Type).CanBeSource
+                ? MoveFailureReason.None
+                : MoveFailureReason.SourceCannotMove;
+        }
+
         public MoveResult Resolve(
             BoardState board,
             MoveIntent intent,
             LevelObjectiveDefinition objective = null)
         {
-            var source = board.GetBlob(intent.SourceId);
+            BlobState source = board.GetBlob(intent.SourceId);
             if (source == null)
                 return MoveResult.Failed(MoveFailureReason.SourceMissing);
 
-            var target = board.GetBlob(intent.TargetId);
+            BlobState target = board.GetBlob(intent.TargetId);
             if (target == null)
                 return MoveResult.Failed(MoveFailureReason.TargetMissing);
 
             if (source.Id == target.Id)
                 return MoveResult.Failed(MoveFailureReason.SameBlob);
+
+            if (!_rules.GetTraits(source.Type).CanBeSource)
+                return MoveResult.Failed(MoveFailureReason.SourceCannotMove);
+
             if (!source.Position.IsAlignedWith(target.Position))
                 return MoveResult.Failed(MoveFailureReason.NotAligned);
-            if (source.Type != BlobType.Normal || target.Type != BlobType.Normal)
-                return MoveResult.Failed(MoveFailureReason.UnsupportedBlobType);
-            if (source.Color == target.Color)
-                return MoveResult.Failed(MoveFailureReason.ColorMismatch);
-            if (PathHasBlockingBlob(board, source.Position, target.Position))
-                return MoveResult.Failed(MoveFailureReason.BlockedPath);
 
-            // The target must be removed before the source moves so board occupancy remains valid.
-            var effects = new List<IBoardEffect>
+            if (PathHasBlockingBlob(
+                    board,
+                    source.Position,
+                    target.Position))
             {
-                new RemoveBlobEffect(target),
-                new MoveBlobEffect(source.Id, source.Position, target.Position),
+                return MoveResult.Failed(MoveFailureReason.BlockedPath);
+            }
 
-            };
-            ApplyEffects(board, effects);
+            if (!_rules.TryGetMergeStrategy(
+                    source.Type,
+                    target.Type,
+                    out IMergeStrategy strategy))
+            {
+                return MoveResult.Failed(
+                    MoveFailureReason.UnsupportedInteraction);
+            }
+
+            var context = new MoveContext(board, source, target);
+            MergePlan plan = strategy.BuildPlan(context);
+
+            if (!plan.Succeeded)
+                return MoveResult.Failed(plan.FailureReason);
+
+            ApplyEffects(board, plan.Effects);
 
             return new MoveResult(
                 true,
                 MoveFailureReason.None,
-                effects,
+                plan.Effects,
                 ObjectiveEvaluator.IsComplete(board, objective));
         }
+
+
 
         /// <summary>
         /// Applies an ordered effect list to board state. This is intentionally validation-free

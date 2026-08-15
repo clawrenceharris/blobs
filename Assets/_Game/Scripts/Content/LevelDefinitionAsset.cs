@@ -24,7 +24,8 @@ namespace Blobs.Content
         [SerializeReference] private List<TileAssetData> tiles = new();
 
         [Header("Objective")]
-        [SerializeField] private LevelObjectiveType objective =
+        [SerializeField]
+        private LevelObjectiveType objective =
             LevelObjectiveType.ClearAllClearableBlobs;
 
         [Header("Presentation")]
@@ -49,7 +50,6 @@ namespace Blobs.Content
         public Vector2Int position;
         public BlobColor color;
         public BlobType type;
-        public BlobSize size;
     }
 
     [Serializable]
@@ -57,7 +57,12 @@ namespace Blobs.Content
     {
     }
 
-   
+    [Serializable]
+    public sealed class FlagBlobAssetData : BlobAssetData
+    {
+    }
+
+
 
     [Serializable]
     public abstract class TileAssetData

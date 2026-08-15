@@ -6,9 +6,14 @@ namespace Blobs.Core
         SourceMissing,
         TargetMissing,
         SameBlob,
+
+        SourceCannotMove,
         NotAligned,
-        ColorMismatch,
-        UnsupportedBlobType,
-        BlockedPath
+        BlockedPath,
+        UnsupportedInteraction,
+
+        NormalMergeRequiresDifferentColors,
+        FlagRequiresMatchingColor,
+        FlagRequiresNoOtherBlobs
     }
 }

@@ -53,11 +53,18 @@ namespace Blobs.Content
                     return new NormalBlobDefinition(
                         normal.id,
                         ToCore(normal.position),
-                        normal.color,
-                        normal.size);
+                        normal.color);
                 case NormalBlobAssetData normal:
                     throw new InvalidOperationException(
                         $"Normal blob '{normal.id}' declares unsupported type {normal.type}.");
+                case FlagBlobAssetData flag when flag.type == BlobType.Flag:
+                    return new FlagBlobDefinition(
+                        flag.id,
+                        ToCore(flag.position),
+                        flag.color);
+                case FlagBlobAssetData flag:
+                    throw new InvalidOperationException(
+                        $"Flag blob '{flag.id}' declares unsupported type {flag.type}.");
                 default:
                     throw new InvalidOperationException(
                         $"Unsupported blob asset data type: {blob.GetType().Name}.");

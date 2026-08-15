@@ -16,11 +16,7 @@ namespace Blobs.Content
             var blobs = new List<BlobDefinition>(asset.Blobs.Count);
             foreach (BlobAssetData blob in asset.Blobs)
             {
-                blobs.Add(new NormalBlobDefinition(
-                    blob.id,
-                    ToCore(blob.position),
-                     blob.color,
-                    blob.size));
+                blobs.Add(ToCore(blob));
             }
 
             var tiles = new List<TileDefinition>(asset.Tiles.Count);
@@ -35,7 +31,8 @@ namespace Blobs.Content
                 asset.Width,
                 asset.Height,
                 blobs,
-                tiles
+                tiles,
+                new LevelObjectiveDefinition(asset.Objective)
                 );
 
             LevelValidator.ValidateOrThrow(definition);
@@ -45,6 +42,28 @@ namespace Blobs.Content
         private static GridPosition ToCore(Vector2Int position) =>
             new GridPosition(position.x, position.y);
 
+        private static BlobDefinition ToCore(BlobAssetData blob)
+        {
+            if (blob == null)
+                throw new InvalidOperationException("Level contains an empty blob entry.");
+
+            switch (blob)
+            {
+                case NormalBlobAssetData normal when normal.type == BlobType.Normal:
+                    return new NormalBlobDefinition(
+                        normal.id,
+                        ToCore(normal.position),
+                        normal.color,
+                        normal.size);
+                case NormalBlobAssetData normal:
+                    throw new InvalidOperationException(
+                        $"Normal blob '{normal.id}' declares unsupported type {normal.type}.");
+                default:
+                    throw new InvalidOperationException(
+                        $"Unsupported blob asset data type: {blob.GetType().Name}.");
+            }
+        }
+
         private static TileDefinition ToCore(TileAssetData tile)
         {
             if (tile == null)
@@ -53,8 +72,11 @@ namespace Blobs.Content
             GridPosition position = ToCore(tile.position);
             switch (tile)
             {
-                case NormalTileAssetData normal:
+                case NormalTileAssetData normal when normal.type == TileType.Normal:
                     return new NormalTileDefinition(normal.id, position);
+                case NormalTileAssetData normal:
+                    throw new InvalidOperationException(
+                        $"Normal tile '{normal.id}' declares unsupported type {normal.type}.");
                 default:
                     throw new InvalidOperationException(
                         $"Unsupported tile asset data type: {tile.GetType().Name}.");

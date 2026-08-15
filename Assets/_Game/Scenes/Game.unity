@@ -2245,7 +2245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.GameBootstrapper
   boardPresenter: {fileID: 1341500224}
-  levelAsset: {fileID: 11400000, guid: 7c66cfcb451404bd2820ee9461683367, type: 2}
+  levelAsset: {fileID: 11400000, guid: d01b5dc2601c4a85a734c4abce2a544d, type: 2}
   backgroundView: {fileID: 946229878}
   cameraPresenter: {fileID: 983718534}
   inputAdapter: {fileID: 1046084939}

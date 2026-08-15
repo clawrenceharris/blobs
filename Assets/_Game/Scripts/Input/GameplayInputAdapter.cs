@@ -44,7 +44,9 @@ namespace Blobs.Input
             if (_commands == null)
                 return BlobSelectionResult.Cleared();
 
-            return _commands.SelectBlobAt(gridPosition);
+            BlobSelectionResult result = _commands.SelectBlobAt(gridPosition);
+            BlobSelectionResolved?.Invoke(result);
+            return result;
         }
 
         private void OnEnable()

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25bada3954eb4f1c816119dbfbd073ba, type: 3}
   m_Name: BoardSurfacePalette_Default
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.BoardSurfacePaletteAsset
-  surface: {r: 0.98039216, g: 0.95686275, b: 0.9372549, a: 1}
-  surfaceWarm: {r: 0.972549, g: 0.93333334, b: 0.9137255, a: 1}
-  highlight: {r: 1, g: 1, b: 0.9882353, a: 1}
-  bevel: {r: 0.91764706, g: 0.84705883, b: 0.83137256, a: 1}
-  thickness: {r: 0.8039216, g: 0.6627451, b: 0.68235296, a: 1}
-  shadow: {r: 0.3882353, g: 0.24313726, b: 0.33333334, a: 1}
+  fillA: {r: 0.972549, g: 0.9647059, b: 0.9372549, a: 1}
+  fillB: {r: 0.94509804, g: 0.9411765, b: 0.91764706, a: 1}
+  ambientEdge: {r: 0.84705883, g: 0.84313726, b: 0.81960785, a: 1}
+  lowerEdge: {r: 0.8156863, g: 0.80784315, b: 0.78039217, a: 1}
+  highlight: {r: 1, g: 1, b: 1, a: 1}
+  shadow: {r: 0.1882353, g: 0.14901961, b: 0.2901961, a: 1}

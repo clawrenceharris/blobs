@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fcf02e026817f2e3422957acc027122, type: 3}
   m_Name: BoardSurfaceSpriteSet
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BoardSurfaceSpriteSet
-  fill: {fileID: 21300000, guid: 1df2d9483017d975f16aefcfef35863c, type: 3}
+  fillA: {fileID: 21300000, guid: dad3c415be6dd0e5d85841138e9ced89, type: 3}
+  fillB: {fileID: 21300000, guid: 46225cd5c3e390838392221dd582d500, type: 3}
   edgeN: {fileID: 21300000, guid: c6a38f625b9c8501b393996f86270436, type: 3}
   edgeE: {fileID: 21300000, guid: 0929747e3d091ee373f6a35e25dac822, type: 3}
   edgeS: {fileID: 21300000, guid: 419a1abb5d09e6ff06fe6e4783ff73ad, type: 3}
@@ -29,4 +30,4 @@ MonoBehaviour:
   componentSize: 384
   componentPadding: 64
   seamOverlap: 2
-  cornerRadius: 52
+  cornerRadius: 48

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Blobs.Content
 {
@@ -12,20 +13,23 @@ namespace Blobs.Content
     public sealed class BoardSurfacePaletteAsset : ScriptableObject
     {
         [Header("Top Surface")]
-        [SerializeField] private Color surface = new(0.9804f, 0.9569f, 0.9373f, 1f);
-        [SerializeField] private Color surfaceWarm = new(0.9725f, 0.9333f, 0.9137f, 1f);
-        [SerializeField] private Color highlight = new(1f, 1f, 0.9882f, 1f);
+        [FormerlySerializedAs("surface")]
+        [SerializeField] private Color fillA = new(0.9725f, 0.9647f, 0.9373f, 1f);
+        [FormerlySerializedAs("surfaceWarm")]
+        [SerializeField] private Color fillB = new(0.9451f, 0.9412f, 0.9176f, 1f);
+        [FormerlySerializedAs("bevel")]
+        [SerializeField] private Color ambientEdge = new(0.8471f, 0.8431f, 0.8196f, 1f);
+        [SerializeField] private Color lowerEdge = new(0.8157f, 0.8078f, 0.7804f, 1f);
+        [SerializeField] private Color highlight = Color.white;
 
-        [Header("Depth")]
-        [SerializeField] private Color bevel = new(0.9176f, 0.8471f, 0.8314f, 1f);
-        [SerializeField] private Color thickness = new(0.8039f, 0.6627f, 0.6824f, 1f);
-        [SerializeField] private Color shadow = new(0.3882f, 0.2431f, 0.3333f, 1f);
+        [Header("Separation")]
+        [SerializeField] private Color shadow = new(0.1882f, 0.1490f, 0.2902f, 1f);
 
-        public Color Surface => surface;
-        public Color SurfaceWarm => surfaceWarm;
+        public Color FillA => fillA;
+        public Color FillB => fillB;
+        public Color AmbientEdge => ambientEdge;
+        public Color LowerEdge => lowerEdge;
         public Color Highlight => highlight;
-        public Color Bevel => bevel;
-        public Color Thickness => thickness;
         public Color Shadow => shadow;
     }
 }

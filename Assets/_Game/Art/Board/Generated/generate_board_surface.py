@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministically generate Blobs' modular molded board-surface assets.
+"""Deterministically generate Blobs' modular checkerboard board-surface assets.
 
 The script has no third-party dependencies. Geometry is evaluated from one
 shared style dictionary, antialiased with a fixed supersample grid, and written
@@ -27,29 +27,31 @@ STYLE = {
     "component_size": 384,
     "component_padding": 64,
     "seam_overlap": 2,
-    "exterior_border_width": 8,
-    "bevel_thickness": 10,
-    "corner_radius": 52,
-    "highlight_thickness": 4,
-    "shadow_offset": [2, 10],
-    "shadow_blur": 9,
+    "corner_radius": 48,
+    "perimeter_roundness": 48,
+    "border_softness": 3,
+    "ambient_edge_width": 5,
+    "lower_border_width": 12,
+    "shadow_offset": [4, 8],
+    "shadow_blur": 7,
     "supersample": 4,
     "pixels_per_unit": 256,
     "palette": {
-        "surface": "#FAF4EF",
-        "surface_warm": "#F8EEE9",
-        "highlight": "#FFFFFC",
-        "bevel": "#EAD8D4",
-        "thickness": "#CDA9AE",
-        "shadow": "#633E55",
-        "preview_background": "#F7D9DE",
-        "preview_card": "#FBEAEC",
+        "fill_a": "#F8F6EF",
+        "fill_b": "#F1F0EA",
+        "ambient_edge": "#D8D7D1",
+        "lower_edge": "#D0CEC7",
+        "highlight": "#FFFFFF",
+        "shadow": "#30264A",
+        "preview_background": "#3B2B68",
+        "preview_card": "#4A3976",
     },
 }
 
 
 COMPONENTS = [
-    "Fill",
+    "Fill_A",
+    "Fill_B",
     "Edge_N",
     "Edge_E",
     "Edge_S",
@@ -99,10 +101,11 @@ def hex_rgba(value: str, alpha: float = 1.0) -> RGBA:
     )
 
 
-SURFACE = hex_rgba(STYLE["palette"]["surface"])
+FILL_A = hex_rgba(STYLE["palette"]["fill_a"])
+FILL_B = hex_rgba(STYLE["palette"]["fill_b"])
+AMBIENT_EDGE = hex_rgba(STYLE["palette"]["ambient_edge"])
+LOWER_EDGE = hex_rgba(STYLE["palette"]["lower_edge"])
 HIGHLIGHT = hex_rgba(STYLE["palette"]["highlight"])
-BEVEL = hex_rgba(STYLE["palette"]["bevel"])
-THICKNESS = hex_rgba(STYLE["palette"]["thickness"])
 SHADOW = hex_rgba(STYLE["palette"]["shadow"])
 
 
@@ -265,49 +268,50 @@ def edge_signed_distance(edge: str, x: float, y: float) -> Tuple[float, float, f
 
 
 def boundary_treatment(sd: float, nx: float, ny: float) -> RGBA:
-    border = float(STYLE["exterior_border_width"])
-    bevel = float(STYLE["bevel_thickness"])
-    highlight_width = float(STYLE["highlight_thickness"])
+    softness = float(STYLE["border_softness"])
+    edge_width = float(STYLE["ambient_edge_width"])
+    lower_border_width = float(STYLE["lower_border_width"])
     blur = float(STYLE["shadow_blur"])
     offset_x, offset_y = (float(v) for v in STYLE["shadow_offset"])
 
-    light = clamp01(-nx * 0.42 - ny * 0.91)
-    lower = clamp01(nx * 0.22 + ny * 0.98)
-    thickness_extent = bevel * (0.16 + 0.84 * lower)
+    light = clamp01(-nx * 0.28 - ny * 0.72)
+    lower = clamp01(ny + nx * 0.18)
+    lower_border_extent = lower_border_width * lower
     shadow_center = nx * offset_x + ny * offset_y
 
     result: RGBA = (0.0, 0.0, 0.0, 0.0)
 
     if sd > 0.0:
-        shadow_alpha = 0.15 * math.exp(-0.5 * ((sd - shadow_center) / blur) ** 2)
+        shadow_alpha = (0.08 + 0.055 * lower) * math.exp(
+            -0.5 * ((sd - shadow_center) / blur) ** 2
+        )
         result = over(result, with_alpha(SHADOW, shadow_alpha))
 
-    if 0.0 < sd <= thickness_extent:
-        mix = smoothstep(0.0, max(1.0, thickness_extent), sd)
-        color = (
-            BEVEL[0] * (1.0 - mix) + THICKNESS[0] * mix,
-            BEVEL[1] * (1.0 - mix) + THICKNESS[1] * mix,
-            BEVEL[2] * (1.0 - mix) + THICKNESS[2] * mix,
-            1.0,
-        )
-        result = over(result, color)
+        # A fractional outside cover softens the silhouette without reading as a border.
+        outside_cover = 1.0 - smoothstep(0.0, softness, sd)
+        result = over(result, with_alpha(AMBIENT_EDGE, 0.16 * outside_cover))
 
-    if -border <= sd <= 0.0:
-        rim = smoothstep(-border, 0.0, sd)
-        bevel_alpha = (0.24 + 0.25 * lower) * rim
-        result = over(result, with_alpha(BEVEL, bevel_alpha))
+        if sd <= lower_border_extent:
+            outer_softness_start = max(0.0, lower_border_extent - softness)
+            lower_edge_alpha = 1.0 - smoothstep(
+                outer_softness_start,
+                lower_border_extent,
+                sd,
+            )
+            result = over(result, with_alpha(LOWER_EDGE, lower_edge_alpha))
 
-        highlight_ramp = smoothstep(-highlight_width, 0.0, sd)
-        highlight_alpha = (0.20 + 0.68 * light) * highlight_ramp
-        result = over(result, with_alpha(HIGHLIGHT, highlight_alpha))
+    if -edge_width <= sd <= 0.0:
+        rim = smoothstep(-edge_width, 0.0, sd)
+        result = over(result, with_alpha(AMBIENT_EDGE, (0.08 + 0.06 * lower) * rim))
+        result = over(result, with_alpha(HIGHLIGHT, 0.055 * light * rim))
 
     return result
 
 
-def sample_fill(x: float, y: float) -> RGBA:
+def sample_fill(color: RGBA, x: float, y: float) -> RGBA:
     left, top, right, bottom = logical_bounds()
     if left <= x <= right and top <= y <= bottom:
-        return SURFACE
+        return color
     return (0.0, 0.0, 0.0, 0.0)
 
 
@@ -323,7 +327,7 @@ def sample_edge(edge: str, x: float, y: float) -> RGBA:
 def corner_geometry(kind: str, corner: str, x: float, y: float) -> Tuple[float, float, float, bool]:
     left, top, right, bottom = logical_bounds()
     radius = float(STYLE["corner_radius"])
-    margin = float(STYLE["bevel_thickness"] + 3 * STYLE["shadow_blur"])
+    margin = float(STYLE["border_softness"] + 3 * STYLE["shadow_blur"])
 
     if kind == "Convex":
         center_x = left + radius if "W" in corner else right - radius
@@ -350,8 +354,8 @@ def corner_geometry(kind: str, corner: str, x: float, y: float) -> Tuple[float, 
     center_x = vertex_x + missing_x * radius
     center_y = vertex_y + missing_y * radius
     in_region = (
-        0.0 <= missing_x * (x - vertex_x) <= radius + margin
-        and 0.0 <= missing_y * (y - vertex_y) <= radius + margin
+        0.0 <= missing_x * (x - vertex_x) <= radius
+        and 0.0 <= missing_y * (y - vertex_y) <= radius
     )
     vx = x - center_x
     vy = y - center_y
@@ -368,12 +372,14 @@ def sample_corner(kind: str, corner: str, x: float, y: float) -> RGBA:
     sd, nx, ny, in_region = corner_geometry(kind, corner, x, y)
     if not in_region:
         return (0.0, 0.0, 0.0, 0.0)
-    base = SURFACE if kind == "Concave" and sd <= 0.0 else (0.0, 0.0, 0.0, 0.0)
-    return over(base, boundary_treatment(sd, nx, ny))
+    return boundary_treatment(sd, nx, ny)
 
 
 def render_components() -> Dict[str, Image]:
-    images: Dict[str, Image] = {"Fill": render(sample_fill)}
+    images: Dict[str, Image] = {
+        "Fill_A": render(lambda x, y: sample_fill(FILL_A, x, y)),
+        "Fill_B": render(lambda x, y: sample_fill(FILL_B, x, y)),
+    }
     for edge in CARDINALS:
         images[f"Edge_{edge}"] = render(lambda x, y, edge=edge: sample_edge(edge, x, y))
     for kind in ("Convex", "Concave"):
@@ -391,7 +397,7 @@ def has_neighbor(occupied: Set[Point], cell: Point, offset: Point) -> bool:
 
 def selection_for(occupied: Set[Point], cell: Point) -> List[str]:
     present = {name: has_neighbor(occupied, cell, offset) for name, offset in CARDINALS.items()}
-    pieces: List[str] = ["Fill"]
+    pieces: List[str] = ["Fill_A" if (cell[0] + cell[1]) % 2 == 0 else "Fill_B"]
     for edge in ("N", "E", "S", "W"):
         if not present[edge]:
             pieces.append(f"Edge_{edge}")
@@ -416,10 +422,87 @@ def should_clear(kind: str, corner: str, x: float, y: float) -> bool:
     return False
 
 
+def should_fill_concave(corner: str, x: float, y: float) -> bool:
+    left, top, right, bottom = logical_bounds()
+    radius = float(STYLE["corner_radius"])
+    vertex_x = left if "W" in corner else right
+    vertex_y = top if "N" in corner else bottom
+    direction_x = -1.0 if "W" in corner else 1.0
+    direction_y = -1.0 if "N" in corner else 1.0
+    center_x = vertex_x + direction_x * radius
+    center_y = vertex_y + direction_y * radius
+    offset_x = direction_x * (x - vertex_x)
+    offset_y = direction_y * (y - vertex_y)
+    return (
+        0.0 < offset_x <= radius
+        and 0.0 < offset_y <= radius
+        and math.hypot(x - center_x, y - center_y) >= radius
+    )
+
+
+def bleed_flat_fill(output: Image, pieces: Sequence[str]) -> None:
+    """Mirror BoardSurfaceSpriteComposer's pre-overlay seam bleed exactly."""
+    overlap = min(int(STYLE["seam_overlap"]), int(STYLE["component_padding"]))
+    if overlap <= 0:
+        return
+
+    minimum = int(STYLE["component_padding"])
+    maximum = minimum + int(STYLE["logical_cell_size"]) - 1
+    present = {
+        edge: f"Edge_{edge}" not in pieces
+        for edge in ("N", "E", "S", "W")
+    }
+
+    if present["W"]:
+        for y in range(minimum, maximum + 1):
+            for amount in range(1, overlap + 1):
+                output.set(minimum - amount, y, output.get(minimum, y))
+    if present["E"]:
+        for y in range(minimum, maximum + 1):
+            for amount in range(1, overlap + 1):
+                output.set(maximum + amount, y, output.get(maximum, y))
+    if present["N"]:
+        for x in range(minimum, maximum + 1):
+            for amount in range(1, overlap + 1):
+                output.set(x, minimum - amount, output.get(x, minimum))
+    if present["S"]:
+        for x in range(minimum, maximum + 1):
+            for amount in range(1, overlap + 1):
+                output.set(x, maximum + amount, output.get(x, maximum))
+
+    for corner, (first, second) in CORNER_CARDINALS.items():
+        diagonal_present = (
+            present[first]
+            and present[second]
+            and f"Corner_Concave_{corner}" not in pieces
+        )
+        if not diagonal_present:
+            continue
+
+        source_x = minimum if "W" in corner else maximum
+        source_y = minimum if "N" in corner else maximum
+        direction_x = -1 if "W" in corner else 1
+        direction_y = -1 if "N" in corner else 1
+        source = output.get(source_x, source_y)
+        for y in range(1, overlap + 1):
+            for x in range(1, overlap + 1):
+                output.set(
+                    source_x + direction_x * x,
+                    source_y + direction_y * y,
+                    source,
+                )
+
+
 def compose_cell(images: Dict[str, Image], pieces: Sequence[str]) -> Image:
     size = int(STYLE["component_size"])
     output = Image.transparent(size, size)
-    output.paste_over(images["Fill"], 0, 0)
+    fill_name = pieces[0]
+    output.paste_over(images[fill_name], 0, 0)
+    bleed_flat_fill(output, pieces)
+    fill_color = images[fill_name].get(
+        int(STYLE["component_padding"] + STYLE["logical_cell_size"] // 2),
+        int(STYLE["component_padding"] + STYLE["logical_cell_size"] // 2),
+    )
 
     for piece in pieces:
         if piece.startswith("Edge_"):
@@ -433,6 +516,11 @@ def compose_cell(images: Dict[str, Image], pieces: Sequence[str]) -> Image:
                 for x in range(size):
                     if should_clear(kind, corner, x + 0.5, y + 0.5):
                         output.clear(x, y)
+        else:
+            for y in range(size):
+                for x in range(size):
+                    if should_fill_concave(corner, x + 0.5, y + 0.5):
+                        output.set(x, y, fill_color)
         output.paste_over(images[piece], 0, 0)
 
     return output
@@ -501,7 +589,7 @@ def render_board(
 def render_preview(images: Dict[str, Image]) -> Image:
     configurations: List[Set[Point]] = [
         {(x, y) for x in range(4) for y in range(3)},
-        {(x, y) for x in range(4) for y in range(4) if x == 0 or y >= 2},
+        {(x, 3) for x in range(4)} | {(3, y) for y in range(4)},
         {(x, y) for x in range(5) for y in range(4) if not (x == 2 and y in (1, 2))},
         {(x, y) for x in range(5) for y in range(4)} - {(4, 0), (3, 0), (4, 1)},
         {(0, 0), (1, 0), (2, 0), (2, 1), (2, 2), (3, 2), (4, 2)},
@@ -735,7 +823,8 @@ def write_runtime_asset(project_root: Path, output_dir: Path, asset_dir: Path) -
     script_guid = guid_for_asset(script_path, project_root)
 
     field_names = {
-        "Fill": "fill",
+        "Fill_A": "fillA",
+        "Fill_B": "fillB",
         "Edge_N": "edgeN",
         "Edge_E": "edgeE",
         "Edge_S": "edgeS",
@@ -807,11 +896,32 @@ def validate(images: Dict[str, Image], preview: Image) -> None:
     cell = int(STYLE["logical_cell_size"])
 
     assert list(images) == COMPONENTS
+    assert STYLE["perimeter_roundness"] == STYLE["corner_radius"]
     assert all(image.width == size and image.height == size for image in images.values())
-    assert images["Fill"].get(0, 0)[3] == 0
-    assert images["Fill"].get(pad + cell // 2, pad + cell // 2)[3] == 255
-    assert all(images[name].get(0, 0)[3] == 0 for name in COMPONENTS)
+    assert images["Fill_A"].get(0, 0)[3] == 0
+    assert images["Fill_B"].get(0, 0)[3] == 0
+    assert images["Fill_A"].get(pad + cell // 2, pad + cell // 2)[3] == 255
+    assert images["Fill_B"].get(pad + cell // 2, pad + cell // 2)[3] == 255
+    assert images["Fill_A"].get(pad + cell // 2, pad + cell // 2) != images["Fill_B"].get(
+        pad + cell // 2, pad + cell // 2
+    )
+    assert all(
+        any(image.pixels[index] == 0 for index in range(3, len(image.pixels), 4))
+        for image in images.values()
+    )
     assert preview.width == 2240 and preview.height == 1376
+
+    south_border = images["Edge_S"].get(
+        pad + cell // 2,
+        pad + cell + 6,
+    )
+    assert south_border[3] >= 240
+
+    concave_tangent_guard = images["Corner_Concave_NW"].get(
+        pad - int(STYLE["corner_radius"]) - 8,
+        pad - 1,
+    )
+    assert concave_tangent_guard[3] == 0
 
     # Tangential samples must be identical, guaranteeing exact straight-edge joins.
     for edge in ("N", "S"):
@@ -839,6 +949,13 @@ def main() -> None:
         write_folder_meta(folder, project_root)
 
     images = render_components()
+
+    # Fill was the only top-surface component in the previous system. Removing this
+    # exact obsolete asset keeps the generated directory aligned with COMPONENTS.
+    for obsolete in (output_dir / "Fill.png", output_dir / "Fill.png.meta"):
+        if obsolete.exists():
+            obsolete.unlink()
+
     for name in COMPONENTS:
         path = output_dir / f"{name}.png"
         write_png(path, images[name])
@@ -852,6 +969,9 @@ def main() -> None:
     preview_path = preview_dir / "board_atlas_preview.png"
     write_png(preview_path, preview)
     write_sprite_meta(preview_path, project_root, readable=False)
+    style_reference_path = preview_dir / "board_style_reference.png"
+    if style_reference_path.exists():
+        write_sprite_meta(style_reference_path, project_root, readable=False)
 
     write_runtime_asset(
         project_root,

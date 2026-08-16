@@ -113,7 +113,8 @@ namespace Blobs.Presentation
             cell.transform.localScale = Vector3.one * cellSize;
 
             SpriteRenderer renderer = cell.AddComponent<SpriteRenderer>();
-            renderer.sprite = _composer.GetOrCreate(mask);
+            bool useAlternateFill = ((position.X + position.Y) & 1) != 0;
+            renderer.sprite = _composer.GetOrCreate(mask, useAlternateFill);
             renderer.sortingLayerName = sortingLayerName;
             renderer.sortingOrder = sortingOrder;
             _cells.Add(cell);

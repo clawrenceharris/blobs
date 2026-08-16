@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Blobs.Presentation
 {
@@ -12,7 +13,9 @@ namespace Blobs.Presentation
     public sealed class BoardSurfaceSpriteSet : ScriptableObject
     {
         [Header("Components")]
-        [SerializeField] private Sprite fill;
+        [FormerlySerializedAs("fill")]
+        [SerializeField] private Sprite fillA;
+        [SerializeField] private Sprite fillB;
         [SerializeField] private Sprite edgeN;
         [SerializeField] private Sprite edgeE;
         [SerializeField] private Sprite edgeS;
@@ -31,9 +34,10 @@ namespace Blobs.Presentation
         [SerializeField, Min(1)] private int componentSize = 384;
         [SerializeField, Min(0)] private int componentPadding = 64;
         [SerializeField, Min(0)] private int seamOverlap = 2;
-        [SerializeField, Min(1)] private int cornerRadius = 52;
+        [SerializeField, Min(1)] private int cornerRadius = 48;
 
-        public Sprite Fill => fill;
+        public Sprite FillA => fillA;
+        public Sprite FillB => fillB;
         public int LogicalCellSize => logicalCellSize;
         public int ComponentSize => componentSize;
         public int ComponentPadding => componentPadding;
@@ -41,7 +45,7 @@ namespace Blobs.Presentation
         public int CornerRadius => cornerRadius;
 
         public bool IsConfigured =>
-            fill != null &&
+            fillA != null && fillB != null &&
             edgeN != null && edgeE != null && edgeS != null && edgeW != null &&
             convexNW != null && convexNE != null && convexSW != null && convexSE != null &&
             concaveNW != null && concaveNE != null && concaveSW != null && concaveSE != null;

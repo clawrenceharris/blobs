@@ -94,16 +94,22 @@ namespace Blobs.Tests.EditMode
             Assert.That(spriteSet.LogicalCellSize, Is.EqualTo(256));
             Assert.That(spriteSet.ComponentSize, Is.EqualTo(384));
             Assert.That(spriteSet.SeamOverlap, Is.EqualTo(2));
-            Assert.That(spriteSet.Fill.texture.isReadable, Is.True);
-            Assert.That(spriteSet.Fill.texture.width, Is.EqualTo(384));
-            Assert.That(spriteSet.Fill.texture.height, Is.EqualTo(384));
-            Assert.That(spriteSet.Fill.textureRect.width, Is.EqualTo(384));
-            Assert.That(spriteSet.Fill.textureRect.height, Is.EqualTo(384));
+            Assert.That(spriteSet.FillA.texture.isReadable, Is.True);
+            Assert.That(spriteSet.FillB.texture.isReadable, Is.True);
+            Assert.That(spriteSet.FillA.texture.width, Is.EqualTo(384));
+            Assert.That(spriteSet.FillA.texture.height, Is.EqualTo(384));
+            Assert.That(spriteSet.FillA.textureRect.width, Is.EqualTo(384));
+            Assert.That(spriteSet.FillA.textureRect.height, Is.EqualTo(384));
 
-            Color32[] fill = spriteSet.Fill.texture.GetPixels32();
-            int width = spriteSet.Fill.texture.width;
+            Color32[] fill = spriteSet.FillA.texture.GetPixels32();
+            int width = spriteSet.FillA.texture.width;
             Assert.That(fill[0].a, Is.EqualTo(0));
             Assert.That(fill[(width / 2) * width + width / 2].a, Is.EqualTo(255));
+
+            Color32[] alternate = spriteSet.FillB.texture.GetPixels32();
+            Assert.That(
+                alternate[(width / 2) * width + width / 2],
+                Is.Not.EqualTo(fill[(width / 2) * width + width / 2]));
         }
 
         [Test]
@@ -114,13 +120,93 @@ namespace Blobs.Tests.EditMode
             using var composer = new BoardSurfaceSpriteComposer(spriteSet);
 
             Sprite sprite = composer.GetOrCreate(BoardSurfaceNeighborMask.East);
-            Color32[] pixels = sprite.texture.GetPixels32();
+            Color32[] pixels = Readback(sprite.texture);
             int size = spriteSet.ComponentSize;
             int boundaryX = spriteSet.ComponentPadding + spriteSet.LogicalCellSize;
             int centerY = spriteSet.ComponentPadding + spriteSet.LogicalCellSize / 2;
 
             Assert.That(pixels[centerY * size + boundaryX].a, Is.EqualTo(255));
             Assert.That(pixels[centerY * size + boundaryX + 1].a, Is.EqualTo(255));
+        }
+
+        [Test]
+        public void SeamBleedDoesNotExtendPerimeterArtworkPastAConcaveTangent()
+        {
+            BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
+                "Assets/_Game/Content/Board/BoardSurfaceSpriteSet.asset");
+            using var composer = new BoardSurfaceSpriteComposer(spriteSet);
+
+            Sprite sprite = composer.GetOrCreate(
+                BoardSurfaceNeighborMask.North | BoardSurfaceNeighborMask.South);
+            Color32[] pixels = Readback(sprite.texture);
+            int size = spriteSet.ComponentSize;
+            int min = spriteSet.ComponentPadding;
+            int center = min + spriteSet.LogicalCellSize / 2;
+
+            Assert.That(
+                pixels[(min - 1) * size + min],
+                Is.EqualTo(pixels[center * size + center]),
+                "Only the flat fill may bleed through an internal seam; a west-edge " +
+                "highlight here creates the protruding line at a concave join.");
+        }
+
+        [Test]
+        public void ConcaveFillIsClippedToItsSharedRadiusSquare()
+        {
+            BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
+                "Assets/_Game/Content/Board/BoardSurfaceSpriteSet.asset");
+            using var composer = new BoardSurfaceSpriteComposer(spriteSet);
+
+            Sprite sprite = composer.GetOrCreate(
+                BoardSurfaceNeighborMask.North | BoardSurfaceNeighborMask.West);
+            Color32[] pixels = Readback(sprite.texture);
+            int size = spriteSet.ComponentSize;
+            int imageX = spriteSet.ComponentPadding - spriteSet.CornerRadius - 8;
+            int imageY = spriteSet.ComponentPadding - 1;
+            int textureY = size - 1 - imageY;
+
+            Assert.That(
+                pixels[textureY * size + imageX].a,
+                Is.EqualTo(0),
+                "The concave fillet must not reach the component boundary and expose a hard cutoff.");
+        }
+
+        [Test]
+        public void SouthEdgeHasAnOpaqueVisibleLowerBorder()
+        {
+            BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
+                "Assets/_Game/Content/Board/BoardSurfaceSpriteSet.asset");
+            using var composer = new BoardSurfaceSpriteComposer(spriteSet);
+
+            Sprite sprite = composer.GetOrCreate(BoardSurfaceNeighborMask.None);
+            Color32[] pixels = Readback(sprite.texture);
+            int size = spriteSet.ComponentSize;
+            int imageX = spriteSet.ComponentPadding + spriteSet.LogicalCellSize / 2;
+            int imageY = spriteSet.ComponentPadding + spriteSet.LogicalCellSize + 6;
+            int textureY = size - 1 - imageY;
+
+            Assert.That(
+                pixels[textureY * size + imageX].a,
+                Is.GreaterThanOrEqualTo(240),
+                "The lower lip must remain visible after runtime sprite composition and scaling.");
+        }
+
+        [Test]
+        public void ComposerUsesDistinctFillForCheckerParity()
+        {
+            BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
+                "Assets/_Game/Content/Board/BoardSurfaceSpriteSet.asset");
+            using var composer = new BoardSurfaceSpriteComposer(spriteSet);
+
+            Sprite fillA = composer.GetOrCreate(BoardSurfaceNeighborMask.None, false);
+            Sprite fillB = composer.GetOrCreate(BoardSurfaceNeighborMask.None, true);
+            int center = spriteSet.ComponentSize / 2;
+
+            Color32[] pixelsA = Readback(fillA.texture);
+            Color32[] pixelsB = Readback(fillB.texture);
+            Assert.That(
+                pixelsA[center * spriteSet.ComponentSize + center],
+                Is.Not.EqualTo(pixelsB[center * spriteSet.ComponentSize + center]));
         }
 
         [Test]
@@ -194,6 +280,7 @@ namespace Blobs.Tests.EditMode
             presenter.Initialize(
                 new FakeGameplayState(EmptySnapshot()),
                 null,
+                new EmptyBlobViewFactory(),
                 surfaceWidth: level.Width,
                 surfaceHeight: level.Height,
                 surfaceLayout: level.BoardSurfaceLayout);
@@ -216,9 +303,12 @@ namespace Blobs.Tests.EditMode
                     "Assets/_Game/Content/Board/Palettes/BoardSurfacePalette_Default.asset");
 
             Assert.That(palette, Is.Not.Null);
-            Assert.That(palette.Surface.a, Is.EqualTo(1f));
-            Assert.That(palette.Highlight.r, Is.GreaterThan(palette.Surface.r));
-            Assert.That(palette.Thickness.r, Is.LessThan(palette.Surface.r));
+            Assert.That(palette.FillA.a, Is.EqualTo(1f));
+            Assert.That(palette.FillB.a, Is.EqualTo(1f));
+            Assert.That(palette.FillA.r, Is.GreaterThan(palette.FillB.r));
+            Assert.That(palette.Highlight.r, Is.GreaterThan(palette.FillA.r));
+            Assert.That(palette.AmbientEdge.r, Is.LessThan(palette.FillB.r));
+            Assert.That(palette.LowerEdge.r, Is.LessThan(palette.AmbientEdge.r));
         }
 
         [Test]
@@ -258,6 +348,7 @@ namespace Blobs.Tests.EditMode
             presenter.Initialize(
                 new FakeGameplayState(EmptySnapshot()),
                 null,
+                new EmptyBlobViewFactory(),
                 surfaceWidth: 2,
                 surfaceHeight: 3);
 
@@ -277,6 +368,54 @@ namespace Blobs.Tests.EditMode
         private static TileState Tile(string id, int x, int y)
         {
             return new TileState(id, new GridPosition(x, y), TileType.Normal);
+        }
+
+        private static Color32[] Readback(Texture texture)
+        {
+            RenderTexture previous = RenderTexture.active;
+            RenderTexture target = RenderTexture.GetTemporary(
+                texture.width,
+                texture.height,
+                0,
+                RenderTextureFormat.ARGB32,
+                RenderTextureReadWrite.sRGB);
+            var readable = new Texture2D(
+                texture.width,
+                texture.height,
+                TextureFormat.RGBA32,
+                false,
+                false);
+            try
+            {
+                Graphics.Blit(texture, target);
+                RenderTexture.active = target;
+                readable.ReadPixels(
+                    new Rect(0f, 0f, target.width, target.height),
+                    0,
+                    0,
+                    false);
+                readable.Apply(false, false);
+                return readable.GetPixels32();
+            }
+            finally
+            {
+                RenderTexture.active = previous;
+                RenderTexture.ReleaseTemporary(target);
+                Object.DestroyImmediate(readable);
+            }
+        }
+
+        private sealed class EmptyBlobViewFactory : IBlobViewFactory
+        {
+            public BlobView Create(
+                BlobState blob,
+                LevelVisualThemeAsset theme,
+                Transform parent,
+                float cellSize,
+                Vector2 origin)
+            {
+                return null;
+            }
         }
 
         private sealed class FakeGameplayState : IGameplayState

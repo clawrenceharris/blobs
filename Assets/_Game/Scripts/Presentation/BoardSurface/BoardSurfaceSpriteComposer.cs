@@ -6,8 +6,8 @@ using Object = UnityEngine.Object;
 namespace Blobs.Presentation
 {
     /// <summary>
-    /// Composes and caches one sprite for each encountered neighbor mask. Convex and
-    /// concave components cut the base fill before their perimeter treatment is applied.
+    /// Composes and caches one sprite for each encountered neighbor mask and checker fill.
+    /// Convex and concave components reshape the base fill before perimeter treatment.
     /// </summary>
     public sealed class BoardSurfaceSpriteComposer : IDisposable
     {
@@ -32,8 +32,8 @@ namespace Blobs.Presentation
         };
 
         private readonly BoardSurfaceSpriteSet _spriteSet;
-        private readonly Dictionary<BoardSurfaceNeighborMask, Sprite> _sprites =
-            new Dictionary<BoardSurfaceNeighborMask, Sprite>();
+        private readonly Dictionary<int, Sprite> _sprites =
+            new Dictionary<int, Sprite>();
         private readonly Dictionary<Sprite, Color32[]> _sourcePixels =
             new Dictionary<Sprite, Color32[]>();
 
@@ -49,12 +49,24 @@ namespace Blobs.Presentation
 
         public Sprite GetOrCreate(BoardSurfaceNeighborMask mask)
         {
-            if (_sprites.TryGetValue(mask, out Sprite cached) && cached != null)
+            return GetOrCreate(mask, false);
+        }
+
+        public Sprite GetOrCreate(BoardSurfaceNeighborMask mask, bool useAlternateFill)
+        {
+            int cacheKey = ((int)mask << 1) | (useAlternateFill ? 1 : 0);
+            if (_sprites.TryGetValue(cacheKey, out Sprite cached) && cached != null)
                 return cached;
 
             int size = _spriteSet.ComponentSize;
-            Color32[] output = CopyPixels(_spriteSet.Fill);
+            Color32[] output = CopyPixels(useAlternateFill ? _spriteSet.FillB : _spriteSet.FillA);
+            int center = _spriteSet.ComponentPadding + _spriteSet.LogicalCellSize / 2;
+            Color32 fillColor = output[center * size + center];
             BoardSurfacePieces selected = BoardSurfaceNeighborMaskResolver.SelectPieces(mask);
+
+            // Bleed only the flat fill. Extending finalized edge artwork across an internal
+            // seam makes a straight edge protrude past the tangent of an adjacent concave arc.
+            BleedInternalSeams(output, mask);
 
             foreach (BoardSurfacePieces edge in EdgePieces)
             {
@@ -69,16 +81,14 @@ namespace Blobs.Presentation
 
                 if (IsConvex(corner))
                     ClearCorner(output, corner);
+                else
+                    FillConcaveCorner(output, corner, fillColor);
                 Composite(output, PixelsFor(_spriteSet.GetPiece(corner)));
             }
 
-            // Extend the finalized surface treatment only toward connected cells. Doing this
-            // after edge/corner composition preserves lighting across joins as well as alpha.
-            BleedInternalSeams(output, mask);
-
             var texture = new Texture2D(size, size, TextureFormat.RGBA32, false, false)
             {
-                name = "Board Surface " + (byte)mask,
+                name = $"Board Surface {(byte)mask} {(useAlternateFill ? "B" : "A")}",
                 filterMode = FilterMode.Bilinear,
                 wrapMode = TextureWrapMode.Clamp,
                 hideFlags = HideFlags.DontSave
@@ -95,7 +105,7 @@ namespace Blobs.Presentation
                 SpriteMeshType.FullRect);
             sprite.name = texture.name;
             sprite.hideFlags = HideFlags.DontSave;
-            _sprites.Add(mask, sprite);
+            _sprites.Add(cacheKey, sprite);
             return sprite;
         }
 
@@ -331,6 +341,23 @@ namespace Blobs.Presentation
             }
         }
 
+        private void FillConcaveCorner(
+            Color32[] pixels,
+            BoardSurfacePieces corner,
+            Color32 fillColor)
+        {
+            int size = _spriteSet.ComponentSize;
+            for (int imageY = 0; imageY < size; imageY++)
+            {
+                int textureY = size - 1 - imageY;
+                for (int x = 0; x < size; x++)
+                {
+                    if (ShouldFillConcave(corner, x + 0.5f, imageY + 0.5f))
+                        pixels[textureY * size + x] = fillColor;
+                }
+            }
+        }
+
         private bool ShouldClear(BoardSurfacePieces corner, float x, float y)
         {
             float left = _spriteSet.ComponentPadding;
@@ -354,6 +381,28 @@ namespace Blobs.Presentation
             }
 
             return false;
+        }
+
+        private bool ShouldFillConcave(BoardSurfacePieces corner, float x, float y)
+        {
+            float left = _spriteSet.ComponentPadding;
+            float top = _spriteSet.ComponentPadding;
+            float right = left + _spriteSet.LogicalCellSize;
+            float bottom = top + _spriteSet.LogicalCellSize;
+            float radius = _spriteSet.CornerRadius;
+            bool west = IsWest(corner);
+            bool north = IsNorth(corner);
+            float vertexX = west ? left : right;
+            float vertexY = north ? top : bottom;
+            float centerX = vertexX + (west ? -radius : radius);
+            float centerY = vertexY + (north ? -radius : radius);
+            float offsetX = (west ? -1f : 1f) * (x - vertexX);
+            float offsetY = (north ? -1f : 1f) * (y - vertexY);
+            float dx = x - centerX;
+            float dy = y - centerY;
+            return offsetX > 0f && offsetX <= radius &&
+                   offsetY > 0f && offsetY <= radius &&
+                   dx * dx + dy * dy >= radius * radius;
         }
 
         private static bool Has(BoardSurfacePieces selected, BoardSurfacePieces value)

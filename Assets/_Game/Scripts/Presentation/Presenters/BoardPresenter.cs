@@ -33,7 +33,13 @@ namespace Blobs.Presentation
         public float CellSize => _cellSize;
         public int VisibleBlobCount => _blobViews.Count;
         public int VisibleTileCount => _tileViews.Count;
+        public int VisibleSurfaceCellCount =>
+            _boardSurfaceView != null ? _boardSurfaceView.VisibleCellCount : 0;
         private LevelVisualThemeAsset _theme;
+        private BoardSurfaceView _boardSurfaceView;
+        private int _surfaceWidth;
+        private int _surfaceHeight;
+        private BoardSurfaceLayoutAsset _surfaceLayout;
 
         /// <summary>
         /// Current session snapshot used by tests and UI. Null until the presenter is initialized.
@@ -52,11 +58,17 @@ namespace Blobs.Presentation
         public void Initialize(
             IGameplayState state,
             LevelVisualThemeAsset theme,
-            IBlobViewFactory blobViewFactory = null)
+            IBlobViewFactory blobViewFactory = null,
+            int surfaceWidth = 0,
+            int surfaceHeight = 0,
+            BoardSurfaceLayoutAsset surfaceLayout = null)
         {
             Unsubscribe();
             _state = state;
             _theme = theme;
+            _surfaceWidth = surfaceWidth;
+            _surfaceHeight = surfaceHeight;
+            _surfaceLayout = surfaceLayout;
 
             _blobViewFactory =
                 blobViewFactory ?? new BlobViewFactory(_blobViewCatalog);
@@ -90,10 +102,55 @@ namespace Blobs.Presentation
 
             foreach (var tile in snapshot.Tiles)
                 CreateTileView(tile, _theme);
+            EnsureBoardSurfaceView().Rebuild(
+                BuildSurfacePositions(snapshot),
+                _cellSize,
+                _origin);
             foreach (var blob in snapshot.Blobs)
                 CreateBlobView(blob, _theme);
 
             SnapshotChanged?.Invoke(snapshot);
+        }
+
+        private ISet<GridPosition> BuildSurfacePositions(
+            GameSessionSnapshot snapshot)
+        {
+            var occupied = new HashSet<GridPosition>();
+
+            if (_surfaceLayout != null && _surfaceLayout.HasOccupiedCells)
+            {
+                if (!_surfaceLayout.TryValidate(
+                        _surfaceWidth,
+                        _surfaceHeight,
+                        out string validationError))
+                {
+                    throw new InvalidOperationException(
+                        $"Board surface layout '{_surfaceLayout.name}' is invalid: " +
+                        validationError);
+                }
+
+                foreach (Vector2Int cell in _surfaceLayout.OccupiedCells)
+                    occupied.Add(new GridPosition(cell.x, cell.y));
+
+                return occupied;
+            }
+
+            // The current gameplay model defines its traversable footprint with board dimensions;
+            // TileState entries are optional authored behavior. Keeping this fallback here in
+            // Presentation makes the board visible without changing gameplay or model semantics.
+            if (_surfaceWidth > 0 && _surfaceHeight > 0)
+            {
+                for (int y = 0; y < _surfaceHeight; y++)
+                for (int x = 0; x < _surfaceWidth; x++)
+                    occupied.Add(new GridPosition(x, y));
+
+                return occupied;
+            }
+
+            foreach (TileState tile in snapshot.Tiles)
+                occupied.Add(tile.Position);
+
+            return occupied;
         }
 
         /// <summary>
@@ -371,6 +428,7 @@ namespace Blobs.Presentation
         public void Clear()
         {
             KillEffectSequence();
+            _boardSurfaceView?.ClearCells();
 
             foreach (var view in _blobViews.Values)
             {
@@ -575,6 +633,22 @@ namespace Blobs.Presentation
             var instance = new GameObject("Production Tile");
             instance.transform.SetParent(parent, false);
             return instance.AddComponent<TileView>();
+        }
+
+        private BoardSurfaceView EnsureBoardSurfaceView()
+        {
+            if (_boardSurfaceView != null)
+                return _boardSurfaceView;
+
+            Transform parent = _tileRoot != null ? _tileRoot : transform;
+            _boardSurfaceView = parent.GetComponentInChildren<BoardSurfaceView>(true);
+            if (_boardSurfaceView != null)
+                return _boardSurfaceView;
+
+            var surfaceObject = new GameObject("Board Surface");
+            surfaceObject.transform.SetParent(parent, false);
+            _boardSurfaceView = surfaceObject.AddComponent<BoardSurfaceView>();
+            return _boardSurfaceView;
         }
 
 

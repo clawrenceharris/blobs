@@ -66,7 +66,8 @@ namespace Blobs.Presentation
                 _session,
                 asset.VisualTheme,
                 surfaceWidth: level.Width,
-                surfaceHeight: level.Height);
+                surfaceHeight: level.Height,
+                surfaceLayout: asset.BoardSurfaceLayout);
             inputAdapter.Initialize(_session, boardPresenter.CellSize);
             commandAdapter.Initialize(_session);
             if (feedbackPresenter != null)

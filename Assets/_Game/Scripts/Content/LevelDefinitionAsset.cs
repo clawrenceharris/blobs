@@ -18,6 +18,7 @@ namespace Blobs.Content
         [SerializeField, Min(1)] private int width = 6;
         [SerializeField, Min(1)] private int height = 6;
         [SerializeField, Min(1)] private int maximumBeats = 12;
+        [SerializeField] private BoardSurfaceLayoutAsset boardSurfaceLayout;
 
         [Header("Initial State")]
         [SerializeReference] private List<BlobAssetData> blobs = new();
@@ -37,6 +38,7 @@ namespace Blobs.Content
         public int Width => width;
         public int Height => height;
         public int MaximumBeats => maximumBeats;
+        public BoardSurfaceLayoutAsset BoardSurfaceLayout => boardSurfaceLayout;
         public IReadOnlyList<BlobAssetData> Blobs => blobs;
         public IReadOnlyList<TileAssetData> Tiles => tiles;
         public LevelObjectiveType Objective => objective;

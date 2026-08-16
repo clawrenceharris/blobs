@@ -50,6 +50,8 @@ namespace Blobs.Editor
                     AddBlob(new FlagBlobAssetData());
                 if (GUILayout.Button("Add Trail Blob"))
                     AddBlob(new TrailBlobAssetData());
+                if (GUILayout.Button("Add Rock Blob"))
+                    AddBlob(new RockBlobAssetData());
             }
 
             serializedObject.ApplyModifiedProperties();

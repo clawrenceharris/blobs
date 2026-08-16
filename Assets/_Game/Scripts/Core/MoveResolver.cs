@@ -67,20 +67,37 @@ namespace Blobs.Core
             var mergeSites = new HashSet<GridPosition>();
 
             BlobState mover = source;
-            GridPosition current = source.Position;
-            GridPosition goal = target.Position;
+
+            MovePlan movePlan = null;
+            if (_rules.TryGetMoveStrategy(target.Type, out IMoveStrategy moveStrategy))
+            {
+                movePlan = moveStrategy?.BuildPlan(new MoveContext(simulation, mover, target, mover.Position == target.Position));
+                if (movePlan != null && !movePlan.Succeeded)
+                {
+                    return MoveResult.Failed(movePlan.FailureReason);
+                }
+            }
+
+            GridPosition current = movePlan?.Move.From ?? source.Position;
+            GridPosition goal = movePlan?.Move.To ?? target.Position;
+
             int stepX = goal.X == current.X ? 0 : goal.X > current.X ? 1 : -1;
             int stepY = goal.Y == current.Y ? 0 : goal.Y > current.Y ? 1 : -1;
 
+
+            int stepCount = 0;
             while (current != goal)
             {
+                if (stepCount > 100)
+                {
+                    return MoveResult.Failed(MoveFailureReason.MoveTimeout);
+                }
+                stepCount++;
                 var next = new GridPosition(current.X + stepX, current.Y + stepY);
                 BlobState occupant = simulation.GetBlobAt(next);
-
                 var stepEffects = new List<IBoardEffect>();
                 MoveStepKind kind;
                 bool moverConsumed = false;
-
                 if (occupant == null)
                 {
                     kind = MoveStepKind.Traverse;
@@ -93,31 +110,30 @@ namespace Blobs.Core
                     if (!_rules.TryGetMergeStrategy(
                             mover.Type,
                             occupant.Type,
-                            out IMergeStrategy strategy))
+                            out IMergeStrategy mergeStrategy))
                     {
                         return MoveResult.Failed(
                             MoveFailureReason.UnsupportedInteraction);
                     }
 
                     var context = new MoveContext(
-                        simulation,
-                        mover,
-                        occupant,
-                        isFinalTarget: occupant.Id == target.Id);
-
-                    CollisionPlan plan = strategy.BuildPlan(context);
-                    if (!plan.Succeeded)
-                        return MoveResult.Failed(plan.FailureReason);
+                      simulation,
+                      mover,
+                      occupant,
+                      isFinalTarget: occupant.Id == target.Id);
+                    CollisionPlan collisionPlan = mergeStrategy.BuildPlan(context);
+                    if (!collisionPlan.Succeeded)
+                        return MoveResult.Failed(collisionPlan.FailureReason);
 
                     // Resolve the collision tile first so the mover can enter it.
-                    stepEffects.AddRange(plan.Effects);
+                    stepEffects.AddRange(collisionPlan.Effects);
 
-                    moverConsumed = plan.ConsumesMover;
+                    moverConsumed = collisionPlan.ConsumesMover;
                     if (!moverConsumed)
-                        stepEffects.Add(new MoveBlobEffect(mover.Id, current, next));
+                        stepEffects.Add(new MoveBlobEffect(mover.Id, mover.Position, next));
 
-                    if (plan.FollowUpSteps.Count > 0)
-                        followUpSteps.AddRange(plan.FollowUpSteps);
+                    if (collisionPlan.FollowUpSteps.Count > 0)
+                        followUpSteps.AddRange(collisionPlan.FollowUpSteps);
 
                     mergeSites.Add(next);
                 }

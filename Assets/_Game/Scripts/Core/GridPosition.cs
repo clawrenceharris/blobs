@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 
 namespace Blobs.Core
 {
@@ -45,6 +46,8 @@ namespace Blobs.Core
             }
         }
 
+        public static GridPosition Zero = new GridPosition(0, 0);
+
         public override string ToString()
         {
             return X + "," + Y;
@@ -58,6 +61,30 @@ namespace Blobs.Core
         public static bool operator !=(GridPosition left, GridPosition right)
         {
             return !left.Equals(right);
+        }
+
+        public static GridPosition operator -(GridPosition left, GridPosition right)
+        {
+            return new GridPosition(left.X - right.X, left.Y - right.Y);
+        }
+        public static GridPosition operator +(GridPosition left, GridPosition right)
+        {
+            return new GridPosition(left.X + right.X, left.Y + right.Y);
+        }
+
+        // Normalizes the position to a unit step (cardinal direction only: up, down, left, right, or zero)
+        // This will return (1,0), (-1,0), (0,1), (0,-1), or (0,0). Diagonal vectors become (0,0).
+        public static GridPosition Normalize(GridPosition position)
+        {
+            int x = position.X;
+            int y = position.Y;
+
+            // Clamp to -1, 0, or 1 for each axis
+            x = x > 0 ? 1 : (x < 0 ? -1 : 0);
+            y = y > 0 ? 1 : (y < 0 ? -1 : 0);
+
+            return new GridPosition(x, y);
+
         }
     }
 }

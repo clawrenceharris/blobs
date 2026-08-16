@@ -46,25 +46,35 @@ namespace Blobs.Core
         bool TryGetMoveBehavior(
             BlobType type,
             out IMoveBehavior behavior);
+        bool TryGetMoveStrategy(
+            BlobType sourceType,
+            out IMoveStrategy moveStrategy);
+
     }
 
     public sealed class BlobRuleBook : IBlobRuleBook
     {
         private readonly Dictionary<BlobType, BlobTraits> _traits;
-        private readonly Dictionary<MergeKey, IMergeStrategy> _strategies;
+        private readonly Dictionary<MergeKey, IMergeStrategy> _mergeStrategies;
         private readonly Dictionary<BlobType, IMoveBehavior> _moveBehaviors;
+        private readonly Dictionary<BlobType, IMoveStrategy> _moveStrategies;
 
         public BlobRuleBook(
             IDictionary<BlobType, BlobTraits> traits,
-            IDictionary<MergeKey, IMergeStrategy> strategies,
-            IDictionary<BlobType, IMoveBehavior> moveBehaviors = null)
+            IDictionary<MergeKey, IMergeStrategy> mergeStrategies,
+            IDictionary<BlobType, IMoveStrategy> moveStrategies = null,
+            IDictionary<BlobType, IMoveBehavior> moveBehaviors = null
+           )
         {
             _traits = new Dictionary<BlobType, BlobTraits>(traits);
-            _strategies =
-                new Dictionary<MergeKey, IMergeStrategy>(strategies);
+            _mergeStrategies =
+                new Dictionary<MergeKey, IMergeStrategy>(mergeStrategies);
             _moveBehaviors = moveBehaviors != null
                 ? new Dictionary<BlobType, IMoveBehavior>(moveBehaviors)
                 : new Dictionary<BlobType, IMoveBehavior>();
+            _moveStrategies = moveStrategies != null
+                ? new Dictionary<BlobType, IMoveStrategy>(moveStrategies)
+                : new Dictionary<BlobType, IMoveStrategy>();
         }
 
         public BlobTraits GetTraits(BlobType type)
@@ -77,13 +87,19 @@ namespace Blobs.Core
 
             return traits;
         }
+        public bool TryGetMoveStrategy(
+            BlobType sourceType,
+            out IMoveStrategy strategy)
+        {
+            return _moveStrategies.TryGetValue(sourceType, out strategy);
+        }
 
         public bool TryGetMergeStrategy(
             BlobType sourceType,
             BlobType targetType,
             out IMergeStrategy strategy)
         {
-            return _strategies.TryGetValue(
+            return _mergeStrategies.TryGetValue(
                 new MergeKey(sourceType, targetType),
                 out strategy);
         }
@@ -99,6 +115,7 @@ namespace Blobs.Core
         {
             var normalMerge = new NormalMergeStrategy();
             var flagMerge = new FlagMergeStrategy();
+            var rockMerge = new RockMergeStrategy();
 
             return new BlobRuleBook(
                 new Dictionary<BlobType, BlobTraits>
@@ -109,7 +126,10 @@ namespace Blobs.Core
                     [BlobType.Flag] =
                         new BlobTraits(canBeSource: false, isClearable: false),
                     [BlobType.Trail] =
-                        new BlobTraits(canBeSource: true, isClearable: true)
+                        new BlobTraits(canBeSource: true, isClearable: true),
+
+                    [BlobType.Rock] =
+                        new BlobTraits(canBeSource: false, isClearable: false),
                 },
                 new Dictionary<MergeKey, IMergeStrategy>
                 {
@@ -125,12 +145,30 @@ namespace Blobs.Core
                     [new MergeKey(BlobType.Normal, BlobType.Flag)] =
                         flagMerge,
                     [new MergeKey(BlobType.Trail, BlobType.Flag)] =
-                        flagMerge
+                        flagMerge,
+
+                    [new MergeKey(BlobType.Normal, BlobType.Rock)] =
+                        rockMerge,
+                    [new MergeKey(BlobType.Trail, BlobType.Rock)] =
+                        rockMerge,
+
+                    [new MergeKey(BlobType.Rock, BlobType.Normal)] =
+                        null,
+                    [new MergeKey(BlobType.Rock, BlobType.Trail)] =
+                        null,
+
+
+
                 },
+                 new Dictionary<BlobType, IMoveStrategy>
+                 {
+                     [BlobType.Rock] = new RockMoveStrategy(),
+                 },
                 new Dictionary<BlobType, IMoveBehavior>
                 {
-                    [BlobType.Trail] = new TrailMoveBehavior()
-                });
+                    [BlobType.Trail] = new TrailMoveBehavior(),
+                }
+               );
         }
     }
 }

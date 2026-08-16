@@ -198,7 +198,7 @@ namespace Blobs.Tests.EditMode
 
             SpawnBlobEffect spawn = result.Effects.OfType<SpawnBlobEffect>().Single();
             Assert.That(spawn.At, Is.EqualTo(new GridPosition(0, 0)));
-            Assert.That(spawn.Blob.Color, Is.EqualTo(BlobColor.Blue));
+            Assert.That(spawn.Blob.GetModel<ColorBlobModel>().Color, Is.EqualTo(BlobColor.Blue));
             Assert.That(spawn.Blob.Type, Is.EqualTo(BlobType.Normal));
         }
 
@@ -221,7 +221,7 @@ namespace Blobs.Tests.EditMode
 
             SpawnBlobEffect spawn = result.Effects.OfType<SpawnBlobEffect>().Single();
             Assert.That(spawn.At, Is.EqualTo(new GridPosition(0, 0)));
-            Assert.That(board.GetBlobAt(new GridPosition(0, 0)).Color, Is.EqualTo(BlobColor.Blue));
+            Assert.That(board.GetBlobAt(new GridPosition(0, 0)).GetModel<ColorBlobModel>().Color, Is.EqualTo(BlobColor.Blue));
         }
 
         [Test]
@@ -293,7 +293,7 @@ namespace Blobs.Tests.EditMode
             BlobState moved = Trail("trail", BlobColor.Red, BlobColor.Yellow, 0, 0)
                 .WithPosition(new GridPosition(2, 1));
 
-            Assert.That(moved.TrailColor, Is.EqualTo(BlobColor.Yellow));
+            Assert.That(moved.GetModel<TrailBlobModel>().TrailColor, Is.EqualTo(BlobColor.Yellow));
             Assert.That(moved.IsClearable, Is.True);
             Assert.That(moved.Position, Is.EqualTo(new GridPosition(2, 1)));
         }
@@ -342,7 +342,9 @@ namespace Blobs.Tests.EditMode
             int x,
             int y)
         {
-            return new BlobState(id, type, color, new GridPosition(x, y));
+            var state = new BlobState(id, type, new GridPosition(x, y));
+            state.AddModel(new ColorBlobModel(color));
+            return state;
         }
 
         private static BlobState Trail(
@@ -355,9 +357,7 @@ namespace Blobs.Tests.EditMode
             return new BlobState(
                 id,
                 BlobType.Trail,
-                color,
-                new GridPosition(x, y),
-                trailColor);
+                new GridPosition(x, y)).AddModel(new ColorBlobModel(color)).AddModel(new TrailBlobModel(trailColor));
         }
 
         private sealed class FollowUpMergeStrategy : IMergeStrategy

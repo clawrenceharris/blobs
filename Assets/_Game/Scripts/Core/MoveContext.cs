@@ -27,6 +27,7 @@ namespace Blobs.Core
         /// <summary>The occupant being collided with at this beat.</summary>
         public BlobState Target { get; }
 
+
         /// <summary>
         /// True when <see cref="Target"/> is the blob named by the move intent,
         /// false for occupants encountered earlier on the path.

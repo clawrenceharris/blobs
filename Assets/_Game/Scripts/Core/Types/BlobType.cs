@@ -4,6 +4,7 @@ namespace Blobs.Core
     {
         Normal,
         Flag,
-        Trail
+        Trail,
+        Rock
     }
 }

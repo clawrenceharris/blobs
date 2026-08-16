@@ -16,4 +16,26 @@ namespace Blobs.Core
         FlagRequiresMatchingColor,
         FlagRequiresNoOtherBlobs
     }
+
+    public static class MoveFailureReasonExtensions
+    {
+        public static bool ShouldShowFeedback(this MoveFailureReason reason)
+        {
+            return reason switch
+            {
+                MoveFailureReason.SourceCannotMove => true,
+                MoveFailureReason.TargetMissing => true,
+                MoveFailureReason.SameBlob => false,
+                MoveFailureReason.NotAligned => false,
+                MoveFailureReason.BlockedPath => true,
+                MoveFailureReason.UnsupportedInteraction => true,
+                MoveFailureReason.NormalMergeRequiresDifferentColors => true,
+                MoveFailureReason.FlagRequiresMatchingColor => true,
+                MoveFailureReason.FlagRequiresNoOtherBlobs => true,
+                MoveFailureReason.None => false,
+                MoveFailureReason.SourceMissing => false,
+                _ => false,
+            };
+        }
+    }
 }

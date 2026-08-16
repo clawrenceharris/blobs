@@ -17,6 +17,7 @@ MonoBehaviour:
   width: 4
   height: 4
   maximumBeats: 6
+  boardSurfaceLayout: {fileID: 11400000, guid: 9b26e6d2c91e4c33adcd255c5c44d7ba, type: 2}
   blobs:
   - rid: 830000000000000002
   - rid: 7441116775194820813

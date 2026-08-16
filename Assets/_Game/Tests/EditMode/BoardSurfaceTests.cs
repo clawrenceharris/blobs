@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using Blobs.Application;
+using Blobs.Content;
 using Blobs.Core;
 using Blobs.Presentation;
 using NUnit.Framework;
@@ -163,9 +166,150 @@ namespace Blobs.Tests.EditMode
             Assert.That(mask.HasFlag(BoardSurfaceNeighborMask.NorthEast), Is.False);
         }
 
+        [Test]
+        public void Level03UsesItsAuthoredSevenCellSurfaceLayout()
+        {
+            LevelDefinitionAsset level = AssetDatabase.LoadAssetAtPath<LevelDefinitionAsset>(
+                "Assets/_Game/Content/Levels/SO/Level_03.asset");
+
+            Assert.That(level, Is.Not.Null);
+            Assert.That(level.BoardSurfaceLayout, Is.Not.Null);
+            Assert.That(
+                level.BoardSurfaceLayout.TryValidate(level.Width, level.Height, out string error),
+                Is.True,
+                error);
+            Assert.That(level.BoardSurfaceLayout.OccupiedCells, Is.EquivalentTo(new[]
+            {
+                new Vector2Int(0, 0),
+                new Vector2Int(1, 0),
+                new Vector2Int(2, 0),
+                new Vector2Int(3, 0),
+                new Vector2Int(3, 1),
+                new Vector2Int(3, 2),
+                new Vector2Int(3, 3)
+            }));
+
+            _root = new GameObject("Level 3 Surface Layout Test");
+            BoardPresenter presenter = _root.AddComponent<BoardPresenter>();
+            presenter.Initialize(
+                new FakeGameplayState(EmptySnapshot()),
+                null,
+                surfaceWidth: level.Width,
+                surfaceHeight: level.Height,
+                surfaceLayout: level.BoardSurfaceLayout);
+
+            Assert.That(presenter.VisibleSurfaceCellCount, Is.EqualTo(7));
+            BoardSurfaceView surface = _root.GetComponentInChildren<BoardSurfaceView>(true);
+            Assert.That(
+                surface.TryGetMask(new GridPosition(3, 0), out BoardSurfaceNeighborMask mask),
+                Is.True);
+            Assert.That(mask.HasFlag(BoardSurfaceNeighborMask.North), Is.True);
+            Assert.That(mask.HasFlag(BoardSurfaceNeighborMask.West), Is.True);
+            Assert.That(mask.HasFlag(BoardSurfaceNeighborMask.NorthWest), Is.False);
+        }
+
+        [Test]
+        public void DefaultBoardSurfacePaletteExistsForFutureIntegration()
+        {
+            BoardSurfacePaletteAsset palette =
+                AssetDatabase.LoadAssetAtPath<BoardSurfacePaletteAsset>(
+                    "Assets/_Game/Content/Board/Palettes/BoardSurfacePalette_Default.asset");
+
+            Assert.That(palette, Is.Not.Null);
+            Assert.That(palette.Surface.a, Is.EqualTo(1f));
+            Assert.That(palette.Highlight.r, Is.GreaterThan(palette.Surface.r));
+            Assert.That(palette.Thickness.r, Is.LessThan(palette.Surface.r));
+        }
+
+        [Test]
+        public void SurfaceLayoutRejectsDuplicateAndOutOfBoundsCells()
+        {
+            BoardSurfaceLayoutAsset layout =
+                ScriptableObject.CreateInstance<BoardSurfaceLayoutAsset>();
+            try
+            {
+                var serialized = new SerializedObject(layout);
+                SerializedProperty cells = serialized.FindProperty("occupiedCells");
+                cells.arraySize = 2;
+                cells.GetArrayElementAtIndex(0).vector2IntValue = new Vector2Int(1, 1);
+                cells.GetArrayElementAtIndex(1).vector2IntValue = new Vector2Int(1, 1);
+                serialized.ApplyModifiedPropertiesWithoutUndo();
+
+                Assert.That(layout.TryValidate(4, 4, out string duplicateError), Is.False);
+                StringAssert.Contains("more than once", duplicateError);
+
+                cells.GetArrayElementAtIndex(1).vector2IntValue = new Vector2Int(4, 1);
+                serialized.ApplyModifiedPropertiesWithoutUndo();
+
+                Assert.That(layout.TryValidate(4, 4, out string boundsError), Is.False);
+                StringAssert.Contains("outside board dimensions", boundsError);
+            }
+            finally
+            {
+                Object.DestroyImmediate(layout);
+            }
+        }
+
+        [Test]
+        public void MissingSurfaceLayoutFallsBackToFullBoardDimensions()
+        {
+            _root = new GameObject("Rectangular Surface Fallback Test");
+            BoardPresenter presenter = _root.AddComponent<BoardPresenter>();
+            presenter.Initialize(
+                new FakeGameplayState(EmptySnapshot()),
+                null,
+                surfaceWidth: 2,
+                surfaceHeight: 3);
+
+            Assert.That(presenter.VisibleSurfaceCellCount, Is.EqualTo(6));
+        }
+
+        private static GameSessionSnapshot EmptySnapshot()
+        {
+            return new GameSessionSnapshot(
+                "board-surface-test",
+                new BlobState[0],
+                new TileState[0],
+                0,
+                false);
+        }
+
         private static TileState Tile(string id, int x, int y)
         {
             return new TileState(id, new GridPosition(x, y), TileType.Normal);
+        }
+
+        private sealed class FakeGameplayState : IGameplayState
+        {
+            private readonly GameSessionSnapshot _snapshot;
+
+            public FakeGameplayState(GameSessionSnapshot snapshot)
+            {
+                _snapshot = snapshot;
+            }
+
+            public event Action<GameSessionSnapshot> SnapshotChanged
+            {
+                add { }
+                remove { }
+            }
+
+            public event Action<MoveResult> MoveResolved
+            {
+                add { }
+                remove { }
+            }
+
+            public event Action<GameSessionSnapshot> StateRestored
+            {
+                add { }
+                remove { }
+            }
+
+            public GameSessionSnapshot CreateSnapshot()
+            {
+                return _snapshot;
+            }
         }
     }
 }

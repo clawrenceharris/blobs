@@ -39,6 +39,7 @@ namespace Blobs.Presentation
         private BoardSurfaceView _boardSurfaceView;
         private int _surfaceWidth;
         private int _surfaceHeight;
+        private BoardSurfaceLayoutAsset _surfaceLayout;
 
         /// <summary>
         /// Current session snapshot used by tests and UI. Null until the presenter is initialized.
@@ -59,13 +60,15 @@ namespace Blobs.Presentation
             LevelVisualThemeAsset theme,
             IBlobViewFactory blobViewFactory = null,
             int surfaceWidth = 0,
-            int surfaceHeight = 0)
+            int surfaceHeight = 0,
+            BoardSurfaceLayoutAsset surfaceLayout = null)
         {
             Unsubscribe();
             _state = state;
             _theme = theme;
             _surfaceWidth = surfaceWidth;
             _surfaceHeight = surfaceHeight;
+            _surfaceLayout = surfaceLayout;
 
             _blobViewFactory =
                 blobViewFactory ?? new BlobViewFactory(_blobViewCatalog);
@@ -113,6 +116,24 @@ namespace Blobs.Presentation
             GameSessionSnapshot snapshot)
         {
             var occupied = new HashSet<GridPosition>();
+
+            if (_surfaceLayout != null && _surfaceLayout.HasOccupiedCells)
+            {
+                if (!_surfaceLayout.TryValidate(
+                        _surfaceWidth,
+                        _surfaceHeight,
+                        out string validationError))
+                {
+                    throw new InvalidOperationException(
+                        $"Board surface layout '{_surfaceLayout.name}' is invalid: " +
+                        validationError);
+                }
+
+                foreach (Vector2Int cell in _surfaceLayout.OccupiedCells)
+                    occupied.Add(new GridPosition(cell.x, cell.y));
+
+                return occupied;
+            }
 
             // The current gameplay model defines its traversable footprint with board dimensions;
             // TileState entries are optional authored behavior. Keeping this fallback here in

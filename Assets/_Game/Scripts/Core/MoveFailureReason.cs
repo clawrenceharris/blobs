@@ -6,7 +6,7 @@ namespace Blobs.Core
         SourceMissing,
         TargetMissing,
         SameBlob,
-
+        MoveTimeout,
         SourceCannotMove,
         NotAligned,
         BlockedPath,
@@ -34,6 +34,7 @@ namespace Blobs.Core
                 MoveFailureReason.FlagRequiresNoOtherBlobs => true,
                 MoveFailureReason.None => false,
                 MoveFailureReason.SourceMissing => false,
+                MoveFailureReason.MoveTimeout => true,
                 _ => false,
             };
         }

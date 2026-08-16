@@ -24,7 +24,13 @@ namespace Blobs.Presentation
             if (blob == null)
                 throw new ArgumentNullException(nameof(blob));
 
-            Skin skin = _resolver.ResolveSkin(blob.Color, palette);
+            if (!blob.TryGetModel(out ColorBlobModel colorBlob))
+            {
+                throw new InvalidOperationException(
+                    $"Flag color binding on '{name}' requires a ColorBlobModel for blob '{blob.Id}'.");
+            }
+
+            Skin skin = _resolver.ResolveSkin(colorBlob.Color, palette);
             BlobRenderer.ApplyShaderSkin(
                 targetRenderer,
                 targetRenderer.material,

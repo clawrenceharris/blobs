@@ -74,6 +74,13 @@ namespace Blobs.Content
                 case TrailBlobAssetData trail:
                     throw new InvalidOperationException(
                         $"Trail blob '{trail.id}' declares unsupported type {trail.type}.");
+                case RockBlobAssetData rock when rock.type == BlobType.Rock:
+                    return new RockBlobDefinition(
+                        rock.id,
+                        ToCore(rock.position));
+                case RockBlobAssetData rock:
+                    throw new InvalidOperationException(
+                        $"Rock blob '{rock.id}' declares unsupported type {rock.type}.");
                 default:
                     throw new InvalidOperationException(
                         $"Unsupported blob asset data type: {blob.GetType().Name}.");

@@ -232,7 +232,8 @@ namespace Blobs.Tests.EditMode
                 1,
                 new[]
                 {
-                    new BlobState("red_a", BlobType.Normal, BlobColor.Red, new GridPosition(0, 0))
+                    new BlobState("red_a", BlobType.Normal, new GridPosition(0, 0))
+                    .AddModel(new ColorBlobModel(BlobColor.Red))
                 },
                 new[]
                 {

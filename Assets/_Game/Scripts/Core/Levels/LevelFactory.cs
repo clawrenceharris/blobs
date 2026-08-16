@@ -20,13 +20,27 @@ namespace Blobs.Core
 
             foreach (BlobDefinition blob in level.Blobs)
             {
-                blobs.Add(new BlobState(
+                var state = new BlobState(
                     blob.Id,
                     blob.Type,
-                    blob.Color,
-                    blob.Position,
-                    (blob as TrailBlobDefinition)?.TrailColor
-                   ));
+                    blob.Position
+                   );
+                switch (blob)
+                {
+                    case NormalBlobDefinition colorBlob:
+                        state.AddModel(new ColorBlobModel(colorBlob.Color));
+                        break;
+                    case TrailBlobDefinition trailBlob:
+                        state.AddModel(new ColorBlobModel(trailBlob.Color))
+                        .AddModel(new TrailBlobModel(trailBlob.TrailColor));
+                        break;
+                    case FlagBlobDefinition flagBlob:
+                        state.AddModel(new ColorBlobModel(flagBlob.Color));
+                        break;
+
+                }
+                blobs.Add(state);
+
             }
 
             var tiles = new List<TileState>(level.Tiles.Count);

@@ -174,11 +174,9 @@ namespace Blobs.Tests.EditMode
 
         private static BlobState Blob(string id, BlobColor color, int x, int y)
         {
-            return new BlobState(
-                id,
-                BlobType.Normal,
-                color,
-                new GridPosition(x, y));
+            var state = new BlobState(id, BlobType.Normal, new GridPosition(x, y));
+            state.AddModel(new ColorBlobModel(color));
+            return state;
         }
 
         private static GameSessionSnapshot Snapshot(params BlobState[] blobs)

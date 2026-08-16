@@ -44,7 +44,7 @@ namespace Blobs.Tests.EditMode
                 spawns.All(spawn => spawn.Blob.Type == BlobType.Normal),
                 Is.True);
             Assert.That(
-                spawns.All(spawn => spawn.Blob.Color == BlobColor.Blue),
+                spawns.All(spawn => spawn.Blob.GetModel<ColorBlobModel>().Color == BlobColor.Blue),
                 Is.True);
 
             // Trail blob survives on the target tile; three trail blobs remain behind it.
@@ -52,7 +52,7 @@ namespace Blobs.Tests.EditMode
             BlobState mover = snapshot.Blobs.Single(blob => blob.Id == "trail_red");
             Assert.That(mover.Position, Is.EqualTo(new GridPosition(3, 0)));
             Assert.That(mover.Type, Is.EqualTo(BlobType.Trail));
-            Assert.That(mover.TrailColor, Is.EqualTo(BlobColor.Blue));
+            Assert.That(mover.GetModel<TrailBlobModel>().TrailColor, Is.EqualTo(BlobColor.Blue));
         }
 
         [Test]
@@ -206,9 +206,9 @@ namespace Blobs.Tests.EditMode
                 1,
                 new[]
                 {
-                    new BlobState("mover", BlobType.Normal, BlobColor.Red, new GridPosition(0, 0)),
-                    new BlobState("eater", BlobType.Normal, BlobColor.Blue, new GridPosition(1, 0)),
-                    new BlobState("target", BlobType.Normal, BlobColor.Green, new GridPosition(2, 0))
+                    new BlobState("mover", BlobType.Normal, new GridPosition(0, 0)).AddModel(new ColorBlobModel(BlobColor.Red)),
+                    new BlobState("eater", BlobType.Normal, new GridPosition(1, 0)).AddModel(new ColorBlobModel(BlobColor.Blue)),
+                    new BlobState("target", BlobType.Normal, new GridPosition(2, 0)).AddModel(new ColorBlobModel(BlobColor.Green))
                 },
                 new TileState[0]);
 

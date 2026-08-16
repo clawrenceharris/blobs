@@ -21,7 +21,7 @@ MonoBehaviour:
   blobs:
   - rid: 830000000000000002
   - rid: 7441116775194820813
-  - rid: 7441116775194820825
+  - rid: 7441116843275452499
   tiles: []
   objective: 0
   visualTheme: {fileID: 11400000, guid: b5998ed730be04ebe92db77229a4677f, type: 2}
@@ -42,11 +42,10 @@ MonoBehaviour:
         position: {x: 3, y: 3}
         color: 1
         type: 1
-    - rid: 7441116775194820825
-      type: {class: TrailBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+    - rid: 7441116843275452499
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: level03-trail
+        id: level03-blue
         position: {x: 0, y: 0}
         color: 1
-        type: 2
-        trailColor: 2
+        type: 0

@@ -84,15 +84,14 @@ namespace Blobs.Presentation
         {
             return reason switch
             {
-                MoveFailureReason.SourceMissing => "That blob is no longer there.",
-                MoveFailureReason.TargetMissing => "That blob is no longer there.",
-                MoveFailureReason.SameBlob => "Choose a different blob.",
                 MoveFailureReason.SourceCannotMove => "That blob can't move.",
-                MoveFailureReason.NotAligned => "Use the same row or column.",
-                MoveFailureReason.BlockedPath => "Another blob is in the way.",
+                MoveFailureReason.TargetMissing => "There's no blob there.",
+                MoveFailureReason.BlockedPath => "Path is blocked.",
+                MoveFailureReason.NotAligned => "Blobs must share the same column or row to merge",
+                MoveFailureReason.SameBlob => "Choose a different blob.",
                 MoveFailureReason.UnsupportedInteraction => "Those blobs can't merge.",
                 MoveFailureReason.NormalMergeRequiresDifferentColors =>
-                    "Normal blobs need different colors.",
+                    "Can't merge same colors!",
                 MoveFailureReason.FlagRequiresMatchingColor => "Match the flag's color.",
                 MoveFailureReason.FlagRequiresNoOtherBlobs => "Clear the other blobs first.",
                 _ => "That move isn't valid."
@@ -102,8 +101,14 @@ namespace Blobs.Presentation
         private void HandleSelectionResolved(BlobSelectionResult result)
         {
             MoveResult moveResult = result?.MoveResult;
+
             if (moveResult == null)
             {
+                return;
+            }
+            if (!result.MoveAttempted)
+            {
+
                 return;
             }
 
@@ -116,6 +121,11 @@ namespace Blobs.Presentation
             if (moveResult.FailureReason == MoveFailureReason.None)
                 return;
 
+            if (!moveResult.FailureReason.ShouldShowFeedback())
+            {
+                HideImmediately();
+                return;
+            }
             ShowFailure(moveResult.FailureReason);
         }
 

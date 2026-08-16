@@ -36,8 +36,8 @@ namespace Blobs.Presentation
             _baseScale = Vector3.one * Mathf.Max(0.1f, cellSize * 0.8f);
             transform.localScale = _baseScale;
             BlobRenderer = GetComponent<BlobRenderer>();
+            CacheOptionalBehaviors();
             ApplySkin(blob, theme);
-            EnsureInputTarget(blob.Id);
         }
 
         /// <summary>
@@ -123,17 +123,6 @@ namespace Blobs.Presentation
             var skinResolver = new BlobSkinResolver();
             var skin = skinResolver.ResolveSkin(blob, theme);
             skinApplier.Apply(this, skin.Value);
-        }
-
-
-
-        private void EnsureInputTarget(string blobId)
-        {
-            var target = GetComponent<BlobInputTarget>();
-            if (target == null)
-                target = gameObject.AddComponent<BlobInputTarget>();
-
-            target.Initialize(blobId);
         }
 
         private static Vector3 GridToLocal(GridPosition position, float cellSize, Vector2 origin)

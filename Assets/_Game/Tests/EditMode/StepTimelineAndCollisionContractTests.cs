@@ -25,6 +25,29 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
+        public void RockTargetStopsAdjacentWithoutProducingAMergeStep()
+        {
+            BoardState board = Board(
+                Blob("blue", BlobType.Normal, BlobColor.Blue, 0, 0),
+                Blob("rock", BlobType.Rock, BlobColor.None, 3, 0));
+
+            MoveResult result = Resolve(board, "blue", "rock");
+
+            Assert.That(result.Succeeded, Is.True);
+            Assert.That(result.Steps.Count, Is.EqualTo(2));
+            Assert.That(
+                result.Steps.All(step => step.Kind == MoveStepKind.Traverse),
+                Is.True);
+            Assert.That(result.Effects.OfType<RemoveBlobEffect>(), Is.Empty);
+            Assert.That(
+                board.GetBlob("blue").Position,
+                Is.EqualTo(new GridPosition(2, 0)));
+            Assert.That(
+                board.GetBlob("rock").Position,
+                Is.EqualTo(new GridPosition(3, 0)));
+        }
+
+        [Test]
         public void FlattenedEffectsMatchConcatenatedStepEffects()
         {
             MoveResult result = Resolve(

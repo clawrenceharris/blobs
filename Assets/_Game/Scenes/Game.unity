@@ -2217,7 +2217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.GameBootstrapper
   boardPresenter: {fileID: 1341500224}
-  levelAsset: {fileID: 11400000, guid: 0b887f946e6694285b164a8297cf39cc, type: 2}
+  levelAsset: {fileID: 11400000, guid: d01b5dc2601c4a85a734c4abce2a544d, type: 2}
   backgroundView: {fileID: 0}
   cameraPresenter: {fileID: 983718534}
   inputAdapter: {fileID: 1046084939}
@@ -2733,6 +2733,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 896816962}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1052151715
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1052151716}
+  m_Layer: 0
+  m_Name: VFXRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1052151716
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052151715}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1066094398
 GameObject:
@@ -3267,6 +3298,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1341500225}
   - component: {fileID: 1341500224}
+  - component: {fileID: 1341500226}
   m_Layer: 0
   m_Name: BoardPresenter
   m_TagString: Untagged
@@ -3295,6 +3327,7 @@ MonoBehaviour:
   _moveDuration: 0.3
   _spawnDuration: 0.2
   _despawnDuration: 0.2
+  _mergeAnimationOrchestrator: {fileID: 1341500226}
 --- !u!4 &1341500225
 Transform:
   m_ObjectHideFlags: 0
@@ -3312,6 +3345,41 @@ Transform:
   - {fileID: 1066094399}
   m_Father: {fileID: 896816962}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1341500226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341500223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b721eabef2b04ef3ae245dcd1a90299d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.MergeAnimationOrchestrator
+  _anticipationDuration: 0.07
+  _travelDuration: 0.3
+  _consumeDuration: 0.2
+  _settleDuration: 0.4
+  _anticipationBackstep: 0.08
+  _anticipationScale: {x: 1.1, y: 0.88}
+  _travelScale: {x: 0.9, y: 1.056}
+  _targetBraceScale: {x: 0.88, y: 0.99}
+  _survivorImpactScale: {x: 1.14, y: 1.28}
+  _mergeImpactPrefab: {fileID: 1000000000000000002, guid: de8eae55750e4297b766eaf92ea0c0ba, type: 3}
+  _effectsRoot: {fileID: 1052151716}
+  _sourceSortingOffset: 10
+  _targetSortingOffset: 20
+  _effectSortingOffset: 10
+  _mergeImpactClip: {fileID: 0}
+  _mergeImpactVolume: 0.85
+  _mergeImpactPitch: 1
+  _rockThumpClip: {fileID: 0}
+  _rockThumpVolume: 0.8
+  _rockThumpPitch: 1
+  _onMergeImpact:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1343664527
 GameObject:
   m_ObjectHideFlags: 0
@@ -5360,3 +5428,4 @@ SceneRoots:
   - {fileID: 983718531}
   - {fileID: 896816962}
   - {fileID: 1741978561}
+  - {fileID: 1052151716}

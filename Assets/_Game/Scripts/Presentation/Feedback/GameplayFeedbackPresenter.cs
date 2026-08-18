@@ -85,7 +85,6 @@ namespace Blobs.Presentation
             return reason switch
             {
                 MoveFailureReason.SourceCannotMove => "That blob can't move.",
-                MoveFailureReason.TargetMissing => "There's no blob there.",
                 MoveFailureReason.BlockedPath => "Path is blocked.",
                 MoveFailureReason.NotAligned => "Blobs must share the same column or row to merge",
                 MoveFailureReason.SameBlob => "Choose a different blob.",

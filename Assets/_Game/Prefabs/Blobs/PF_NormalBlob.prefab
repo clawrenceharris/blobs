@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 1889189986113857665}
   - component: {fileID: 2149106020715233295}
   - component: {fileID: 4066925320797062944}
+  - component: {fileID: 429713232074978795}
+  - component: {fileID: 762601904433120001}
   m_Layer: 3
   m_Name: PF_NormalBlob
   m_TagString: Untagged
@@ -46,6 +48,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed9378ee5da64bd0aa34d32f9dd14de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BlobView
+  _visualRoot: {fileID: 9008830136990566677}
+  _sortingGroup: {fileID: 762601904433120001}
+  Color: 0
+--- !u!210 &762601904433120001
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468080444204028906}
+  m_Enabled: 1
+  m_SortingLayerID: 1381305635
+  m_SortingLayer: 4
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!114 &4066925320797062944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,11 +76,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BlobRenderer
   _fallbackBaseRenderer: {fileID: 6852378884847781655}
-  _defaultMaterial: {fileID: 2100000, guid: 67d4f62ca65af4605bcf0257e28a7aa2, type: 2}
   _targets:
   - ColorBinding: 0
     Renderers:
     - {fileID: 6852378884847781655}
+--- !u!114 &429713232074978795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468080444204028906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b9b9a1554fe94bab985d4d4b3d0c867, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BlobMotionAnimator
+  _blobAnimationSettings: {fileID: 11400000, guid: 8b153b34bf26a437b8b90f17a3cfdc4d, type: 2}
 --- !u!1 &3245184740737095151
 GameObject:
   m_ObjectHideFlags: 0

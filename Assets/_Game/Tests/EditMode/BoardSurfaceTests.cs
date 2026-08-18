@@ -409,7 +409,7 @@ namespace Blobs.Tests.EditMode
         {
             public BlobView Create(
                 BlobState blob,
-                LevelVisualThemeAsset theme,
+                IGameplayState gameplayState,
                 Transform parent,
                 float cellSize,
                 Vector2 origin)
@@ -421,6 +421,7 @@ namespace Blobs.Tests.EditMode
         private sealed class FakeGameplayState : IGameplayState
         {
             private readonly GameSessionSnapshot _snapshot;
+            public event Action<BlobSelectionResult> BlobSelected;
 
             public FakeGameplayState(GameSessionSnapshot snapshot)
             {

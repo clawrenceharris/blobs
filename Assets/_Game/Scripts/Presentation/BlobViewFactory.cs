@@ -1,3 +1,4 @@
+using Blobs.Application;
 using Blobs.Content;
 using Blobs.Core;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace Blobs.Presentation
     {
         BlobView Create(
             BlobState blob,
-            LevelVisualThemeAsset theme,
+            IGameplayState gameplayState,
             Transform parent,
             float cellSize,
             Vector2 origin);
@@ -27,7 +28,7 @@ namespace Blobs.Presentation
 
         public BlobView Create(
             BlobState blob,
-            LevelVisualThemeAsset theme,
+            IGameplayState state,
             Transform parent,
             float cellSize,
             Vector2 origin)
@@ -40,6 +41,8 @@ namespace Blobs.Presentation
 
             instance.Initialize(
                 blob,
+                state,
+
                 _catalog.GetRequiredColorPalette(),
                 cellSize,
                 origin);

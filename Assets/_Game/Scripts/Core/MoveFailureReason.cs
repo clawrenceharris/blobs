@@ -3,8 +3,7 @@ namespace Blobs.Core
     public enum MoveFailureReason
     {
         None,
-        SourceMissing,
-        TargetMissing,
+        SourceOrTargetMissing,
         SameBlob,
         MoveTimeout,
         SourceCannotMove,
@@ -24,7 +23,6 @@ namespace Blobs.Core
             return reason switch
             {
                 MoveFailureReason.SourceCannotMove => true,
-                MoveFailureReason.TargetMissing => true,
                 MoveFailureReason.SameBlob => false,
                 MoveFailureReason.NotAligned => false,
                 MoveFailureReason.BlockedPath => true,
@@ -33,7 +31,7 @@ namespace Blobs.Core
                 MoveFailureReason.FlagRequiresMatchingColor => true,
                 MoveFailureReason.FlagRequiresNoOtherBlobs => true,
                 MoveFailureReason.None => false,
-                MoveFailureReason.SourceMissing => false,
+                MoveFailureReason.SourceOrTargetMissing => false,
                 MoveFailureReason.MoveTimeout => true,
                 _ => false,
             };

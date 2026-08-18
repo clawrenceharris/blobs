@@ -45,6 +45,12 @@ namespace Blobs.Application
         /// Raised after restart reconstructs the authored initial state.
         /// </summary>
         event Action<GameSessionSnapshot> StateRestored;
+
+
+        /// <summary>
+        /// Raised after a blob is selected.
+        /// </summary>
+        event Action<BlobSelectionResult> BlobSelected;
     }
 
     /// <summary>
@@ -72,6 +78,8 @@ namespace Blobs.Application
         /// </summary>
         public event Action<GameSessionSnapshot> StateRestored;
 
+        public event Action<BlobSelectionResult> BlobSelected;
+
         public string LevelId => _level.Id;
         public int MoveCount => _history.Count;
         public bool IsComplete { get; private set; }
@@ -96,7 +104,9 @@ namespace Blobs.Application
             if (blob == null)
             {
                 _selectedBlobId = null;
-                return BlobSelectionResult.Cleared();
+                var cleared = BlobSelectionResult.Cleared();
+                BlobSelected?.Invoke(cleared);
+                return cleared;
             }
 
             if (string.IsNullOrEmpty(_selectedBlobId))
@@ -105,21 +115,31 @@ namespace Blobs.Application
                     _resolver.ValidateSourceSelection(_board, blob.Id);
 
                 if (failure != MoveFailureReason.None)
-                    return BlobSelectionResult.Rejected(failure);
+                {
+                    var rejected = BlobSelectionResult.Rejected(failure);
+                    BlobSelected?.Invoke(rejected);
+                    return rejected;
+                }
 
                 _selectedBlobId = blob.Id;
-                return BlobSelectionResult.Selected(blob.Id);
+                var selected = BlobSelectionResult.Selected(blob.Id, null);
+                BlobSelected?.Invoke(selected);
+                return selected;
             }
             if (_selectedBlobId == blob.Id)
             {
                 _selectedBlobId = null;
-                return BlobSelectionResult.Cleared();
+                var cleared = BlobSelectionResult.Cleared();
+                BlobSelected?.Invoke(cleared);
+                return cleared;
             }
 
 
             var result = ExecuteMove(new MoveIntent(_selectedBlobId, blob.Id));
             _selectedBlobId = null;
-            return BlobSelectionResult.Move(result);
+            var move = BlobSelectionResult.Move(result);
+            BlobSelected?.Invoke(move);
+            return move;
         }
 
         /// <summary>

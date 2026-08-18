@@ -25,8 +25,7 @@ namespace Blobs.Tests.EditMode
             _createdObjects.Clear();
         }
 
-        [TestCase(MoveFailureReason.SourceMissing, "That blob is no longer there.")]
-        [TestCase(MoveFailureReason.TargetMissing, "That blob is no longer there.")]
+        [TestCase(MoveFailureReason.SourceOrTargetMissing, "That blob is no longer there.")]
         [TestCase(MoveFailureReason.SameBlob, "Choose a different blob.")]
         [TestCase(MoveFailureReason.SourceCannotMove, "That blob can't move.")]
         [TestCase(MoveFailureReason.NotAligned, "Use the same row or column.")]
@@ -55,6 +54,8 @@ namespace Blobs.Tests.EditMode
             input.Initialize(commands, 1f);
 
             BlobSelectionResult returned = input.SelectBlobAt(new GridPosition(0, 0));
+            Assert.That(returned.SourceId, Is.EqualTo("blob_a"));
+            Assert.That(returned.TargetId, Is.EqualTo("blob_b"));
 
             Assert.That(returned, Is.SameAs(expected));
             Assert.That(published, Is.SameAs(expected));
@@ -80,6 +81,7 @@ namespace Blobs.Tests.EditMode
             input.SelectBlobAt(new GridPosition(0, 0));
 
             Assert.That(text.text, Is.EqualTo("Clear the other blobs first."));
+
         }
 
         private GameObject Create(string name)

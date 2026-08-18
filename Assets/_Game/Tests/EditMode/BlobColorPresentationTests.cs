@@ -56,7 +56,7 @@ namespace Blobs.Tests.EditMode
             BlobView view = InstantiateView(NormalPrefabPath);
             BlobState state = Blob("normal", BlobType.Normal, BlobColor.Red);
 
-            view.Initialize(state, palette, 1f, Vector2.zero);
+            view.Initialize(state, null, palette, 1f, Vector2.zero);
 
             SpriteRenderer body = FindRenderer(view, "Body");
             AssertShaderColors(body, palette.GetRequired(BlobColor.Red));
@@ -75,7 +75,7 @@ namespace Blobs.Tests.EditMode
                 BlobType.Trail,
                 new GridPosition(0, 0)).AddModel(new ColorBlobModel(BlobColor.Red)).AddModel(new TrailBlobModel(BlobColor.Blue));
 
-            view.Initialize(state, palette, 1f, Vector2.zero);
+            view.Initialize(state, null, palette, 1f, Vector2.zero);
 
             AssertShaderColors(
                 FindRenderer(view, "Body"),
@@ -95,7 +95,7 @@ namespace Blobs.Tests.EditMode
             BlobView view = InstantiateView(FlagPrefabPath);
             BlobState state = Blob("flag", BlobType.Flag, BlobColor.Purple);
 
-            view.Initialize(state, palette, 1f, Vector2.zero);
+            view.Initialize(state, null, palette, 1f, Vector2.zero);
 
             BlobShaderColors expected = palette.GetRequired(BlobColor.Purple);
             AssertShaderColors(FindRenderer(view, "Checkers"), expected);

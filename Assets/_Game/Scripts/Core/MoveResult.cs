@@ -12,12 +12,16 @@ namespace Blobs.Core
         /// Creates a resolved move result.
         /// </summary>
         public MoveResult(
+            string sourceBlobId,
+            string targetBlobId,
             bool succeeded,
             MoveFailureReason failureReason,
             IReadOnlyList<IBoardEffect> effects,
             bool isComplete,
             IReadOnlyList<MoveStep> steps = null)
         {
+            SourceBlobId = sourceBlobId;
+            TargetBlobId = targetBlobId;
             Succeeded = succeeded;
             FailureReason = failureReason;
             Effects = effects ?? new List<IBoardEffect>();
@@ -29,6 +33,23 @@ namespace Blobs.Core
         /// True when the resolver accepted the intent and applied its effects.
         /// </summary>
         public bool Succeeded { get; }
+
+        /// <summary>
+        /// The ID of the source blob that initiated the move.
+        /// </summary>
+        public string SourceBlobId { get; }
+
+        /// <summary>
+        /// The ID of the target blob that was merged into, if any.
+        /// </summary>
+        public string TargetBlobId { get; }
+
+        /// <summary>
+        /// True if the given blob ID is the source or target of the move.
+        /// </summary>
+        /// <param name="blobId"></param>
+        /// <returns></returns>
+        public bool IsSelected(string blobId) => SourceBlobId == blobId || TargetBlobId == blobId;
 
         /// <summary>
         /// Rejection reason for failed moves, or <see cref="MoveFailureReason.None"/> for success.
@@ -55,13 +76,13 @@ namespace Blobs.Core
         /// <summary>
         /// Creates a failed result with no board effects.
         /// </summary>
-        public static MoveResult Failed(MoveFailureReason reason)
+        public static MoveResult Failed(string sourceId, string targetId, MoveFailureReason reason)
         {
-            return new MoveResult(false, reason, new List<IBoardEffect>(), false);
+            return new MoveResult(sourceId, targetId, false, reason, new List<IBoardEffect>(), false);
         }
         public override string ToString()
         {
-            return $"MoveResult: Succeeded = {Succeeded}, FailureReason = {FailureReason}, Effects = {Effects.Count}, IsComplete = {IsComplete}";
+            return $"SourceBlobId = {SourceBlobId}, TargetBlobId = {TargetBlobId}, MoveResult: Succeeded = {Succeeded}, FailureReason = {FailureReason}, Effects = {Effects.Count}, IsComplete = {IsComplete}";
         }
     }
 }

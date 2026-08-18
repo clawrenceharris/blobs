@@ -94,6 +94,7 @@ namespace Blobs.Tests.EditMode
             public event Action<MoveResult> MoveResolved;
             public event Action<GameSessionSnapshot> SnapshotChanged;
             public event Action<GameSessionSnapshot> StateRestored;
+            public event Action<BlobSelectionResult> BlobSelected;
 
             public int MoveCount { get; set; }
 
@@ -109,7 +110,7 @@ namespace Blobs.Tests.EditMode
 
             public void RaiseSnapshotChanged()
             {
-                MoveResolved?.Invoke(MoveResult.Failed(MoveFailureReason.None));
+                MoveResolved?.Invoke(MoveResult.Failed(null, null, MoveFailureReason.None));
                 SnapshotChanged?.Invoke(CreateSnapshot());
             }
 

@@ -4,6 +4,8 @@ using UnityEngine;
 using Blobs.Content;
 using Blobs.Input;
 using DG.Tweening;
+using Blobs.Application;
+using UnityEngine.Rendering;
 namespace Blobs.Presentation
 {
     /// <summary>
@@ -14,36 +16,55 @@ namespace Blobs.Presentation
     public sealed class BlobView : MonoBehaviour
     {
         public BlobRenderer BlobRenderer { get; private set; }
-
         private IMergeTargetFeedback _mergeTargetFeedback;
         private readonly BlobSkinApplier _skinApplier = new();
         private readonly BlobSkinResolver _skinResolver = new();
 
+        [SerializeField] private Transform _visualRoot;
+        [SerializeField] private SortingGroup _sortingGroup;
+        public Transform VisualRoot => _visualRoot;
+        public SortingGroup SortingGroup => _sortingGroup;
+
         public string BlobId { get; private set; }
-        public BlobColor Color;
+        public BlobType BlobType { get; private set; }
         public GridPosition GridPosition { get; private set; }
         private float _cellSize;
         private Vector2 _origin;
         private Vector3 _baseScale;
+        public Vector3 BaseVisualScale { get; private set; } = Vector3.one;
+
+        private BlobMotionAnimator _blobMotionAnimator;
+
+        public BlobMotionAnimator BlobMotionAnimator => _blobMotionAnimator;
+        public Color MergeEffectColor { get; private set; } = Color.white;
 
         /// <summary>
         /// Initializes the view from immutable Core blob state.
         /// </summary>
         public void Initialize(
             BlobState blob,
+            IGameplayState state,
             BlobColorPaletteAsset colorPalette,
             float cellSize,
             Vector2 origin)
         {
             BlobId = blob.Id;
+            BlobType = blob.Type;
             _cellSize = cellSize;
             _origin = origin;
-            Color = blob.TryGetModel<ColorBlobModel>(out var colorBlob) ? colorBlob.Color : BlobColor.None;
             name = "Blob " + blob.Id;
             SetGridPosition(blob.Position);
             _baseScale = Vector3.one * Mathf.Max(0.1f, cellSize * 0.8f);
             transform.localScale = _baseScale;
+            BaseVisualScale = _visualRoot != null
+                ? _visualRoot.localScale
+                : Vector3.one;
+            if (_sortingGroup == null)
+                _sortingGroup = GetComponent<SortingGroup>();
+            _blobMotionAnimator = TryGetComponent(out BlobMotionAnimator animator) ? animator : null;
+            _blobMotionAnimator?.Configure(state);
             BlobRenderer = GetComponent<BlobRenderer>();
+
             CacheOptionalBehaviors();
             ApplySkin(blob, colorPalette);
         }
@@ -66,10 +87,11 @@ namespace Blobs.Presentation
         public Tween AnimateMoveTo(GridPosition position, float duration, Ease ease = Ease.OutQuad)
         {
             var target = GridToLocal(position, _cellSize, _origin);
-            transform.DOKill();
             GridPosition = position;
             return transform.DOLocalMove(target, duration).SetEase(ease);
         }
+
+
 
         /// <summary>
         /// Animates this view to be consumed into the target position.
@@ -83,8 +105,6 @@ namespace Blobs.Presentation
             float moveDuration,
             float despawnDuration)
         {
-            transform.DOKill();
-
             GridPosition = targetPosition;
 
             Vector3 target = GridToLocal(
@@ -108,7 +128,6 @@ namespace Blobs.Presentation
         /// </summary>
         public Tween PlaySpawn(float duration)
         {
-            transform.DOKill();
             transform.localScale = Vector3.zero;
             return transform.DOScale(_baseScale, duration).SetEase(Ease.OutBack);
         }
@@ -118,7 +137,6 @@ namespace Blobs.Presentation
         /// </summary>
         public Tween PlayDespawn(float duration)
         {
-            transform.DOKill();
             return transform.DOScale(Vector3.zero, duration).SetEase(Ease.InBack);
         }
 
@@ -131,6 +149,7 @@ namespace Blobs.Presentation
             {
                 Skin skin = _skinResolver.ResolveSkin(colorBlob.Color, colorPalette);
                 _skinApplier.Apply(this, skin);
+                MergeEffectColor = colorPalette.GetRequired(colorBlob.Color).BaseColor;
             }
 
             BlobColorBinding[] bindings =
@@ -153,6 +172,8 @@ namespace Blobs.Presentation
         private void OnDestroy()
         {
             transform.DOKill();
+            if (_visualRoot != null)
+                _visualRoot.DOKill();
         }
 
         private void CacheOptionalBehaviors()

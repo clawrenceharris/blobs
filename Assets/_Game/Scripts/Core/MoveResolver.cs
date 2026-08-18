@@ -28,7 +28,7 @@ namespace Blobs.Core
             BlobState blob = board.GetBlob(blobId);
 
             if (blob == null)
-                return MoveFailureReason.SourceMissing;
+                return MoveFailureReason.SourceOrTargetMissing;
 
             return _rules.GetTraits(blob.Type).CanBeSource
                 ? MoveFailureReason.None
@@ -41,21 +41,20 @@ namespace Blobs.Core
             LevelObjectiveDefinition objective = null)
         {
             BlobState source = board.GetBlob(intent.SourceId);
-            if (source == null)
-                return MoveResult.Failed(MoveFailureReason.SourceMissing);
-
             BlobState target = board.GetBlob(intent.TargetId);
-            if (target == null)
-                return MoveResult.Failed(MoveFailureReason.TargetMissing);
+
+            if (source == null || target == null)
+                return MoveResult.Failed(source?.Id ?? null, target?.Id ?? null, MoveFailureReason.SourceOrTargetMissing);
+
 
             if (source.Id == target.Id)
-                return MoveResult.Failed(MoveFailureReason.SameBlob);
+                return MoveResult.Failed(source.Id, target.Id, MoveFailureReason.SameBlob);
 
             if (!_rules.GetTraits(source.Type).CanBeSource)
-                return MoveResult.Failed(MoveFailureReason.SourceCannotMove);
+                return MoveResult.Failed(source.Id, target.Id, MoveFailureReason.SourceCannotMove);
 
             if (!source.Position.IsAlignedWith(target.Position))
-                return MoveResult.Failed(MoveFailureReason.NotAligned);
+                return MoveResult.Failed(source.Id, target.Id, MoveFailureReason.NotAligned);
 
             // Plan the whole move on a simulation board so mid-path collisions observe
             // true occupancy and failures leave the real board untouched.
@@ -74,7 +73,7 @@ namespace Blobs.Core
                 movePlan = moveStrategy?.BuildPlan(new MoveContext(simulation, mover, target, mover.Position == target.Position));
                 if (movePlan != null && !movePlan.Succeeded)
                 {
-                    return MoveResult.Failed(movePlan.FailureReason);
+                    return MoveResult.Failed(source.Id, target.Id, movePlan.FailureReason);
                 }
             }
 
@@ -90,7 +89,7 @@ namespace Blobs.Core
             {
                 if (stepCount > 100)
                 {
-                    return MoveResult.Failed(MoveFailureReason.MoveTimeout);
+                    return MoveResult.Failed(source.Id, target.Id, MoveFailureReason.MoveTimeout);
                 }
                 stepCount++;
                 var next = new GridPosition(current.X + stepX, current.Y + stepY);
@@ -113,7 +112,7 @@ namespace Blobs.Core
                             out IMergeStrategy mergeStrategy))
                     {
                         return MoveResult.Failed(
-                            MoveFailureReason.UnsupportedInteraction);
+                            mover.Id, target.Id, MoveFailureReason.UnsupportedInteraction);
                     }
 
                     var context = new MoveContext(
@@ -123,7 +122,7 @@ namespace Blobs.Core
                       isFinalTarget: occupant.Id == target.Id);
                     CollisionPlan collisionPlan = mergeStrategy.BuildPlan(context);
                     if (!collisionPlan.Succeeded)
-                        return MoveResult.Failed(collisionPlan.FailureReason);
+                        return MoveResult.Failed(mover.Id, target.Id, collisionPlan.FailureReason);
 
                     // Resolve the collision tile first so the mover can enter it.
                     stepEffects.AddRange(collisionPlan.Effects);
@@ -171,6 +170,8 @@ namespace Blobs.Core
             ApplyEffects(board, flattened);
 
             return new MoveResult(
+                source.Id,
+                target.Id,
                 true,
                 MoveFailureReason.None,
                 flattened,

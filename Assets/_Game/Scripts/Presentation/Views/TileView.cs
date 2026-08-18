@@ -16,7 +16,7 @@ namespace Blobs.Presentation
         /// <summary>
         /// Initializes tile transform/collider state from Core tile data.
         /// </summary>
-        public void Initialize(TileState tile, LevelVisualThemeAsset theme, float cellSize, Vector2 origin)
+        public void Initialize(TileState tile, float cellSize, Vector2 origin)
         {
             TileId = tile.Id;
             GridPosition = tile.Position;

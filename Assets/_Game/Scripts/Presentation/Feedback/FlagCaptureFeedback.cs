@@ -9,19 +9,15 @@ namespace Blobs.Presentation
     {
         [SerializeField] private Transform visualRoot;
         [SerializeField] private float punchScale = 0.15f;
-
         public Tween PlaySourceAccepted(float duration)
         {
-            Transform target =
-                visualRoot != null ? visualRoot : transform;
-
-            target.DOKill();
-
+            Transform target = visualRoot != null ? visualRoot : transform;
+            Vector3 punch = target.localScale * punchScale;
             return target.DOPunchScale(
-                Vector3.one * punchScale,
-                duration,
-                vibrato: 6,
-                elasticity: 0.6f);
+                punch,
+                Mathf.Max(0.01f, duration),
+                vibrato: 5,
+                elasticity: 0.5f);
         }
 
         private void OnDestroy()

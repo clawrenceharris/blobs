@@ -34,7 +34,7 @@ MonoBehaviour:
     - rid: 7441116827775139913
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: red
+        id: green
         position: {x: 0, y: 1}
         type: 0
         color: 3
@@ -48,7 +48,7 @@ MonoBehaviour:
     - rid: 7441116827775139915
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: blue
+        id: red
         position: {x: 1, y: 0}
         type: 0
         color: 1

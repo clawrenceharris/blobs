@@ -58,18 +58,16 @@ namespace Blobs.Core
             if (context.DepartedTileWasMergeSite)
                 return;
 
-            if (!context.Mover.TrailColor.HasValue)
-                return;
 
             string id = context.IdFactory.CreateId(
                 context.Board,
                 $"{context.Mover.Id}-trail");
-
-            effects.Add(new SpawnBlobEffect(new BlobState(
+            var state = new BlobState(
                 id,
                 BlobType.Normal,
-                context.Mover.TrailColor.Value,
-                context.DepartedTile)));
+                context.DepartedTile);
+            state.AddModel(new ColorBlobModel(context.Mover.GetModel<TrailBlobModel>().TrailColor));
+            effects.Add(new SpawnBlobEffect(state));
         }
     }
 }

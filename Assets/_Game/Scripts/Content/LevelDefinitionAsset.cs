@@ -50,25 +50,34 @@ namespace Blobs.Content
     {
         public string id;
         public Vector2Int position;
-        public BlobColor color;
         public BlobType type;
     }
 
     [Serializable]
-    public sealed class NormalBlobAssetData : BlobAssetData
+    public abstract class ColorBlobAssetData : BlobAssetData
+    {
+        public BlobColor color;
+    }
+
+    [Serializable]
+    public sealed class NormalBlobAssetData : ColorBlobAssetData
     {
     }
 
     [Serializable]
-    public sealed class FlagBlobAssetData : BlobAssetData
+    public sealed class FlagBlobAssetData : ColorBlobAssetData
     {
     }
 
     [Serializable]
-    public sealed class TrailBlobAssetData : BlobAssetData
+    public sealed class TrailBlobAssetData : ColorBlobAssetData
     {
         [Tooltip("Color of the normal blobs left behind on tiles this blob departs.")]
         public BlobColor trailColor;
+    }
+    [Serializable]
+    public sealed class RockBlobAssetData : BlobAssetData
+    {
     }
 
 

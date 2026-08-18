@@ -45,8 +45,10 @@ namespace Blobs.Core
 
                 if (!blobPositions.Add(blob.Position))
                     throw new InvalidOperationException($"Multiple blobs occupy {blob.Position}.");
-
-                RequireEnumValue(blob.Color, "blob color");
+                if (blob is ColorBlobDefinition colorBlob)
+                {
+                    RequireEnumValue(colorBlob.Color, "blob color");
+                }
                 RequireEnumValue(blob.Type, "blob type");
             }
 

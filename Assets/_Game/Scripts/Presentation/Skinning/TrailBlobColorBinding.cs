@@ -24,13 +24,13 @@ namespace Blobs.Presentation
             if (blob == null)
                 throw new ArgumentNullException(nameof(blob));
 
-            if (!blob.TrailColor.HasValue)
+            if (!blob.TryGetModel(out TrailBlobModel trailBlob))
             {
                 throw new InvalidOperationException(
-                    $"Trail color binding on '{name}' requires a TrailColor for blob '{blob.Id}'.");
+                    $"Trail color binding on '{name}' requires a TrailBlobModel for blob '{blob.Id}'.");
             }
 
-            Skin skin = _resolver.ResolveSkin(blob.TrailColor.Value, palette);
+            Skin skin = _resolver.ResolveSkin(trailBlob.TrailColor, palette);
             BlobRenderer.ApplyShaderSkin(
                 targetRenderer,
                 targetRenderer.material,

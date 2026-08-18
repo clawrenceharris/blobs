@@ -159,6 +159,8 @@ namespace Blobs.Core
             _blobIdsByPosition.Remove(blob.Position);
         }
 
+
+
         /// <summary>
         /// Moves an existing blob to an empty in-bounds cell.
         /// </summary>
@@ -185,7 +187,8 @@ namespace Blobs.Core
         {
             foreach (var blob in _blobsById.Values)
             {
-                if (blob.IsClearable)
+                var rules = BlobRuleBook.CreateDefault();
+                if (rules.GetTraits(blob.Type).IsClearable)
                     return true;
             }
 

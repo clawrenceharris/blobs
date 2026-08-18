@@ -2,7 +2,7 @@ namespace Blobs.Core
 {
     public readonly struct BlobTraits
     {
-        public BlobTraits(bool canBeSource, bool isClearable)
+        public BlobTraits(bool canBeSource = true, bool isClearable = true)
         {
             CanBeSource = canBeSource;
             IsClearable = isClearable;

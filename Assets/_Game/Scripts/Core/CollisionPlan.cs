@@ -14,8 +14,8 @@ namespace Blobs.Core
             bool succeeded,
             MoveFailureReason failureReason,
             IReadOnlyList<IBoardEffect> effects,
-            bool consumesMover,
-            IReadOnlyList<MoveStep> followUpSteps)
+            bool consumesMover = false,
+            IReadOnlyList<MoveStep> followUpSteps = null)
         {
             Succeeded = succeeded;
             FailureReason = failureReason;
@@ -52,7 +52,7 @@ namespace Blobs.Core
         public static CollisionPlan Continue(params IBoardEffect[] effects)
         {
             return new CollisionPlan(
-                true, MoveFailureReason.None, effects, consumesMover: false, followUpSteps: null);
+                true, MoveFailureReason.None, effects);
         }
 
         /// <summary>
@@ -61,8 +61,9 @@ namespace Blobs.Core
         public static CollisionPlan ConsumeMover(params IBoardEffect[] effects)
         {
             return new CollisionPlan(
-                true, MoveFailureReason.None, effects, consumesMover: true, followUpSteps: null);
+                true, MoveFailureReason.None, effects, consumesMover: true);
         }
+
 
         /// <summary>
         /// Collision rejected. The whole move intent fails atomically with this reason.

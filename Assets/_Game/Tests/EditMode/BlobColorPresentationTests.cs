@@ -70,12 +70,10 @@ namespace Blobs.Tests.EditMode
         {
             BlobColorPaletteAsset palette = LoadPalette();
             BlobView view = InstantiateView(TrailPrefabPath);
-            BlobState state = new(
+            BlobState state = new BlobState(
                 "trail",
                 BlobType.Trail,
-                BlobColor.Red,
-                new GridPosition(0, 0),
-                BlobColor.Blue);
+                new GridPosition(0, 0)).AddModel(new ColorBlobModel(BlobColor.Red)).AddModel(new TrailBlobModel(BlobColor.Blue));
 
             view.Initialize(state, palette, 1f, Vector2.zero);
 
@@ -128,7 +126,7 @@ namespace Blobs.Tests.EditMode
 
         private static BlobState Blob(string id, BlobType type, BlobColor color)
         {
-            return new BlobState(id, type, color, new GridPosition(0, 0));
+            return new BlobState(id, type, new GridPosition(0, 0)).AddModel(new ColorBlobModel(color));
         }
 
         private static SpriteRenderer FindRenderer(BlobView view, string objectName)

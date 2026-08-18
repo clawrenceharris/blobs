@@ -20,6 +20,7 @@ namespace Blobs.Presentation
         private readonly BlobSkinResolver _skinResolver = new();
 
         public string BlobId { get; private set; }
+        public BlobColor Color;
         public GridPosition GridPosition { get; private set; }
         private float _cellSize;
         private Vector2 _origin;
@@ -37,6 +38,7 @@ namespace Blobs.Presentation
             BlobId = blob.Id;
             _cellSize = cellSize;
             _origin = origin;
+            Color = blob.TryGetModel<ColorBlobModel>(out var colorBlob) ? colorBlob.Color : BlobColor.None;
             name = "Blob " + blob.Id;
             SetGridPosition(blob.Position);
             _baseScale = Vector3.one * Mathf.Max(0.1f, cellSize * 0.8f);
@@ -125,8 +127,11 @@ namespace Blobs.Presentation
         /// </summary>
         public void ApplySkin(BlobState blob, BlobColorPaletteAsset colorPalette)
         {
-            Skin skin = _skinResolver.ResolveSkin(blob.Color, colorPalette);
-            _skinApplier.Apply(this, skin);
+            if (blob.TryGetModel(out ColorBlobModel colorBlob))
+            {
+                Skin skin = _skinResolver.ResolveSkin(colorBlob.Color, colorPalette);
+                _skinApplier.Apply(this, skin);
+            }
 
             BlobColorBinding[] bindings =
                 GetComponentsInChildren<BlobColorBinding>(true);

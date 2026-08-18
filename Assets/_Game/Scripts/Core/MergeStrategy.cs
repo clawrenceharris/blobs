@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Blobs.Core
 {
     /// <summary>
@@ -18,7 +20,8 @@ namespace Blobs.Core
     {
         public CollisionPlan BuildPlan(MoveContext context)
         {
-            if (context.Source.Color == context.Target.Color)
+            if (context.Source.TryGetModel<ColorBlobModel>(out var sourceColor) && context.Target.TryGetModel<ColorBlobModel>(out var targetColor) &&
+              sourceColor != null && targetColor != null && sourceColor.Color == targetColor.Color)
             {
                 return CollisionPlan.Failed(
                     MoveFailureReason.NormalMergeRequiresDifferentColors);
@@ -37,14 +40,15 @@ namespace Blobs.Core
     {
         public CollisionPlan BuildPlan(MoveContext context)
         {
-            if (context.Source.Color != context.Target.Color)
+            if (context.Source.TryGetModel<ColorBlobModel>(out var sourceColor) && context.Target.TryGetModel<ColorBlobModel>(out var targetColor) &&
+                sourceColor.Color != targetColor.Color)
             {
                 return CollisionPlan.Failed(
                     MoveFailureReason.FlagRequiresMatchingColor);
             }
 
             // The board may contain exactly the mover and the flag at capture time.
-            if (context.Board.BlobCount != 2)
+            if (context.Board.Blobs.Select(b => b.IsClearable).Count() == 1)
             {
                 return CollisionPlan.Failed(
                     MoveFailureReason.FlagRequiresNoOtherBlobs);
@@ -56,4 +60,14 @@ namespace Blobs.Core
                     context.Target));
         }
     }
+
+    public sealed class RockMergeStrategy : IMergeStrategy
+    {
+        public CollisionPlan BuildPlan(MoveContext context)
+        {
+            return CollisionPlan.Continue();
+        }
+    }
+
+
 }

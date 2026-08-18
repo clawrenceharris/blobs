@@ -30,6 +30,7 @@ namespace Blobs.Presentation
         [SerializeField, Min(0f)] private float _moveDuration = 0.16f;
         [SerializeField, Min(0f)] private float _spawnDuration = 0.14f;
         [SerializeField, Min(0f)] private float _despawnDuration = 0.12f;
+        [SerializeField] private MergeAnimationOrchestrator _mergeAnimationOrchestrator;
         public float CellSize => _cellSize;
         public int VisibleBlobCount => _blobViews.Count;
         public int VisibleTileCount => _tileViews.Count;
@@ -83,11 +84,30 @@ namespace Blobs.Presentation
             if (!result.Succeeded)
                 return;
 
+            bool targetIsRock =
+                !string.IsNullOrEmpty(result.TargetBlobId) &&
+                _blobViews.TryGetValue(result.TargetBlobId, out BlobView targetView) &&
+                targetView != null &&
+                targetView.BlobType == BlobType.Rock;
+
             if (result.Steps != null && result.Steps.Count > 0)
-                ApplySteps(result.Steps, _state.CreateSnapshot());
+                ApplyStepsInternal(
+                    result.Steps,
+                    _state.CreateSnapshot(),
+                    playRockThumpOnFinalMove: targetIsRock);
             else
+            {
                 ApplyEffects(result.Effects, _state.CreateSnapshot());
+
+                // An adjacent rock produces a successful intent with no movement
+                // steps. It still gets contact audio, but never merge visuals/state.
+                if (targetIsRock && ShouldAnimateEffects())
+                    EnsureMergeAnimationOrchestrator().PlayRockThumpAudio();
+            }
+
         }
+
+
 
 
         /// <summary>
@@ -101,13 +121,13 @@ namespace Blobs.Presentation
             Clear();
 
             foreach (var tile in snapshot.Tiles)
-                CreateTileView(tile, _theme);
+                CreateTileView(tile);
             EnsureBoardSurfaceView().Rebuild(
                 BuildSurfacePositions(snapshot),
                 _cellSize,
                 _origin);
             foreach (var blob in snapshot.Blobs)
-                CreateBlobView(blob, _theme);
+                CreateBlobView(blob);
 
             SnapshotChanged?.Invoke(snapshot);
         }
@@ -141,8 +161,8 @@ namespace Blobs.Presentation
             if (_surfaceWidth > 0 && _surfaceHeight > 0)
             {
                 for (int y = 0; y < _surfaceHeight; y++)
-                for (int x = 0; x < _surfaceWidth; x++)
-                    occupied.Add(new GridPosition(x, y));
+                    for (int x = 0; x < _surfaceWidth; x++)
+                        occupied.Add(new GridPosition(x, y));
 
                 return occupied;
             }
@@ -178,8 +198,11 @@ namespace Blobs.Presentation
                     effects[i + 1] is MoveBlobEffect mergeSource &&
                     mergeSource.To == mergeTarget.At)
                 {
-                    appliedAll &= MoveBlobView(mergeSource.BlobId, mergeSource.To, sequence);
-                    appliedAll &= RemoveBlobView(mergeTarget.BlobId, sequence);
+                    appliedAll &= CreateNormalMergeBeat(
+                        mergeSource,
+                        mergeTarget,
+                        sequence,
+                        appendToSequence: true);
                     i++;
 
                     if (!appliedAll)
@@ -198,7 +221,7 @@ namespace Blobs.Presentation
                         break;
 
                     case SpawnBlobEffect spawn:
-                        appliedAll &= CreateBlobView(spawn.Blob, _theme, sequence);
+                        appliedAll &= CreateBlobView(spawn.Blob, sequence);
                         break;
                     case MergeIntoFlagEffect mergeIntoFlag:
                         appliedAll &=
@@ -242,6 +265,17 @@ namespace Blobs.Presentation
         /// </summary>
         public void ApplySteps(IReadOnlyList<MoveStep> steps, GameSessionSnapshot fallbackSnapshot)
         {
+            ApplyStepsInternal(
+                steps,
+                fallbackSnapshot,
+                playRockThumpOnFinalMove: false);
+        }
+
+        private void ApplyStepsInternal(
+            IReadOnlyList<MoveStep> steps,
+            GameSessionSnapshot fallbackSnapshot,
+            bool playRockThumpOnFinalMove)
+        {
             if (steps == null)
                 throw new ArgumentNullException(nameof(steps));
             if (fallbackSnapshot == null)
@@ -266,6 +300,8 @@ namespace Blobs.Presentation
                 appliedAll &= ApplyStep(
                     steps[i],
                     isFinalMoveBeat: i == lastMoveStepIndex,
+                    playRockThumpOnArrival:
+                        playRockThumpOnFinalMove && i == lastMoveStepIndex,
                     sequence);
             }
 
@@ -290,10 +326,39 @@ namespace Blobs.Presentation
             SnapshotChanged?.Invoke(fallbackSnapshot);
         }
 
-        private bool ApplyStep(MoveStep step, bool isFinalMoveBeat, Sequence outerSequence)
+        private bool ApplyStep(
+            MoveStep step,
+            bool isFinalMoveBeat,
+            bool playRockThumpOnArrival,
+            Sequence outerSequence)
         {
             Sequence beat = outerSequence != null ? DOTween.Sequence() : null;
             bool applied = true;
+
+            if (step.Kind == MoveStepKind.Merge &&
+                TryFindNormalMerge(step, out MoveBlobEffect mergeSource,
+                    out RemoveBlobEffect mergeTarget))
+            {
+                applied &= CreateNormalMergeBeat(
+                    mergeSource,
+                    mergeTarget,
+                    beat,
+                    appendToSequence: false);
+
+                foreach (IBoardEffect effect in step.Effects)
+                {
+                    if (effect is SpawnBlobEffect spawn)
+                        applied &= CreateBlobViewJoined(spawn.Blob, beat);
+
+                    if (!applied)
+                        return false;
+                }
+
+                if (beat != null)
+                    outerSequence.Append(beat);
+
+                return applied;
+            }
 
             // Compose in visual order regardless of board-application order:
             // locomotion anchors the beat, spawns join at the beat start, and
@@ -307,7 +372,8 @@ namespace Blobs.Presentation
                             move.BlobId,
                             move.To,
                             beat,
-                            isFinalMoveBeat ? Ease.OutQuad : Ease.Linear);
+                            isFinalMoveBeat ? Ease.OutQuad : Ease.Linear,
+                            playRockThumpOnArrival);
                         break;
                     case MergeIntoFlagEffect mergeIntoFlag:
                         applied &= MergeIntoFlagView(mergeIntoFlag, beat);
@@ -321,7 +387,7 @@ namespace Blobs.Presentation
             foreach (IBoardEffect effect in step.Effects)
             {
                 if (effect is SpawnBlobEffect spawn)
-                    applied &= CreateBlobViewJoined(spawn.Blob, _theme, beat);
+                    applied &= CreateBlobViewJoined(spawn.Blob, beat);
 
                 if (!applied)
                     return false;
@@ -346,13 +412,24 @@ namespace Blobs.Presentation
             string blobId,
             GridPosition to,
             Sequence beat,
-            Ease ease)
+            Ease ease,
+            bool playRockThumpOnArrival)
         {
             if (!_blobViews.TryGetValue(blobId, out var view) || view == null)
                 return false;
 
             if (beat != null)
-                beat.Join(view.AnimateMoveTo(to, _moveDuration, ease));
+            {
+                beat.AppendCallback(() => view.BlobMotionAnimator?.SetMoving());
+                Tween movement = view.AnimateMoveTo(to, _moveDuration, ease);
+                movement.OnComplete(() =>
+                {
+                    view.BlobMotionAnimator?.SetIdle();
+                    if (playRockThumpOnArrival)
+                        EnsureMergeAnimationOrchestrator().PlayRockThumpAudio();
+                });
+                beat.Join(movement);
+            }
             else
                 view.SetGridPosition(to);
 
@@ -361,10 +438,9 @@ namespace Blobs.Presentation
 
         private bool CreateBlobViewJoined(
             BlobState blob,
-            LevelVisualThemeAsset theme,
             Sequence beat)
         {
-            if (!CreateBlobView(blob, theme, null))
+            if (!CreateBlobView(blob, null))
                 return false;
 
             if (beat != null &&
@@ -458,21 +534,20 @@ namespace Blobs.Presentation
             _tileViews.Clear();
         }
 
-        private void CreateTileView(TileState tile, LevelVisualThemeAsset theme)
+        private void CreateTileView(TileState tile)
         {
             var view = InstantiateTileView();
-            view.Initialize(tile, theme, _cellSize, _origin);
+            view.Initialize(tile, _cellSize, _origin);
             _tileViews.Add(tile.Id, view);
         }
 
-        private void CreateBlobView(BlobState blob, LevelVisualThemeAsset theme)
+        private void CreateBlobView(BlobState blob)
         {
-            CreateBlobView(blob, theme, null);
+            CreateBlobView(blob, null);
         }
 
         private bool CreateBlobView(
             BlobState blob,
-            LevelVisualThemeAsset theme,
             Sequence sequence)
         {
             if (blob == null || _blobViews.ContainsKey(blob.Id))
@@ -483,7 +558,7 @@ namespace Blobs.Presentation
 
             BlobView view = _blobViewFactory.Create(
                 blob,
-                theme,
+                _state,
                 parent,
                 _cellSize,
                 _origin);
@@ -502,7 +577,12 @@ namespace Blobs.Presentation
                 return false;
 
             if (sequence != null)
-                sequence.Append(view.AnimateMoveTo(to, _moveDuration));
+            {
+                sequence.AppendCallback(() => view.BlobMotionAnimator?.SetMoving());
+                Tween movement = view.AnimateMoveTo(to, _moveDuration);
+                movement.OnComplete(() => view.BlobMotionAnimator?.SetIdle());
+                sequence.Append(movement);
+            }
             else
                 view.SetGridPosition(to);
 
@@ -543,17 +623,102 @@ namespace Blobs.Presentation
 
             return true;
         }
+
+        private bool CreateNormalMergeBeat(
+            MoveBlobEffect move,
+            RemoveBlobEffect remove,
+            Sequence sequence,
+            bool appendToSequence)
+        {
+            if (!_blobViews.TryGetValue(move.BlobId, out BlobView sourceView) ||
+                sourceView == null ||
+                !_blobViews.TryGetValue(remove.BlobId, out BlobView targetView) ||
+                targetView == null)
+            {
+                return false;
+            }
+
+            _blobViews.Remove(remove.BlobId);
+
+            if (sequence == null)
+            {
+                sourceView.SetGridPosition(move.To);
+                sourceView.BlobMotionAnimator?.SetIdle();
+                DestroyBlobView(targetView);
+                return true;
+            }
+
+            _retiringBlobViews.Add(targetView);
+            Vector2Int direction = new(
+                move.To.X - move.From.X,
+                move.To.Y - move.From.Y);
+            Sequence mergeBeat = EnsureMergeAnimationOrchestrator()
+                .CreateMergeBeat(
+                    sourceView,
+                    targetView,
+                    direction,
+                    () => DestroyRetiringBlobView(targetView));
+
+            if (appendToSequence)
+                sequence.Append(mergeBeat);
+            else
+                sequence.Join(mergeBeat);
+
+            return true;
+        }
+
+        private static bool TryFindNormalMerge(
+            MoveStep step,
+            out MoveBlobEffect move,
+            out RemoveBlobEffect remove)
+        {
+            move = null;
+            remove = null;
+
+            foreach (IBoardEffect effect in step.Effects)
+            {
+                if (effect is MoveBlobEffect candidateMove)
+                {
+                    move = candidateMove;
+                    break;
+                }
+            }
+
+            if (move == null)
+                return false;
+
+            foreach (IBoardEffect effect in step.Effects)
+            {
+                if (effect is RemoveBlobEffect candidateRemove &&
+                    candidateRemove.BlobId != move.BlobId &&
+                    candidateRemove.At == move.To)
+                {
+                    remove = candidateRemove;
+                    break;
+                }
+            }
+
+            return remove != null;
+        }
         private void KillEffectSequence()
         {
             if (_effectSequence != null)
             {
                 Sequence sequence = _effectSequence;
                 _effectSequence = null;
-                sequence.Complete(true);
-                sequence.Kill();
+                sequence.Kill(false);
             }
 
             DestroyRetiringBlobViews();
+
+            foreach (BlobView view in _blobViews.Values)
+            {
+                if (view == null)
+                    continue;
+
+                view.SetGridPosition(view.GridPosition);
+                view.BlobMotionAnimator?.SetIdle();
+            }
         }
 
         private void DestroyRetiringBlobViews()
@@ -596,11 +761,23 @@ namespace Blobs.Presentation
 
             var captureBeat = DOTween.Sequence();
 
+            captureBeat.AppendCallback(() =>
+            {
+                sourceView.BlobMotionAnimator?.SetMerging();
+                flagView.BlobMotionAnimator?.SetMerging();
+            });
+
             captureBeat.Append(
                 sourceView.PlayConsumedInto(
                     effect.To,
                     _moveDuration,
                     _despawnDuration));
+
+            captureBeat.InsertCallback(_moveDuration, () =>
+                EnsureMergeAnimationOrchestrator().PlayImpact(
+                    flagView.transform.position,
+                    sourceView.MergeEffectColor,
+                    flagView));
 
             Tween targetFeedback =
                 flagView.PlaySourceAccepted(
@@ -610,7 +787,11 @@ namespace Blobs.Presentation
                 captureBeat.Join(targetFeedback);
 
             captureBeat.OnComplete(
-                () => DestroyRetiringBlobView(sourceView));
+                () =>
+                {
+                    flagView.BlobMotionAnimator?.SetIdle();
+                    DestroyRetiringBlobView(sourceView);
+                });
 
             outerSequence.Append(captureBeat);
 
@@ -649,6 +830,17 @@ namespace Blobs.Presentation
             surfaceObject.transform.SetParent(parent, false);
             _boardSurfaceView = surfaceObject.AddComponent<BoardSurfaceView>();
             return _boardSurfaceView;
+        }
+
+        private MergeAnimationOrchestrator EnsureMergeAnimationOrchestrator()
+        {
+            if (_mergeAnimationOrchestrator != null)
+                return _mergeAnimationOrchestrator;
+
+            _mergeAnimationOrchestrator = GetComponent<MergeAnimationOrchestrator>();
+            if (_mergeAnimationOrchestrator == null)
+                _mergeAnimationOrchestrator = gameObject.AddComponent<MergeAnimationOrchestrator>();
+            return _mergeAnimationOrchestrator;
         }
 
 

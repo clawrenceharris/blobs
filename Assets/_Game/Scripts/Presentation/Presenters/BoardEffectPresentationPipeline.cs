@@ -32,24 +32,23 @@ namespace Blobs.Presentation
         internal BoardEffectPresentationContext(
             BlobPresenter blobs,
             TilePresenter tiles,
-            Sequence sequence,
+            PresentationTimeline timeline,
             Ease movementEase,
             Action contactFeedback)
         {
             Blobs = blobs;
             Tiles = tiles;
-            Sequence = sequence;
+            Timeline = timeline;
             MovementEase = movementEase;
             ContactFeedback = contactFeedback;
         }
 
         public BlobPresenter Blobs { get; }
         public TilePresenter Tiles { get; }
+        public PresentationTimeline Timeline { get; }
         public Ease MovementEase { get; }
         public Action ContactFeedback { get; }
-        public bool IsAnimated => Sequence != null;
-
-        internal Sequence Sequence { get; }
+        public bool IsAnimated => Timeline.IsAnimated;
     }
 
     /// <summary>
@@ -158,14 +157,14 @@ namespace Blobs.Presentation
 
         public bool PresentOrderedEffects(
             IReadOnlyList<IBoardEffect> effects,
-            Sequence sequence)
+            PresentationTimeline timeline)
         {
             for (int i = 0; i < effects.Count; i++)
             {
                 if (TryPresentNormalMerge(
                         effects,
                         ref i,
-                        sequence,
+                        timeline,
                         out bool mergeApplied))
                 {
                     if (!mergeApplied)
@@ -177,7 +176,7 @@ namespace Blobs.Presentation
                     return false;
 
                 var context = CreateContext(
-                    sequence,
+                    timeline,
                     Ease.Linear,
                     contactFeedback: null);
                 if (!handler.PresentOrdered(effects[i], context))
@@ -189,7 +188,7 @@ namespace Blobs.Presentation
 
         public bool PresentSteps(
             IReadOnlyList<MoveStep> steps,
-            Sequence sequence,
+            PresentationTimeline timeline,
             Action contactFeedback)
         {
             int lastMovementStep = FindLastMovementStep(steps);
@@ -198,7 +197,7 @@ namespace Blobs.Presentation
             {
                 Action stepContact = i == lastMovementStep ? contactFeedback : null;
                 Ease movementEase = i == lastMovementStep ? Ease.OutQuad : Ease.Linear;
-                if (!PresentStep(steps[i], sequence, movementEase, stepContact))
+                if (!PresentStep(steps[i], timeline, movementEase, stepContact))
                     return false;
             }
 
@@ -207,11 +206,11 @@ namespace Blobs.Presentation
 
         private bool PresentStep(
             MoveStep step,
-            Sequence outerSequence,
+            PresentationTimeline outerTimeline,
             Ease movementEase,
             Action contactFeedback)
         {
-            Sequence beat = outerSequence != null ? DOTween.Sequence() : null;
+            PresentationTimeline beat = outerTimeline.CreateBeat();
 
             if (step.Kind == MoveStepKind.Merge &&
                 TryFindNormalMerge(
@@ -219,14 +218,13 @@ namespace Blobs.Presentation
                     out MoveBlobEffect mergeSource,
                     out RemoveBlobEffect mergeTarget))
             {
-                if (!_blobs.CreateNormalMergeBeat(
+                if (!_blobs.NormalMerges.Present(
                         mergeSource,
                         mergeTarget,
                         beat,
-                        appendToSequence: false,
-                        onContact: contactFeedback))
+                        contactFeedback))
                 {
-                    beat?.Kill();
+                    beat.Kill();
                     return false;
                 }
 
@@ -237,7 +235,7 @@ namespace Blobs.Presentation
                         beat,
                         movementEase))
                 {
-                    beat?.Kill();
+                    beat.Kill();
                     return false;
                 }
             }
@@ -247,12 +245,11 @@ namespace Blobs.Presentation
                          movementEase,
                          contactFeedback))
             {
-                beat?.Kill();
+                beat.Kill();
                 return false;
             }
 
-            if (beat != null)
-                outerSequence.Append(beat);
+            outerTimeline.Append(beat);
             return true;
         }
 
@@ -260,7 +257,7 @@ namespace Blobs.Presentation
             MoveStep step,
             MoveBlobEffect mergeSource,
             RemoveBlobEffect mergeTarget,
-            Sequence beat,
+            PresentationTimeline beat,
             Ease movementEase)
         {
             List<EffectWorkItem>[] phases = CreatePhaseBuckets();
@@ -286,7 +283,7 @@ namespace Blobs.Presentation
 
         private bool PresentPhasedEffects(
             IReadOnlyList<IBoardEffect> effects,
-            Sequence beat,
+            PresentationTimeline beat,
             Ease movementEase,
             Action contactFeedback)
         {
@@ -303,7 +300,7 @@ namespace Blobs.Presentation
 
         private bool PresentPhaseBuckets(
             IReadOnlyList<EffectWorkItem>[] phases,
-            Sequence beat,
+            PresentationTimeline beat,
             Ease movementEase,
             Action contactFeedback)
         {
@@ -391,7 +388,7 @@ namespace Blobs.Presentation
         private bool TryPresentNormalMerge(
             IReadOnlyList<IBoardEffect> effects,
             ref int index,
-            Sequence sequence,
+            PresentationTimeline timeline,
             out bool applied)
         {
             applied = false;
@@ -403,11 +400,10 @@ namespace Blobs.Presentation
                 return false;
             }
 
-            applied = _blobs.CreateNormalMergeBeat(
+            applied = _blobs.NormalMerges.Present(
                 source,
                 target,
-                sequence,
-                appendToSequence: true);
+                timeline);
             index++;
             return true;
         }
@@ -421,14 +417,14 @@ namespace Blobs.Presentation
         }
 
         private BoardEffectPresentationContext CreateContext(
-            Sequence sequence,
+            PresentationTimeline timeline,
             Ease movementEase,
             Action contactFeedback)
         {
             return new BoardEffectPresentationContext(
                 _blobs,
                 _tiles,
-                sequence,
+                timeline,
                 movementEase,
                 contactFeedback);
         }
@@ -458,22 +454,38 @@ namespace Blobs.Presentation
                 MoveBlobEffect effect,
                 BoardEffectPresentationContext context)
             {
-                return context.Blobs.Move(
-                    effect.BlobId,
-                    effect.To,
-                    context.Sequence);
+                if (!context.Blobs.Transitions.TryMove(
+                        effect.BlobId,
+                        effect.To,
+                        Ease.Linear,
+                        context.Timeline,
+                        onArrival: null,
+                        out Tween animation))
+                {
+                    return false;
+                }
+
+                context.Timeline.Append(animation);
+                return true;
             }
 
             protected override bool PresentInBeat(
                 MoveBlobEffect effect,
                 BoardEffectPresentationContext context)
             {
-                return context.Blobs.MoveJoined(
-                    effect.BlobId,
-                    effect.To,
-                    context.Sequence,
-                    context.MovementEase,
-                    context.ContactFeedback);
+                if (!context.Blobs.Transitions.TryMove(
+                        effect.BlobId,
+                        effect.To,
+                        context.MovementEase,
+                        context.Timeline,
+                        context.ContactFeedback,
+                        out Tween animation))
+                {
+                    return false;
+                }
+
+                context.Timeline.Append(animation);
+                return true;
             }
         }
 
@@ -487,14 +499,32 @@ namespace Blobs.Presentation
                 SpawnBlobEffect effect,
                 BoardEffectPresentationContext context)
             {
-                return context.Blobs.Create(effect.Blob, context.Sequence);
+                if (!context.Blobs.Transitions.TryCreate(
+                        effect.Blob,
+                        context.Timeline,
+                        out Tween animation))
+                {
+                    return false;
+                }
+
+                context.Timeline.Append(animation);
+                return true;
             }
 
             protected override bool PresentInBeat(
                 SpawnBlobEffect effect,
                 BoardEffectPresentationContext context)
             {
-                return context.Blobs.CreateJoined(effect.Blob, context.Sequence);
+                if (!context.Blobs.Transitions.TryCreate(
+                        effect.Blob,
+                        context.Timeline,
+                        out Tween animation))
+                {
+                    return false;
+                }
+
+                context.Timeline.Join(animation);
+                return true;
             }
         }
 
@@ -508,14 +538,30 @@ namespace Blobs.Presentation
                 RemoveBlobEffect effect,
                 BoardEffectPresentationContext context)
             {
-                return context.Blobs.Remove(effect.BlobId, context.Sequence);
+                return PresentRemoval(effect, context);
             }
 
             protected override bool PresentInBeat(
                 RemoveBlobEffect effect,
                 BoardEffectPresentationContext context)
             {
-                return context.Blobs.Remove(effect.BlobId, context.Sequence);
+                return PresentRemoval(effect, context);
+            }
+
+            private static bool PresentRemoval(
+                RemoveBlobEffect effect,
+                BoardEffectPresentationContext context)
+            {
+                if (!context.Blobs.Transitions.TryRemove(
+                        effect.BlobId,
+                        context.Timeline,
+                        out Tween animation))
+                {
+                    return false;
+                }
+
+                context.Timeline.Append(animation);
+                return true;
             }
         }
 
@@ -530,16 +576,18 @@ namespace Blobs.Presentation
                 MergeIntoFlagEffect effect,
                 BoardEffectPresentationContext context)
             {
-                return context.Blobs.MergeIntoFlag(effect, context.Sequence);
+                return context.Blobs.FlagCaptures.Present(
+                    effect,
+                    context.Timeline);
             }
 
             protected override bool PresentInBeat(
                 MergeIntoFlagEffect effect,
                 BoardEffectPresentationContext context)
             {
-                return context.Blobs.MergeIntoFlag(
+                return context.Blobs.FlagCaptures.Present(
                     effect,
-                    context.Sequence,
+                    context.Timeline,
                     context.ContactFeedback);
             }
         }

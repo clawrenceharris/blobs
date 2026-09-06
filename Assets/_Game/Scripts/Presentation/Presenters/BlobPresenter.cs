@@ -8,7 +8,8 @@ using UnityEngine;
 namespace Blobs.Presentation
 {
     /// <summary>
-    /// Owns creation, tracking, animation, and removal of blob views.
+    /// Owns creation, identity tracking, retirement, and cleanup of blob views.
+    /// Focused collaborators own transition and interaction choreography.
     /// </summary>
     public sealed class BlobPresenter : MonoBehaviour
     {
@@ -28,6 +29,9 @@ namespace Blobs.Presentation
         private Vector2 _origin;
 
         public int VisibleCount => _views.Count;
+        internal BlobTransitionPresenter Transitions { get; private set; }
+        internal NormalMergePresenter NormalMerges { get; private set; }
+        internal FlagCapturePresenter FlagCaptures { get; private set; }
 
         /// <summary>
         /// Configures view creation for the active gameplay session and clears views from any prior session.
@@ -44,6 +48,19 @@ namespace Blobs.Presentation
             _cellSize = cellSize;
             _origin = origin;
             _viewFactory = viewFactory ?? new BlobViewFactory(_blobViewCatalog, palette);
+
+            MergeAnimationOrchestrator orchestrator = EnsureMergeAnimationOrchestrator();
+            Transitions = new BlobTransitionPresenter(
+                this,
+                moveDuration,
+                spawnDuration,
+                despawnDuration);
+            NormalMerges = new NormalMergePresenter(this, orchestrator);
+            FlagCaptures = new FlagCapturePresenter(
+                this,
+                orchestrator,
+                moveDuration,
+                despawnDuration);
         }
 
         /// <summary>
@@ -54,7 +71,7 @@ namespace Blobs.Presentation
             Clear();
 
             foreach (BlobState blob in blobs)
-                Create(blob, null);
+                TryCreateView(blob, out _);
         }
 
         public bool TryGetView(string blobId, out BlobView view)
@@ -99,13 +116,14 @@ namespace Blobs.Presentation
             return true;
         }
 
-        public bool Create(BlobState blob, Sequence sequence)
+        internal bool TryCreateView(BlobState blob, out BlobView view)
         {
+            view = null;
             if (blob == null || _views.ContainsKey(blob.Id) || _viewFactory == null)
                 return false;
 
             Transform parent = blobRoot != null ? blobRoot : transform;
-            BlobView view = _viewFactory.Create(
+            view = _viewFactory.Create(
                 blob,
                 _state,
                 parent,
@@ -116,70 +134,6 @@ namespace Blobs.Presentation
                 return false;
 
             _views.Add(blob.Id, view);
-            sequence?.Append(view.PlaySpawn(spawnDuration));
-            return true;
-        }
-
-        /// <summary>
-        /// Creates a view immediately and joins its spawn animation to an existing move beat.
-        /// </summary>
-        public bool CreateJoined(BlobState blob, Sequence beat)
-        {
-            if (!Create(blob, null))
-                return false;
-
-            if (beat != null && TryGetView(blob.Id, out BlobView view))
-                beat.Join(view.PlaySpawn(spawnDuration));
-
-            return true;
-        }
-
-        public bool Move(string blobId, GridPosition to, Sequence sequence)
-        {
-            if (!TryGetView(blobId, out BlobView view))
-                return false;
-
-            if (sequence == null)
-            {
-                view.SetGridPosition(to);
-                return true;
-            }
-
-            sequence.AppendCallback(() => view.BlobMotionAnimator?.SetMoving());
-            Tween movement = view.AnimateMoveTo(to, moveDuration);
-            movement.OnComplete(() => view.BlobMotionAnimator?.SetIdle());
-            sequence.Append(movement);
-            return true;
-        }
-
-        /// <summary>
-        /// Moves a blob in parallel with the current beat and optionally invokes contact feedback on arrival.
-        /// </summary>
-        public bool MoveJoined(
-            string blobId,
-            GridPosition to,
-            Sequence beat,
-            Ease ease,
-            System.Action onArrival)
-        {
-            if (!TryGetView(blobId, out BlobView view))
-                return false;
-
-            if (beat == null)
-            {
-                view.SetGridPosition(to);
-                onArrival?.Invoke();
-                return true;
-            }
-
-            beat.AppendCallback(() => view.BlobMotionAnimator?.SetMoving());
-            Tween movement = view.AnimateMoveTo(to, moveDuration, ease);
-            movement.OnComplete(() =>
-            {
-                view.BlobMotionAnimator?.SetIdle();
-                onArrival?.Invoke();
-            });
-            beat.Join(movement);
             return true;
         }
 
@@ -188,126 +142,20 @@ namespace Blobs.Presentation
         /// </summary>
         public bool Remove(string blobId)
         {
-            return Remove(blobId, null);
+            if (!TryRetireView(blobId, out BlobView view))
+                return false;
+
+            DestroyRetiringView(view);
+            return true;
         }
 
-        public bool Remove(string blobId, Sequence sequence)
+        internal bool TryRetireView(string blobId, out BlobView view)
         {
-            if (!TryGetView(blobId, out BlobView view))
+            if (!TryGetView(blobId, out view))
                 return false;
 
             _views.Remove(blobId);
-            if (sequence == null)
-            {
-                DestroyView(view);
-                return true;
-            }
-
             _retiringViews.Add(view);
-            sequence
-                .Append(view.PlayDespawn(despawnDuration))
-                .AppendCallback(() => DestroyRetiringView(view));
-            return true;
-        }
-
-        /// <summary>
-        /// Builds the combined source-move and target-retirement animation for a normal merge.
-        /// </summary>
-        public bool CreateNormalMergeBeat(
-            MoveBlobEffect move,
-            RemoveBlobEffect remove,
-            Sequence sequence,
-            bool appendToSequence,
-            System.Action onContact = null)
-        {
-            if (!TryGetView(move.BlobId, out BlobView sourceView) ||
-                !TryGetView(remove.BlobId, out BlobView targetView))
-            {
-                return false;
-            }
-
-            _views.Remove(remove.BlobId);
-            if (sequence == null)
-            {
-                sourceView.SetGridPosition(move.To);
-                sourceView.BlobMotionAnimator?.SetIdle();
-                onContact?.Invoke();
-                DestroyView(targetView);
-                return true;
-            }
-
-            _retiringViews.Add(targetView);
-            Vector2Int direction = new(
-                move.To.X - move.From.X,
-                move.To.Y - move.From.Y);
-            Sequence mergeBeat = EnsureMergeAnimationOrchestrator().CreateMergeBeat(
-                sourceView,
-                targetView,
-                direction,
-                onContact,
-                () => DestroyRetiringView(targetView));
-
-            if (appendToSequence)
-                sequence.Append(mergeBeat);
-            else
-                sequence.Join(mergeBeat);
-
-            return true;
-        }
-
-        /// <summary>
-        /// Retires the captured source immediately from tracking while its flag-capture animation completes.
-        /// </summary>
-        public bool MergeIntoFlag(
-            MergeIntoFlagEffect effect,
-            Sequence outerSequence,
-            System.Action onContact = null)
-        {
-            if (!TryGetView(effect.SourceId, out BlobView sourceView) ||
-                !TryGetView(effect.FlagId, out BlobView flagView))
-            {
-                return false;
-            }
-
-            _views.Remove(effect.SourceId);
-            if (outerSequence == null)
-            {
-                sourceView.SetGridPosition(effect.To);
-                onContact?.Invoke();
-                DestroyView(sourceView);
-                return true;
-            }
-
-            _retiringViews.Add(sourceView);
-            Sequence captureBeat = DOTween.Sequence();
-            captureBeat.AppendCallback(() =>
-            {
-                sourceView.BlobMotionAnimator?.SetMerging();
-                flagView.BlobMotionAnimator?.SetMerging();
-            });
-            captureBeat.Append(sourceView.PlayConsumedInto(
-                effect.To,
-                moveDuration,
-                despawnDuration));
-            captureBeat.InsertCallback(moveDuration, () =>
-            {
-                EnsureMergeAnimationOrchestrator().PlayImpact(
-                    flagView.transform.position,
-                    sourceView.MergeEffectColor,
-                    flagView);
-                onContact?.Invoke();
-            });
-
-            Tween targetFeedback = flagView.PlaySourceAccepted(moveDuration + despawnDuration);
-            if (targetFeedback != null)
-                captureBeat.Join(targetFeedback);
-
-            captureBeat.OnComplete(() =>
-            {
-                flagView.BlobMotionAnimator?.SetIdle();
-                DestroyRetiringView(sourceView);
-            });
-            outerSequence.Append(captureBeat);
             return true;
         }
 
@@ -352,7 +200,7 @@ namespace Blobs.Presentation
             _retiringViews.Clear();
         }
 
-        private void DestroyRetiringView(BlobView view)
+        internal void DestroyRetiringView(BlobView view)
         {
             _retiringViews.Remove(view);
             DestroyView(view);

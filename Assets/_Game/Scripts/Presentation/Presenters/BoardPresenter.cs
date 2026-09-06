@@ -9,12 +9,13 @@ namespace Blobs.Presentation
 {
     /// <summary>
     /// Coordinates board-level presentation in response to gameplay state and effects.
-    /// Blob and tile view lifecycles are delegated to their focused presenters.
+    /// Blob, tile, and board-surface lifecycles are delegated to focused presenters.
     /// </summary>
     public sealed class BoardPresenter : MonoBehaviour
     {
         [SerializeField] private BlobPresenter _blobPresenter;
         [SerializeField] private TilePresenter _tilePresenter;
+        [SerializeField] private BoardSurfacePresenter _boardSurfacePresenter;
         [SerializeField] private float cellSize = 1.25f;
         [SerializeField] private Vector2 origin;
 
@@ -27,7 +28,7 @@ namespace Blobs.Presentation
         public int VisibleBlobCount => _blobPresenter != null ? _blobPresenter.VisibleCount : 0;
         public int VisibleTileCount => _tilePresenter != null ? _tilePresenter.VisibleCount : 0;
         public int VisibleSurfaceCellCount =>
-            _tilePresenter != null ? _tilePresenter.VisibleSurfaceCellCount : 0;
+            _boardSurfacePresenter != null ? _boardSurfacePresenter.VisibleCellCount : 0;
 
         /// <summary>
         /// Current session snapshot used by tests and UI. Null until the presenter is initialized.
@@ -63,7 +64,8 @@ namespace Blobs.Presentation
         public void Initialize(
             IGameplayState state,
             LevelColorPaletteAsset palette,
-            IBlobViewFactory blobViewFactory = null)
+            IBlobViewFactory blobViewFactory = null,
+            ITileViewFactory tileViewFactory = null)
         {
             if (state == null)
                 throw new ArgumentNullException(nameof(state));
@@ -72,7 +74,8 @@ namespace Blobs.Presentation
             EnsurePresenters();
             _state = state;
             _blobPresenter.Initialize(state, palette, cellSize, origin, blobViewFactory);
-            _tilePresenter.Initialize(cellSize, origin);
+            _tilePresenter.Initialize(cellSize, origin, tileViewFactory);
+            _boardSurfacePresenter.Initialize(cellSize, origin);
 
             _state.MoveResolved += HandleMoveResolved;
             _state.StateRestored += Rebuild;
@@ -116,18 +119,10 @@ namespace Blobs.Presentation
 
             EnsurePresenters();
             KillEffectTimeline();
+            _boardSurfacePresenter.Rebuild(snapshot.Board);
             _tilePresenter.Rebuild(snapshot.Board);
             _blobPresenter.Rebuild(snapshot.Board.Blobs);
             SnapshotChanged?.Invoke(snapshot);
-        }
-
-        /// <summary>
-        /// Builds the optional legacy cell-prefab layer through the tile presenter.
-        /// </summary>
-        public void BuildCells(BoardState board)
-        {
-            EnsurePresenters();
-            _tilePresenter.BuildCells(board);
         }
 
         /// <summary>
@@ -213,6 +208,7 @@ namespace Blobs.Presentation
             KillEffectTimeline();
             _blobPresenter?.Clear();
             _tilePresenter?.Clear();
+            _boardSurfacePresenter?.Clear();
         }
 
         private void CompleteEffectApplication(
@@ -285,6 +281,11 @@ namespace Blobs.Presentation
                 _tilePresenter = GetComponent<TilePresenter>();
             if (_tilePresenter == null)
                 _tilePresenter = gameObject.AddComponent<TilePresenter>();
+
+            if (_boardSurfacePresenter == null)
+                _boardSurfacePresenter = GetComponent<BoardSurfacePresenter>();
+            if (_boardSurfacePresenter == null)
+                _boardSurfacePresenter = gameObject.AddComponent<BoardSurfacePresenter>();
 
             if (_effectPipeline != null)
                 return;

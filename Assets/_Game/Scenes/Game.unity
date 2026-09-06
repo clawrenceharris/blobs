@@ -3300,6 +3300,8 @@ GameObject:
   - component: {fileID: 1341500225}
   - component: {fileID: 1341500224}
   - component: {fileID: 1341500226}
+  - component: {fileID: 1341500227}
+  - component: {fileID: 1341500228}
   m_Layer: 0
   m_Name: BoardPresenter
   m_TagString: Untagged
@@ -3319,18 +3321,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf691289ecdd44f3b9a70d52eb0f9443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BoardPresenter
-  _blobViewCatalog: {fileID: 11400000, guid: 3b14907ac9d6d44bcabc9ff726677847, type: 2}
-  cellPrefab: {fileID: 3145170841340055582, guid: eed48924b7bb64bb88edb31214e63aed, type: 3}
-  cellRoot: {fileID: 1944583431}
-  tileViewPrefab: {fileID: 0}
-  blobRoot: {fileID: 633203431}
-  tileRoot: {fileID: 1066094399}
+  _blobPresenter: {fileID: 1341500227}
+  _tilePresenter: {fileID: 1341500228}
   cellSize: 1.25
   origin: {x: 0, y: 0}
+--- !u!114 &1341500227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341500223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8cac62f7ee4e0f862d21879385c5c8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BlobPresenter
+  _blobViewCatalog: {fileID: 11400000, guid: 3b14907ac9d6d44bcabc9ff726677847, type: 2}
+  blobRoot: {fileID: 633203431}
   moveDuration: 0.25
   spawnDuration: 0.14
   despawnDuration: 0.12
   _mergeAnimationOrchestrator: {fileID: 1341500226}
+--- !u!114 &1341500228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341500223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f154b4d4e5c45528f94d75a61c6cdb2, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.TilePresenter
+  tileViewPrefab: {fileID: 0}
+  tileRoot: {fileID: 1066094399}
+  cellPrefab: {fileID: 3145170841340055582, guid: eed48924b7bb64bb88edb31214e63aed, type: 3}
+  cellRoot: {fileID: 1944583431}
 --- !u!4 &1341500225
 Transform:
   m_ObjectHideFlags: 0
@@ -3378,9 +3406,6 @@ MonoBehaviour:
   _mergeImpactClip: {fileID: 0}
   _mergeImpactVolume: 0.85
   _mergeImpactPitch: 1
-  _rockThumpClip: {fileID: 0}
-  _rockThumpVolume: 0.8
-  _rockThumpPitch: 1
   _onMergeImpact:
     m_PersistentCalls:
       m_Calls: []

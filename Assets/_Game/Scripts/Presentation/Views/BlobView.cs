@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Blobs.Core;
 using UnityEngine;
 using Blobs.Content;
@@ -17,6 +18,7 @@ namespace Blobs.Presentation
     {
         public BlobRenderer BlobRenderer { get; private set; }
         private IMergeTargetFeedback _mergeTargetFeedback;
+        private readonly List<IBlobContactFeedback> _contactFeedback = new();
         private readonly BlobSkinApplier _skinApplier = new();
         private readonly BlobSkinResolver _skinResolver = new();
 
@@ -179,6 +181,7 @@ namespace Blobs.Presentation
         private void CacheOptionalBehaviors()
         {
             _mergeTargetFeedback = null;
+            _contactFeedback.Clear();
 
             MonoBehaviour[] components =
                 GetComponents<MonoBehaviour>();
@@ -186,12 +189,23 @@ namespace Blobs.Presentation
             foreach (MonoBehaviour component in components)
             {
                 if (component is IMergeTargetFeedback feedback)
-                {
                     _mergeTargetFeedback = feedback;
-                    break;
-                }
+
+                if (component is IBlobContactFeedback contactFeedback)
+                    _contactFeedback.Add(contactFeedback);
             }
         }
+
+        /// <summary>
+        /// Invokes every contact-feedback behavior composed on this target blob prefab.
+        /// </summary>
+        public void PlayContactFeedback(BlobView source)
+        {
+            var context = new BlobContactFeedbackContext(source, this);
+            foreach (IBlobContactFeedback feedback in _contactFeedback)
+                feedback.PlayContactFeedback(context);
+        }
+
         public Tween PlaySourceAccepted(float duration)
         {
             return _mergeTargetFeedback?.PlaySourceAccepted(duration);

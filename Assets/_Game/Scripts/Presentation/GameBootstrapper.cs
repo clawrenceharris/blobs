@@ -66,9 +66,7 @@ namespace Blobs.Presentation
 
             boardPresenter.Initialize(
                 _session,
-                asset.Palette,
-                width: level.Width,
-                height: level.Height);
+                asset.Palette);
             inputAdapter.Initialize(_session, boardPresenter.CellSize);
             commandAdapter.Initialize(_session);
             if (feedbackPresenter != null)

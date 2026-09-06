@@ -42,12 +42,6 @@ namespace Blobs.Presentation
         [SerializeField, Range(0f, 1f)] private float _mergeImpactVolume = 0.85f;
         [SerializeField, Range(0.1f, 3f)] private float _mergeImpactPitch = 1f;
 
-        [Header("Rock Contact Audio")]
-        [Tooltip("Assign a short, dull rock-thump clip. This does not trigger merge visuals or haptics.")]
-        [SerializeField] private AudioClip _rockThumpClip;
-        [SerializeField, Range(0f, 1f)] private float _rockThumpVolume = 0.8f;
-        [SerializeField, Range(0.1f, 3f)] private float _rockThumpPitch = 1f;
-
         [Header("Optional Impact Hooks")]
         [Tooltip("Connect a platform haptics adapter here without coupling animation code to a haptics package.")]
         [SerializeField] private UnityEvent _onMergeImpact = new();
@@ -63,6 +57,7 @@ namespace Blobs.Presentation
             BlobView source,
             BlobView target,
             Vector2Int gridDirection,
+            Action onContact,
             Action onTargetConsumed)
         {
             if (source == null)
@@ -150,6 +145,7 @@ namespace Blobs.Presentation
                     target.transform.position,
                     source.MergeEffectColor,
                     target);
+                onContact?.Invoke();
             });
             beat.Append(targetVisual
                 .DOScale(Vector3.zero, _consumeDuration)
@@ -229,20 +225,6 @@ namespace Blobs.Presentation
 
             _audioSource.pitch = _mergeImpactPitch;
             _audioSource.PlayOneShot(_mergeImpactClip, _mergeImpactVolume);
-        }
-
-        /// <summary>
-        /// Plays only the rock contact sound. It intentionally has no merge VFX,
-        /// haptics, consumption, or animation-state transition.
-        /// </summary>
-        public void PlayRockThumpAudio()
-        {
-            EnsureAudioSource();
-            if (_rockThumpClip == null)
-                return;
-
-            _audioSource.pitch = _rockThumpPitch;
-            _audioSource.PlayOneShot(_rockThumpClip, _rockThumpVolume);
         }
 
         private void EnsureAudioSource()

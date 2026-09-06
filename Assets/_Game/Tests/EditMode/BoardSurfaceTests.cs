@@ -267,9 +267,7 @@ namespace Blobs.Tests.EditMode
             presenter.Initialize(
                 new FakeGameplayState(EmptySnapshot()),
                 null,
-                new EmptyBlobViewFactory(),
-                width: level.Width,
-                height: level.Height);
+                new EmptyBlobViewFactory());
 
             Assert.That(presenter.VisibleSurfaceCellCount, Is.EqualTo(7));
             BoardSurfaceView surface = _root.GetComponentInChildren<BoardSurfaceView>(true);
@@ -334,9 +332,7 @@ namespace Blobs.Tests.EditMode
             presenter.Initialize(
                 new FakeGameplayState(EmptySnapshot()),
                 null,
-                new EmptyBlobViewFactory(),
-                width: 2,
-                height: 3);
+                new EmptyBlobViewFactory());
 
             Assert.That(presenter.VisibleSurfaceCellCount, Is.EqualTo(6));
         }

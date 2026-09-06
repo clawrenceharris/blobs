@@ -75,8 +75,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1468080444204028906, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7846453036168924501}
   m_SourcePrefab: {fileID: 100100000, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+--- !u!1 &6359473041267385902 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1468080444204028906, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+  m_PrefabInstance: {fileID: 5922521350940205967}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7846453036168924501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6359473041267385902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd125f64cb2a4384bcf3f99360e080af, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BlobContactAudioFeedback
+  clip: {fileID: 0}
+  volume: 0.8
+  pitch: 1
+  audioSource: {fileID: 0}
 --- !u!212 &948446978080531608 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 6852378884847781655, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}

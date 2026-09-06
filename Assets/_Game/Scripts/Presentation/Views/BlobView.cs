@@ -30,6 +30,8 @@ namespace Blobs.Presentation
         public string BlobId { get; private set; }
         public BlobType BlobType { get; private set; }
         public GridPosition GridPosition { get; private set; }
+        private BlobColor? _presentedColor;
+        private BlobColor? _presentedTrailColor;
         private float _cellSize;
         private Vector2 _origin;
         private Vector3 _baseScale;
@@ -52,6 +54,8 @@ namespace Blobs.Presentation
         {
             BlobId = blob.Id;
             BlobType = blob.Type;
+            _presentedColor = blob.Components.Color?.Color;
+            _presentedTrailColor = blob.Components.Trail?.TrailColor;
             _cellSize = cellSize;
             _origin = origin;
             name = "Blob " + blob.Id;
@@ -69,6 +73,20 @@ namespace Blobs.Presentation
 
             CacheOptionalBehaviors();
             ApplySkin(blob, colorPalette);
+        }
+
+        /// <summary>
+        /// Returns whether this view represents every piece of immutable blob state that can
+        /// affect prefab selection or rendering. Animation state is intentionally excluded.
+        /// </summary>
+        public bool IsPresenting(BlobState blob)
+        {
+            return blob != null &&
+                BlobId == blob.Id &&
+                BlobType == blob.Type &&
+                GridPosition == blob.Position &&
+                _presentedColor == blob.Components.Color?.Color &&
+                _presentedTrailColor == blob.Components.Trail?.TrailColor;
         }
 
         /// <summary>

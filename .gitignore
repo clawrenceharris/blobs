@@ -20,6 +20,8 @@
 /[Uu]ser[Ss]ettings/
 *.log
 
+/[Aa]ssets/Plugins/AllIn1SpriteShader/
+
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be committed to version control.
 *.blend1
 *.blend1.meta

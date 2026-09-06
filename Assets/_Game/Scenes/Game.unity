@@ -3302,6 +3302,9 @@ GameObject:
   - component: {fileID: 1341500226}
   - component: {fileID: 1341500227}
   - component: {fileID: 1341500228}
+  - component: {fileID: 1341500229}
+  - component: {fileID: 1341500230}
+  - component: {fileID: 1341500231}
   m_Layer: 0
   m_Name: BoardPresenter
   m_TagString: Untagged
@@ -3398,15 +3401,52 @@ MonoBehaviour:
   _travelScale: {x: 0.9, y: 1.056}
   _targetBraceScale: {x: 0.88, y: 0.99}
   _survivorImpactScale: {x: 1.14, y: 1.28}
-  _mergeImpactPrefab: {fileID: 1000000000000000002, guid: de8eae55750e4297b766eaf92ea0c0ba, type: 3}
-  _effectsRoot: {fileID: 1052151716}
   _sourceSortingOffset: 10
   _targetSortingOffset: 20
-  _effectSortingOffset: 10
-  _mergeImpactClip: {fileID: 0}
-  _mergeImpactVolume: 0.85
-  _mergeImpactPitch: 1
-  _onMergeImpact:
+--- !u!114 &1341500229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341500223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5019c423fd6d448ba95a498ec653f3a8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.MergeImpactVfxFeedback
+  _prefab: {fileID: 1000000000000000002, guid: de8eae55750e4297b766eaf92ea0c0ba, type: 3}
+  _effectsRoot: {fileID: 1052151716}
+  _sortingOffset: 10
+--- !u!114 &1341500230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341500223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65fce800c88a4d1fb52053411d8b494d, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.MergeImpactAudioFeedback
+  _clip: {fileID: 0}
+  _volume: 0.85
+  _pitch: 1
+  _audioSource: {fileID: 0}
+--- !u!114 &1341500231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341500223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b417020e2d94bd88678cf33cb91a652, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.MergeImpactHapticsFeedback
+  _onImpact:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1343664527

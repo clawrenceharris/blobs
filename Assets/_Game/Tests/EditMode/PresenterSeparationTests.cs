@@ -120,6 +120,52 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
+        public void BoardSynchronizationRejectsChangedBlobPresentationTraits()
+        {
+            BlobState initial = new BlobState(
+                "blob",
+                BlobType.Trail,
+                new GridPosition(0, 0))
+                .WithColor(BlobColor.Red)
+                .WithTrail(BlobColor.Blue);
+            var initialSnapshot = new GameSessionSnapshot(
+                "presentation-state-sync",
+                new BoardState(1, 1, new[] { initial }, Array.Empty<TileState>()),
+                0,
+                false);
+
+            _root = new GameObject("Presentation State Synchronization Test");
+            _palette = ScriptableObject.CreateInstance<LevelColorPaletteAsset>();
+            BoardPresenter presenter = _root.AddComponent<BoardPresenter>();
+            presenter.Initialize(
+                new FakeGameplayState(initialSnapshot),
+                _palette,
+                new TestBlobViewFactory(_palette),
+                new TestTileViewFactory());
+
+            Assert.That(presenter.IsSynchronizedWith(initialSnapshot), Is.True);
+            Assert.That(
+                presenter.IsSynchronizedWith(SnapshotWith(
+                    new BlobState(
+                        initial.Id,
+                        BlobType.Rock,
+                        initial.Position,
+                        initial.Components))),
+                Is.False,
+                "Prefab-changing blob types must invalidate synchronization.");
+            Assert.That(
+                presenter.IsSynchronizedWith(SnapshotWith(
+                    initial.WithColor(BlobColor.Green))),
+                Is.False,
+                "Body color changes must invalidate synchronization.");
+            Assert.That(
+                presenter.IsSynchronizedWith(SnapshotWith(
+                    initial.WithTrail(BlobColor.Purple))),
+                Is.False,
+                "Prefab-specific trail color changes must invalidate synchronization.");
+        }
+
+        [Test]
         public void NormalTilePrefabIsRegisteredInProductionCatalog()
         {
             TileViewCatalogAsset catalog = AssetDatabase.LoadAssetAtPath<TileViewCatalogAsset>(
@@ -211,6 +257,15 @@ namespace Blobs.Tests.EditMode
                 view.Initialize(blob, state, _palette, cellSize, origin);
                 return view;
             }
+        }
+
+        private static GameSessionSnapshot SnapshotWith(BlobState blob)
+        {
+            return new GameSessionSnapshot(
+                "presentation-state-sync",
+                new BoardState(1, 1, new[] { blob }, Array.Empty<TileState>()),
+                0,
+                false);
         }
 
         private sealed class TestTileViewFactory : ITileViewFactory

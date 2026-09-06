@@ -185,7 +185,7 @@ namespace Blobs.Presentation
         }
 
         /// <summary>
-        /// Checks logical IDs and positions against a snapshot without depending on animation timing.
+        /// Checks all render-relevant logical state without depending on animation timing.
         /// </summary>
         public bool IsSynchronizedWith(GameSessionSnapshot snapshot)
         {

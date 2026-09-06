@@ -96,7 +96,7 @@ namespace Blobs.Presentation
         }
 
         /// <summary>
-        /// Checks tracked blob identities and logical positions without relying on tween completion.
+        /// Checks all render-relevant blob state without relying on tween completion.
         /// </summary>
         public bool IsSynchronizedWith(IEnumerable<BlobState> blobs, int expectedCount)
         {
@@ -106,8 +106,7 @@ namespace Blobs.Presentation
             foreach (BlobState blob in blobs)
             {
                 if (!TryGetView(blob.Id, out BlobView view) ||
-                    view.BlobId != blob.Id ||
-                    view.GridPosition != blob.Position)
+                    !view.IsPresenting(blob))
                 {
                     return false;
                 }

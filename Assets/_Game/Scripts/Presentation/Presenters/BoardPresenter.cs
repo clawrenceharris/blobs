@@ -20,6 +20,8 @@ namespace Blobs.Presentation
         [SerializeField] private Vector2 origin;
 
         private Sequence _effectSequence;
+        private BoardEffectPresentationPipeline _effectPipeline;
+        private readonly List<IBoardEffectPresentationHandler> _additionalEffectHandlers = new();
         private IGameplayState _state;
 
         public float CellSize => cellSize;
@@ -37,6 +39,24 @@ namespace Blobs.Presentation
         /// Raised after this presenter applies effects from a move.
         /// </summary>
         public event Action<GameSessionSnapshot> SnapshotChanged;
+
+        /// <summary>
+        /// Adds or replaces the presentation handler for one Core effect type.
+        /// This is the extension point for new effects that should not require changes to the board coordinator.
+        /// </summary>
+        public void RegisterEffectHandler(IBoardEffectPresentationHandler handler)
+        {
+            BoardEffectPresentationPipeline.ValidateHandler(handler);
+
+            for (int i = _additionalEffectHandlers.Count - 1; i >= 0; i--)
+            {
+                if (_additionalEffectHandlers[i].EffectType == handler.EffectType)
+                    _additionalEffectHandlers.RemoveAt(i);
+            }
+
+            _additionalEffectHandlers.Add(handler);
+            _effectPipeline?.Register(handler);
+        }
 
         /// <summary>
         /// Connects the presenter to gameplay state and builds the initial board views.
@@ -123,51 +143,7 @@ namespace Blobs.Presentation
 
             KillEffectSequence();
             Sequence sequence = ShouldAnimateEffects() ? DOTween.Sequence() : null;
-            bool appliedAll = true;
-
-            for (int i = 0; i < effects.Count; i++)
-            {
-                IBoardEffect effect = effects[i];
-
-                // Core removes an occupied target before moving the source. Present the pair as one beat.
-                if (effect is RemoveBlobEffect mergeTarget &&
-                    i + 1 < effects.Count &&
-                    effects[i + 1] is MoveBlobEffect mergeSource &&
-                    mergeSource.To == mergeTarget.At)
-                {
-                    appliedAll &= _blobPresenter.CreateNormalMergeBeat(
-                        mergeSource,
-                        mergeTarget,
-                        sequence,
-                        appendToSequence: true,
-                        onContact: null);
-                    i++;
-                }
-                else
-                {
-                    switch (effect)
-                    {
-                        case MoveBlobEffect move:
-                            appliedAll &= _blobPresenter.Move(move.BlobId, move.To, sequence);
-                            break;
-                        case RemoveBlobEffect remove:
-                            appliedAll &= _blobPresenter.Remove(remove.BlobId, sequence);
-                            break;
-                        case SpawnBlobEffect spawn:
-                            appliedAll &= _blobPresenter.Create(spawn.Blob, sequence);
-                            break;
-                        case MergeIntoFlagEffect mergeIntoFlag:
-                            appliedAll &= _blobPresenter.MergeIntoFlag(mergeIntoFlag, sequence);
-                            break;
-                        default:
-                            appliedAll = false;
-                            break;
-                    }
-                }
-
-                if (!appliedAll)
-                    break;
-            }
+            bool appliedAll = _effectPipeline.PresentOrderedEffects(effects, sequence);
 
             CompleteEffectApplication(sequence, appliedAll, fallbackSnapshot);
         }
@@ -192,18 +168,10 @@ namespace Blobs.Presentation
 
             KillEffectSequence();
             Sequence sequence = ShouldAnimateEffects() ? DOTween.Sequence() : null;
-            bool appliedAll = true;
-            int lastMoveStepIndex = FindLastMoveStepIndex(steps);
-
-            for (int i = 0; i < steps.Count && appliedAll; i++)
-            {
-                appliedAll &= ApplyStep(
-                    steps[i],
-                    isFinalMoveBeat: i == lastMoveStepIndex,
-                    onContact:
-                        i == lastMoveStepIndex ? contactFeedback : null,
-                    sequence);
-            }
+            bool appliedAll = _effectPipeline.PresentSteps(
+                steps,
+                sequence,
+                contactFeedback);
 
             if (sequence != null)
                 sequence.AppendCallback(() => contactFeedback?.Invoke());
@@ -211,85 +179,6 @@ namespace Blobs.Presentation
                 contactFeedback?.Invoke();
 
             CompleteEffectApplication(sequence, appliedAll, fallbackSnapshot);
-        }
-
-        private bool ApplyStep(
-            MoveStep step,
-            bool isFinalMoveBeat,
-            Action onContact,
-            Sequence outerSequence)
-        {
-            Sequence beat = outerSequence != null ? DOTween.Sequence() : null;
-            bool applied = true;
-
-            if (step.Kind == MoveStepKind.Merge &&
-                TryFindNormalMerge(step, out MoveBlobEffect mergeSource,
-                    out RemoveBlobEffect mergeTarget))
-            {
-                applied &= _blobPresenter.CreateNormalMergeBeat(
-                    mergeSource,
-                    mergeTarget,
-                    beat,
-                    appendToSequence: false,
-                    onContact: onContact);
-
-                foreach (IBoardEffect effect in step.Effects)
-                {
-                    if (effect is SpawnBlobEffect spawn)
-                        applied &= _blobPresenter.CreateJoined(spawn.Blob, beat);
-                    if (!applied)
-                        return false;
-                }
-
-                if (beat != null)
-                    outerSequence.Append(beat);
-                return applied;
-            }
-
-            // Locomotion anchors a beat, departure spawns join it, and removals follow arrival.
-            foreach (IBoardEffect effect in step.Effects)
-            {
-                switch (effect)
-                {
-                    case MoveBlobEffect move:
-                        applied &= _blobPresenter.MoveJoined(
-                            move.BlobId,
-                            move.To,
-                            beat,
-                            isFinalMoveBeat ? Ease.OutQuad : Ease.Linear,
-                            onContact);
-                        break;
-                    case MergeIntoFlagEffect mergeIntoFlag:
-                        applied &= _blobPresenter.MergeIntoFlag(
-                            mergeIntoFlag,
-                            beat,
-                            onContact);
-                        break;
-                }
-
-                if (!applied)
-                    return false;
-            }
-
-            foreach (IBoardEffect effect in step.Effects)
-            {
-                if (effect is SpawnBlobEffect spawn)
-                    applied &= _blobPresenter.CreateJoined(spawn.Blob, beat);
-                if (!applied)
-                    return false;
-            }
-
-            foreach (IBoardEffect effect in step.Effects)
-            {
-                if (effect is RemoveBlobEffect remove)
-                    applied &= _blobPresenter.Remove(remove.BlobId, beat);
-                if (!applied)
-                    return false;
-            }
-
-            if (beat != null)
-                outerSequence.Append(beat);
-            return true;
         }
 
         /// <summary>
@@ -356,55 +245,6 @@ namespace Blobs.Presentation
             SnapshotChanged?.Invoke(fallbackSnapshot);
         }
 
-        private static int FindLastMoveStepIndex(IReadOnlyList<MoveStep> steps)
-        {
-            int lastMoveStepIndex = -1;
-            for (int i = 0; i < steps.Count; i++)
-            {
-                foreach (IBoardEffect effect in steps[i].Effects)
-                {
-                    if (effect is MoveBlobEffect || effect is MergeIntoFlagEffect)
-                        lastMoveStepIndex = i;
-                }
-            }
-
-            return lastMoveStepIndex;
-        }
-
-        private static bool TryFindNormalMerge(
-            MoveStep step,
-            out MoveBlobEffect move,
-            out RemoveBlobEffect remove)
-        {
-            move = null;
-            remove = null;
-
-            foreach (IBoardEffect effect in step.Effects)
-            {
-                if (effect is MoveBlobEffect candidateMove)
-                {
-                    move = candidateMove;
-                    break;
-                }
-            }
-
-            if (move == null)
-                return false;
-
-            foreach (IBoardEffect effect in step.Effects)
-            {
-                if (effect is RemoveBlobEffect candidateRemove &&
-                    candidateRemove.BlobId != move.BlobId &&
-                    candidateRemove.At == move.To)
-                {
-                    remove = candidateRemove;
-                    break;
-                }
-            }
-
-            return remove != null;
-        }
-
         private static Action InvokeOnce(Action callback)
         {
             if (callback == null)
@@ -449,6 +289,15 @@ namespace Blobs.Presentation
                 _tilePresenter = GetComponent<TilePresenter>();
             if (_tilePresenter == null)
                 _tilePresenter = gameObject.AddComponent<TilePresenter>();
+
+            if (_effectPipeline != null)
+                return;
+
+            _effectPipeline = new BoardEffectPresentationPipeline(
+                _blobPresenter,
+                _tilePresenter);
+            foreach (IBoardEffectPresentationHandler handler in _additionalEffectHandlers)
+                _effectPipeline.Register(handler);
         }
 
         private void Unsubscribe()

@@ -47,13 +47,17 @@ namespace Blobs.Tests.EditMode
             boardPresenter.Initialize(
                 new FakeGameplayState(snapshot),
                 _palette,
-                new TestBlobViewFactory(_palette));
+                new TestBlobViewFactory(_palette),
+                new TestTileViewFactory());
 
             BlobPresenter blobPresenter = _root.GetComponent<BlobPresenter>();
             TilePresenter tilePresenter = _root.GetComponent<TilePresenter>();
+            BoardSurfacePresenter surfacePresenter =
+                _root.GetComponent<BoardSurfacePresenter>();
 
             Assert.That(blobPresenter, Is.Not.Null);
             Assert.That(tilePresenter, Is.Not.Null);
+            Assert.That(surfacePresenter, Is.Not.Null);
             Assert.That(blobPresenter.VisibleCount, Is.EqualTo(1));
             Assert.That(tilePresenter.VisibleCount, Is.EqualTo(1));
 
@@ -95,6 +99,37 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
+        public void TileViewRoutesStateToEveryComposedBinding()
+        {
+            _root = new GameObject("Tile State Binding Test");
+            var first = _root.AddComponent<RecordingTileStateBinding>();
+            var second = _root.AddComponent<RecordingTileStateBinding>();
+            TileView view = _root.AddComponent<TileView>();
+            var tile = new TileState(
+                "tile",
+                new GridPosition(1, 2),
+                TileType.Normal);
+
+            view.Initialize(tile, 1f, Vector2.zero);
+
+            Assert.That(first.BindCount, Is.EqualTo(1));
+            Assert.That(second.BindCount, Is.EqualTo(1));
+            Assert.That(first.LastContext.View, Is.SameAs(view));
+            Assert.That(first.LastContext.State, Is.SameAs(tile));
+            Assert.That(view.TileType, Is.EqualTo(TileType.Normal));
+        }
+
+        [Test]
+        public void NormalTilePrefabIsRegisteredInProductionCatalog()
+        {
+            TileViewCatalogAsset catalog = AssetDatabase.LoadAssetAtPath<TileViewCatalogAsset>(
+                "Assets/_Game/Content/Presentation/TileViewCatalog.asset");
+
+            Assert.That(catalog, Is.Not.Null);
+            Assert.That(catalog.GetRequiredPrefab(TileType.Normal), Is.Not.Null);
+        }
+
+        [Test]
         public void MergeOrchestratorRoutesImpactToEveryComposedFeedbackChannel()
         {
             _root = new GameObject("Merge Feedback Channels Test");
@@ -133,7 +168,8 @@ namespace Blobs.Tests.EditMode
             presenter.Initialize(
                 new FakeGameplayState(snapshot),
                 _palette,
-                new TestBlobViewFactory(_palette));
+                new TestBlobViewFactory(_palette),
+                new TestTileViewFactory());
             presenter.TryGetBlobView(blob.Id, out BlobView originalView);
 
             var effect = new RecordingEffect();
@@ -177,6 +213,22 @@ namespace Blobs.Tests.EditMode
             }
         }
 
+        private sealed class TestTileViewFactory : ITileViewFactory
+        {
+            public TileView Create(
+                TileState tile,
+                Transform parent,
+                float cellSize,
+                Vector2 origin)
+            {
+                var gameObject = new GameObject("Test Tile " + tile.Id);
+                gameObject.transform.SetParent(parent, false);
+                TileView view = gameObject.AddComponent<TileView>();
+                view.Initialize(tile, cellSize, origin);
+                return view;
+            }
+        }
+
         private sealed class FakeGameplayState : IGameplayState
         {
             private readonly GameSessionSnapshot _snapshot;
@@ -207,6 +259,18 @@ namespace Blobs.Tests.EditMode
             public void PlayContactFeedback(BlobContactFeedbackContext context)
             {
                 PlayCount++;
+                LastContext = context;
+            }
+        }
+
+        private sealed class RecordingTileStateBinding : MonoBehaviour, ITileStateBinding
+        {
+            public int BindCount { get; private set; }
+            public TilePresentationContext LastContext { get; private set; }
+
+            public void Bind(TilePresentationContext context)
+            {
+                BindCount++;
                 LastContext = context;
             }
         }

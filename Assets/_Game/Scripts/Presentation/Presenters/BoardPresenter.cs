@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Blobs.Application;
 using Blobs.Content;
 using Blobs.Core;
-using DG.Tweening;
 using UnityEngine;
 
 namespace Blobs.Presentation
@@ -19,7 +18,7 @@ namespace Blobs.Presentation
         [SerializeField] private float cellSize = 1.25f;
         [SerializeField] private Vector2 origin;
 
-        private Sequence _effectSequence;
+        private PresentationTimeline _effectTimeline;
         private BoardEffectPresentationPipeline _effectPipeline;
         private readonly List<IBoardEffectPresentationHandler> _additionalEffectHandlers = new();
         private IGameplayState _state;
@@ -116,7 +115,7 @@ namespace Blobs.Presentation
                 throw new ArgumentNullException(nameof(snapshot));
 
             EnsurePresenters();
-            KillEffectSequence();
+            KillEffectTimeline();
             _tilePresenter.Rebuild(snapshot.Board);
             _blobPresenter.Rebuild(snapshot.Board.Blobs);
             SnapshotChanged?.Invoke(snapshot);
@@ -141,11 +140,11 @@ namespace Blobs.Presentation
             if (fallbackSnapshot == null)
                 throw new ArgumentNullException(nameof(fallbackSnapshot));
 
-            KillEffectSequence();
-            Sequence sequence = ShouldAnimateEffects() ? DOTween.Sequence() : null;
-            bool appliedAll = _effectPipeline.PresentOrderedEffects(effects, sequence);
+            KillEffectTimeline();
+            PresentationTimeline timeline = PresentationTimeline.Create(ShouldAnimateEffects());
+            bool appliedAll = _effectPipeline.PresentOrderedEffects(effects, timeline);
 
-            CompleteEffectApplication(sequence, appliedAll, fallbackSnapshot);
+            CompleteEffectApplication(timeline, appliedAll, fallbackSnapshot);
         }
 
         /// <summary>
@@ -166,19 +165,16 @@ namespace Blobs.Presentation
             if (fallbackSnapshot == null)
                 throw new ArgumentNullException(nameof(fallbackSnapshot));
 
-            KillEffectSequence();
-            Sequence sequence = ShouldAnimateEffects() ? DOTween.Sequence() : null;
+            KillEffectTimeline();
+            PresentationTimeline timeline = PresentationTimeline.Create(ShouldAnimateEffects());
             bool appliedAll = _effectPipeline.PresentSteps(
                 steps,
-                sequence,
+                timeline,
                 contactFeedback);
 
-            if (sequence != null)
-                sequence.AppendCallback(() => contactFeedback?.Invoke());
-            else
-                contactFeedback?.Invoke();
+            timeline.AppendCallback(contactFeedback);
 
-            CompleteEffectApplication(sequence, appliedAll, fallbackSnapshot);
+            CompleteEffectApplication(timeline, appliedAll, fallbackSnapshot);
         }
 
         /// <summary>
@@ -214,32 +210,32 @@ namespace Blobs.Presentation
         /// </summary>
         public void Clear()
         {
-            KillEffectSequence();
+            KillEffectTimeline();
             _blobPresenter?.Clear();
             _tilePresenter?.Clear();
         }
 
         private void CompleteEffectApplication(
-            Sequence sequence,
+            PresentationTimeline timeline,
             bool appliedAll,
             GameSessionSnapshot fallbackSnapshot)
         {
             if (!appliedAll || !IsSynchronizedWith(fallbackSnapshot))
             {
-                sequence?.Kill();
+                timeline.Kill();
                 _blobPresenter.CompleteInterruptedAnimations();
                 Rebuild(fallbackSnapshot);
                 return;
             }
 
-            if (sequence != null && sequence.active && sequence.Duration() > 0f)
+            if (timeline.IsActive && timeline.Duration > 0f)
             {
-                _effectSequence = sequence;
-                sequence.OnComplete(() => _effectSequence = null);
+                _effectTimeline = timeline;
+                timeline.OnComplete(() => _effectTimeline = null);
             }
             else
             {
-                sequence?.Kill();
+                timeline.Kill();
             }
 
             SnapshotChanged?.Invoke(fallbackSnapshot);
@@ -261,13 +257,13 @@ namespace Blobs.Presentation
             };
         }
 
-        private void KillEffectSequence()
+        private void KillEffectTimeline()
         {
-            if (_effectSequence != null)
+            if (_effectTimeline != null)
             {
-                Sequence sequence = _effectSequence;
-                _effectSequence = null;
-                sequence.Kill(false);
+                PresentationTimeline timeline = _effectTimeline;
+                _effectTimeline = null;
+                timeline.Kill();
             }
 
             _blobPresenter?.CompleteInterruptedAnimations();

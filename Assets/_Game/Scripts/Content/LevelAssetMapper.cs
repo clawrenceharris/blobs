@@ -24,6 +24,11 @@ namespace Blobs.Content
             {
                 tiles.Add(ToCore(tile));
             }
+            var emptyPositions = new List<GridPosition>(asset.EmptyPositions.Count);
+            foreach (Vector2Int position in asset.EmptyPositions)
+            {
+                emptyPositions.Add(ToCore(position));
+            }
 
             var definition = new LevelDefinition(
                 asset.LevelId,
@@ -32,6 +37,7 @@ namespace Blobs.Content
                 asset.Height,
                 blobs,
                 tiles,
+                emptyPositions: emptyPositions,
                 new LevelObjectiveDefinition(asset.Objective)
                 );
 
@@ -81,6 +87,14 @@ namespace Blobs.Content
                 case RockBlobAssetData rock:
                     throw new InvalidOperationException(
                         $"Rock blob '{rock.id}' declares unsupported type {rock.type}.");
+
+                case GhostBlobAssetData ghost when ghost.type == BlobType.Ghost:
+                    return new GhostBlobDefinition(
+                        ghost.id,
+                        ToCore(ghost.position));
+                case GhostBlobAssetData ghost:
+                    throw new InvalidOperationException(
+                        $"Ghost blob '{ghost.id}' declares unsupported type {ghost.type}.");
                 default:
                     throw new InvalidOperationException(
                         $"Unsupported blob asset data type: {blob.GetType().Name}.");

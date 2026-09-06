@@ -4,6 +4,7 @@ using Blobs.Core;
 using Blobs.Content;
 using Blobs.Input;
 using UnityEngine;
+using Blobs.Debugging;
 
 namespace Blobs.Presentation
 {
@@ -51,11 +52,12 @@ namespace Blobs.Presentation
             }
 
             LevelDefinition level = LevelAssetMapper.ToCore(asset);
-            if (backgroundView != null)
-            {
-                backgroundView.gameObject.SetActive(true);
-                backgroundView.Apply(asset.VisualTheme);
-            }
+            // if (backgroundView != null)
+            // {
+            //     backgroundView.gameObject.SetActive(true);
+            //     backgroundView.Apply(asset.Palette);
+            // }
+            new Debugger(message => Debug.Log(message));
             _session = new GameSession(level, new MoveResolver());
             EnsureBoardPresenter();
             EnsureInputAdapter();
@@ -64,10 +66,9 @@ namespace Blobs.Presentation
 
             boardPresenter.Initialize(
                 _session,
-                asset.VisualTheme,
-                surfaceWidth: level.Width,
-                surfaceHeight: level.Height,
-                surfaceLayout: asset.BoardSurfaceLayout);
+                asset.Palette,
+                width: level.Width,
+                height: level.Height);
             inputAdapter.Initialize(_session, boardPresenter.CellSize);
             commandAdapter.Initialize(_session);
             if (feedbackPresenter != null)

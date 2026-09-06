@@ -12,18 +12,15 @@ namespace Blobs.Application
         /// <summary>
         /// Creates a session snapshot from already-copied board state.
         /// </summary>
-        public GameSessionSnapshot(string levelId, IReadOnlyList<BlobState> blobs, IReadOnlyList<TileState> tiles, int moveCount, bool isComplete)
+        public GameSessionSnapshot(string levelId, BoardState board, int moveCount, bool isComplete)
         {
             LevelId = levelId;
-            Blobs = blobs;
-            Tiles = tiles;
+            Board = board;
             MoveCount = moveCount;
             IsComplete = isComplete;
         }
-
+        public BoardState Board { get; }
         public string LevelId { get; }
-        public IReadOnlyList<BlobState> Blobs { get; }
-        public IReadOnlyList<TileState> Tiles { get; }
         public int MoveCount { get; }
         public bool IsComplete { get; }
     }

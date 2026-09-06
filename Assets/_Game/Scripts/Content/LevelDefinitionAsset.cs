@@ -17,31 +17,31 @@ namespace Blobs.Content
         [Header("Board")]
         [SerializeField, Min(1)] private int width = 6;
         [SerializeField, Min(1)] private int height = 6;
-        [SerializeField, Min(1)] private int maximumBeats = 12;
-        [SerializeField] private BoardSurfaceLayoutAsset boardSurfaceLayout;
+        [SerializeReference] private List<Vector2Int> emptyPositions = new();
+
 
         [Header("Initial State")]
         [SerializeReference] private List<BlobAssetData> blobs = new();
         [SerializeReference] private List<TileAssetData> tiles = new();
 
+
         [Header("Objective")]
         [SerializeField]
-        private LevelObjectiveType objective =
-            LevelObjectiveType.ClearAllClearableBlobs;
+        private LevelObjectiveType objective = LevelObjectiveType.ClearAllClearableBlobs;
 
         [Header("Presentation")]
-        [SerializeField] private LevelVisualThemeAsset visualTheme;
+        [SerializeField] private LevelColorPaletteAsset palette;
 
-        public LevelVisualThemeAsset VisualTheme => visualTheme;
+        public LevelColorPaletteAsset Palette => palette;
         public string LevelId => levelId;
         public int SchemaVersion => schemaVersion;
         public int Width => width;
         public int Height => height;
-        public int MaximumBeats => maximumBeats;
-        public BoardSurfaceLayoutAsset BoardSurfaceLayout => boardSurfaceLayout;
         public IReadOnlyList<BlobAssetData> Blobs => blobs;
+
         public IReadOnlyList<TileAssetData> Tiles => tiles;
         public LevelObjectiveType Objective => objective;
+        public IReadOnlyList<Vector2Int> EmptyPositions => emptyPositions;
     }
 
 
@@ -77,6 +77,11 @@ namespace Blobs.Content
     }
     [Serializable]
     public sealed class RockBlobAssetData : BlobAssetData
+    {
+    }
+
+    [Serializable]
+    public sealed class GhostBlobAssetData : BlobAssetData
     {
     }
 

@@ -12,7 +12,7 @@ namespace Blobs.Presentation
     {
         public abstract void Apply(
             BlobState blob,
-            BlobColorPaletteAsset palette);
+            LevelColorPaletteAsset palette);
     }
 
 }

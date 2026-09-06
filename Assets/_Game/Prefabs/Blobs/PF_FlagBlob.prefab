@@ -218,6 +218,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 258025591939114382, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8861303
+      objectReference: {fileID: 0}
+    - target: {fileID: 258025591939114382, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.0000079
+      objectReference: {fileID: 0}
+    - target: {fileID: 258025591939114382, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.063
+      objectReference: {fileID: 0}
+    - target: {fileID: 258025591939114382, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.025
+      objectReference: {fileID: 0}
     - target: {fileID: 1468080444204028906, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_Name
       value: PF_FlagBlob
@@ -262,6 +278,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2394599582724069473, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f14f23da93a4148958f8c3852fcf7ca5, type: 3}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: _defaultMaterial
       value: 

@@ -19,18 +19,18 @@ namespace Blobs.Presentation
 
         public override void Apply(
             BlobState blob,
-            BlobColorPaletteAsset palette)
+            LevelColorPaletteAsset palette)
         {
             if (blob == null)
                 throw new ArgumentNullException(nameof(blob));
 
-            if (!blob.TryGetModel(out ColorBlobModel colorBlob))
+            if (!blob.Components.Color.HasValue)
             {
                 throw new InvalidOperationException(
-                    $"Flag color binding on '{name}' requires a ColorBlobModel for blob '{blob.Id}'.");
+                    $"Flag color binding on '{name}' requires a Color for blob '{blob.Id}'.");
             }
 
-            Skin skin = _resolver.ResolveSkin(colorBlob.Color, palette);
+            Skin skin = _resolver.ResolveSkin(blob.Components.Color.Value.Color, palette);
             BlobRenderer.ApplyShaderSkin(
                 targetRenderer,
                 targetRenderer.material,

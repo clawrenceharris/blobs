@@ -36,8 +36,8 @@ namespace Blobs.Tests.EditMode
             shell.Input.SelectBlobAt(new GridPosition(2, 0));
 
             Assert.That(shell.Board.VisibleBlobCount, Is.EqualTo(1));
-            Assert.That(shell.Board.CurrentSnapshot.Blobs.Single().Id, Is.EqualTo("0"));
-            Assert.That(shell.Board.CurrentSnapshot.Blobs.Single().Position, Is.EqualTo(new GridPosition(2, 0)));
+            Assert.That(shell.Board.CurrentSnapshot.Board.Blobs.Single().Id, Is.EqualTo("0"));
+            Assert.That(shell.Board.CurrentSnapshot.Board.Blobs.Single().Position, Is.EqualTo(new GridPosition(2, 0)));
             Assert.That(shell.Board.CurrentSnapshot.IsComplete, Is.False);
             Assert.That(shell.Board.IsSynchronizedWith(shell.Board.CurrentSnapshot), Is.True);
         }

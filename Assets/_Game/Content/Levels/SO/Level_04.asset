@@ -16,8 +16,11 @@ MonoBehaviour:
   schemaVersion: 1
   width: 4
   height: 3
-  maximumBeats: 12
-  boardSurfaceLayout: {fileID: 11400000, guid: b92ae23011d55429d82a278a783fee86, type: 2}
+  emptyPositions:
+  - {x: 0, y: 2}
+  - {x: 3, y: 2}
+  - {x: 0, y: 0}
+  - {x: 3, y: 0}
   blobs:
   - rid: 7441116827775139913
   - rid: 7441116827775139914
@@ -27,7 +30,7 @@ MonoBehaviour:
   - rid: 7441116827775139918
   tiles: []
   objective: 0
-  visualTheme: {fileID: 0}
+  palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
   references:
     version: 2
     RefIds:

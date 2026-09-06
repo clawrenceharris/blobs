@@ -8,7 +8,7 @@ namespace Blobs.Presentation
     /// </summary>
     public interface IBlobSkinResolver
     {
-        Skin ResolveSkin(BlobColor color, BlobColorPaletteAsset palette);
+        Skin ResolveSkin(BlobColor color, LevelColorPaletteAsset palette);
     }
 
     /// <summary>
@@ -17,7 +17,7 @@ namespace Blobs.Presentation
     /// </summary>
     public sealed class BlobSkinResolver : IBlobSkinResolver
     {
-        public Skin ResolveSkin(BlobColor color, BlobColorPaletteAsset palette)
+        public Skin ResolveSkin(BlobColor color, LevelColorPaletteAsset palette)
         {
             if (palette == null)
                 throw new ArgumentNullException(nameof(palette));
@@ -31,7 +31,7 @@ namespace Blobs.Presentation
     }
     public sealed class FlagBlobSkinResolver : IBlobSkinResolver
     {
-        public Skin ResolveSkin(BlobColor color, BlobColorPaletteAsset palette)
+        public Skin ResolveSkin(BlobColor color, LevelColorPaletteAsset palette)
         {
             if (palette == null)
                 throw new ArgumentNullException(nameof(palette));

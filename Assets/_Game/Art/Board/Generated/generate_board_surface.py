@@ -31,9 +31,9 @@ STYLE = {
     "perimeter_roundness": 48,
     "border_softness": 3,
     "ambient_edge_width": 5,
-    "lower_border_width": 12,
-    "shadow_offset": [4, 8],
-    "shadow_blur": 7,
+    "lower_border_width": 18,
+    "shadow_offset": [4, 13],
+    "shadow_blur": 10,
     "supersample": 4,
     "pixels_per_unit": 256,
     "palette": {
@@ -275,14 +275,16 @@ def boundary_treatment(sd: float, nx: float, ny: float) -> RGBA:
     offset_x, offset_y = (float(v) for v in STYLE["shadow_offset"])
 
     light = clamp01(-nx * 0.28 - ny * 0.72)
-    lower = clamp01(ny + nx * 0.18)
+    # Plate thickness belongs only to downward-facing geometry. Letting the
+    # horizontal normal contribute here creates an unwanted gray side border.
+    lower = clamp01(ny)
     lower_border_extent = lower_border_width * lower
     shadow_center = nx * offset_x + ny * offset_y
 
     result: RGBA = (0.0, 0.0, 0.0, 0.0)
 
     if sd > 0.0:
-        shadow_alpha = (0.08 + 0.055 * lower) * math.exp(
+        shadow_alpha = (0.09 + 0.055 * lower) * math.exp(
             -0.5 * ((sd - shadow_center) / blur) ** 2
         )
         result = over(result, with_alpha(SHADOW, shadow_alpha))
@@ -905,6 +907,14 @@ def validate(images: Dict[str, Image], preview: Image) -> None:
     assert images["Fill_A"].get(pad + cell // 2, pad + cell // 2) != images["Fill_B"].get(
         pad + cell // 2, pad + cell // 2
     )
+    # The reference uses flat uninterrupted checker cells. Any accidental
+    # per-cell gradient, inset pad, grain, or facet must fail generation.
+    for name in ("Fill_A", "Fill_B"):
+        fill = images[name]
+        expected = fill.get(pad + cell // 2, pad + cell // 2)
+        for y in range(pad, pad + cell):
+            for x in range(pad, pad + cell):
+                assert fill.get(x, y) == expected
     assert all(
         any(image.pixels[index] == 0 for index in range(3, len(image.pixels), 4))
         for image in images.values()
@@ -916,6 +926,14 @@ def validate(images: Dict[str, Image], preview: Image) -> None:
         pad + cell + 6,
     )
     assert south_border[3] >= 240
+
+    # Thickness is directional: only the lower edge may become an opaque lip.
+    # The other sides contain just soft antialiasing/shadow and cannot turn
+    # into the dark gray outline seen in the failed iteration.
+    north_outside = images["Edge_N"].get(pad + cell // 2, pad - 6)
+    east_outside = images["Edge_E"].get(pad + cell + 6, pad + cell // 2)
+    west_outside = images["Edge_W"].get(pad - 6, pad + cell // 2)
+    assert max(north_outside[3], east_outside[3], west_outside[3]) < 96
 
     concave_tangent_guard = images["Corner_Concave_NW"].get(
         pad - int(STYLE["corner_radius"]) - 8,
@@ -950,10 +968,13 @@ def main() -> None:
 
     images = render_components()
 
-    # Fill was the only top-surface component in the previous system. Removing this
-    # exact obsolete asset keeps the generated directory aligned with COMPONENTS.
-    for obsolete in (output_dir / "Fill.png", output_dir / "Fill.png.meta"):
-        if obsolete.exists():
+    # Keep the directory aligned with this generator's intentionally small
+    # component set. This also removes assets from abandoned style experiments.
+    obsolete_paths = [output_dir / "Fill.png", output_dir / "Fill.png.meta"]
+    for pattern in ("Corner_ConvexCap_*.png*", "Rim_*.png*"):
+        obsolete_paths.extend(output_dir.glob(pattern))
+    for obsolete in obsolete_paths:
+        if obsolete.is_file():
             obsolete.unlink()
 
     for name in COMPONENTS:

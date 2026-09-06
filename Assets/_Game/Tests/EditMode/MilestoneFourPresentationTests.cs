@@ -160,31 +160,29 @@ namespace Blobs.Tests.EditMode
         {
             var gameObject = new GameObject("Milestone 4 Board Presenter");
             _createdObjects.Add(gameObject);
-            var theme = ScriptableObject.CreateInstance<LevelVisualThemeAsset>();
-            _createdObjects.Add(theme);
-            var blobColorPalette = ScriptableObject.CreateInstance<BlobColorPaletteAsset>();
+            var palette = ScriptableObject.CreateInstance<LevelColorPaletteAsset>();
+            _createdObjects.Add(palette);
+            var blobColorPalette = ScriptableObject.CreateInstance<LevelColorPaletteAsset>();
             _createdObjects.Add(blobColorPalette);
             var presenter = gameObject.AddComponent<BoardPresenter>();
             presenter.Initialize(
                 new FakeGameplayState(initialSnapshot),
-                theme,
+                palette,
                 new TestBlobViewFactory(blobColorPalette));
             return presenter;
         }
 
         private static BlobState Blob(string id, BlobColor color, int x, int y)
         {
-            var state = new BlobState(id, BlobType.Normal, new GridPosition(x, y));
-            state.AddModel(new ColorBlobModel(color));
-            return state;
+            return new BlobState(id, BlobType.Normal, new GridPosition(x, y))
+            .WithColor(color);
         }
 
         private static GameSessionSnapshot Snapshot(params BlobState[] blobs)
         {
             return new GameSessionSnapshot(
                 "milestone-four-test",
-                blobs,
-                new TileState[0],
+                new BoardState(2, 1, blobs, new List<TileState>()),
                 0,
                 false);
         }
@@ -198,9 +196,9 @@ namespace Blobs.Tests.EditMode
 
         private sealed class TestBlobViewFactory : IBlobViewFactory
         {
-            private readonly BlobColorPaletteAsset _colorPalette;
+            private readonly LevelColorPaletteAsset _colorPalette;
 
-            public TestBlobViewFactory(BlobColorPaletteAsset colorPalette)
+            public TestBlobViewFactory(LevelColorPaletteAsset colorPalette)
             {
                 _colorPalette = colorPalette;
             }

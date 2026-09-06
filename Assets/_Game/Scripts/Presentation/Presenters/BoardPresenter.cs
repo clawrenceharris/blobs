@@ -5,6 +5,7 @@ using Blobs.Core;
 using Blobs.Content;
 using DG.Tweening;
 using UnityEngine;
+using System.Linq;
 
 namespace Blobs.Presentation
 {
@@ -20,27 +21,27 @@ namespace Blobs.Presentation
         private Sequence _effectSequence;
         [SerializeField]
         private BlobViewCatalogAsset _blobViewCatalog;
-
+        [SerializeField] private GameObject cellPrefab;
+        [SerializeField] private Transform cellRoot;
         private IBlobViewFactory _blobViewFactory;
-        [SerializeField] private TileView _tileViewPrefab;
-        [SerializeField] private Transform _blobRoot;
-        [SerializeField] private Transform _tileRoot;
-        [SerializeField] private float _cellSize = 1.25f;
-        [SerializeField] private Vector2 _origin;
-        [SerializeField, Min(0f)] private float _moveDuration = 0.16f;
-        [SerializeField, Min(0f)] private float _spawnDuration = 0.14f;
-        [SerializeField, Min(0f)] private float _despawnDuration = 0.12f;
+        [SerializeField] private TileView tileViewPrefab;
+        [SerializeField] private Transform blobRoot;
+        [SerializeField] private Transform tileRoot;
+        [SerializeField] private float cellSize = 1.25f;
+        [SerializeField] private Vector2 origin;
+        [SerializeField, Min(0f)] private float moveDuration = 0.16f;
+        [SerializeField, Min(0f)] private float spawnDuration = 0.14f;
+        [SerializeField, Min(0f)] private float despawnDuration = 0.12f;
         [SerializeField] private MergeAnimationOrchestrator _mergeAnimationOrchestrator;
-        public float CellSize => _cellSize;
+        public float CellSize => cellSize;
         public int VisibleBlobCount => _blobViews.Count;
         public int VisibleTileCount => _tileViews.Count;
+
         public int VisibleSurfaceCellCount =>
             _boardSurfaceView != null ? _boardSurfaceView.VisibleCellCount : 0;
-        private LevelVisualThemeAsset _theme;
         private BoardSurfaceView _boardSurfaceView;
-        private int _surfaceWidth;
-        private int _surfaceHeight;
-        private BoardSurfaceLayoutAsset _surfaceLayout;
+        private int _width;
+        private int _height;
 
         /// <summary>
         /// Current session snapshot used by tests and UI. Null until the presenter is initialized.
@@ -58,21 +59,18 @@ namespace Blobs.Presentation
         /// </summary>
         public void Initialize(
             IGameplayState state,
-            LevelVisualThemeAsset theme,
+            LevelColorPaletteAsset palette,
             IBlobViewFactory blobViewFactory = null,
-            int surfaceWidth = 0,
-            int surfaceHeight = 0,
-            BoardSurfaceLayoutAsset surfaceLayout = null)
+            int width = 0,
+            int height = 0,
+            BoardSurfaceLayoutAsset layout = null)
         {
             Unsubscribe();
             _state = state;
-            _theme = theme;
-            _surfaceWidth = surfaceWidth;
-            _surfaceHeight = surfaceHeight;
-            _surfaceLayout = surfaceLayout;
-
+            _width = width;
+            _height = height;
             _blobViewFactory =
-                blobViewFactory ?? new BlobViewFactory(_blobViewCatalog);
+                blobViewFactory ?? new BlobViewFactory(_blobViewCatalog, palette);
 
             _state.MoveResolved += HandleMoveResolved;
             _state.StateRestored += Rebuild;
@@ -120,58 +118,57 @@ namespace Blobs.Presentation
 
             Clear();
 
-            foreach (var tile in snapshot.Tiles)
+
+            foreach (var tile in snapshot.Board.Tiles)
                 CreateTileView(tile);
             EnsureBoardSurfaceView().Rebuild(
-                BuildSurfacePositions(snapshot),
-                _cellSize,
-                _origin);
-            foreach (var blob in snapshot.Blobs)
+            BuildSurfacePositions(snapshot),
+            cellSize,
+            origin);
+
+            // BuildCells(snapshot.Board);
+            foreach (var blob in snapshot.Board.Blobs)
                 CreateBlobView(blob);
 
             SnapshotChanged?.Invoke(snapshot);
         }
 
-        private ISet<GridPosition> BuildSurfacePositions(
-            GameSessionSnapshot snapshot)
+        public void BuildCells(BoardState board)
         {
-            var occupied = new HashSet<GridPosition>();
-
-            if (_surfaceLayout != null && _surfaceLayout.HasOccupiedCells)
+            for (int i = 0; i < board.Width; i++)
             {
-                if (!_surfaceLayout.TryValidate(
-                        _surfaceWidth,
-                        _surfaceHeight,
-                        out string validationError))
+                for (int j = 0; j < board.Height; j++)
                 {
-                    throw new InvalidOperationException(
-                        $"Board surface layout '{_surfaceLayout.name}' is invalid: " +
-                        validationError);
+                    GridPosition position = new(i, j);
+
+                    if (board.EmptyPositions.Any(p => p.Equals(position)))
+                    {
+                        continue;
+                    }
+
+                    GameObject cell = Instantiate(
+                        cellPrefab,
+                        ToWorldPosition(position),
+                        Quaternion.identity,
+                        cellRoot
+                    );
+
+                    cell.name = $"Cell_{position.X}_{position.Y}";
+
                 }
-
-                foreach (Vector2Int cell in _surfaceLayout.OccupiedCells)
-                    occupied.Add(new GridPosition(cell.x, cell.y));
-
-                return occupied;
             }
-
-            // The current gameplay model defines its traversable footprint with board dimensions;
-            // TileState entries are optional authored behavior. Keeping this fallback here in
-            // Presentation makes the board visible without changing gameplay or model semantics.
-            if (_surfaceWidth > 0 && _surfaceHeight > 0)
-            {
-                for (int y = 0; y < _surfaceHeight; y++)
-                    for (int x = 0; x < _surfaceWidth; x++)
-                        occupied.Add(new GridPosition(x, y));
-
-                return occupied;
-            }
-
-            foreach (TileState tile in snapshot.Tiles)
-                occupied.Add(tile.Position);
-
-            return occupied;
         }
+        private void ClearCells()
+        {
+            foreach (Transform child in cellRoot)
+                Destroy(child.gameObject);
+        }
+
+        private Vector3 ToWorldPosition(GridPosition position)
+        {
+            return new Vector3(position.X, position.Y, 0f) * cellSize;
+        }
+
 
         /// <summary>
         /// Applies ordered Core effects to the existing board views, falling back to a full rebuild for unsupported effects.
@@ -421,7 +418,7 @@ namespace Blobs.Presentation
             if (beat != null)
             {
                 beat.AppendCallback(() => view.BlobMotionAnimator?.SetMoving());
-                Tween movement = view.AnimateMoveTo(to, _moveDuration, ease);
+                Tween movement = view.AnimateMoveTo(to, moveDuration, ease);
                 movement.OnComplete(() =>
                 {
                     view.BlobMotionAnimator?.SetIdle();
@@ -447,7 +444,7 @@ namespace Blobs.Presentation
                 _blobViews.TryGetValue(blob.Id, out BlobView view) &&
                 view != null)
             {
-                beat.Join(view.PlaySpawn(_spawnDuration));
+                beat.Join(view.PlaySpawn(spawnDuration));
             }
 
             return true;
@@ -467,13 +464,13 @@ namespace Blobs.Presentation
         public bool IsSynchronizedWith(GameSessionSnapshot snapshot)
         {
             if (snapshot == null ||
-                _blobViews.Count != snapshot.Blobs.Count ||
-                _tileViews.Count != snapshot.Tiles.Count)
+                _blobViews.Count != snapshot.Board.Blobs.Count ||
+                _tileViews.Count != snapshot.Board.Tiles.Count)
             {
                 return false;
             }
 
-            foreach (BlobState blob in snapshot.Blobs)
+            foreach (BlobState blob in snapshot.Board.Blobs)
             {
                 if (!_blobViews.TryGetValue(blob.Id, out BlobView view) ||
                     view == null ||
@@ -484,7 +481,7 @@ namespace Blobs.Presentation
                 }
             }
 
-            foreach (TileState tile in snapshot.Tiles)
+            foreach (TileState tile in snapshot.Board.Tiles)
             {
                 if (!_tileViews.TryGetValue(tile.Id, out TileView view) ||
                     view == null ||
@@ -498,12 +495,33 @@ namespace Blobs.Presentation
             return true;
         }
 
+        private ISet<GridPosition> BuildSurfacePositions(
+            GameSessionSnapshot snapshot)
+        {
+            var occupied = new HashSet<GridPosition>();
+            for (int y = 0; y < _height; y++)
+            {
+                for (int x = 0; x < _width; x++)
+                {
+                    var position = new GridPosition(x, y);
+                    if (snapshot.Board.EmptyPositions.Any(p => p.Equals(position)))
+                    {
+                        continue;
+                    }
+                    occupied.Add(position);
+                }
+            }
+
+            return occupied;
+        }
+
         /// <summary>
         /// Destroys all current blob and tile views.
         /// </summary>
         public void Clear()
         {
             KillEffectSequence();
+            ClearCells();
             _boardSurfaceView?.ClearCells();
 
             foreach (var view in _blobViews.Values)
@@ -537,7 +555,7 @@ namespace Blobs.Presentation
         private void CreateTileView(TileState tile)
         {
             var view = InstantiateTileView();
-            view.Initialize(tile, _cellSize, _origin);
+            view.Initialize(tile, cellSize, origin);
             _tileViews.Add(tile.Id, view);
         }
 
@@ -554,19 +572,18 @@ namespace Blobs.Presentation
                 return false;
 
             Transform parent =
-                _blobRoot != null ? _blobRoot : transform;
+                blobRoot != null ? blobRoot : transform;
 
             BlobView view = _blobViewFactory.Create(
                 blob,
                 _state,
                 parent,
-                _cellSize,
-                _origin);
+                cellSize,
+                origin);
 
             _blobViews.Add(blob.Id, view);
 
-            if (sequence != null)
-                sequence.Append(view.PlaySpawn(_spawnDuration));
+            sequence?.Append(view.PlaySpawn(spawnDuration));
 
             return true;
         }
@@ -579,7 +596,7 @@ namespace Blobs.Presentation
             if (sequence != null)
             {
                 sequence.AppendCallback(() => view.BlobMotionAnimator?.SetMoving());
-                Tween movement = view.AnimateMoveTo(to, _moveDuration);
+                Tween movement = view.AnimateMoveTo(to, moveDuration);
                 movement.OnComplete(() => view.BlobMotionAnimator?.SetIdle());
                 sequence.Append(movement);
             }
@@ -617,7 +634,7 @@ namespace Blobs.Presentation
             _retiringBlobViews.Add(view);
 
             sequence
-                .Append(view.PlayDespawn(_despawnDuration))
+                .Append(view.PlayDespawn(despawnDuration))
                 .AppendCallback(
                     () => DestroyRetiringBlobView(view));
 
@@ -770,10 +787,10 @@ namespace Blobs.Presentation
             captureBeat.Append(
                 sourceView.PlayConsumedInto(
                     effect.To,
-                    _moveDuration,
-                    _despawnDuration));
+                    moveDuration,
+                    despawnDuration));
 
-            captureBeat.InsertCallback(_moveDuration, () =>
+            captureBeat.InsertCallback(moveDuration, () =>
                 EnsureMergeAnimationOrchestrator().PlayImpact(
                     flagView.transform.position,
                     sourceView.MergeEffectColor,
@@ -781,7 +798,7 @@ namespace Blobs.Presentation
 
             Tween targetFeedback =
                 flagView.PlaySourceAccepted(
-                    _moveDuration + _despawnDuration);
+                    moveDuration + despawnDuration);
 
             if (targetFeedback != null)
                 captureBeat.Join(targetFeedback);
@@ -806,10 +823,10 @@ namespace Blobs.Presentation
 
         private TileView InstantiateTileView()
         {
-            var parent = _tileRoot != null ? _tileRoot : transform;
+            var parent = tileRoot != null ? tileRoot : transform;
 
-            if (_tileViewPrefab != null)
-                return Instantiate(_tileViewPrefab, parent);
+            if (tileViewPrefab != null)
+                return Instantiate(tileViewPrefab, parent);
 
             var instance = new GameObject("Production Tile");
             instance.transform.SetParent(parent, false);
@@ -821,7 +838,7 @@ namespace Blobs.Presentation
             if (_boardSurfaceView != null)
                 return _boardSurfaceView;
 
-            Transform parent = _tileRoot != null ? _tileRoot : transform;
+            Transform parent = tileRoot != null ? tileRoot : transform;
             _boardSurfaceView = parent.GetComponentInChildren<BoardSurfaceView>(true);
             if (_boardSurfaceView != null)
                 return _boardSurfaceView;
@@ -831,6 +848,8 @@ namespace Blobs.Presentation
             _boardSurfaceView = surfaceObject.AddComponent<BoardSurfaceView>();
             return _boardSurfaceView;
         }
+
+
 
         private MergeAnimationOrchestrator EnsureMergeAnimationOrchestrator()
         {
@@ -863,7 +882,6 @@ namespace Blobs.Presentation
             _state.StateRestored -= Rebuild;
             SnapshotChanged = null;
             _state = null;
-            _theme = null;
             Clear();
         }
 

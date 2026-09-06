@@ -158,7 +158,7 @@ namespace Blobs.Tests.EditMode
                 3,
                 blobs ?? Array.Empty<BlobDefinition>(),
                 tiles ?? Array.Empty<TileDefinition>(),
-                objective);
+                objective: objective);
         }
 
         private static NormalBlobDefinition Blob(

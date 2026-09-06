@@ -61,6 +61,7 @@
 | Layered deterministic core | Core owns rules; Unity layers consume outcomes | Confirmed | `README.md`, `Docs/TECHNICAL_ARCHITECTURE.md`, asmdefs |
 | Composition root | `GameBootstrapper` wires the production scene | Confirmed | `GameBootstrapper.cs` |
 | Composed MVP-style Presentation | `BoardPresenter` observes snapshots and delegates effect/step composition to registered handlers and explicit timelines; `BlobPresenter` owns blob view lifecycle while focused collaborators own transitions and interaction choreography | Confirmed | Presentation presenter scripts |
+| Composed impact feedback | `MergeAnimationOrchestrator` emits a generic impact context to independent audio, VFX, haptics, camera, or future feedback components | Confirmed | Presentation feedback scripts |
 | ScriptableObject authoring | levels, themes, and view catalogs are authored assets | Confirmed | Content scripts/assets |
 
 ## Coding Conventions

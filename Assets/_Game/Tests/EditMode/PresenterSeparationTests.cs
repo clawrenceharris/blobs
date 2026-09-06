@@ -95,6 +95,24 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
+        public void MergeOrchestratorRoutesImpactToEveryComposedFeedbackChannel()
+        {
+            _root = new GameObject("Merge Feedback Channels Test");
+            var first = _root.AddComponent<RecordingMergeImpactFeedback>();
+            var second = _root.AddComponent<RecordingMergeImpactFeedback>();
+            MergeAnimationOrchestrator orchestrator =
+                _root.AddComponent<MergeAnimationOrchestrator>();
+            Vector3 impactPosition = new(2f, 3f, 0f);
+
+            orchestrator.PlayImpact(impactPosition, Color.magenta, sortingAnchor: null);
+
+            Assert.That(first.PlayCount, Is.EqualTo(1));
+            Assert.That(second.PlayCount, Is.EqualTo(1));
+            Assert.That(first.LastContext.WorldPosition, Is.EqualTo(impactPosition));
+            Assert.That(first.LastContext.BlobColor, Is.EqualTo(Color.magenta));
+        }
+
+        [Test]
         public void RegisteredEffectHandlerExtendsBoardPresentationWithoutCoordinatorChanges()
         {
             BlobState blob = new BlobState(
@@ -187,6 +205,20 @@ namespace Blobs.Tests.EditMode
             public BlobContactFeedbackContext LastContext { get; private set; }
 
             public void PlayContactFeedback(BlobContactFeedbackContext context)
+            {
+                PlayCount++;
+                LastContext = context;
+            }
+        }
+
+        private sealed class RecordingMergeImpactFeedback :
+            MonoBehaviour,
+            IMergeImpactFeedback
+        {
+            public int PlayCount { get; private set; }
+            public MergeImpactFeedbackContext LastContext { get; private set; }
+
+            public void PlayImpact(MergeImpactFeedbackContext context)
             {
                 PlayCount++;
                 LastContext = context;

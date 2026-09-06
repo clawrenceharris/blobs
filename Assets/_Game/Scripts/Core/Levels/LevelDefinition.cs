@@ -158,6 +158,16 @@ namespace Blobs.Core
         public BlobColor TrailColor { get; }
     }
 
+    public sealed class GhostBlobDefinition : BlobDefinition
+    {
+        public GhostBlobDefinition(
+            string id,
+            GridPosition position)
+            : base(id, position, BlobType.Ghost)
+        {
+        }
+
+    }
     /// <summary>
     /// Unity-free level data consumed by Core and Application when starting a session.
     /// </summary>
@@ -172,6 +182,7 @@ namespace Blobs.Core
         public IReadOnlyList<TileDefinition> Tiles { get; }
         public int SchemaVersion { get; }
         public LevelObjectiveDefinition Objective { get; }
+        public IReadOnlyList<GridPosition> EmptyPositions { get; }
 
         public LevelDefinition(
             string id,
@@ -180,7 +191,9 @@ namespace Blobs.Core
             int height,
             IReadOnlyList<BlobDefinition> blobs,
             IReadOnlyList<TileDefinition> tiles,
+            IReadOnlyList<GridPosition> emptyPositions = null,
             LevelObjectiveDefinition objective = null
+
            )
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
@@ -189,6 +202,7 @@ namespace Blobs.Core
             Height = height;
             Blobs = blobs ?? throw new ArgumentNullException(nameof(blobs));
             Tiles = tiles ?? throw new ArgumentNullException(nameof(tiles));
+            EmptyPositions = emptyPositions ?? new List<GridPosition>();
             Objective = objective ?? LevelObjectiveDefinition.ClearAllClearableBlobs;
 
         }

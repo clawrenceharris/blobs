@@ -2,7 +2,8 @@
     "name": "Blobs.Application",
     "rootNamespace": "Blobs.Application",
     "references": [
-        "GUID:fcfdbdbd56579461989017b52b4a0eb4"
+        "GUID:fcfdbdbd56579461989017b52b4a0eb4",
+        "GUID:16c9512de307e48c99d59b2d8c2e2a54"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

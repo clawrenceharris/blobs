@@ -52,6 +52,8 @@ namespace Blobs.Editor
                     AddBlob(new TrailBlobAssetData());
                 if (GUILayout.Button("Add Rock Blob"))
                     AddBlob(new RockBlobAssetData());
+                if (GUILayout.Button("Add Ghost Blob"))
+                    AddBlob(new GhostBlobAssetData());
             }
 
             serializedObject.ApplyModifiedProperties();

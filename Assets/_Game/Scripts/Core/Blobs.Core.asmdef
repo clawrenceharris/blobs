@@ -1,7 +1,9 @@
 {
     "name": "Blobs.Core",
     "rootNamespace": "Blobs.Core",
-    "references": [],
+    "references": [
+        "GUID:16c9512de307e48c99d59b2d8c2e2a54"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

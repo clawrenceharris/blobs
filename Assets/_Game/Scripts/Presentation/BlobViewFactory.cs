@@ -18,12 +18,15 @@ namespace Blobs.Presentation
     public sealed class BlobViewFactory : IBlobViewFactory
     {
         private readonly BlobViewCatalogAsset _catalog;
-
-        public BlobViewFactory(BlobViewCatalogAsset catalog)
+        private readonly LevelColorPaletteAsset _palette;
+        public BlobViewFactory(BlobViewCatalogAsset catalog, LevelColorPaletteAsset palette)
         {
             _catalog = catalog != null
                 ? catalog
                 : throw new System.ArgumentNullException(nameof(catalog));
+            _palette = palette != null
+                ? palette
+                : throw new System.ArgumentNullException(nameof(palette));
         }
 
         public BlobView Create(
@@ -31,7 +34,8 @@ namespace Blobs.Presentation
             IGameplayState state,
             Transform parent,
             float cellSize,
-            Vector2 origin)
+            Vector2 origin
+            )
         {
             BlobView prefab =
                 _catalog.GetRequiredPrefab(blob.Type);
@@ -42,8 +46,7 @@ namespace Blobs.Presentation
             instance.Initialize(
                 blob,
                 state,
-
-                _catalog.GetRequiredColorPalette(),
+                _palette,
                 cellSize,
                 origin);
 

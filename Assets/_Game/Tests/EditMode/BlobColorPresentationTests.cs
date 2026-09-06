@@ -37,7 +37,7 @@ namespace Blobs.Tests.EditMode
         [Test]
         public void PaletteDefinesThreeShaderColorsForEveryBlobColor()
         {
-            BlobColorPaletteAsset palette = LoadPalette();
+            LevelColorPaletteAsset palette = LoadPalette();
 
             foreach (BlobColor color in Enum.GetValues(typeof(BlobColor)))
             {
@@ -52,7 +52,7 @@ namespace Blobs.Tests.EditMode
         [Test]
         public void NormalBlobAppliesPaletteToBodyShaderProperties()
         {
-            BlobColorPaletteAsset palette = LoadPalette();
+            LevelColorPaletteAsset palette = LoadPalette();
             BlobView view = InstantiateView(NormalPrefabPath);
             BlobState state = Blob("normal", BlobType.Normal, BlobColor.Red);
 
@@ -68,12 +68,14 @@ namespace Blobs.Tests.EditMode
         [Test]
         public void TrailBlobUsesPrimaryColorForBodyAndTrailColorForPuddle()
         {
-            BlobColorPaletteAsset palette = LoadPalette();
+            LevelColorPaletteAsset palette = LoadPalette();
             BlobView view = InstantiateView(TrailPrefabPath);
             BlobState state = new BlobState(
                 "trail",
                 BlobType.Trail,
-                new GridPosition(0, 0)).AddModel(new ColorBlobModel(BlobColor.Red)).AddModel(new TrailBlobModel(BlobColor.Blue));
+                new GridPosition(0, 0))
+            .WithColor(BlobColor.Red)
+            .WithTrail(BlobColor.Blue);
 
             view.Initialize(state, null, palette, 1f, Vector2.zero);
 
@@ -91,7 +93,7 @@ namespace Blobs.Tests.EditMode
         [Test]
         public void FlagBlobColorsCheckersAndFinialButNotBody()
         {
-            BlobColorPaletteAsset palette = LoadPalette();
+            LevelColorPaletteAsset palette = LoadPalette();
             BlobView view = InstantiateView(FlagPrefabPath);
             BlobState state = Blob("flag", BlobType.Flag, BlobColor.Purple);
 
@@ -106,10 +108,10 @@ namespace Blobs.Tests.EditMode
             Assert.That(properties.isEmpty, Is.True);
         }
 
-        private BlobColorPaletteAsset LoadPalette()
+        private LevelColorPaletteAsset LoadPalette()
         {
-            BlobColorPaletteAsset palette =
-                AssetDatabase.LoadAssetAtPath<BlobColorPaletteAsset>(PalettePath);
+            LevelColorPaletteAsset palette =
+                AssetDatabase.LoadAssetAtPath<LevelColorPaletteAsset>(PalettePath);
             Assert.That(palette, Is.Not.Null);
             return palette;
         }
@@ -126,7 +128,8 @@ namespace Blobs.Tests.EditMode
 
         private static BlobState Blob(string id, BlobType type, BlobColor color)
         {
-            return new BlobState(id, type, new GridPosition(0, 0)).AddModel(new ColorBlobModel(color));
+            return new BlobState(id, type, new GridPosition(0, 0))
+            .WithColor(color);
         }
 
         private static SpriteRenderer FindRenderer(BlobView view, string objectName)

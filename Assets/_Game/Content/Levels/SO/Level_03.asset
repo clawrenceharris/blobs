@@ -16,36 +16,36 @@ MonoBehaviour:
   schemaVersion: 1
   width: 4
   height: 4
-  maximumBeats: 6
-  boardSurfaceLayout: {fileID: 11400000, guid: 9b26e6d2c91e4c33adcd255c5c44d7ba, type: 2}
+  emptyPositions: []
   blobs:
-  - rid: 830000000000000002
   - rid: 7441116775194820813
   - rid: 7441116843275452499
+  - rid: 3341776588519506007
   tiles: []
   objective: 0
-  visualTheme: {fileID: 11400000, guid: b5998ed730be04ebe92db77229a4677f, type: 2}
+  palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: 830000000000000002
-      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+    - rid: 3341776588519506007
+      type: {class: TrailBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: level03-green
+        id: blob-trail
         position: {x: 3, y: 0}
+        type: 2
         color: 2
-        type: 0
+        trailColor: 5
     - rid: 7441116775194820813
       type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: level03-flag
+        id: flag
         position: {x: 3, y: 3}
-        color: 1
         type: 1
+        color: 1
     - rid: 7441116843275452499
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: level03-blue
+        id: blue
         position: {x: 0, y: 0}
-        color: 1
         type: 0
+        color: 1

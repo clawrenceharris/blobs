@@ -18,28 +18,27 @@ namespace Blobs.Core
 
             var blobs = new List<BlobState>(level.Blobs.Count);
 
-            foreach (BlobDefinition blob in level.Blobs)
+            foreach (BlobDefinition b in level.Blobs)
             {
-                var state = new BlobState(
-                    blob.Id,
-                    blob.Type,
-                    blob.Position
-                   );
-                switch (blob)
+                var blob = new BlobState(
+                    b.Id,
+                    b.Type,
+                    b.Position);
+                switch (b)
                 {
                     case NormalBlobDefinition colorBlob:
-                        state.AddModel(new ColorBlobModel(colorBlob.Color));
+                        blob = blob.WithColor(colorBlob.Color);
                         break;
                     case TrailBlobDefinition trailBlob:
-                        state.AddModel(new ColorBlobModel(trailBlob.Color))
-                        .AddModel(new TrailBlobModel(trailBlob.TrailColor));
+                        blob = blob.WithTrail(trailBlob.TrailColor).WithColor(trailBlob.Color);
                         break;
                     case FlagBlobDefinition flagBlob:
-                        state.AddModel(new ColorBlobModel(flagBlob.Color));
+                        blob = blob.WithColor(flagBlob.Color);
                         break;
 
+
                 }
-                blobs.Add(state);
+                blobs.Add(blob);
 
             }
 
@@ -57,7 +56,9 @@ namespace Blobs.Core
                 width: level.Width,
                 height: level.Height,
                 blobs,
-                tiles);
+                tiles,
+                emptyPositions: level.EmptyPositions
+                );
         }
 
     }

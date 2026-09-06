@@ -44,7 +44,7 @@ namespace Blobs.Presentation
         public void Initialize(
             BlobState blob,
             IGameplayState state,
-            BlobColorPaletteAsset colorPalette,
+            LevelColorPaletteAsset colorPalette,
             float cellSize,
             Vector2 origin)
         {
@@ -143,13 +143,13 @@ namespace Blobs.Presentation
         /// <summary>
         /// Applies visual skinning for the supplied blob state and color palette.
         /// </summary>
-        public void ApplySkin(BlobState blob, BlobColorPaletteAsset colorPalette)
+        public void ApplySkin(BlobState blob, LevelColorPaletteAsset colorPalette)
         {
-            if (blob.TryGetModel(out ColorBlobModel colorBlob))
+            if (blob.Components.Color.HasValue)
             {
-                Skin skin = _skinResolver.ResolveSkin(colorBlob.Color, colorPalette);
+                Skin skin = _skinResolver.ResolveSkin(blob.Components.Color.Value.Color, colorPalette);
                 _skinApplier.Apply(this, skin);
-                MergeEffectColor = colorPalette.GetRequired(colorBlob.Color).BaseColor;
+                MergeEffectColor = colorPalette.GetRequired(blob.Components.Color.Value.Color).BaseColor;
             }
 
             BlobColorBinding[] bindings =

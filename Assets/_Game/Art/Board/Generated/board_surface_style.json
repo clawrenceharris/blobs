@@ -7,12 +7,12 @@
   "perimeter_roundness": 48,
   "border_softness": 3,
   "ambient_edge_width": 5,
-  "lower_border_width": 12,
+  "lower_border_width": 18,
   "shadow_offset": [
     4,
-    8
+    13
   ],
-  "shadow_blur": 7,
+  "shadow_blur": 10,
   "supersample": 4,
   "pixels_per_unit": 256,
   "palette": {

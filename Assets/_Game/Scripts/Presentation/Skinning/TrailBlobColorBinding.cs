@@ -19,18 +19,18 @@ namespace Blobs.Presentation
 
         public override void Apply(
             BlobState blob,
-            BlobColorPaletteAsset palette)
+            LevelColorPaletteAsset palette)
         {
             if (blob == null)
                 throw new ArgumentNullException(nameof(blob));
 
-            if (!blob.TryGetModel(out TrailBlobModel trailBlob))
+            if (!blob.Components.Trail.HasValue)
             {
                 throw new InvalidOperationException(
                     $"Trail color binding on '{name}' requires a TrailBlobModel for blob '{blob.Id}'.");
             }
 
-            Skin skin = _resolver.ResolveSkin(trailBlob.TrailColor, palette);
+            Skin skin = _resolver.ResolveSkin(blob.Components.Trail.Value.TrailColor, palette);
             BlobRenderer.ApplyShaderSkin(
                 targetRenderer,
                 targetRenderer.material,

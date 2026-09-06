@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 228f01d3da5254622b9b1236a3d1c0ff, type: 3}
+  m_Name: Level_Ghost
+  m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
+  levelId: level-ghost
+  schemaVersion: 1
+  width: 5
+  height: 1
+  emptyPositions: []
+  blobs:
+  - rid: 3341776588519506014
+  - rid: 3341776588519506015
+  tiles: []
+  objective: 0
+  palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 3341776588519506014
+      type: {class: GhostBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: ghost
+        position: {x: 4, y: 0}
+        type: 4
+    - rid: 3341776588519506015
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: normal
+        position: {x: 0, y: 0}
+        type: 0
+        color: 2

@@ -102,8 +102,7 @@ namespace Blobs.Tests.EditMode
             {
                 return new GameSessionSnapshot(
                     "hud-test",
-                    Array.Empty<BlobState>(),
-                    Array.Empty<TileState>(),
+                    new BoardState(2, 1, new List<BlobState>(), new List<TileState>()),
                     MoveCount,
                     false);
             }

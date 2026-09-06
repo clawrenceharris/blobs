@@ -22,17 +22,10 @@ namespace Blobs.Presentation
         }
 
         [SerializeField] private List<Entry> entries = new();
-        [SerializeField] private BlobColorPaletteAsset colorPalette;
 
         private Dictionary<BlobType, BlobView> _lookup;
 
-        public BlobColorPaletteAsset GetRequiredColorPalette()
-        {
-            return colorPalette != null
-                ? colorPalette
-                : throw new InvalidOperationException(
-                    $"Blob view catalog '{name}' has no color palette assigned.");
-        }
+
 
         public BlobView GetRequiredPrefab(BlobType type)
         {
@@ -78,8 +71,6 @@ namespace Blobs.Presentation
         {
             _lookup = null;
 
-            if (colorPalette == null)
-                Debug.LogError("Blob view catalog has no color palette assigned.", this);
 
             var registeredTypes = new HashSet<BlobType>();
 

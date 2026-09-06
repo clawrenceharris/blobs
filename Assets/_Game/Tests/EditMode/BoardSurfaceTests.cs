@@ -259,21 +259,8 @@ namespace Blobs.Tests.EditMode
                 "Assets/_Game/Content/Levels/SO/Level_03.asset");
 
             Assert.That(level, Is.Not.Null);
-            Assert.That(level.BoardSurfaceLayout, Is.Not.Null);
-            Assert.That(
-                level.BoardSurfaceLayout.TryValidate(level.Width, level.Height, out string error),
-                Is.True,
-                error);
-            Assert.That(level.BoardSurfaceLayout.OccupiedCells, Is.EquivalentTo(new[]
-            {
-                new Vector2Int(0, 0),
-                new Vector2Int(1, 0),
-                new Vector2Int(2, 0),
-                new Vector2Int(3, 0),
-                new Vector2Int(3, 1),
-                new Vector2Int(3, 2),
-                new Vector2Int(3, 3)
-            }));
+
+
 
             _root = new GameObject("Level 3 Surface Layout Test");
             BoardPresenter presenter = _root.AddComponent<BoardPresenter>();
@@ -281,9 +268,8 @@ namespace Blobs.Tests.EditMode
                 new FakeGameplayState(EmptySnapshot()),
                 null,
                 new EmptyBlobViewFactory(),
-                surfaceWidth: level.Width,
-                surfaceHeight: level.Height,
-                surfaceLayout: level.BoardSurfaceLayout);
+                width: level.Width,
+                height: level.Height);
 
             Assert.That(presenter.VisibleSurfaceCellCount, Is.EqualTo(7));
             BoardSurfaceView surface = _root.GetComponentInChildren<BoardSurfaceView>(true);
@@ -349,8 +335,8 @@ namespace Blobs.Tests.EditMode
                 new FakeGameplayState(EmptySnapshot()),
                 null,
                 new EmptyBlobViewFactory(),
-                surfaceWidth: 2,
-                surfaceHeight: 3);
+                width: 2,
+                height: 3);
 
             Assert.That(presenter.VisibleSurfaceCellCount, Is.EqualTo(6));
         }
@@ -359,8 +345,7 @@ namespace Blobs.Tests.EditMode
         {
             return new GameSessionSnapshot(
                 "board-surface-test",
-                new BlobState[0],
-                new TileState[0],
+                new BoardState(2, 3, new HashSet<BlobState>(), new HashSet<TileState>()),
                 0,
                 false);
         }

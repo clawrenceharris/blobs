@@ -57,7 +57,7 @@ namespace Blobs.Application
     /// Application-level gameplay session. Owns source/target selection, move execution, restart,
     /// move count, and completion state while delegating rules to Core.
     /// </summary>
-    public sealed class GameSession : IGameplayCommands, IGameplayState
+    public class GameSession : IGameplayCommands, IGameplayState
     {
         private readonly MoveResolver _resolver;
         private readonly List<ResolvedMoveCommand> _history;
@@ -72,6 +72,8 @@ namespace Blobs.Application
 
         /// <inheritdoc />
         public event Action<MoveResult> MoveResolved;
+
+        public static event Action<string> MessageLogged;
 
         /// <summary>
         /// Raised after restart so Presentation can rebuild from the restored snapshot.
@@ -95,6 +97,10 @@ namespace Blobs.Application
             _history = new List<ResolvedMoveCommand>();
             _board = LevelFactory.CreateInitialBoard(level);
             IsComplete = ObjectiveEvaluator.IsComplete(_board, _level.Objective);
+        }
+        public static void LogMessage(string message)
+        {
+            MessageLogged?.Invoke(message);
         }
 
         /// <inheritdoc />
@@ -134,8 +140,11 @@ namespace Blobs.Application
                 return cleared;
             }
 
+            var selectedBlob = _board.GetBlob(_selectedBlobId);
+            var targetBlob = _board.GetBlob(blob.Id);
 
-            var result = ExecuteMove(new MoveIntent(_selectedBlobId, blob.Id));
+
+            var result = ExecuteMove(new MoveIntent(selectedBlob, targetBlob));
             _selectedBlobId = null;
             var move = BlobSelectionResult.Move(result);
             BlobSelected?.Invoke(move);
@@ -176,8 +185,7 @@ namespace Blobs.Application
         {
             return new GameSessionSnapshot(
                 _level.Id,
-                new List<BlobState>(_board.Blobs),
-                new List<TileState>(_board.Tiles),
+                _board.Clone(),
                 MoveCount,
                 IsComplete);
         }

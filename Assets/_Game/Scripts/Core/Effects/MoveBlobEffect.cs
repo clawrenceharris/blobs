@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Blobs.Core
 {
     /// <summary>

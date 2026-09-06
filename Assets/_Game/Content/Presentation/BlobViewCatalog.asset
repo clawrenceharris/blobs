@@ -21,4 +21,5 @@ MonoBehaviour:
     prefab: {fileID: 3141488124156099444, guid: 5b8a2b3595a08461dab4ab49c78b7c27, type: 3}
   - type: 3
     prefab: {fileID: 5756213027239601024, guid: 5630c370513a743398555bd0a6f8744f, type: 3}
-  colorPalette: {fileID: 11400000, guid: 1b1c3da925b94bd58d6ca7c8c48fe283, type: 2}
+  - type: 4
+    prefab: {fileID: 1944641561756212985, guid: d70901e4d4fa14f46a4241547a1d0aaa, type: 3}

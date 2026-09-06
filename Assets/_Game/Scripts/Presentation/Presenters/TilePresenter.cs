@@ -54,7 +54,7 @@ namespace Blobs.Presentation
         }
 
         /// <summary>
-        /// Checks tracked tile identities and logical positions against authoritative states.
+        /// Checks all render-relevant tile state against authoritative states.
         /// </summary>
         public bool IsSynchronizedWith(IEnumerable<TileState> tiles, int expectedCount)
         {
@@ -64,9 +64,7 @@ namespace Blobs.Presentation
             foreach (TileState tile in tiles)
             {
                 if (!TryGetView(tile.Id, out TileView view) ||
-                    view.TileId != tile.Id ||
-                    view.GridPosition != tile.Position ||
-                    view.TileType != tile.Type)
+                    !view.IsPresenting(tile))
                 {
                     return false;
                 }

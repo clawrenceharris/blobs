@@ -30,6 +30,17 @@ namespace Blobs.Presentation
             BindState(tile);
         }
 
+        /// <summary>
+        /// Returns whether this view still represents the authoritative logical tile state.
+        /// </summary>
+        public bool IsPresenting(TileState tile)
+        {
+            return tile != null &&
+                TileId == tile.Id &&
+                GridPosition == tile.Position &&
+                TileType == tile.Type;
+        }
+
         private void BindState(TileState tile)
         {
             _stateBindings.Clear();

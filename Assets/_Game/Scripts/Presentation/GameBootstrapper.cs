@@ -51,6 +51,9 @@ namespace Blobs.Presentation
                 return;
             }
 
+            if (!HasRequiredSceneCollaborators())
+                return;
+
             LevelDefinition level = LevelAssetMapper.ToCore(asset);
             // if (backgroundView != null)
             // {
@@ -59,10 +62,6 @@ namespace Blobs.Presentation
             // }
             new Debugger(message => Debug.Log(message));
             _session = new GameSession(level, new MoveResolver());
-            EnsureBoardPresenter();
-            EnsureInputAdapter();
-            EnsureCommandAdapter();
-            EnsureFeedbackPresenter();
 
             boardPresenter.Initialize(
                 _session,
@@ -77,40 +76,22 @@ namespace Blobs.Presentation
             SessionStarted?.Invoke(_session, _session);
         }
 
-        private void EnsureBoardPresenter()
+        /// <summary>
+        /// Validates required authored references before creating a gameplay session. Silently
+        /// adding replacements here would bypass prefab catalogs, input configuration, and roots.
+        /// </summary>
+        private bool HasRequiredSceneCollaborators()
         {
-            if (boardPresenter == null)
-                boardPresenter = GetComponentInChildren<BoardPresenter>();
-            if (boardPresenter == null)
-                boardPresenter = gameObject.AddComponent<BoardPresenter>();
+            if (boardPresenter != null &&
+                inputAdapter != null &&
+                commandAdapter != null)
+                return true;
 
+            Debug.LogError(
+                "GameBootstrapper requires authored BoardPresenter, " +
+                "GameplayInputAdapter, and GameplayCommandAdapter references.",
+                this);
+            return false;
         }
-        private void EnsureCommandAdapter()
-        {
-            if (commandAdapter == null)
-                commandAdapter = GetComponentInChildren<GameplayCommandAdapter>();
-            if (commandAdapter == null)
-                commandAdapter = gameObject.AddComponent<GameplayCommandAdapter>();
-
-        }
-
-        private void EnsureInputAdapter()
-        {
-            if (inputAdapter == null)
-                inputAdapter = GetComponentInChildren<GameplayInputAdapter>();
-
-            if (inputAdapter == null)
-                inputAdapter = gameObject.AddComponent<GameplayInputAdapter>();
-        }
-
-        private void EnsureFeedbackPresenter()
-        {
-            if (feedbackPresenter == null)
-            {
-                feedbackPresenter = FindFirstObjectByType<GameplayFeedbackPresenter>(
-                    FindObjectsInactive.Include);
-            }
-        }
-
     }
 }

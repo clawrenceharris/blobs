@@ -94,6 +94,47 @@ namespace Blobs.Tests.EditMode
             Assert.That(prefab.GetComponent<BlobContactAudioFeedback>(), Is.Not.Null);
         }
 
+        [Test]
+        public void RegisteredEffectHandlerExtendsBoardPresentationWithoutCoordinatorChanges()
+        {
+            BlobState blob = new BlobState(
+                "blob",
+                BlobType.Normal,
+                new GridPosition(0, 0)).WithColor(BlobColor.Red);
+            var snapshot = new GameSessionSnapshot(
+                "custom-effect-presentation",
+                new BoardState(1, 1, new[] { blob }, Array.Empty<TileState>()),
+                0,
+                false);
+
+            _root = new GameObject("Effect Handler Test");
+            _palette = ScriptableObject.CreateInstance<LevelColorPaletteAsset>();
+            BoardPresenter presenter = _root.AddComponent<BoardPresenter>();
+            var handler = new RecordingEffectHandler();
+            presenter.RegisterEffectHandler(handler);
+            presenter.Initialize(
+                new FakeGameplayState(snapshot),
+                _palette,
+                new TestBlobViewFactory(_palette));
+            presenter.TryGetBlobView(blob.Id, out BlobView originalView);
+
+            var effect = new RecordingEffect();
+            presenter.ApplyEffects(new IBoardEffect[] { effect }, snapshot);
+            presenter.ApplySteps(
+                new[]
+                {
+                    new MoveStep(
+                        MoveStepKind.Traverse,
+                        new IBoardEffect[] { effect })
+                },
+                snapshot);
+
+            Assert.That(handler.OrderedCount, Is.EqualTo(1));
+            Assert.That(handler.BeatCount, Is.EqualTo(1));
+            Assert.That(presenter.TryGetBlobView(blob.Id, out BlobView currentView), Is.True);
+            Assert.That(currentView, Is.SameAs(originalView));
+        }
+
         private sealed class TestBlobViewFactory : IBlobViewFactory
         {
             private readonly LevelColorPaletteAsset _palette;
@@ -149,6 +190,39 @@ namespace Blobs.Tests.EditMode
             {
                 PlayCount++;
                 LastContext = context;
+            }
+        }
+
+        private sealed class RecordingEffect : IBoardEffect
+        {
+            public void Apply(BoardState board)
+            {
+            }
+        }
+
+        private sealed class RecordingEffectHandler :
+            BoardEffectPresentationHandler<RecordingEffect>
+        {
+            public int OrderedCount { get; private set; }
+            public int BeatCount { get; private set; }
+
+            public override BoardEffectPresentationPhase Phase =>
+                BoardEffectPresentationPhase.Aftermath;
+
+            protected override bool PresentOrdered(
+                RecordingEffect effect,
+                BoardEffectPresentationContext context)
+            {
+                OrderedCount++;
+                return true;
+            }
+
+            protected override bool PresentInBeat(
+                RecordingEffect effect,
+                BoardEffectPresentationContext context)
+            {
+                BeatCount++;
+                return true;
             }
         }
     }

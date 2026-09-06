@@ -60,7 +60,7 @@
 | --- | --- | --- | --- |
 | Layered deterministic core | Core owns rules; Unity layers consume outcomes | Confirmed | `README.md`, `Docs/TECHNICAL_ARCHITECTURE.md`, asmdefs |
 | Composition root | `GameBootstrapper` wires the production scene | Confirmed | `GameBootstrapper.cs` |
-| Composed MVP-style Presentation | `BoardPresenter` observes snapshots/effects and coordinates `BlobPresenter` and `TilePresenter`, which own their respective view lifecycles | Confirmed | Presentation presenter scripts |
+| Composed MVP-style Presentation | `BoardPresenter` observes snapshots and delegates effect/step composition to registered presentation handlers; `BlobPresenter` and `TilePresenter` own their respective view lifecycles | Confirmed | Presentation presenter scripts |
 | ScriptableObject authoring | levels, themes, and view catalogs are authored assets | Confirmed | Content scripts/assets |
 
 ## Coding Conventions

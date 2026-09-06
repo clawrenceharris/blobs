@@ -11,6 +11,9 @@ namespace Blobs.Presentation
     /// Coordinates board-level presentation in response to gameplay state and effects.
     /// Blob, tile, and board-surface lifecycles are delegated to focused presenters.
     /// </summary>
+    [RequireComponent(typeof(BlobPresenter))]
+    [RequireComponent(typeof(TilePresenter))]
+    [RequireComponent(typeof(BoardSurfacePresenter))]
     public sealed class BoardPresenter : MonoBehaviour
     {
         [SerializeField] private BlobPresenter _blobPresenter;
@@ -71,7 +74,7 @@ namespace Blobs.Presentation
                 throw new ArgumentNullException(nameof(state));
 
             Unsubscribe();
-            EnsurePresenters();
+            ResolvePresenters();
             _state = state;
             _blobPresenter.Initialize(state, palette, cellSize, origin, blobViewFactory);
             _tilePresenter.Initialize(cellSize, origin, tileViewFactory);
@@ -117,7 +120,7 @@ namespace Blobs.Presentation
             if (snapshot == null)
                 throw new ArgumentNullException(nameof(snapshot));
 
-            EnsurePresenters();
+            ResolvePresenters();
             KillEffectTimeline();
             _boardSurfacePresenter.Rebuild(snapshot.Board);
             _tilePresenter.Rebuild(snapshot.Board);
@@ -270,22 +273,29 @@ namespace Blobs.Presentation
             return UnityEngine.Application.isPlaying && isActiveAndEnabled;
         }
 
-        private void EnsurePresenters()
+        /// <summary>
+        /// Resolves the explicitly required sibling presenters and fails immediately if scene
+        /// composition is invalid. Runtime creation would leave their authored assets unwired.
+        /// </summary>
+        private void ResolvePresenters()
         {
             if (_blobPresenter == null)
                 _blobPresenter = GetComponent<BlobPresenter>();
-            if (_blobPresenter == null)
-                _blobPresenter = gameObject.AddComponent<BlobPresenter>();
 
             if (_tilePresenter == null)
                 _tilePresenter = GetComponent<TilePresenter>();
-            if (_tilePresenter == null)
-                _tilePresenter = gameObject.AddComponent<TilePresenter>();
 
             if (_boardSurfacePresenter == null)
                 _boardSurfacePresenter = GetComponent<BoardSurfacePresenter>();
-            if (_boardSurfacePresenter == null)
-                _boardSurfacePresenter = gameObject.AddComponent<BoardSurfacePresenter>();
+
+            if (_blobPresenter == null ||
+                _tilePresenter == null ||
+                _boardSurfacePresenter == null)
+            {
+                throw new InvalidOperationException(
+                    "BoardPresenter requires BlobPresenter, TilePresenter, and " +
+                    "BoardSurfacePresenter components on the same GameObject.");
+            }
 
             if (_effectPipeline != null)
                 return;

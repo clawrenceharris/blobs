@@ -8,6 +8,7 @@ using Blobs.Presentation;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Blobs.Tests.EditMode
 {
@@ -61,6 +62,26 @@ namespace Blobs.Tests.EditMode
             Assert.That(shell.Board.IsSynchronizedWith(shell.Board.CurrentSnapshot), Is.True);
         }
 
+        [Test]
+        public void MissingRequiredSceneCollaboratorsAbortWithoutRuntimeFallbacks()
+        {
+            GameObject root = CreateGameObject("Incomplete Scene Shell");
+            GameBootstrapper bootstrapper = root.AddComponent<GameBootstrapper>();
+            LevelDefinitionAsset level = CreateLevelAsset();
+
+            LogAssert.Expect(
+                LogType.Error,
+                "GameBootstrapper requires authored BoardPresenter, " +
+                "GameplayInputAdapter, and GameplayCommandAdapter references.");
+
+            bootstrapper.StartLevel(level);
+
+            Assert.That(bootstrapper.CurrentState, Is.Null);
+            Assert.That(root.GetComponent<BoardPresenter>(), Is.Null);
+            Assert.That(root.GetComponent<GameplayInputAdapter>(), Is.Null);
+            Assert.That(root.GetComponent<GameplayCommandAdapter>(), Is.Null);
+        }
+
         private SceneShell CreateSceneShell()
         {
             var root = CreateGameObject("Scene Shell");
@@ -83,7 +104,10 @@ namespace Blobs.Tests.EditMode
             SetPrivateField(bootstrapper, "inputAdapter", input);
             SetPrivateField(bootstrapper, "commandAdapter", commands);
             SetPrivateField(bootstrapper, "levelAsset", level);
-            SetPrivateField(board, "_blobViewCatalog", blobViewCatalog);
+            SetPrivateField(
+                board.GetComponent<BlobPresenter>(),
+                "_blobViewCatalog",
+                blobViewCatalog);
 
             bootstrapper.StartLevel(level);
 

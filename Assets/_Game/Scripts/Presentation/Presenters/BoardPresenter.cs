@@ -25,6 +25,7 @@ namespace Blobs.Presentation
         private PresentationTimeline _effectTimeline;
         private BoardEffectPresentationPipeline _effectPipeline;
         private readonly List<IBoardEffectPresentationHandler> _additionalEffectHandlers = new();
+        private readonly List<IMoveStepPresentationHandler> _additionalMoveStepHandlers = new();
         private IGameplayState _state;
 
         public float CellSize => cellSize;
@@ -58,6 +59,18 @@ namespace Blobs.Presentation
             }
 
             _additionalEffectHandlers.Add(handler);
+            _effectPipeline?.Register(handler);
+        }
+
+        /// <summary>
+        /// Registers choreography for a semantic move step that spans multiple effects.
+        /// The most recently registered matching handler is evaluated first.
+        /// </summary>
+        public void RegisterMoveStepHandler(IMoveStepPresentationHandler handler)
+        {
+            BoardEffectPresentationPipeline.ValidateHandler(handler);
+            _additionalMoveStepHandlers.Remove(handler);
+            _additionalMoveStepHandlers.Add(handler);
             _effectPipeline?.Register(handler);
         }
 
@@ -304,6 +317,8 @@ namespace Blobs.Presentation
                 _blobPresenter,
                 _tilePresenter);
             foreach (IBoardEffectPresentationHandler handler in _additionalEffectHandlers)
+                _effectPipeline.Register(handler);
+            foreach (IMoveStepPresentationHandler handler in _additionalMoveStepHandlers)
                 _effectPipeline.Register(handler);
         }
 

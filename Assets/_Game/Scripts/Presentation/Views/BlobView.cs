@@ -5,7 +5,6 @@ using UnityEngine;
 using Blobs.Content;
 using Blobs.Input;
 using DG.Tweening;
-using Blobs.Application;
 using UnityEngine.Rendering;
 namespace Blobs.Presentation
 {
@@ -47,7 +46,6 @@ namespace Blobs.Presentation
         /// </summary>
         public void Initialize(
             BlobState blob,
-            IGameplayState state,
             LevelColorPaletteAsset colorPalette,
             float cellSize,
             Vector2 origin)
@@ -68,7 +66,7 @@ namespace Blobs.Presentation
             if (_sortingGroup == null)
                 _sortingGroup = GetComponent<SortingGroup>();
             _blobMotionAnimator = TryGetComponent(out BlobMotionAnimator animator) ? animator : null;
-            _blobMotionAnimator?.Configure(state);
+            _blobMotionAnimator?.Configure();
             BlobRenderer = GetComponent<BlobRenderer>();
 
             CacheOptionalBehaviors();

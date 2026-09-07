@@ -77,7 +77,6 @@ namespace Blobs.Tests.EditMode
             target.Initialize(
                 new BlobState("target", BlobType.Rock, new GridPosition(0, 0)),
                 null,
-                null,
                 1f,
                 Vector2.zero);
 
@@ -280,18 +279,73 @@ namespace Blobs.Tests.EditMode
             Assert.That(currentView, Is.SameAs(originalView));
         }
 
+        [Test]
+        public void SelectionPresenterUpdatesOnlyPreviouslyAndCurrentlySelectedViews()
+        {
+            BlobState first = new BlobState(
+                "first",
+                BlobType.Normal,
+                new GridPosition(0, 0)).WithColor(BlobColor.Red);
+            BlobState second = new BlobState(
+                "second",
+                BlobType.Normal,
+                new GridPosition(1, 0)).WithColor(BlobColor.Blue);
+            BlobState unrelated = new BlobState(
+                "unrelated",
+                BlobType.Normal,
+                new GridPosition(2, 0)).WithColor(BlobColor.Green);
+            var snapshot = new GameSessionSnapshot(
+                "central-selection-presentation",
+                new BoardState(
+                    3,
+                    1,
+                    new[] { first, second, unrelated },
+                    Array.Empty<TileState>()),
+                0,
+                false);
+            var state = new FakeGameplayState(snapshot);
+
+            _root = new GameObject("Central Selection Presenter Test");
+            _palette = ScriptableObject.CreateInstance<LevelColorPaletteAsset>();
+            BoardPresenter presenter = _root.AddComponent<BoardPresenter>();
+            presenter.Initialize(
+                state,
+                _palette,
+                new TestBlobViewFactory(_palette, includeMotionAnimator: true),
+                new TestTileViewFactory());
+            presenter.TryGetBlobView(first.Id, out BlobView firstView);
+            presenter.TryGetBlobView(second.Id, out BlobView secondView);
+            presenter.TryGetBlobView(unrelated.Id, out BlobView unrelatedView);
+
+            state.PublishSelection(BlobSelectionResult.Selected(first.Id, null));
+            unrelatedView.BlobMotionAnimator.SetMoving();
+            state.PublishSelection(BlobSelectionResult.Selected(second.Id, null));
+
+            Assert.That(state.BlobSelectionSubscriberCount, Is.EqualTo(1));
+            Assert.That(firstView.BlobMotionAnimator.CurrentState, Is.EqualTo(BlobAnimationState.Idle));
+            Assert.That(secondView.BlobMotionAnimator.CurrentState, Is.EqualTo(BlobAnimationState.Selected));
+            Assert.That(unrelatedView.BlobMotionAnimator.CurrentState, Is.EqualTo(BlobAnimationState.Moving));
+
+            UnityEngine.Object.DestroyImmediate(_root);
+            _root = null;
+            Assert.That(state.BlobSelectionSubscriberCount, Is.Zero);
+        }
+
         private sealed class TestBlobViewFactory : IBlobViewFactory
         {
             private readonly LevelColorPaletteAsset _palette;
+            private readonly bool _includeMotionAnimator;
 
-            public TestBlobViewFactory(LevelColorPaletteAsset palette)
+            public TestBlobViewFactory(
+                LevelColorPaletteAsset palette,
+                bool includeMotionAnimator = false)
             {
                 _palette = palette;
+                _includeMotionAnimator = includeMotionAnimator;
             }
 
             public BlobView Create(
                 BlobState blob,
-                IGameplayState state,
                 Transform parent,
                 float cellSize,
                 Vector2 origin)
@@ -299,7 +353,9 @@ namespace Blobs.Tests.EditMode
                 var gameObject = new GameObject("Test Blob " + blob.Id);
                 gameObject.transform.SetParent(parent, false);
                 BlobView view = gameObject.AddComponent<BlobView>();
-                view.Initialize(blob, state, _palette, cellSize, origin);
+                if (_includeMotionAnimator)
+                    gameObject.AddComponent<BlobMotionAnimator>();
+                view.Initialize(blob, _palette, cellSize, origin);
                 return view;
             }
         }
@@ -332,18 +388,32 @@ namespace Blobs.Tests.EditMode
         private sealed class FakeGameplayState : IGameplayState
         {
             private readonly GameSessionSnapshot _snapshot;
+            private event Action<BlobSelectionResult> _blobSelected;
 
             public FakeGameplayState(GameSessionSnapshot snapshot)
             {
                 _snapshot = snapshot;
             }
 
+            public int BlobSelectionSubscriberCount =>
+                _blobSelected?.GetInvocationList().Length ?? 0;
+
 #pragma warning disable CS0067
             public event Action<GameSessionSnapshot> SnapshotChanged;
             public event Action<MoveResult> MoveResolved;
             public event Action<GameSessionSnapshot> StateRestored;
-            public event Action<BlobSelectionResult> BlobSelected;
 #pragma warning restore CS0067
+
+            public event Action<BlobSelectionResult> BlobSelected
+            {
+                add => _blobSelected += value;
+                remove => _blobSelected -= value;
+            }
+
+            public void PublishSelection(BlobSelectionResult result)
+            {
+                _blobSelected?.Invoke(result);
+            }
 
             public GameSessionSnapshot CreateSnapshot()
             {

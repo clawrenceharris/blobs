@@ -2105,6 +2105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.GameplayFeedbackPresenter
   feedbackText: {fileID: 778420409}
+  feedbackCatalog: {fileID: 11400000, guid: bd0fbd76e252404ea4f9e6ee9bcb145f, type: 2}
   fadeInDuration: 0.2
   holdDuration: 1.5
   fadeOutDuration: 0.3

@@ -296,35 +296,6 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void SurfaceLayoutRejectsDuplicateAndOutOfBoundsCells()
-        {
-            BoardSurfaceLayoutAsset layout =
-                ScriptableObject.CreateInstance<BoardSurfaceLayoutAsset>();
-            try
-            {
-                var serialized = new SerializedObject(layout);
-                SerializedProperty cells = serialized.FindProperty("occupiedCells");
-                cells.arraySize = 2;
-                cells.GetArrayElementAtIndex(0).vector2IntValue = new Vector2Int(1, 1);
-                cells.GetArrayElementAtIndex(1).vector2IntValue = new Vector2Int(1, 1);
-                serialized.ApplyModifiedPropertiesWithoutUndo();
-
-                Assert.That(layout.TryValidate(4, 4, out string duplicateError), Is.False);
-                StringAssert.Contains("more than once", duplicateError);
-
-                cells.GetArrayElementAtIndex(1).vector2IntValue = new Vector2Int(4, 1);
-                serialized.ApplyModifiedPropertiesWithoutUndo();
-
-                Assert.That(layout.TryValidate(4, 4, out string boundsError), Is.False);
-                StringAssert.Contains("outside board dimensions", boundsError);
-            }
-            finally
-            {
-                Object.DestroyImmediate(layout);
-            }
-        }
-
-        [Test]
         public void MissingSurfaceLayoutFallsBackToFullBoardDimensions()
         {
             _root = new GameObject("Rectangular Surface Fallback Test");

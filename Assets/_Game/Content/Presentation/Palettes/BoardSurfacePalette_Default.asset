@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: BoardSurfacePalette_Default
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.BoardSurfacePaletteAsset
   fillA: {r: 0.972549, g: 0.9647059, b: 0.9372549, a: 1}
-  fillB: {r: 0.94509804, g: 0.9411765, b: 0.91764706, a: 1}
+  fillB: {r: 0.8773585, g: 0.87440246, b: 0.8566661, a: 1}
   ambientEdge: {r: 0.84705883, g: 0.84313726, b: 0.81960785, a: 1}
-  lowerEdge: {r: 0.8156863, g: 0.80784315, b: 0.78039217, a: 1}
+  lowerEdge: {r: 0.7169812, g: 0.7117203, b: 0.6933073, a: 1}
   highlight: {r: 1, g: 1, b: 1, a: 1}
   shadow: {r: 0.1882353, g: 0.14901961, b: 0.2901961, a: 1}

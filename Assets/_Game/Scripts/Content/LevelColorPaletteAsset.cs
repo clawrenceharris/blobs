@@ -77,7 +77,6 @@ namespace Blobs.Content
                 BlobColor.Green => green,
                 BlobColor.Yellow => yellow,
                 BlobColor.Purple => purple,
-                BlobColor.None => clear,
                 _ => throw new ArgumentOutOfRangeException(nameof(color), color, "Unknown blob color."),
             };
 

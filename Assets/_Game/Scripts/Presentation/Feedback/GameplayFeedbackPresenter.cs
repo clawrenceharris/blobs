@@ -16,6 +16,7 @@ namespace Blobs.Presentation
     {
         [Header("View")]
         [SerializeField] private TMP_Text feedbackText;
+        [SerializeField] private FailureFeedbackCatalogAsset feedbackCatalog;
 
         [Header("Timing")]
         [SerializeField, Min(0f)] private float fadeInDuration = 0.2f;
@@ -74,27 +75,17 @@ namespace Blobs.Presentation
             HideImmediately();
             _inputAdapter = inputAdapter;
             CacheViewState();
-            Subscribe();
-        }
 
-        /// <summary>
-        /// Provides the concise presentation copy for a domain failure reason.
-        /// </summary>
-        public static string MessageFor(MoveFailureReason reason)
-        {
-            return reason switch
+            if (feedbackCatalog == null)
             {
-                MoveFailureReason.SourceCannotMove => "That blob can't move.",
-                MoveFailureReason.BlockedPath => "Path is blocked.",
-                MoveFailureReason.NotAligned => "Blobs must share the same column or row to merge",
-                MoveFailureReason.SameBlob => "Choose a different blob.",
-                MoveFailureReason.UnsupportedInteraction => "Those blobs can't merge.",
-                MoveFailureReason.NormalMergeRequiresDifferentColors =>
-                    "Can't merge same colors!",
-                MoveFailureReason.FlagRequiresMatchingColor => "Match the flag's color.",
-                MoveFailureReason.FlagRequiresNoOtherBlobs => "Clear the other blobs first.",
-                _ => "That move isn't valid."
-            };
+                Debug.LogError(
+                    $"Gameplay feedback on '{name}' cannot initialize without a " +
+                    "failure feedback catalog.",
+                    this);
+                return;
+            }
+
+            Subscribe();
         }
 
         private void HandleSelectionResolved(BlobSelectionResult result)
@@ -117,18 +108,18 @@ namespace Blobs.Presentation
                 return;
             }
 
-            if (moveResult.FailureReason == MoveFailureReason.None)
-                return;
-
-            if (!moveResult.FailureReason.ShouldShowFeedback())
+            if (feedbackCatalog == null ||
+                !feedbackCatalog.TryGetVisibleMessage(
+                    moveResult.FailureReason,
+                    out string message))
             {
                 HideImmediately();
                 return;
             }
-            ShowFailure(moveResult.FailureReason);
+            ShowFailure(message);
         }
 
-        private void ShowFailure(MoveFailureReason reason)
+        private void ShowFailure(string message)
         {
             if (feedbackText == null)
                 return;
@@ -136,7 +127,7 @@ namespace Blobs.Presentation
             KillAnimation();
             ResetTransform();
 
-            feedbackText.text = MessageFor(reason);
+            feedbackText.text = message;
             feedbackText.alpha = 0f;
 
             RectTransform rectTransform = feedbackText.rectTransform;

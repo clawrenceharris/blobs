@@ -61,27 +61,32 @@ namespace Blobs.Presentation
                     for (int j = 0; j < binding.Renderers.Length; j++)
                     {
                         if (binding.Renderers[j] == null) continue;
-                        ApplyShaderSkin(binding.Renderers[j], binding.Renderers[j].material, skin, ref _properties);
+                        ApplyShaderSkin(
+                            binding.Renderers[j],
+                            skin,
+                            ref _properties);
                         applied = true;
                     }
                 }
             }
 
             if (!applied && _fallbackBaseRenderer != null)
-                ApplyShaderSkin(_fallbackBaseRenderer, _fallbackBaseRenderer.material, skin, ref _properties);
+                ApplyShaderSkin(
+                    _fallbackBaseRenderer,
+                    skin,
+                    ref _properties);
         }
 
+        /// <summary>
+        /// Applies per-renderer shader values without cloning or replacing the authored material.
+        /// </summary>
         internal static void ApplyShaderSkin(
             SpriteRenderer renderer,
-            Material material,
             Skin skin,
             ref MaterialPropertyBlock properties)
         {
             if (renderer == null)
                 return;
-
-            if (material != null && renderer.sharedMaterial != material)
-                renderer.sharedMaterial = material;
 
             properties ??= new MaterialPropertyBlock();
             renderer.GetPropertyBlock(properties);

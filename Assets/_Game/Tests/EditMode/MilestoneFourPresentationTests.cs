@@ -205,7 +205,6 @@ namespace Blobs.Tests.EditMode
 
             public BlobView Create(
                 BlobState blob,
-                IGameplayState state,
                 Transform parent,
                 float cellSize,
                 Vector2 origin)
@@ -213,7 +212,7 @@ namespace Blobs.Tests.EditMode
                 var gameObject = new GameObject("Test Blob " + blob.Id);
                 gameObject.transform.SetParent(parent, false);
                 BlobView view = gameObject.AddComponent<BlobView>();
-                view.Initialize(blob, state, _colorPalette, cellSize, origin);
+                view.Initialize(blob, _colorPalette, cellSize, origin);
                 return view;
             }
         }

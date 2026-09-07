@@ -23,8 +23,8 @@ namespace Blobs.Presentation
         [SerializeField, Min(0f)] private float despawnDuration = 0.12f;
         [SerializeField] private MergeAnimationOrchestrator _mergeAnimationOrchestrator;
 
-        private IGameplayState _state;
         private IBlobViewFactory _viewFactory;
+        private BlobSelectionPresenter _selectionPresenter;
         private float _cellSize;
         private Vector2 _origin;
 
@@ -43,8 +43,11 @@ namespace Blobs.Presentation
             Vector2 origin,
             IBlobViewFactory viewFactory = null)
         {
+            if (state == null)
+                throw new System.ArgumentNullException(nameof(state));
+
+            DisconnectFromState();
             Clear();
-            _state = state;
             _cellSize = cellSize;
             _origin = origin;
             _viewFactory = viewFactory ?? new BlobViewFactory(_blobViewCatalog, palette);
@@ -61,6 +64,7 @@ namespace Blobs.Presentation
                 orchestrator,
                 moveDuration,
                 despawnDuration);
+            _selectionPresenter = new BlobSelectionPresenter(this, state);
         }
 
         /// <summary>
@@ -76,7 +80,10 @@ namespace Blobs.Presentation
 
         public bool TryGetView(string blobId, out BlobView view)
         {
-            return _views.TryGetValue(blobId, out view) && view != null;
+            view = null;
+            return !string.IsNullOrEmpty(blobId) &&
+                _views.TryGetValue(blobId, out view) &&
+                view != null;
         }
 
         /// <summary>
@@ -124,7 +131,6 @@ namespace Blobs.Presentation
             Transform parent = blobRoot != null ? blobRoot : transform;
             view = _viewFactory.Create(
                 blob,
-                _state,
                 parent,
                 _cellSize,
                 _origin);
@@ -177,6 +183,7 @@ namespace Blobs.Presentation
 
         public void Clear()
         {
+            _selectionPresenter?.ClearSelection();
             DestroyRetiringViews();
 
             foreach (BlobView view in _views.Values)
@@ -189,6 +196,13 @@ namespace Blobs.Presentation
             }
 
             _views.Clear();
+        }
+
+        /// <summary>Releases the gameplay-state subscription owned for the active session.</summary>
+        internal void DisconnectFromState()
+        {
+            _selectionPresenter?.Dispose();
+            _selectionPresenter = null;
         }
 
         private void DestroyRetiringViews()
@@ -225,6 +239,11 @@ namespace Blobs.Presentation
             if (_mergeAnimationOrchestrator == null)
                 _mergeAnimationOrchestrator = gameObject.AddComponent<MergeAnimationOrchestrator>();
             return _mergeAnimationOrchestrator;
+        }
+
+        private void OnDestroy()
+        {
+            DisconnectFromState();
         }
     }
 }

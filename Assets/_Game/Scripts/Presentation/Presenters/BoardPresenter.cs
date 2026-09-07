@@ -330,6 +330,7 @@ namespace Blobs.Presentation
             _state.MoveResolved -= HandleMoveResolved;
             _state.StateRestored -= Rebuild;
             _state = null;
+            _blobPresenter?.DisconnectFromState();
             Clear();
         }
 

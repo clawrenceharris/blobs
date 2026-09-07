@@ -167,27 +167,15 @@ The presenter split is a good first step, but the main scalability pressure has 
 - The new blob/tile registries give view state a much clearer owner.
 
 
-Remaining work, in recommended order:
+The recommended refactor sequence is complete:
 
-1. Move-step presentation handlers — medium priority  
-   [BoardEffectPresentationPipeline.cs](/Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardEffectPresentationPipeline.cs:207) still recognizes normal merges by inspecting `MoveBlobEffect`/`RemoveBlobEffect` combinations. Introduce `IMoveStepPresentationHandler` so future bomb, portal, push, or switch interactions register their own composite choreography.
-
-2. Centralize selection animation — medium priority  
-   Every [BlobMotionAnimator.cs](/Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/State/Animation/BlobMotionAnimator.cs:30) subscribes to global selection state. A single selection presenter should update only the previously and currently selected views.
-
-3. Stop material instancing — medium priority  
-   [BlobRenderer.cs](/Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/BlobRenderer.cs:64), `FlagBlobColorBinding`, and `TrailBlobColorBinding` access `renderer.material`, creating material instances. Use `sharedMaterial` with `MaterialPropertyBlock`.
-
-4. Finish configuration hardening — medium priority  
-   Major fallbacks were removed, but `BlobPresenter` can still add a merge orchestrator, `BoardSurfacePresenter` can create an unconfigured surface, `TileView` adds a fixed circle collider, and feedback components add audio sources. Required pieces should be authored or explicitly validated; optional self-contained fallbacks can remain.
-
-5. Make failure feedback data-driven — low/medium priority  
-   [GameplayFeedbackPresenter.cs](/Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Feedback/GameplayFeedbackPresenter.cs:79) contains a growing hard-coded message switch. A localized feedback catalog would scale better.
-
-6. Correct camera sizing for arbitrary devices — medium priority  
-   [CameraPresenter.cs](/Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/CameraPresenter.cs:29) uses a serialized aspect ratio. It should calculate the required horizontal and vertical extents using `Camera.aspect`.
-
-7. Add PlayMode presentation coverage — medium validation gap  
-   There are currently only EditMode tests. DOTween sequencing, interruption cleanup, prefab composition, and scene startup are not exercised in PlayMode.
+1. Move-step choreography is extensible through `IMoveStepPresentationHandler`.
+2. Selection animation is coordinated by one `BlobSelectionPresenter`.
+3. Blob skinning preserves shared materials and uses `MaterialPropertyBlock` for instance data.
+4. Required presentation collaborators are authored and validated instead of silently created.
+5. Failure-feedback visibility and copy live in an authored presentation catalog.
+6. Camera framing uses the live viewport aspect ratio and both board extents.
+7. PlayMode coverage exercises DOTween sequencing, interruption cleanup, runtime prefab
+   composition, and scene-composition startup.
 
 Pooling merge VFX can wait until profiling demonstrates meaningful churn.

@@ -120,6 +120,9 @@ namespace Blobs.Presentation
         };
 
         private readonly Dictionary<Type, IBoardEffectPresentationHandler> _handlers = new();
+        private readonly List<IMoveStepPresentationHandler> _moveStepHandlers = new();
+        private readonly List<IOrderedEffectSequencePresentationHandler>
+            _orderedSequenceHandlers = new();
         private readonly BlobPresenter _blobs;
         private readonly TilePresenter _tiles;
 
@@ -132,12 +135,26 @@ namespace Blobs.Presentation
             Register(new SpawnBlobPresentationHandler());
             Register(new RemoveBlobPresentationHandler());
             Register(new MergeIntoFlagPresentationHandler());
+            RegisterDefault(new NormalMergeStepPresentationHandler());
         }
 
         public void Register(IBoardEffectPresentationHandler handler)
         {
             ValidateHandler(handler);
             _handlers[handler.EffectType] = handler;
+        }
+
+        public void Register(IMoveStepPresentationHandler handler)
+        {
+            ValidateHandler(handler);
+            _moveStepHandlers.Remove(handler);
+            _moveStepHandlers.Insert(0, handler);
+
+            if (handler is IOrderedEffectSequencePresentationHandler orderedHandler)
+            {
+                _orderedSequenceHandlers.Remove(orderedHandler);
+                _orderedSequenceHandlers.Insert(0, orderedHandler);
+            }
         }
 
         public static void ValidateHandler(IBoardEffectPresentationHandler handler)
@@ -155,20 +172,29 @@ namespace Blobs.Presentation
                 throw new ArgumentOutOfRangeException(nameof(handler), "Unknown presentation phase.");
         }
 
+        public static void ValidateHandler(IMoveStepPresentationHandler handler)
+        {
+            if (handler == null)
+                throw new ArgumentNullException(nameof(handler));
+        }
+
         public bool PresentOrderedEffects(
             IReadOnlyList<IBoardEffect> effects,
             PresentationTimeline timeline)
         {
             for (int i = 0; i < effects.Count; i++)
             {
-                if (TryPresentNormalMerge(
+                if (TryPresentOrderedSequence(
                         effects,
-                        ref i,
+                        i,
                         timeline,
-                        out bool mergeApplied))
+                        out int handledEffectCount,
+                        out bool sequenceApplied))
                 {
-                    if (!mergeApplied)
+                    if (!sequenceApplied)
                         return false;
+
+                    i += handledEffectCount - 1;
                     continue;
                 }
 
@@ -211,29 +237,21 @@ namespace Blobs.Presentation
             Action contactFeedback)
         {
             PresentationTimeline beat = outerTimeline.CreateBeat();
-
-            if (step.Kind == MoveStepKind.Merge &&
-                TryFindNormalMerge(
-                    step,
-                    out MoveBlobEffect mergeSource,
-                    out RemoveBlobEffect mergeTarget))
+            if (TryResolve(step, out IMoveStepPresentationHandler stepHandler))
             {
-                if (!_blobs.NormalMerges.Present(
-                        mergeSource,
-                        mergeTarget,
-                        beat,
-                        contactFeedback))
+                var context = CreateContext(beat, movementEase, contactFeedback);
+                if (!stepHandler.Present(step, context, out IReadOnlyList<IBoardEffect> handledEffects))
                 {
                     beat.Kill();
                     return false;
                 }
 
-                if (!PresentRemainingMergeEffects(
-                        step,
-                        mergeSource,
-                        mergeTarget,
+                if (!PresentUnhandledEffects(
+                        step.Effects,
+                        handledEffects,
                         beat,
-                        movementEase))
+                        movementEase,
+                        stepHandler.RepresentsMovement ? null : contactFeedback))
                 {
                     beat.Kill();
                     return false;
@@ -253,21 +271,18 @@ namespace Blobs.Presentation
             return true;
         }
 
-        private bool PresentRemainingMergeEffects(
-            MoveStep step,
-            MoveBlobEffect mergeSource,
-            RemoveBlobEffect mergeTarget,
+        private bool PresentUnhandledEffects(
+            IReadOnlyList<IBoardEffect> effects,
+            IReadOnlyList<IBoardEffect> handledEffects,
             PresentationTimeline beat,
-            Ease movementEase)
+            Ease movementEase,
+            Action contactFeedback)
         {
             List<EffectWorkItem>[] phases = CreatePhaseBuckets();
-            foreach (IBoardEffect effect in step.Effects)
+            foreach (IBoardEffect effect in effects)
             {
-                if (ReferenceEquals(effect, mergeSource) ||
-                    ReferenceEquals(effect, mergeTarget))
-                {
+                if (ContainsReference(handledEffects, effect))
                     continue;
-                }
 
                 if (!TryResolve(effect, out IBoardEffectPresentationHandler handler))
                     return false;
@@ -278,7 +293,7 @@ namespace Blobs.Presentation
                 phases,
                 beat,
                 movementEase,
-                contactFeedback: null);
+                contactFeedback);
         }
 
         private bool PresentPhasedEffects(
@@ -338,6 +353,13 @@ namespace Blobs.Presentation
             int lastMovementStep = -1;
             for (int i = 0; i < steps.Count; i++)
             {
+                if (TryResolve(steps[i], out IMoveStepPresentationHandler stepHandler) &&
+                    stepHandler.RepresentsMovement)
+                {
+                    lastMovementStep = i;
+                    continue;
+                }
+
                 foreach (IBoardEffect effect in steps[i].Effects)
                 {
                     if (TryResolve(effect, out IBoardEffectPresentationHandler handler) &&
@@ -351,61 +373,63 @@ namespace Blobs.Presentation
             return lastMovementStep;
         }
 
-        private static bool TryFindNormalMerge(
-            MoveStep step,
-            out MoveBlobEffect move,
-            out RemoveBlobEffect remove)
+        private static bool ContainsReference(
+            IReadOnlyList<IBoardEffect> effects,
+            IBoardEffect candidate)
         {
-            move = null;
-            remove = null;
-
-            foreach (IBoardEffect effect in step.Effects)
-            {
-                if (effect is MoveBlobEffect candidateMove)
-                {
-                    move = candidateMove;
-                    break;
-                }
-            }
-
-            if (move == null)
+            if (effects == null)
                 return false;
 
-            foreach (IBoardEffect effect in step.Effects)
+            foreach (IBoardEffect effect in effects)
             {
-                if (effect is RemoveBlobEffect candidateRemove &&
-                    candidateRemove.BlobId != move.BlobId &&
-                    candidateRemove.At == move.To)
-                {
-                    remove = candidateRemove;
-                    break;
-                }
+                if (ReferenceEquals(effect, candidate))
+                    return true;
             }
 
-            return remove != null;
+            return false;
         }
 
-        private bool TryPresentNormalMerge(
+        private bool TryPresentOrderedSequence(
             IReadOnlyList<IBoardEffect> effects,
-            ref int index,
+            int startIndex,
             PresentationTimeline timeline,
+            out int handledEffectCount,
             out bool applied)
         {
+            handledEffectCount = 0;
             applied = false;
-            if (effects[index] is not RemoveBlobEffect target ||
-                index + 1 >= effects.Count ||
-                effects[index + 1] is not MoveBlobEffect source ||
-                source.To != target.At)
+            foreach (IOrderedEffectSequencePresentationHandler handler in _orderedSequenceHandlers)
             {
-                return false;
+                if (!handler.CanPresent(effects, startIndex))
+                    continue;
+
+                var context = CreateContext(timeline, Ease.Linear, contactFeedback: null);
+                applied = handler.Present(
+                    effects,
+                    startIndex,
+                    context,
+                    out handledEffectCount);
+                return true;
             }
 
-            applied = _blobs.NormalMerges.Present(
-                source,
-                target,
-                timeline);
-            index++;
-            return true;
+            return false;
+        }
+
+        private bool TryResolve(
+            MoveStep step,
+            out IMoveStepPresentationHandler handler)
+        {
+            foreach (IMoveStepPresentationHandler candidate in _moveStepHandlers)
+            {
+                if (candidate.CanPresent(step))
+                {
+                    handler = candidate;
+                    return true;
+                }
+            }
+
+            handler = null;
+            return false;
         }
 
         private bool TryResolve(
@@ -427,6 +451,14 @@ namespace Blobs.Presentation
                 timeline,
                 movementEase,
                 contactFeedback);
+        }
+
+        private void RegisterDefault(IMoveStepPresentationHandler handler)
+        {
+            ValidateHandler(handler);
+            _moveStepHandlers.Add(handler);
+            if (handler is IOrderedEffectSequencePresentationHandler orderedHandler)
+                _orderedSequenceHandlers.Add(orderedHandler);
         }
 
         private readonly struct EffectWorkItem

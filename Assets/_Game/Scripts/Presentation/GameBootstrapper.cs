@@ -71,7 +71,7 @@ namespace Blobs.Presentation
             if (feedbackPresenter != null)
                 feedbackPresenter.Initialize(inputAdapter);
             if (cameraPresenter != null)
-                cameraPresenter.FitCameraToBoard(_session.CurrentState, boardPresenter.CellSize);
+                cameraPresenter.FitCameraToBoard(_session.CurrentState.Width, _session.CurrentState.Height, boardPresenter.CellSize);
 
             SessionStarted?.Invoke(_session, _session);
         }

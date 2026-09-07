@@ -77,7 +77,15 @@ namespace Blobs.Presentation
                     continue;
 
                 if (entry.Prefab == null)
+                {
                     Debug.LogError($"Tile view entry {entry.Type} has no prefab.", this);
+                }
+                else if (entry.Prefab.GetComponent<Collider2D>() == null)
+                {
+                    Debug.LogError(
+                        $"Tile view prefab for {entry.Type} requires an authored Collider2D.",
+                        entry.Prefab);
+                }
 
                 if (!registeredTypes.Add(entry.Type))
                 {

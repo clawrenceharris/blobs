@@ -90,7 +90,7 @@ namespace Blobs.Tests.EditMode
             var inputObject = CreateGameObject("Input Adapter");
             inputObject.transform.SetParent(root.transform);
 
-            var board = boardObject.AddComponent<BoardPresenter>();
+            var board = TestPresentationComposition.AddBoardPresenter(boardObject);
             var input = inputObject.AddComponent<GameplayInputAdapter>();
             var bootstrapper = root.AddComponent<GameBootstrapper>();
             var commands = root.AddComponent<GameplayCommandAdapter>();

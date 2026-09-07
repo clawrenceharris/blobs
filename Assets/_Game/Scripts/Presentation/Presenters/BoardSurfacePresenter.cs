@@ -19,7 +19,8 @@ namespace Blobs.Presentation
 
         public void Initialize(float cellSize, Vector2 origin)
         {
-            Clear();
+            _view = ResolveRequiredView();
+            _view.ClearCells();
             _cellSize = cellSize;
             _origin = origin;
         }
@@ -33,7 +34,7 @@ namespace Blobs.Presentation
             if (board == null)
                 throw new ArgumentNullException(nameof(board));
 
-            EnsureView().Rebuild(BuildSurfacePositions(board), _cellSize, _origin);
+            ResolveRequiredView().Rebuild(BuildSurfacePositions(board), _cellSize, _origin);
         }
 
         public void Clear()
@@ -44,7 +45,7 @@ namespace Blobs.Presentation
             _view?.ClearCells();
         }
 
-        private BoardSurfaceView EnsureView()
+        private BoardSurfaceView ResolveRequiredView()
         {
             if (_view != null)
                 return _view;
@@ -53,10 +54,8 @@ namespace Blobs.Presentation
             if (_view != null)
                 return _view;
 
-            var surfaceObject = new GameObject("Board Surface");
-            surfaceObject.transform.SetParent(transform, false);
-            _view = surfaceObject.AddComponent<BoardSurfaceView>();
-            return _view;
+            throw new InvalidOperationException(
+                "BoardSurfacePresenter requires an authored BoardSurfaceView in its hierarchy.");
         }
 
         private static ISet<GridPosition> BuildSurfacePositions(BoardState board)

@@ -166,14 +166,28 @@ The presenter split is a good first step, but the main scalability pressure has 
 - `IMergeTargetFeedback` demonstrates the right general direction, though `BlobView` currently retains only the first implementation. Supporting multiple cue contributors would make it more scalable.
 - The new blob/tile registries give view state a much clearer owner.
 
-## Recommended order
 
-1. Replace the rock flags with generic target contact feedback and cue routing.
-2. Introduce effect/step presentation handlers and a beat composer.
-3. Narrow `BlobPresenter` to lifecycle and registry ownership.
-4. Separate audio, VFX, haptics, and camera feedback channels.
-5. Add tile catalogs and tile behavior extension points.
-6. Centralize selection animation control.
-7. Fix material instancing and strengthen configuration validation.
+Remaining work, in recommended order:
 
-The health-check workflow shaped this as a read-only, evidence-based scalability audit. Runtime profiling was not performed, so pooling and event fan-out are architectural risks rather than measured bottlenecks.
+1. Move-step presentation handlers — medium priority  
+   [BoardEffectPresentationPipeline.cs](/Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardEffectPresentationPipeline.cs:207) still recognizes normal merges by inspecting `MoveBlobEffect`/`RemoveBlobEffect` combinations. Introduce `IMoveStepPresentationHandler` so future bomb, portal, push, or switch interactions register their own composite choreography.
+
+2. Centralize selection animation — medium priority  
+   Every [BlobMotionAnimator.cs](/Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/State/Animation/BlobMotionAnimator.cs:30) subscribes to global selection state. A single selection presenter should update only the previously and currently selected views.
+
+3. Stop material instancing — medium priority  
+   [BlobRenderer.cs](/Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/BlobRenderer.cs:64), `FlagBlobColorBinding`, and `TrailBlobColorBinding` access `renderer.material`, creating material instances. Use `sharedMaterial` with `MaterialPropertyBlock`.
+
+4. Finish configuration hardening — medium priority  
+   Major fallbacks were removed, but `BlobPresenter` can still add a merge orchestrator, `BoardSurfacePresenter` can create an unconfigured surface, `TileView` adds a fixed circle collider, and feedback components add audio sources. Required pieces should be authored or explicitly validated; optional self-contained fallbacks can remain.
+
+5. Make failure feedback data-driven — low/medium priority  
+   [GameplayFeedbackPresenter.cs](/Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Feedback/GameplayFeedbackPresenter.cs:79) contains a growing hard-coded message switch. A localized feedback catalog would scale better.
+
+6. Correct camera sizing for arbitrary devices — medium priority  
+   [CameraPresenter.cs](/Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/CameraPresenter.cs:29) uses a serialized aspect ratio. It should calculate the required horizontal and vertical extents using `Camera.aspect`.
+
+7. Add PlayMode presentation coverage — medium validation gap  
+   There are currently only EditMode tests. DOTween sequencing, interruption cleanup, prefab composition, and scene startup are not exercised in PlayMode.
+
+Pooling merge VFX can wait until profiling demonstrates meaningful churn.

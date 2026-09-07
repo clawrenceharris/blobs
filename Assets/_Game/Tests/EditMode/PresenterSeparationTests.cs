@@ -235,6 +235,51 @@ namespace Blobs.Tests.EditMode
             Assert.That(currentView, Is.SameAs(originalView));
         }
 
+        [Test]
+        public void RegisteredMoveStepHandlerOwnsCompositeEffectsWithoutCoordinatorChanges()
+        {
+            BlobState blob = new BlobState(
+                "blob",
+                BlobType.Normal,
+                new GridPosition(0, 0)).WithColor(BlobColor.Red);
+            var snapshot = new GameSessionSnapshot(
+                "custom-step-presentation",
+                new BoardState(1, 1, new[] { blob }, Array.Empty<TileState>()),
+                0,
+                false);
+
+            _root = new GameObject("Move Step Handler Test");
+            _palette = ScriptableObject.CreateInstance<LevelColorPaletteAsset>();
+            BoardPresenter presenter = _root.AddComponent<BoardPresenter>();
+            var effectHandler = new RecordingEffectHandler();
+            var stepHandler = new RecordingMoveStepHandler();
+            presenter.RegisterEffectHandler(effectHandler);
+            presenter.RegisterMoveStepHandler(stepHandler);
+            presenter.Initialize(
+                new FakeGameplayState(snapshot),
+                _palette,
+                new TestBlobViewFactory(_palette),
+                new TestTileViewFactory());
+            presenter.TryGetBlobView(blob.Id, out BlobView originalView);
+
+            var handledEffect = new RecordingEffect();
+            var remainingEffect = new RecordingEffect();
+            presenter.ApplySteps(
+                new[]
+                {
+                    new MoveStep(
+                        MoveStepKind.Traverse,
+                        new IBoardEffect[] { handledEffect, remainingEffect })
+                },
+                snapshot);
+
+            Assert.That(stepHandler.PresentCount, Is.EqualTo(1));
+            Assert.That(effectHandler.BeatCount, Is.EqualTo(1),
+                "Only effects not consumed by the composite handler should use the generic pipeline.");
+            Assert.That(presenter.TryGetBlobView(blob.Id, out BlobView currentView), Is.True);
+            Assert.That(currentView, Is.SameAs(originalView));
+        }
+
         private sealed class TestBlobViewFactory : IBlobViewFactory
         {
             private readonly LevelColorPaletteAsset _palette;
@@ -373,6 +418,29 @@ namespace Blobs.Tests.EditMode
                 BoardEffectPresentationContext context)
             {
                 BeatCount++;
+                return true;
+            }
+        }
+
+        private sealed class RecordingMoveStepHandler : IMoveStepPresentationHandler
+        {
+            public int PresentCount { get; private set; }
+            public bool RepresentsMovement => true;
+
+            public bool CanPresent(MoveStep step)
+            {
+                return step.Kind == MoveStepKind.Traverse &&
+                    step.Effects.Count > 0 &&
+                    step.Effects[0] is RecordingEffect;
+            }
+
+            public bool Present(
+                MoveStep step,
+                BoardEffectPresentationContext context,
+                out IReadOnlyList<IBoardEffect> handledEffects)
+            {
+                PresentCount++;
+                handledEffects = new[] { step.Effects[0] };
                 return true;
             }
         }

@@ -390,7 +390,6 @@ namespace Blobs.Tests.EditMode
         {
             public BlobView Create(
                 BlobState blob,
-                IGameplayState gameplayState,
                 Transform parent,
                 float cellSize,
                 Vector2 origin)

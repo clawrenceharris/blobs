@@ -2686,7 +2686,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 546dec6b715ac4687ab9e1a913bb3076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.CameraPresenter
-  aspectRatio: 0.56
   padding: 1.2
 --- !u!1 &1046084938
 GameObject:
@@ -3331,51 +3330,6 @@ MonoBehaviour:
   _boardSurfacePresenter: {fileID: 1341500232}
   cellSize: 1.25
   origin: {x: 0, y: 0}
---- !u!114 &1341500227
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1341500223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e8cac62f7ee4e0f862d21879385c5c8, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BlobPresenter
-  _blobViewCatalog: {fileID: 11400000, guid: 3b14907ac9d6d44bcabc9ff726677847, type: 2}
-  blobRoot: {fileID: 633203431}
-  moveDuration: 0.25
-  spawnDuration: 0.14
-  despawnDuration: 0.12
-  _mergeAnimationOrchestrator: {fileID: 1341500226}
---- !u!114 &1341500228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1341500223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f154b4d4e5c45528f94d75a61c6cdb2, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.TilePresenter
-  _tileViewCatalog: {fileID: 11400000, guid: 38e24ce73ad14fd58d76750649c27a71, type: 2}
-  tileRoot: {fileID: 1066094399}
---- !u!114 &1341500232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1341500223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89ae570f447b473abd2126bb74382a30, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BoardSurfacePresenter
-  _view: {fileID: 1656236435}
 --- !u!4 &1341500225
 Transform:
   m_ObjectHideFlags: 0
@@ -3416,6 +3370,38 @@ MonoBehaviour:
   _survivorImpactScale: {x: 1.14, y: 1.28}
   _sourceSortingOffset: 10
   _targetSortingOffset: 20
+--- !u!114 &1341500227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341500223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8cac62f7ee4e0f862d21879385c5c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BlobPresenter
+  _blobViewCatalog: {fileID: 11400000, guid: 3b14907ac9d6d44bcabc9ff726677847, type: 2}
+  blobRoot: {fileID: 633203431}
+  moveDuration: 0.25
+  spawnDuration: 0.14
+  despawnDuration: 0.12
+  _mergeAnimationOrchestrator: {fileID: 1341500226}
+--- !u!114 &1341500228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341500223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f154b4d4e5c45528f94d75a61c6cdb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.TilePresenter
+  _tileViewCatalog: {fileID: 11400000, guid: 38e24ce73ad14fd58d76750649c27a71, type: 2}
+  tileRoot: {fileID: 1066094399}
 --- !u!114 &1341500229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3426,7 +3412,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5019c423fd6d448ba95a498ec653f3a8, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.MergeImpactVfxFeedback
   _prefab: {fileID: 1000000000000000002, guid: de8eae55750e4297b766eaf92ea0c0ba, type: 3}
   _effectsRoot: {fileID: 1052151716}
@@ -3441,7 +3427,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65fce800c88a4d1fb52053411d8b494d, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.MergeImpactAudioFeedback
   _clip: {fileID: 0}
   _volume: 0.85
@@ -3457,11 +3443,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b417020e2d94bd88678cf33cb91a652, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.MergeImpactHapticsFeedback
   _onImpact:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1341500232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341500223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89ae570f447b473abd2126bb74382a30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BoardSurfacePresenter
+  _view: {fileID: 1656236435}
 --- !u!1 &1343664527
 GameObject:
   m_ObjectHideFlags: 0

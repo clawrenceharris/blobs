@@ -33,7 +33,6 @@ namespace Blobs.Presentation
             Skin skin = _resolver.ResolveSkin(blob.Components.Color.Value.Color, palette);
             BlobRenderer.ApplyShaderSkin(
                 targetRenderer,
-                targetRenderer.material,
                 skin,
                 ref _properties);
         }

@@ -164,7 +164,7 @@ namespace Blobs.Tests.EditMode
             _createdObjects.Add(palette);
             var blobColorPalette = ScriptableObject.CreateInstance<LevelColorPaletteAsset>();
             _createdObjects.Add(blobColorPalette);
-            var presenter = gameObject.AddComponent<BoardPresenter>();
+            var presenter = TestPresentationComposition.AddBoardPresenter(gameObject);
             presenter.Initialize(
                 new FakeGameplayState(initialSnapshot),
                 palette,

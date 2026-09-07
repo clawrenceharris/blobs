@@ -7,6 +7,7 @@ using Blobs.Presentation;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Blobs.Tests.EditMode
 {
@@ -43,7 +44,7 @@ namespace Blobs.Tests.EditMode
 
             _root = new GameObject("Presenter Separation Test");
             _palette = ScriptableObject.CreateInstance<LevelColorPaletteAsset>();
-            BoardPresenter boardPresenter = _root.AddComponent<BoardPresenter>();
+            BoardPresenter boardPresenter = TestPresentationComposition.AddBoardPresenter(_root);
             boardPresenter.Initialize(
                 new FakeGameplayState(snapshot),
                 _palette,
@@ -98,11 +99,45 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
+        public void AudioFeedbackDoesNotCreateMissingAudioSourcesAtPlaybackTime()
+        {
+            _root = new GameObject("Authored Audio Source Test");
+            var contactFeedback = _root.AddComponent<BlobContactAudioFeedback>();
+            var mergeFeedback = _root.AddComponent<MergeImpactAudioFeedback>();
+            AudioClip clip = AudioClip.Create("Configuration Test", 16, 1, 8000, false);
+
+            try
+            {
+                SetPrivateField(contactFeedback, "clip", clip);
+                SetPrivateField(mergeFeedback, "_clip", clip);
+
+                LogAssert.Expect(
+                    LogType.Error,
+                    "Blob contact audio on 'Authored Audio Source Test' has a clip " +
+                    "but no authored AudioSource.");
+                contactFeedback.PlayContactFeedback(default);
+
+                LogAssert.Expect(
+                    LogType.Error,
+                    "Merge impact audio on 'Authored Audio Source Test' has a clip " +
+                    "but no authored AudioSource.");
+                mergeFeedback.PlayImpact(default);
+
+                Assert.That(_root.GetComponent<AudioSource>(), Is.Null);
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(clip);
+            }
+        }
+
+        [Test]
         public void TileViewRoutesStateToEveryComposedBinding()
         {
             _root = new GameObject("Tile State Binding Test");
             var first = _root.AddComponent<RecordingTileStateBinding>();
             var second = _root.AddComponent<RecordingTileStateBinding>();
+            _root.AddComponent<CircleCollider2D>();
             TileView view = _root.AddComponent<TileView>();
             var tile = new TileState(
                 "tile",
@@ -116,6 +151,36 @@ namespace Blobs.Tests.EditMode
             Assert.That(first.LastContext.View, Is.SameAs(view));
             Assert.That(first.LastContext.State, Is.SameAs(tile));
             Assert.That(view.TileType, Is.EqualTo(TileType.Normal));
+        }
+
+        [Test]
+        public void TileViewWithoutAuthoredColliderFailsClearly()
+        {
+            _root = new GameObject("Missing Tile Collider Test");
+            TileView view = _root.AddComponent<TileView>();
+            var tile = new TileState(
+                "tile",
+                new GridPosition(0, 0),
+                TileType.Normal);
+
+            InvalidOperationException error = Assert.Throws<InvalidOperationException>(
+                () => view.Initialize(tile, 1f, Vector2.zero));
+
+            StringAssert.Contains("requires an authored Collider2D", error.Message);
+            Assert.That(_root.GetComponent<Collider2D>(), Is.Null);
+        }
+
+        [Test]
+        public void BoardSurfacePresenterWithoutAuthoredViewFailsClearly()
+        {
+            _root = new GameObject("Missing Board Surface View Test");
+            BoardSurfacePresenter presenter = _root.AddComponent<BoardSurfacePresenter>();
+
+            InvalidOperationException error = Assert.Throws<InvalidOperationException>(
+                () => presenter.Initialize(1f, Vector2.zero));
+
+            StringAssert.Contains("requires an authored BoardSurfaceView", error.Message);
+            Assert.That(_root.transform.childCount, Is.Zero);
         }
 
         [Test]
@@ -135,7 +200,7 @@ namespace Blobs.Tests.EditMode
 
             _root = new GameObject("Presentation State Synchronization Test");
             _palette = ScriptableObject.CreateInstance<LevelColorPaletteAsset>();
-            BoardPresenter presenter = _root.AddComponent<BoardPresenter>();
+            BoardPresenter presenter = TestPresentationComposition.AddBoardPresenter(_root);
             presenter.Initialize(
                 new FakeGameplayState(initialSnapshot),
                 _palette,
@@ -171,7 +236,19 @@ namespace Blobs.Tests.EditMode
                 "Assets/_Game/Content/Presentation/TileViewCatalog.asset");
 
             Assert.That(catalog, Is.Not.Null);
-            Assert.That(catalog.GetRequiredPrefab(TileType.Normal), Is.Not.Null);
+            TileView prefab = catalog.GetRequiredPrefab(TileType.Normal);
+            Assert.That(prefab, Is.Not.Null);
+            Assert.That(prefab.GetComponent<Collider2D>(), Is.Not.Null);
+        }
+
+        [Test]
+        public void BlobPresenterDeclaresMergeOrchestratorComposition()
+        {
+            _root = new GameObject("Blob Presenter Composition Test");
+
+            _root.AddComponent<BlobPresenter>();
+
+            Assert.That(_root.GetComponent<MergeAnimationOrchestrator>(), Is.Not.Null);
         }
 
         [Test]
@@ -207,7 +284,7 @@ namespace Blobs.Tests.EditMode
 
             _root = new GameObject("Effect Handler Test");
             _palette = ScriptableObject.CreateInstance<LevelColorPaletteAsset>();
-            BoardPresenter presenter = _root.AddComponent<BoardPresenter>();
+            BoardPresenter presenter = TestPresentationComposition.AddBoardPresenter(_root);
             var handler = new RecordingEffectHandler();
             presenter.RegisterEffectHandler(handler);
             presenter.Initialize(
@@ -249,7 +326,7 @@ namespace Blobs.Tests.EditMode
 
             _root = new GameObject("Move Step Handler Test");
             _palette = ScriptableObject.CreateInstance<LevelColorPaletteAsset>();
-            BoardPresenter presenter = _root.AddComponent<BoardPresenter>();
+            BoardPresenter presenter = TestPresentationComposition.AddBoardPresenter(_root);
             var effectHandler = new RecordingEffectHandler();
             var stepHandler = new RecordingMoveStepHandler();
             presenter.RegisterEffectHandler(effectHandler);
@@ -307,7 +384,7 @@ namespace Blobs.Tests.EditMode
 
             _root = new GameObject("Central Selection Presenter Test");
             _palette = ScriptableObject.CreateInstance<LevelColorPaletteAsset>();
-            BoardPresenter presenter = _root.AddComponent<BoardPresenter>();
+            BoardPresenter presenter = TestPresentationComposition.AddBoardPresenter(_root);
             presenter.Initialize(
                 state,
                 _palette,
@@ -379,6 +456,7 @@ namespace Blobs.Tests.EditMode
             {
                 var gameObject = new GameObject("Test Tile " + tile.Id);
                 gameObject.transform.SetParent(parent, false);
+                gameObject.AddComponent<CircleCollider2D>();
                 TileView view = gameObject.AddComponent<TileView>();
                 view.Initialize(tile, cellSize, origin);
                 return view;
@@ -513,6 +591,16 @@ namespace Blobs.Tests.EditMode
                 handledEffects = new[] { step.Effects[0] };
                 return true;
             }
+        }
+
+        private static void SetPrivateField(object target, string fieldName, object value)
+        {
+            System.Reflection.FieldInfo field = target.GetType().GetField(
+                fieldName,
+                System.Reflection.BindingFlags.Instance |
+                System.Reflection.BindingFlags.NonPublic);
+            Assert.That(field, Is.Not.Null, fieldName);
+            field.SetValue(target, value);
         }
     }
 }

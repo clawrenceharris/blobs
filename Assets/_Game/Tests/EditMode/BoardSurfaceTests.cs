@@ -263,7 +263,7 @@ namespace Blobs.Tests.EditMode
 
 
             _root = new GameObject("Level 3 Surface Layout Test");
-            BoardPresenter presenter = _root.AddComponent<BoardPresenter>();
+            BoardPresenter presenter = TestPresentationComposition.AddBoardPresenter(_root);
             presenter.Initialize(
                 new FakeGameplayState(EmptySnapshot()),
                 null,
@@ -328,7 +328,7 @@ namespace Blobs.Tests.EditMode
         public void MissingSurfaceLayoutFallsBackToFullBoardDimensions()
         {
             _root = new GameObject("Rectangular Surface Fallback Test");
-            BoardPresenter presenter = _root.AddComponent<BoardPresenter>();
+            BoardPresenter presenter = TestPresentationComposition.AddBoardPresenter(_root);
             presenter.Initialize(
                 new FakeGameplayState(EmptySnapshot()),
                 null,

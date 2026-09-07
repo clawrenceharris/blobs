@@ -20,20 +20,40 @@ namespace Blobs.Presentation
             if (_clip == null)
                 return;
 
-            EnsureAudioSource();
+            if (!TryResolveAudioSource())
+            {
+                Debug.LogError(
+                    $"Merge impact audio on '{name}' has a clip but no authored AudioSource.",
+                    this);
+                return;
+            }
+
             _audioSource.pitch = _pitch;
             _audioSource.PlayOneShot(_clip, _volume);
         }
 
-        private void EnsureAudioSource()
+        private bool TryResolveAudioSource()
         {
             if (_audioSource == null)
                 _audioSource = GetComponent<AudioSource>();
             if (_audioSource == null)
-                _audioSource = gameObject.AddComponent<AudioSource>();
+                return false;
 
             _audioSource.playOnAwake = false;
             _audioSource.spatialBlend = 0f;
+            return true;
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (_clip != null && _audioSource == null && GetComponent<AudioSource>() == null)
+            {
+                Debug.LogError(
+                    $"Merge impact audio on '{name}' requires an authored AudioSource.",
+                    this);
+            }
+        }
+#endif
     }
 }

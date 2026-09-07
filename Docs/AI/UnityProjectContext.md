@@ -74,7 +74,8 @@
 ## Testing And Validation
 
 - EditMode tests: present under `Assets/_Game/Tests/EditMode`
-- PlayMode tests: none found
+- PlayMode presentation tests: present under `Assets/_Game/Tests/PlayMode`; cover move-step
+  sequencing, interruption cleanup, runtime prefab composition, and scene-composition startup
 - CI/build validation: no repository CI workflow found
 - Local Unity executable/editor connection: unavailable from the current tool surface; use batchmode if an executable becomes available
 

@@ -937,11 +937,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7cab251b8afa49388084d6cb0a57a1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Blobs.Core.UI.PausePanelView
-  _canvasGroup: {fileID: 0}
-  _rectTransform: {fileID: 0}
-  _resumeButton: {fileID: 1558524783}
-  _retryPauseButton: {fileID: 1126599855}
-  _menuPauseButton: {fileID: 1551315338}
 --- !u!224 &411374098
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2317,18 +2312,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 366ffc90412a94d65876dddae4d0fd3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Blobs.Core.UI.WinPanelView
-  _canvasGroup: {fileID: 0}
-  _rectTransform: {fileID: 0}
-  _winStarImages:
-  - {fileID: 513265836}
-  - {fileID: 1176160624}
-  - {fileID: 2082775559}
-  _starFilledSprite: {fileID: 21300000, guid: 06c487ef7d0a52e45affa9b5203e224b, type: 3}
-  _starEmptySprite: {fileID: 21300000, guid: 67f584718dfc4a142bfe20e5962fdef4, type: 3}
-  _winScoreText: {fileID: 257234075}
-  _nextLevelButton: {fileID: 516196369}
-  _retryButton: {fileID: 1096934877}
-  _menuButton: {fileID: 1766547405}
 --- !u!224 &965240320
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2686,7 +2669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 546dec6b715ac4687ab9e1a913bb3076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.CameraPresenter
-  padding: 1.2
+  padding: 1.7
 --- !u!1 &1046084938
 GameObject:
   m_ObjectHideFlags: 0
@@ -3566,9 +3549,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec186ebd8fc504bbf8418aac201ceda9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HUDView
-  _moveCountText: {fileID: 1508395821}
-  _undoButton: {fileID: 456420002}
-  _pauseButton: {fileID: 665385099}
 --- !u!224 &1403663693
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4882,10 +4862,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115eb4cb23f5b4cdeb0b7d679fb334ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialView
-  _tutorialPointerPrefab: {fileID: 24319166933945228, guid: 567a1b2e1991c4d859435fb29d8daacd, type: 3}
-  _canvasGroup: {fileID: 0}
-  _topText: {fileID: 2070682089}
-  _bottomText: {fileID: 1802687803}
 --- !u!224 &1808347029
 RectTransform:
   m_ObjectHideFlags: 0

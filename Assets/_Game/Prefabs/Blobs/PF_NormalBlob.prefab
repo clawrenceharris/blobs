@@ -64,7 +64,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BlobRenderer
   _fallbackBaseRenderer: {fileID: 6852378884847781655}
   _targets:
-  - ColorBinding: 0
+  - ColorBinding: 1
     Renderers:
     - {fileID: 6852378884847781655}
 --- !u!114 &429713232074978795

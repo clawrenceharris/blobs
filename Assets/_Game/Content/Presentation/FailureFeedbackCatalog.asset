@@ -13,9 +13,6 @@ MonoBehaviour:
   m_Name: FailureFeedbackCatalog
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.FailureFeedbackCatalogAsset
   entries:
-  - reason: 0
-    showFeedback: 0
-    message: 
   - reason: 2
     showFeedback: 0
     message: Choose a different blob.

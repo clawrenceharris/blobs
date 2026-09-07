@@ -55,11 +55,13 @@ namespace Blobs.Tests.EditMode
             LevelColorPaletteAsset palette = LoadPalette();
             BlobView view = InstantiateView(NormalPrefabPath);
             BlobState state = Blob("normal", BlobType.Normal, BlobColor.Red);
+            SpriteRenderer body = FindRenderer(view, "Body");
+            Material authoredMaterial = body.sharedMaterial;
 
             view.Initialize(state, palette, 1f, Vector2.zero);
 
-            SpriteRenderer body = FindRenderer(view, "Body");
             AssertShaderColors(body, palette.GetRequired(BlobColor.Red));
+            Assert.That(body.sharedMaterial, Is.SameAs(authoredMaterial));
             Assert.That(body.sharedMaterial.HasProperty("_BaseColor"), Is.True);
             Assert.That(body.sharedMaterial.HasProperty("_ShadowColor"), Is.True);
             Assert.That(body.sharedMaterial.HasProperty("_HighlightColor"), Is.True);
@@ -76,15 +78,21 @@ namespace Blobs.Tests.EditMode
                 new GridPosition(0, 0))
             .WithColor(BlobColor.Red)
             .WithTrail(BlobColor.Blue);
+            SpriteRenderer body = FindRenderer(view, "Body");
+            SpriteRenderer puddle = FindRenderer(view, "Puddle");
+            Material authoredBodyMaterial = body.sharedMaterial;
+            Material authoredPuddleMaterial = puddle.sharedMaterial;
 
             view.Initialize(state, palette, 1f, Vector2.zero);
 
             AssertShaderColors(
-                FindRenderer(view, "Body"),
+                body,
                 palette.GetRequired(BlobColor.Red));
             AssertShaderColors(
-                FindRenderer(view, "Puddle"),
+                puddle,
                 palette.GetRequired(BlobColor.Blue));
+            Assert.That(body.sharedMaterial, Is.SameAs(authoredBodyMaterial));
+            Assert.That(puddle.sharedMaterial, Is.SameAs(authoredPuddleMaterial));
             Assert.That(
                 view.GetComponentInChildren<TrailBlobColorBinding>(true),
                 Is.Not.Null);
@@ -96,12 +104,18 @@ namespace Blobs.Tests.EditMode
             LevelColorPaletteAsset palette = LoadPalette();
             BlobView view = InstantiateView(FlagPrefabPath);
             BlobState state = Blob("flag", BlobType.Flag, BlobColor.Purple);
+            SpriteRenderer checkers = FindRenderer(view, "Checkers");
+            SpriteRenderer finial = FindRenderer(view, "Finial");
+            Material authoredCheckersMaterial = checkers.sharedMaterial;
+            Material authoredFinialMaterial = finial.sharedMaterial;
 
             view.Initialize(state, palette, 1f, Vector2.zero);
 
             BlobShaderColors expected = palette.GetRequired(BlobColor.Purple);
-            AssertShaderColors(FindRenderer(view, "Checkers"), expected);
-            AssertShaderColors(FindRenderer(view, "Finial"), expected);
+            AssertShaderColors(checkers, expected);
+            AssertShaderColors(finial, expected);
+            Assert.That(checkers.sharedMaterial, Is.SameAs(authoredCheckersMaterial));
+            Assert.That(finial.sharedMaterial, Is.SameAs(authoredFinialMaterial));
 
             var properties = new MaterialPropertyBlock();
             FindRenderer(view, "Body").GetPropertyBlock(properties);

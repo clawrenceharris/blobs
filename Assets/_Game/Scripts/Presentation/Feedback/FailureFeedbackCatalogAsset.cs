@@ -102,7 +102,7 @@ namespace Blobs.Presentation
 
             foreach (MoveFailureReason reason in Enum.GetValues(typeof(MoveFailureReason)))
             {
-                if (!registeredReasons.Contains(reason))
+                if (!registeredReasons.Contains(reason) && reason != MoveFailureReason.None)
                 {
                     Debug.LogError(
                         $"Failure reason {reason} is not registered in the feedback catalog.",

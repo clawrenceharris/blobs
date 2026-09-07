@@ -15,13 +15,10 @@ MonoBehaviour:
   entries:
   - reason: 0
     showFeedback: 0
-    message:
-  - reason: 1
-    showFeedback: 0
-    message:
+    message: 
   - reason: 2
     showFeedback: 0
-    message:
+    message: Choose a different blob.
   - reason: 3
     showFeedback: 1
     message: That move took too long.
@@ -29,8 +26,8 @@ MonoBehaviour:
     showFeedback: 1
     message: That blob can't move.
   - reason: 5
-    showFeedback: 0
-    message:
+    showFeedback: 1
+    message: Blobs must share the same column or row to merge.
   - reason: 6
     showFeedback: 1
     message: Another blob is in the way.
@@ -46,3 +43,6 @@ MonoBehaviour:
   - reason: 10
     showFeedback: 1
     message: Clear the other blobs first.
+  - reason: 1
+    showFeedback: 0
+    message: Merge incomplete

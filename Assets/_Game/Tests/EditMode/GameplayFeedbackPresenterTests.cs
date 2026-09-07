@@ -5,12 +5,17 @@ using Blobs.Input;
 using Blobs.Presentation;
 using NUnit.Framework;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Blobs.Tests.EditMode
 {
     public sealed class GameplayFeedbackPresenterTests
     {
+        private const string CatalogPath =
+            "Assets/_Game/Content/Presentation/FailureFeedbackCatalog.asset";
+
         private readonly List<GameObject> _createdObjects = new List<GameObject>();
 
         [TearDown]
@@ -25,10 +30,7 @@ namespace Blobs.Tests.EditMode
             _createdObjects.Clear();
         }
 
-        [TestCase(MoveFailureReason.SourceOrTargetMissing, "That blob is no longer there.")]
-        [TestCase(MoveFailureReason.SameBlob, "Choose a different blob.")]
         [TestCase(MoveFailureReason.SourceCannotMove, "That blob can't move.")]
-        [TestCase(MoveFailureReason.NotAligned, "Use the same row or column.")]
         [TestCase(MoveFailureReason.BlockedPath, "Another blob is in the way.")]
         [TestCase(MoveFailureReason.UnsupportedInteraction, "Those blobs can't merge.")]
         [TestCase(
@@ -36,11 +38,27 @@ namespace Blobs.Tests.EditMode
             "Normal blobs need different colors.")]
         [TestCase(MoveFailureReason.FlagRequiresMatchingColor, "Match the flag's color.")]
         [TestCase(MoveFailureReason.FlagRequiresNoOtherBlobs, "Clear the other blobs first.")]
-        public void MessageForMapsFailureToPlayerFriendlyCopy(
+        [TestCase(MoveFailureReason.MoveTimeout, "That move took too long.")]
+        public void CatalogMapsVisibleFailureToPlayerFriendlyCopy(
             MoveFailureReason reason,
             string expected)
         {
-            Assert.That(GameplayFeedbackPresenter.MessageFor(reason), Is.EqualTo(expected));
+            FailureFeedbackCatalogAsset catalog = LoadCatalog();
+
+            Assert.That(catalog.TryGetVisibleMessage(reason, out string message), Is.True);
+            Assert.That(message, Is.EqualTo(expected));
+        }
+
+        [TestCase(MoveFailureReason.None)]
+        [TestCase(MoveFailureReason.SourceOrTargetMissing)]
+        [TestCase(MoveFailureReason.SameBlob)]
+        [TestCase(MoveFailureReason.NotAligned)]
+        public void CatalogKeepsSelectionStageFailuresSilent(MoveFailureReason reason)
+        {
+            FailureFeedbackCatalogAsset catalog = LoadCatalog();
+
+            Assert.That(catalog.TryGetVisibleMessage(reason, out string message), Is.False);
+            Assert.That(message, Is.Empty);
         }
 
         [Test]
@@ -68,6 +86,9 @@ namespace Blobs.Tests.EditMode
             feedbackObject.SetActive(false);
             var text = feedbackObject.AddComponent<TextMeshProUGUI>();
             var presenter = feedbackObject.AddComponent<GameplayFeedbackPresenter>();
+            var serializedPresenter = new SerializedObject(presenter);
+            serializedPresenter.FindProperty("feedbackCatalog").objectReferenceValue = LoadCatalog();
+            serializedPresenter.ApplyModifiedPropertiesWithoutUndo();
 
             GameplayInputAdapter input = Create("Input").AddComponent<GameplayInputAdapter>();
             input.Initialize(
@@ -81,7 +102,37 @@ namespace Blobs.Tests.EditMode
             input.SelectBlobAt(new GridPosition(0, 0));
 
             Assert.That(text.text, Is.EqualTo("Clear the other blobs first."));
+        }
 
+        [Test]
+        public void PresenterWithoutCatalogFailsClearlyAndDoesNotSubscribe()
+        {
+            GameObject feedbackObject = Create("Feedback Without Catalog");
+            var text = feedbackObject.AddComponent<TextMeshProUGUI>();
+            var presenter = feedbackObject.AddComponent<GameplayFeedbackPresenter>();
+            GameplayInputAdapter input = Create("Input").AddComponent<GameplayInputAdapter>();
+            input.Initialize(
+                new FakeCommands(
+                    BlobSelectionResult.Rejected(MoveFailureReason.SourceCannotMove)),
+                1f);
+
+            LogAssert.Expect(
+                LogType.Error,
+                "Gameplay feedback on 'Feedback Without Catalog' cannot initialize without a " +
+                "failure feedback catalog.");
+
+            presenter.Initialize(input);
+            input.SelectBlobAt(new GridPosition(0, 0));
+
+            Assert.That(text.text, Is.Empty);
+        }
+
+        private static FailureFeedbackCatalogAsset LoadCatalog()
+        {
+            FailureFeedbackCatalogAsset catalog =
+                AssetDatabase.LoadAssetAtPath<FailureFeedbackCatalogAsset>(CatalogPath);
+            Assert.That(catalog, Is.Not.Null);
+            return catalog;
         }
 
         private GameObject Create(string name)

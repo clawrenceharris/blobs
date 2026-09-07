@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a7a584f7d0e492a8d40793674e08427, type: 3}
+  m_Name: FailureFeedbackCatalog
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.FailureFeedbackCatalogAsset
+  entries:
+  - reason: 0
+    showFeedback: 0
+    message:
+  - reason: 1
+    showFeedback: 0
+    message:
+  - reason: 2
+    showFeedback: 0
+    message:
+  - reason: 3
+    showFeedback: 1
+    message: That move took too long.
+  - reason: 4
+    showFeedback: 1
+    message: That blob can't move.
+  - reason: 5
+    showFeedback: 0
+    message:
+  - reason: 6
+    showFeedback: 1
+    message: Another blob is in the way.
+  - reason: 7
+    showFeedback: 1
+    message: Those blobs can't merge.
+  - reason: 8
+    showFeedback: 1
+    message: Normal blobs need different colors.
+  - reason: 9
+    showFeedback: 1
+    message: Match the flag's color.
+  - reason: 10
+    showFeedback: 1
+    message: Clear the other blobs first.

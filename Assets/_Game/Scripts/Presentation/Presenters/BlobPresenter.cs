@@ -11,6 +11,7 @@ namespace Blobs.Presentation
     /// Owns creation, identity tracking, retirement, and cleanup of blob views.
     /// Focused collaborators own transition and interaction choreography.
     /// </summary>
+    [RequireComponent(typeof(MergeAnimationOrchestrator))]
     public sealed class BlobPresenter : MonoBehaviour
     {
         private readonly Dictionary<string, BlobView> _views = new();
@@ -52,7 +53,7 @@ namespace Blobs.Presentation
             _origin = origin;
             _viewFactory = viewFactory ?? new BlobViewFactory(_blobViewCatalog, palette);
 
-            MergeAnimationOrchestrator orchestrator = EnsureMergeAnimationOrchestrator();
+            MergeAnimationOrchestrator orchestrator = ResolveMergeAnimationOrchestrator();
             Transitions = new BlobTransitionPresenter(
                 this,
                 moveDuration,
@@ -230,14 +231,19 @@ namespace Blobs.Presentation
                 DestroyImmediate(view.gameObject);
         }
 
-        private MergeAnimationOrchestrator EnsureMergeAnimationOrchestrator()
+        private MergeAnimationOrchestrator ResolveMergeAnimationOrchestrator()
         {
             if (_mergeAnimationOrchestrator != null)
                 return _mergeAnimationOrchestrator;
 
             _mergeAnimationOrchestrator = GetComponent<MergeAnimationOrchestrator>();
             if (_mergeAnimationOrchestrator == null)
-                _mergeAnimationOrchestrator = gameObject.AddComponent<MergeAnimationOrchestrator>();
+            {
+                throw new System.InvalidOperationException(
+                    "BlobPresenter requires an authored MergeAnimationOrchestrator " +
+                    "on the same GameObject.");
+            }
+
             return _mergeAnimationOrchestrator;
         }
 

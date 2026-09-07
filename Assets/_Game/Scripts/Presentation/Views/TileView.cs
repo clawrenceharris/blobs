@@ -16,17 +16,23 @@ namespace Blobs.Presentation
         public TileType TileType { get; private set; }
 
         /// <summary>
-        /// Initializes tile transform/collider state from Core tile data.
+        /// Initializes tile transform state from Core tile data.
+        /// Collider shape remains an authored concern so future tile types can choose an appropriate shape.
         /// </summary>
         public void Initialize(TileState tile, float cellSize, Vector2 origin)
         {
+            if (GetComponent<Collider2D>() == null)
+            {
+                throw new System.InvalidOperationException(
+                    $"TileView '{name}' requires an authored Collider2D.");
+            }
+
             TileId = tile.Id;
             GridPosition = tile.Position;
             TileType = tile.Type;
             name = "Tile " + tile.Id;
             transform.localPosition = GridToLocal(tile.Position, cellSize, origin);
             transform.localScale = Vector3.one * Mathf.Max(0.1f, cellSize * 0.8f);
-            EnsureCollider();
             BindState(tile);
         }
 
@@ -53,15 +59,6 @@ namespace Blobs.Presentation
             var context = new TilePresentationContext(this, tile);
             foreach (ITileStateBinding binding in _stateBindings)
                 binding.Bind(context);
-        }
-
-        private void EnsureCollider()
-        {
-            if (GetComponent<Collider2D>() != null)
-                return;
-
-            var circle = gameObject.AddComponent<CircleCollider2D>();
-            circle.radius = 0.5f;
         }
 
         private static Vector3 GridToLocal(GridPosition position, float cellSize, Vector2 origin)

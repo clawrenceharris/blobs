@@ -19,20 +19,40 @@ namespace Blobs.Presentation
             if (clip == null)
                 return;
 
-            EnsureAudioSource();
+            if (!TryResolveAudioSource())
+            {
+                Debug.LogError(
+                    $"Blob contact audio on '{name}' has a clip but no authored AudioSource.",
+                    this);
+                return;
+            }
+
             audioSource.pitch = pitch;
             audioSource.PlayOneShot(clip, volume);
         }
 
-        private void EnsureAudioSource()
+        private bool TryResolveAudioSource()
         {
             if (audioSource == null)
                 audioSource = GetComponent<AudioSource>();
             if (audioSource == null)
-                audioSource = gameObject.AddComponent<AudioSource>();
+                return false;
 
             audioSource.playOnAwake = false;
             audioSource.spatialBlend = 0f;
+            return true;
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (clip != null && audioSource == null && GetComponent<AudioSource>() == null)
+            {
+                Debug.LogError(
+                    $"Blob contact audio on '{name}' requires an authored AudioSource.",
+                    this);
+            }
+        }
+#endif
     }
 }

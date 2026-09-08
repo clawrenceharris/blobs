@@ -35,7 +35,7 @@ namespace Blobs.Tests.EditMode
             TileState tile = new TileState(
                 "tile",
                 new GridPosition(1, 0),
-                TileType.Normal);
+                TileType.Sigil);
             var snapshot = new GameSessionSnapshot(
                 "presenter-separation",
                 new BoardState(2, 1, new[] { blob }, new[] { tile }),
@@ -137,12 +137,11 @@ namespace Blobs.Tests.EditMode
             _root = new GameObject("Tile State Binding Test");
             var first = _root.AddComponent<RecordingTileStateBinding>();
             var second = _root.AddComponent<RecordingTileStateBinding>();
-            _root.AddComponent<CircleCollider2D>();
             TileView view = _root.AddComponent<TileView>();
             var tile = new TileState(
                 "tile",
                 new GridPosition(1, 2),
-                TileType.Normal);
+                TileType.Sigil);
 
             view.Initialize(tile, 1f, Vector2.zero);
 
@@ -150,25 +149,9 @@ namespace Blobs.Tests.EditMode
             Assert.That(second.BindCount, Is.EqualTo(1));
             Assert.That(first.LastContext.View, Is.SameAs(view));
             Assert.That(first.LastContext.State, Is.SameAs(tile));
-            Assert.That(view.TileType, Is.EqualTo(TileType.Normal));
+            Assert.That(view.TileType, Is.EqualTo(TileType.Sigil));
         }
 
-        [Test]
-        public void TileViewWithoutAuthoredColliderFailsClearly()
-        {
-            _root = new GameObject("Missing Tile Collider Test");
-            TileView view = _root.AddComponent<TileView>();
-            var tile = new TileState(
-                "tile",
-                new GridPosition(0, 0),
-                TileType.Normal);
-
-            InvalidOperationException error = Assert.Throws<InvalidOperationException>(
-                () => view.Initialize(tile, 1f, Vector2.zero));
-
-            StringAssert.Contains("requires an authored Collider2D", error.Message);
-            Assert.That(_root.GetComponent<Collider2D>(), Is.Null);
-        }
 
         [Test]
         public void BoardSurfacePresenterWithoutAuthoredViewFailsClearly()
@@ -230,15 +213,14 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void NormalTilePrefabIsRegisteredInProductionCatalog()
+        public void SigilTilePrefabIsRegisteredInProductionCatalog()
         {
-            TileViewCatalogAsset catalog = AssetDatabase.LoadAssetAtPath<TileViewCatalogAsset>(
+            ViewCatalogAsset catalog = AssetDatabase.LoadAssetAtPath<ViewCatalogAsset>(
                 "Assets/_Game/Content/Presentation/TileViewCatalog.asset");
 
             Assert.That(catalog, Is.Not.Null);
-            TileView prefab = catalog.GetRequiredPrefab(TileType.Normal);
+            TileView prefab = catalog.GetRequiredTilePrefab(TileType.Sigil);
             Assert.That(prefab, Is.Not.Null);
-            Assert.That(prefab.GetComponent<Collider2D>(), Is.Not.Null);
         }
 
         [Test]
@@ -456,7 +438,6 @@ namespace Blobs.Tests.EditMode
             {
                 var gameObject = new GameObject("Test Tile " + tile.Id);
                 gameObject.transform.SetParent(parent, false);
-                gameObject.AddComponent<CircleCollider2D>();
                 TileView view = gameObject.AddComponent<TileView>();
                 view.Initialize(tile, cellSize, origin);
                 return view;

@@ -109,11 +109,12 @@ namespace Blobs.Content
             GridPosition position = ToCore(tile.position);
             switch (tile)
             {
-                case NormalTileAssetData normal when normal.type == TileType.Normal:
-                    return new NormalTileDefinition(normal.id, position);
-                case NormalTileAssetData normal:
+
+                case SigilTileAssetData sigil when sigil.type == TileType.Sigil:
+                    return new SigilTileDefinition(sigil.id, position);
+                case SigilTileAssetData sigil:
                     throw new InvalidOperationException(
-                        $"Normal tile '{normal.id}' declares unsupported type {normal.type}.");
+                        $"Sigil tile '{sigil.id}' declares unsupported type {sigil.type}.");
                 default:
                     throw new InvalidOperationException(
                         $"Unsupported tile asset data type: {tile.GetType().Name}.");

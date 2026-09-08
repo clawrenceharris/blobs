@@ -2,7 +2,15 @@ namespace Blobs.Core
 {
     public enum TileType
     {
-        Normal
-        
+        Sigil
+
+    }
+
+    public static class TileTypeExtensions
+    {
+        public static bool IsSigil(this TileType type)
+        {
+            return type == TileType.Sigil;
+        }
     }
 }

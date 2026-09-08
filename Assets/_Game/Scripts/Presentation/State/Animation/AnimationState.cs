@@ -20,11 +20,11 @@ namespace Blobs.Presentation
                 : context.BlobView.transform;
         }
 
-        protected static DefaultBlobAnimationSettingsAsset DefaultSettings(
+        protected static BlobAnimationSettingsAsset AnimationSettings(
             AnimationStateContext context)
         {
             return context.BlobAnimationSettings != null
-                ? context.BlobAnimationSettings.defaultSettings
+                ? context.BlobAnimationSettings
                 : null;
         }
     }
@@ -50,14 +50,14 @@ namespace Blobs.Presentation
         }
         private Sequence StartSelectionLoop()
         {
-            DefaultBlobAnimationSettingsAsset settings = DefaultSettings(_context);
+            BlobSelectionSettings settings = AnimationSettings(_context).BlobSelectionSettings;
             if (settings == null)
             {
                 return null;
             }
-            float squishDuration = settings.selectionSquishDuration;
-            float squishAmount = settings.selectionSquishAmount;
-            float stretchAmount = settings.selectionStretchAmount;
+            float squishDuration = settings.SelectionSquishDuration;
+            float squishAmount = settings.SelectionSquishAmount;
+            float stretchAmount = settings.SelectionStretchAmount;
 
 
             // Kill any existing loop
@@ -134,14 +134,14 @@ namespace Blobs.Presentation
 
         private Sequence StartIdleLoop()
         {
-            DefaultBlobAnimationSettingsAsset settings = DefaultSettings(_context);
+            BlobIdleSettings settings = AnimationSettings(_context).BlobIdleSettings;
             if (settings == null)
             {
                 return null;
             }
-            float squishDuration = settings.idleSquishDuration;
-            float squishAmount = settings.idleSquishAmount;
-            float stretchAmount = settings.idleStretchAmount;
+            float squishDuration = settings.IdleSquishDuration;
+            float squishAmount = settings.IdleSquishAmount;
+            float stretchAmount = settings.IdleStretchAmount;
 
 
             // Kill any existing loop

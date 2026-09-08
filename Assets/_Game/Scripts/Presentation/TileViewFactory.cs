@@ -18,9 +18,9 @@ namespace Blobs.Presentation
 
     public sealed class TileViewFactory : ITileViewFactory
     {
-        private readonly TileViewCatalogAsset _catalog;
+        private readonly ViewCatalogAsset _catalog;
 
-        public TileViewFactory(TileViewCatalogAsset catalog)
+        public TileViewFactory(ViewCatalogAsset catalog)
         {
             _catalog = catalog != null
                 ? catalog
@@ -33,7 +33,7 @@ namespace Blobs.Presentation
             float cellSize,
             Vector2 origin)
         {
-            TileView prefab = _catalog.GetRequiredPrefab(tile.Type);
+            TileView prefab = _catalog.GetRequiredTilePrefab(tile.Type);
             TileView instance = UnityEngine.Object.Instantiate(prefab, parent);
             instance.Initialize(tile, cellSize, origin);
             return instance;

@@ -1,36 +1,24 @@
 using System;
 using System.Collections.Generic;
+using Blobs.Content;
+using Blobs.Core;
 using DG.Tweening;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace Blobs.Presentation
 {
     /// <summary>
-    /// Owns the presentation-only timeline for a normal merge. All fields are intentionally
-    /// inspector-tunable so timing and deformation can be art-directed before final VFX art exists.
+    /// Builds normal-merge deformation and broadcasts impact feedback. Each beat captures
+    /// its supplied settings so queued interactions do not share mutable presenter settings.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class MergeAnimationOrchestrator : MonoBehaviour
     {
-        [Header("Timing")]
-        [SerializeField, Min(0.01f)] private float _anticipationDuration = 0.09f;
-        [SerializeField, Min(0.01f)] private float _travelDuration = 0.18f;
-        [SerializeField, Min(0.01f)] private float _consumeDuration = 0.11f;
-        [SerializeField, Min(0.01f)] private float _settleDuration = 0.18f;
-
-        [Header("Deformation")]
-        [SerializeField, Min(0f)] private float _anticipationBackstep = 0.08f;
-        [SerializeField] private Vector2 _anticipationScale = new(1.10f, 0.88f);
-        [SerializeField] private Vector2 _travelScale = new(0.92f, 1.12f);
-        [SerializeField] private Vector2 _targetBraceScale = new(1.06f, 0.94f);
-        [SerializeField] private Vector2 _survivorImpactScale = new(1.14f, 0.86f);
-
-        [Header("Merge Sorting")]
-        [SerializeField, Min(1)] private int _sourceSortingOffset = 10;
-        [SerializeField, Min(1)] private int _targetSortingOffset = 20;
-
         private readonly List<IMergeImpactFeedback> _impactFeedbackChannels = new();
+
+
 
         /// <summary>
         /// Creates a self-contained merge beat. State changes are callbacks inside the
@@ -41,7 +29,10 @@ namespace Blobs.Presentation
             BlobView target,
             Vector2Int gridDirection,
             Action onContact,
-            Action onTargetConsumed)
+            Action onTargetConsumed,
+            BlobMergeImpactSettings settings,
+            GridPosition? destination = null
+            )
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -78,8 +69,8 @@ namespace Blobs.Presentation
                 direction = Vector3.right;
             direction.Normalize();
 
-            Vector2 travelMultipliers = DirectionalScale(_travelScale, direction);
-            Vector2 anticipationMultipliers = DirectionalScale(_anticipationScale, direction);
+            Vector2 travelMultipliers = DirectionalScale(settings.TravelScale, direction);
+            Vector2 anticipationMultipliers = DirectionalScale(settings.AnticipationScale, direction);
 
             Sequence beat = DOTween.Sequence();
             beat.AppendCallback(() =>
@@ -92,34 +83,34 @@ namespace Blobs.Presentation
                 targetVisual.localScale = targetBaseScale;
 
                 if (sourceSorting != null)
-                    sourceSorting.sortingOrder = mergeBaseOrder + _sourceSortingOffset;
+                    sourceSorting.sortingOrder = mergeBaseOrder + settings.SourceSortingOffset;
                 if (targetSorting != null)
-                    targetSorting.sortingOrder = mergeBaseOrder + _targetSortingOffset;
+                    targetSorting.sortingOrder = mergeBaseOrder + settings.TargetSortingOffset;
             });
 
             beat.Append(sourceVisual
-                .DOLocalMove(sourceBasePosition - direction * _anticipationBackstep,
-                    _anticipationDuration)
+                .DOLocalMove(sourceBasePosition - direction * settings.AnticipationBackstep,
+                    settings.AnticipationDuration)
                 .SetEase(Ease.OutQuad));
             beat.Join(sourceVisual
                 .DOScale(Multiply(sourceBaseScale, anticipationMultipliers),
-                    _anticipationDuration)
+                    settings.AnticipationDuration)
                 .SetEase(Ease.OutQuad));
             beat.Join(targetVisual
-                .DOScale(Multiply(targetBaseScale, _targetBraceScale),
-                    _anticipationDuration)
+                .DOScale(Multiply(targetBaseScale, settings.TargetBraceScale),
+                    settings.AnticipationDuration)
                 .SetEase(Ease.OutQuad));
 
             beat.Append(source.AnimateMoveTo(
-                target.GridPosition,
-                _travelDuration,
+                destination ?? target.GridPosition,
+                settings.TravelDuration,
                 Ease.InQuad));
             beat.Join(sourceVisual
                 .DOScale(Multiply(sourceBaseScale, travelMultipliers),
-                    _travelDuration)
+                    settings.TravelDuration)
                 .SetEase(Ease.InOutQuad));
             beat.Join(sourceVisual
-                .DOLocalMove(sourceBasePosition, _travelDuration)
+                .DOLocalMove(sourceBasePosition, settings.TravelDuration)
                 .SetEase(Ease.OutQuad));
 
             beat.AppendCallback(() =>
@@ -131,18 +122,18 @@ namespace Blobs.Presentation
                 onContact?.Invoke();
             });
             beat.Append(targetVisual
-                .DOScale(Vector3.zero, _consumeDuration)
+                .DOScale(Vector3.zero, settings.ConsumeDuration)
                 .SetEase(Ease.InBack));
             beat.Join(sourceVisual
-                .DOScale(Multiply(sourceBaseScale, _survivorImpactScale),
-                    _consumeDuration)
+                .DOScale(Multiply(sourceBaseScale, settings.SurvivorImpactScale),
+                    settings.ConsumeDuration)
                 .SetEase(Ease.OutQuad));
 
             beat.Append(sourceVisual
-                .DOScale(sourceBaseScale, _settleDuration)
+                .DOScale(sourceBaseScale, settings.SettleDuration)
                 .SetEase(Ease.OutBack));
             beat.Join(sourceVisual
-                .DOLocalMove(sourceBasePosition, _settleDuration)
+                .DOLocalMove(sourceBasePosition, settings.SettleDuration)
                 .SetEase(Ease.OutQuad));
             beat.OnComplete(() =>
             {
@@ -167,6 +158,8 @@ namespace Blobs.Presentation
                 targetOriginalOrder));
             return beat;
         }
+
+
 
         /// <summary>
         /// Broadcasts the shared impact context to every enabled feedback channel on this object.
@@ -214,10 +207,6 @@ namespace Blobs.Presentation
 
         private void OnValidate()
         {
-            _anticipationDuration = Mathf.Max(0.01f, _anticipationDuration);
-            _travelDuration = Mathf.Max(0.01f, _travelDuration);
-            _consumeDuration = Mathf.Max(0.01f, _consumeDuration);
-            _settleDuration = Mathf.Max(0.01f, _settleDuration);
             RefreshImpactFeedbackChannels();
         }
 

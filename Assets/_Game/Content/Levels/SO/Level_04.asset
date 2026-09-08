@@ -47,7 +47,7 @@ MonoBehaviour:
         id: purple
         position: {x: 2, y: 2}
         type: 0
-        color: 5
+        color: 0
     - rid: 7441116827775139915
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:

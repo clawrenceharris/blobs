@@ -11,7 +11,7 @@ namespace Blobs.Presentation
     {
         private readonly Dictionary<string, TileView> _views = new();
 
-        [SerializeField] private TileViewCatalogAsset _tileViewCatalog;
+        [SerializeField] private ViewCatalogAsset _viewCatalog;
         [SerializeField] private Transform tileRoot;
 
         private ITileViewFactory _viewFactory;
@@ -45,7 +45,10 @@ namespace Blobs.Presentation
             Clear();
 
             foreach (TileState tile in board.Tiles)
+            {
                 Create(tile);
+                Debug.Log($"TilePresenter created tile {tile.Id} at {tile.Position}");
+            }
         }
 
         public bool TryGetView(string tileId, out TileView view)
@@ -115,13 +118,13 @@ namespace Blobs.Presentation
         {
             if (_viewFactory != null)
                 return _viewFactory;
-            if (_tileViewCatalog == null)
+            if (_viewCatalog == null)
             {
                 throw new System.InvalidOperationException(
                     "TilePresenter requires a TileViewCatalogAsset or an injected ITileViewFactory.");
             }
 
-            _viewFactory = new TileViewFactory(_tileViewCatalog);
+            _viewFactory = new TileViewFactory(_viewCatalog);
             return _viewFactory;
         }
 

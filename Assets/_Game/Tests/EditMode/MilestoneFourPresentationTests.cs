@@ -36,7 +36,7 @@ namespace Blobs.Tests.EditMode
 
             var effects = new IBoardEffect[]
             {
-                new RemoveBlobEffect(target),
+                new RemoveBlobEffect(target.Id, target.Position),
                 new MoveBlobEffect(source.Id, source.Position, target.Position),
                 new SpawnBlobEffect(spawned)
             };
@@ -78,7 +78,7 @@ namespace Blobs.Tests.EditMode
                     MoveStepKind.Merge,
                     new IBoardEffect[]
                     {
-                        new RemoveBlobEffect(target),
+                        new RemoveBlobEffect(target.Id, target.Position),
                         new MoveBlobEffect(source.Id, new GridPosition(1, 0), target.Position)
                     })
             };

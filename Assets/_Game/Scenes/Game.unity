@@ -2669,7 +2669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 546dec6b715ac4687ab9e1a913bb3076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.CameraPresenter
-  padding: 1.7
+  padding: 2
 --- !u!1 &1046084938
 GameObject:
   m_ObjectHideFlags: 0
@@ -3342,17 +3342,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b721eabef2b04ef3ae245dcd1a90299d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.MergeAnimationOrchestrator
-  _anticipationDuration: 0.07
-  _travelDuration: 0.4
-  _consumeDuration: 0.2
-  _settleDuration: 0.4
-  _anticipationBackstep: 0.08
-  _anticipationScale: {x: 1.1, y: 0.88}
-  _travelScale: {x: 0.9, y: 1.056}
-  _targetBraceScale: {x: 0.88, y: 0.99}
-  _survivorImpactScale: {x: 1.14, y: 1.28}
-  _sourceSortingOffset: 10
-  _targetSortingOffset: 20
 --- !u!114 &1341500227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3365,11 +3354,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8cac62f7ee4e0f862d21879385c5c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BlobPresenter
+  blobAnimationSettings: {fileID: 11400000, guid: 8b153b34bf26a437b8b90f17a3cfdc4d, type: 2}
   _blobViewCatalog: {fileID: 11400000, guid: 3b14907ac9d6d44bcabc9ff726677847, type: 2}
   blobRoot: {fileID: 633203431}
-  moveDuration: 0.25
-  spawnDuration: 0.14
-  despawnDuration: 0.12
   _mergeAnimationOrchestrator: {fileID: 1341500226}
 --- !u!114 &1341500228
 MonoBehaviour:

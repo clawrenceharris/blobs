@@ -134,7 +134,7 @@ namespace Blobs.Core
                     [BlobType.Rock] =
                         new BlobTraits(canBeSource: false, isClearable: false),
                     [BlobType.Ghost] =
-                        new BlobTraits(canBeSource: false, isClearable: false),
+                        new BlobTraits(canBeSource: false, isClearable: true),
                 },
                 new Dictionary<MergeKey, IMergeStrategy>
                 {

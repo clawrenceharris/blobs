@@ -121,7 +121,7 @@ namespace Blobs.Core
                     var context = new MoveContext(
                       simulation,
                       startPosition,
-                      source,
+                      mover,
                       occupant,
                       isFinalTarget: occupant.Id == target.Id);
                     CollisionPlan collisionPlan = mergeStrategy.BuildPlan(context);
@@ -164,7 +164,20 @@ namespace Blobs.Core
                 current = next;
             }
 
-            steps.AddRange(followUpSteps);
+            // Validate and finalize aftermath against the post-departure simulation.
+            foreach (MoveStep followUp in followUpSteps)
+            {
+                var resolved = new List<IBoardEffect>();
+                foreach (IBoardEffect planned in followUp.Effects)
+                {
+                    IBoardEffect effect = planned is GhostReturnEffect ghostReturn
+                        ? ghostReturn.ResolveLanding(simulation)
+                        : planned;
+                    effect.Apply(simulation);
+                    resolved.Add(effect);
+                }
+                steps.Add(new MoveStep(followUp.Kind, resolved));
+            }
 
             // Commit atomically: replay the validated timeline onto the real board.
             var flattened = new List<IBoardEffect>();

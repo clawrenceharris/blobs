@@ -11,7 +11,8 @@
         "Blobs.Presentation",
         "Blobs.UI",
         "Unity.TextMeshPro",
-        "UnityEngine.UI"
+        "UnityEngine.UI",
+        "UniTask"
     ],
     "includePlatforms": [
         "Editor"

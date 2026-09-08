@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e38fa6ca07c114b37af15e16a096b630, type: 3}
+  m_Name: BlobAnimationSettings
+  m_EditorClassIdentifier: Blobs.Content::Blobs.Content.BlobAnimationSettingsAsset
+  BlobSelectionSettings:
+    selectionSquishDuration: 0.16
+    selectionSquishAmount: 1.065
+    selectionStretchAmount: 1.02
+  BlobIdleSettings:
+    idleSquishDuration: 0.8
+    idleSquishAmount: 1.065
+    idleStretchAmount: 0.99
+  MergeImpactSettings:
+    _anticipationDuration: 0.07
+    _travelDuration: 0.4
+    _consumeDuration: 0.2
+    _settleDuration: 0.201
+    _anticipationBackstep: 0.08
+    _anticipationScale: {x: 1.1, y: 0.88}
+    _travelScale: {x: 0.9, y: 1.056}
+    _targetBraceScale: {x: 0.88, y: 0.99}
+    _survivorImpactScale: {x: 1.14, y: 1.28}
+    _sourceSortingOffset: 10
+    _targetSortingOffset: 20
+  BlobMotionSettings:
+    spawnDuration: 0.14
+    despawnDuration: 0.12
+    moveDuration: 0.25
+  GhostReturnSettings:
+    _moveDuration: 0.4
+    _despawnDuration: 0.2
+    _fadeDuration: 0.3

@@ -16,12 +16,10 @@ namespace Blobs.Presentation
     {
         private readonly Dictionary<string, BlobView> _views = new();
         private readonly List<BlobView> _retiringViews = new();
+        [SerializeField] private BlobAnimationSettingsAsset blobAnimationSettings;
 
-        [SerializeField] private BlobViewCatalogAsset _blobViewCatalog;
+        [SerializeField] private ViewCatalogAsset _viewCatalog;
         [SerializeField] private Transform blobRoot;
-        [SerializeField, Min(0f)] private float moveDuration = 0.16f;
-        [SerializeField, Min(0f)] private float spawnDuration = 0.14f;
-        [SerializeField, Min(0f)] private float despawnDuration = 0.12f;
         [SerializeField] private MergeAnimationOrchestrator _mergeAnimationOrchestrator;
 
         private IBlobViewFactory _viewFactory;
@@ -31,8 +29,9 @@ namespace Blobs.Presentation
 
         public int VisibleCount => _views.Count;
         internal BlobTransitionPresenter Transitions { get; private set; }
-        internal NormalMergePresenter NormalMerges { get; private set; }
-        internal FlagCapturePresenter FlagCaptures { get; private set; }
+        internal MergePresenter Merges { get; private set; }
+
+        internal GhostReturnPresenter GhostReturns { get; private set; }
 
         /// <summary>
         /// Configures view creation for the active gameplay session and clears views from any prior session.
@@ -51,20 +50,15 @@ namespace Blobs.Presentation
             Clear();
             _cellSize = cellSize;
             _origin = origin;
-            _viewFactory = viewFactory ?? new BlobViewFactory(_blobViewCatalog, palette);
+            _viewFactory = viewFactory ?? new BlobViewFactory(_viewCatalog, palette);
 
             MergeAnimationOrchestrator orchestrator = ResolveMergeAnimationOrchestrator();
             Transitions = new BlobTransitionPresenter(
                 this,
-                moveDuration,
-                spawnDuration,
-                despawnDuration);
-            NormalMerges = new NormalMergePresenter(this, orchestrator);
-            FlagCaptures = new FlagCapturePresenter(
-                this,
-                orchestrator,
-                moveDuration,
-                despawnDuration);
+                blobAnimationSettings.BlobMotionSettings);
+            GhostReturns = new GhostReturnPresenter(this, blobAnimationSettings.GhostReturnSettings);
+            Merges = new MergePresenter(this, orchestrator,
+                blobAnimationSettings.MergeImpactSettings, blobAnimationSettings.BlobMotionSettings);
             _selectionPresenter = new BlobSelectionPresenter(this, state);
         }
 
@@ -177,6 +171,7 @@ namespace Blobs.Presentation
                 if (view == null)
                     continue;
 
+                view.BlobRenderer?.FadeableVisual?.Restore();
                 view.SetGridPosition(view.GridPosition);
                 view.BlobMotionAnimator?.SetIdle();
             }

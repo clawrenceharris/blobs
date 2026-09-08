@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 namespace Blobs.Presentation
@@ -19,9 +20,11 @@ namespace Blobs.Presentation
             public BlobColorBindingMode ColorBinding = BlobColorBindingMode.Blob;
             public SpriteRenderer[] Renderers;
         }
-        [SerializeField] private SpriteRenderer _fallbackBaseRenderer;
+        [FormerlySerializedAs("_fallbackBaseRenderer")]
+        [SerializeField] private SpriteRenderer fallbackBaseRenderer;
 
-        [SerializeField] private Target[] _targets;
+        [FormerlySerializedAs("_targets")]
+        [SerializeField] private Target[] targets;
 
         private MaterialPropertyBlock _properties;
 
@@ -29,15 +32,17 @@ namespace Blobs.Presentation
         private static readonly int ShadowColorId = Shader.PropertyToID("_ShadowColor");
         private static readonly int HighlightColorId = Shader.PropertyToID("_HighlightColor");
 
+        [SerializeField] private FadeableVisual fadeableVisual;
+        public Target[] Targets => targets;
 
-        public Target[] Targets => _targets;
-        public SpriteRenderer BaseRenderer => _fallbackBaseRenderer;
+        public FadeableVisual FadeableVisual => fadeableVisual;
+        public SpriteRenderer BaseRenderer => fallbackBaseRenderer;
 
 
         private void Awake()
         {
-            if (_fallbackBaseRenderer == null)
-                _fallbackBaseRenderer = TryGetComponent(out SpriteRenderer renderer) ? renderer : null;
+            if (fallbackBaseRenderer == null)
+                fallbackBaseRenderer = TryGetComponent(out SpriteRenderer renderer) ? renderer : null;
         }
 
         /// <summary>
@@ -46,11 +51,11 @@ namespace Blobs.Presentation
         public void ApplySkin(Skin skin)
         {
             bool applied = false;
-            if (_targets != null)
+            if (targets != null)
             {
-                for (int i = 0; i < _targets.Length; i++)
+                for (int i = 0; i < targets.Length; i++)
                 {
-                    var binding = _targets[i];
+                    var binding = targets[i];
                     if (binding == null ||
                         binding.ColorBinding != BlobColorBindingMode.Blob ||
                         binding.Renderers == null)
@@ -70,9 +75,9 @@ namespace Blobs.Presentation
                 }
             }
 
-            if (!applied && _fallbackBaseRenderer != null)
+            if (!applied && fallbackBaseRenderer != null)
                 ApplyShaderSkin(
-                    _fallbackBaseRenderer,
+                    fallbackBaseRenderer,
                     skin,
                     ref _properties);
         }

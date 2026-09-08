@@ -21,18 +21,14 @@ namespace Blobs.Presentation
         /// </summary>
         public void Initialize(TileState tile, float cellSize, Vector2 origin)
         {
-            if (GetComponent<Collider2D>() == null)
-            {
-                throw new System.InvalidOperationException(
-                    $"TileView '{name}' requires an authored Collider2D.");
-            }
 
             TileId = tile.Id;
             GridPosition = tile.Position;
             TileType = tile.Type;
             name = "Tile " + tile.Id;
             transform.localPosition = GridToLocal(tile.Position, cellSize, origin);
-            transform.localScale = Vector3.one * Mathf.Max(0.1f, cellSize * 0.8f);
+            transform.localScale = Vector3.one * cellSize;
+            Debug.Log($"TileView {TileId} initialized at {transform.localPosition} with scale {transform.localScale}");
             BindState(tile);
         }
 

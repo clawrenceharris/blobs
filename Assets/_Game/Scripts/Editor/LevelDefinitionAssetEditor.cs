@@ -1,4 +1,5 @@
 using Blobs.Content;
+using Blobs.Core;
 using UnityEditor;
 using UnityEngine;
 
@@ -33,6 +34,10 @@ namespace Blobs.Editor
             {
                 if (GUILayout.Button("Add Normal Tile"))
                     AddTile(new NormalTileAssetData());
+                if (GUILayout.Button("Add Sigil Tile"))
+                {
+                    AddTile(new SigilTileAssetData());
+                }
             }
 
             EditorGUILayout.Space();

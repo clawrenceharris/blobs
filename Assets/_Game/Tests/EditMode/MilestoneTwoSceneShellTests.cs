@@ -95,10 +95,10 @@ namespace Blobs.Tests.EditMode
             var bootstrapper = root.AddComponent<GameBootstrapper>();
             var commands = root.AddComponent<GameplayCommandAdapter>();
             var level = CreateLevelAsset();
-            var blobViewCatalog = AssetDatabase.LoadAssetAtPath<BlobViewCatalogAsset>(
+            var viewCatalog = AssetDatabase.LoadAssetAtPath<ViewCatalogAsset>(
                 "Assets/_Game/Content/Presentation/BlobViewCatalog.asset");
 
-            Assert.That(blobViewCatalog, Is.Not.Null);
+            Assert.That(viewCatalog, Is.Not.Null);
 
             SetPrivateField(bootstrapper, "boardPresenter", board);
             SetPrivateField(bootstrapper, "inputAdapter", input);
@@ -106,8 +106,8 @@ namespace Blobs.Tests.EditMode
             SetPrivateField(bootstrapper, "levelAsset", level);
             SetPrivateField(
                 board.GetComponent<BlobPresenter>(),
-                "_blobViewCatalog",
-                blobViewCatalog);
+                "_viewCatalog",
+                viewCatalog);
 
             bootstrapper.StartLevel(level);
 

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Blobs.Debugging;
 
 namespace Blobs.Core
 {
@@ -30,8 +29,7 @@ namespace Blobs.Core
                     MoveFailureReason.NormalMergeRequiresDifferentColors);
             }
 
-            return CollisionPlan.Continue(
-                new RemoveBlobEffect(context.Target));
+            return CollisionPlan.Continue(MergeEffect.NormalMerge(context));
         }
     }
 
@@ -57,10 +55,7 @@ namespace Blobs.Core
                     MoveFailureReason.FlagRequiresNoOtherBlobs);
             }
 
-            return CollisionPlan.ConsumeMover(
-                new MergeIntoFlagEffect(
-                    context.Source,
-                    context.Target));
+            return CollisionPlan.ConsumeMover(MergeEffect.ReverseMerge(context));
         }
     }
 
@@ -68,6 +63,7 @@ namespace Blobs.Core
     {
         public CollisionPlan BuildPlan(MoveContext context)
         {
+            // Rocks block merges so we just continue with no effect.
             return CollisionPlan.Continue();
         }
     }
@@ -76,57 +72,41 @@ namespace Blobs.Core
     {
         public CollisionPlan BuildPlan(MoveContext context)
         {
-
-            var steps = new List<MoveStep>();
-            bool isVisible = false;
-
-            BlobState mover = context.Target;
-
-
             GridPosition current = context.Target.Position;
             GridPosition goal = context.StartPosition;
+            if (!current.IsAlignedWith(goal) || current == goal)
+                return CollisionPlan.Failed(MoveFailureReason.NotAligned);
 
-            int stepX = goal.X == current.X ? 0 : goal.X > current.X ? 1 : -1;
-            int stepY = goal.Y == current.Y ? 0 : goal.Y > current.Y ? 1 : -1;
-
-
-            int stepCount = 0;
+            int dx = Math.Sign(goal.X - current.X);
+            int dy = Math.Sign(goal.Y - current.Y);
+            var path = new List<ReturnStep>();
+            bool clears = false;
             while (current != goal)
             {
-                if (stepCount > 100)
+                current = new GridPosition(current.X + dx, current.Y + dy);
+                if (!context.Board.IsInside(current))
+                    return CollisionPlan.Failed(MoveFailureReason.BlockedPath);
+
+                path.Add(new ReturnStep(context.Target.Id, current));
+                if (context.Board.GetTileAt(current)?.Type == TileType.Sigil)
                 {
-                    return CollisionPlan.Failed(MoveFailureReason.MoveTimeout);
-                }
-                stepCount++;
-                var next = new GridPosition(current.X + stepX, current.Y + stepY);
-                var stepEffects = new List<IBoardEffect>();
-                bool moverConsumed = false;
-                if (!isVisible)
-                {
-                    stepEffects.Add(new MoveBlobEffect(mover.Id, current, next));
-                }
-                else
-                {
-                    if (!moverConsumed)
-                        stepEffects.Add(new MoveBlobEffect(mover.Id, mover.Position, next));
-                }
-
-
-
-
-                steps.Add(new MoveStep(MoveStepKind.Traverse, stepEffects));
-
-                // A consuming merge or reaching the intent's target ends locomotion.
-                if (moverConsumed)
+                    clears = true;
                     break;
-
-                mover = context.Board.GetBlob(mover.Id);
-                current = next;
+                }
             }
 
-            return CollisionPlan.ConsumeMover(new RemoveBlobEffect(context.Source)).WithFollowUpSteps(steps);
+            var aftermath = new List<IBoardEffect>
+            {
+                new GhostReturnEffect(context.Target.Id, path, clears)
+            };
+            if (clears)
+                aftermath.Add(new ClearGhostEffect(context.Target.Id, current));
+
+            return CollisionPlan.ConsumeMover(
+                MergeEffect.ReverseMerge(context)).WithFollowUpSteps(new[]
+                {
+                    new MoveStep(MoveStepKind.Traverse, aftermath)
+                });
         }
     }
-
-
 }

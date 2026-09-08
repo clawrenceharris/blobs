@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: a06909fd292a844a6b60a79691429242
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - theme: {fileID: 11400000, guid: a760ad6f8971f49b5818d7635ba76e01, type: 2}
+  - _gameObject: {instanceID: 0}
+  - red: {fileID: 21300000, guid: 3852f42ec9ae74749b4aefaa4c556d36, type: 3}
+  - pink: {fileID: 21300000, guid: 43a9377e2e1da43299b2de22937bfcfb, type: 3}
+  - purple: {fileID: 21300000, guid: bbf0097211fd84cf0af7e39f8c09ead2, type: 3}
+  - orange: {fileID: 21300000, guid: 10d0540bb807343a5b41428903a21d53, type: 3}
+  - darkBlue: {fileID: 21300000, guid: 438632cac80164e95bff1a6afe030e5d, type: 3}
+  - lightBlue: {fileID: 21300000, guid: 09a030f9fcf184757ac5f8625cc4b569, type: 3}
+  - green: {fileID: 21300000, guid: c8f12b90890324e18bdb4d0ab9d2ddef, type: 3}
+  - horizontalStripes: {fileID: 21300000, guid: 906566adcd45744a88dc92e777e5c1ec, type: 3}
+  - verticalStripes: {fileID: 21300000, guid: a5fa00a060e8349068943994e0713145, type: 3}
+  - particleSystem: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

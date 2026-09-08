@@ -1,0 +1,13 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Blobs.Visuals{
+public class BombBlobVisuals : BlobVisuals
+{
+
+    public GameObject ExplosionParticles;
+    public GameObject ExplosionRing;
+    }
+}

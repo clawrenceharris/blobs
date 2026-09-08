@@ -1,0 +1,100 @@
+{
+  "levelNum": 2,
+  "width": 3,
+  "height": 3,
+  "isTutorial": true,
+  "minMoves": 3,
+  "scoring": {
+    "baseScore": 2000,
+    "movePenalty": 30,
+    "starThresholds": [0, 0, 100],
+    "gemBonus": 0
+  },
+  "tutorialSteps": [
+    {
+      "topText": "Merging two small Blobs creates a normal-sized Blob.",
+      "bottomText": "The Blob you swipe from keeps its color.",
+      "startX": 0,
+      "startY": 2,
+      "endX": 0,
+      "endY": 1
+    },
+    {
+      "topText": "Normal Blobs can also merge onto smaller ones.",
+      "bottomText": "The larger Blob always takes the other’s place.",
+      "startX": 0,
+      "startY": 1,
+      "endX": 2,
+      "endY": 1
+    },
+    {
+      "topText": "Finish by merging into the Flag Blob to win!",
+      "startX": 2,
+      "startY": 1,
+      "endX": 2,
+      "endY": 0
+    }
+  ],
+
+  "blobs": [
+    {
+      "t": "nb",
+      "c": "r",
+
+      "s": "s",
+      "x": 0,
+      "y": 2
+    },
+    {
+      "t": "nb",
+      "c": "pk",
+
+      "s": "s",
+      "x": 0,
+      "y": 1
+    },
+    {
+      "t": "nb",
+      "c": "pk",
+
+      "s": "s",
+      "x": 2,
+      "y": 1
+    },
+    {
+      "t": "fb",
+      "c": "r",
+
+      "s": "b",
+      "x": 2,
+      "y": 0
+    }
+  ],
+  "tiles": [
+    {
+      "t": "nt",
+      "x": 0,
+      "y": 2
+    },
+    {
+      "t": "nt",
+      "x": 0,
+      "y": 1
+    },
+    {
+      "t": "nt",
+      "x": 1,
+      "y": 1
+    },
+    {
+      "t": "nt",
+      "x": 2,
+      "y": 1
+    },
+    {
+      "t": "nt",
+      "x": 2,
+      "y": 0
+    }
+  ]
+}

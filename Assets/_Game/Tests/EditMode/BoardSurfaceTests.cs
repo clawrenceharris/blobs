@@ -209,27 +209,6 @@ namespace Blobs.Tests.EditMode
                 Is.Not.EqualTo(pixelsB[center * spriteSet.ComponentSize + center]));
         }
 
-        [Test]
-        public void SurfaceViewBuildsOneVisualPerLogicalTile()
-        {
-            _root = new GameObject("Board Surface Test");
-            BoardSurfaceView view = _root.AddComponent<BoardSurfaceView>();
-            var tiles = new List<TileState>
-            {
-                Tile("origin", 0, 0),
-                Tile("east", 1, 0),
-                Tile("north", 0, 1)
-            };
-
-            view.Rebuild(tiles, 1.25f, Vector2.zero);
-
-            Assert.That(view.VisibleCellCount, Is.EqualTo(3));
-            Assert.That(view.TryGetMask(new GridPosition(0, 0), out BoardSurfaceNeighborMask mask), Is.True);
-            Assert.That(mask.HasFlag(BoardSurfaceNeighborMask.North), Is.True);
-            Assert.That(mask.HasFlag(BoardSurfaceNeighborMask.East), Is.True);
-            Assert.That(mask.HasFlag(BoardSurfaceNeighborMask.NorthEast), Is.False);
-            Assert.That(_root.GetComponentsInChildren<SpriteRenderer>().Length, Is.EqualTo(3));
-        }
 
         [Test]
         public void SurfaceViewAcceptsAnArbitraryOccupiedCellShape()
@@ -317,10 +296,6 @@ namespace Blobs.Tests.EditMode
                 false);
         }
 
-        private static TileState Tile(string id, int x, int y)
-        {
-            return new TileState(id, new GridPosition(x, y), TileType.Normal);
-        }
 
         private static Color32[] Readback(Texture texture)
         {

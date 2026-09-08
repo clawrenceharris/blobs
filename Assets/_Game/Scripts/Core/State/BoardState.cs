@@ -124,6 +124,17 @@ namespace Blobs.Core
             return _blobsById[id];
         }
 
+        public TileState GetTileAt(GridPosition position)
+        {
+            if (!IsInside(position))
+                return null;
+
+            if (!_tileIdsByPosition.TryGetValue(position, out var id))
+                return null;
+
+            return _tilesById[id];
+        }
+
         /// <summary>
         /// Adds a blob while enforcing id uniqueness and single-blob cell occupancy.
         /// </summary>

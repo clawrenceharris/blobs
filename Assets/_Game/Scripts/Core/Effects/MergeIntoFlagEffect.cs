@@ -3,25 +3,29 @@ namespace Blobs.Core
     public sealed class MergeIntoFlagEffect : IBoardEffect
     {
         public MergeIntoFlagEffect(
-            BlobState source,
-            BlobState flag)
+            string sourceId,
+            string flagId,
+
+            GridPosition at, GridPosition? from = null)
         {
-            Source = source;
-            Flag = flag;
+            SourceId = sourceId;
+            FlagId = flagId;
+            At = at;
+            From = from ?? at;
         }
 
-        public BlobState Source { get; }
-        public BlobState Flag { get; }
+        public MergeIntoFlagEffect(BlobState source, BlobState flag)
+            : this(source.Id, flag.Id, flag.Position, source.Position) { }
 
-        public string SourceId => Source.Id;
-        public string FlagId => Flag.Id;
-        public GridPosition From => Source.Position;
-        public GridPosition To => Flag.Position;
-
+        public string SourceId { get; }
+        public string FlagId { get; }
+        public GridPosition At { get; }
+        public GridPosition To => At;
+        public GridPosition From { get; }
         public void Apply(BoardState board)
         {
             // The flag stays in place. Only the incoming source is consumed.
-            board.RemoveBlob(Source.Id);
+            board.RemoveBlob(SourceId);
         }
     }
 }

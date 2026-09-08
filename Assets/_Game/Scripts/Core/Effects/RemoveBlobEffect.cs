@@ -8,20 +8,22 @@ namespace Blobs.Core
         /// <summary>
         /// Creates a removal effect that preserves the removed blob data for presentation and tooling.
         /// </summary>
-        public RemoveBlobEffect(BlobState blob, GridPosition? at = null)
+        public RemoveBlobEffect(string blobId, GridPosition at)
         {
-            Blob = blob;
-            At = at ?? blob.Position;
+            BlobId = blobId;
+            At = at;
         }
 
-        public BlobState Blob { get; }
-        public string BlobId => Blob.Id;
+        public RemoveBlobEffect(BlobState blob, GridPosition? at = null)
+            : this(blob.Id, at ?? blob.Position) { }
+
+        public string BlobId { get; }
         public GridPosition At { get; }
 
         /// <inheritdoc />
         public void Apply(BoardState board)
         {
-            board.RemoveBlob(Blob.Id);
+            board.RemoveBlob(BlobId);
         }
     }
 }

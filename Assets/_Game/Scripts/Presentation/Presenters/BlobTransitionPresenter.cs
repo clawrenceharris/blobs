@@ -1,4 +1,5 @@
 using System;
+using Blobs.Content;
 using Blobs.Core;
 using DG.Tweening;
 
@@ -11,20 +12,14 @@ namespace Blobs.Presentation
     internal sealed class BlobTransitionPresenter
     {
         private readonly BlobPresenter _blobs;
-        private readonly float _moveDuration;
-        private readonly float _spawnDuration;
-        private readonly float _despawnDuration;
+        private readonly BlobMotionSettings _settings;
 
         public BlobTransitionPresenter(
             BlobPresenter blobs,
-            float moveDuration,
-            float spawnDuration,
-            float despawnDuration)
+            BlobMotionSettings settings)
         {
             _blobs = blobs ?? throw new ArgumentNullException(nameof(blobs));
-            _moveDuration = moveDuration;
-            _spawnDuration = spawnDuration;
-            _despawnDuration = despawnDuration;
+            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
         public bool TryCreate(
@@ -37,7 +32,7 @@ namespace Blobs.Presentation
                 return false;
 
             if (timeline.IsAnimated)
-                animation = view.PlaySpawn(_spawnDuration);
+                animation = view.PlaySpawn(_settings.SpawnDuration);
             return true;
         }
 
@@ -62,7 +57,7 @@ namespace Blobs.Presentation
 
             Sequence movement = DOTween.Sequence();
             movement.AppendCallback(() => view.BlobMotionAnimator?.SetMoving());
-            movement.Append(view.AnimateMoveTo(to, _moveDuration, ease));
+            movement.Append(view.AnimateMoveTo(to, _settings.MoveDuration, ease));
             movement.OnComplete(() =>
             {
                 view.BlobMotionAnimator?.SetIdle();
@@ -88,7 +83,7 @@ namespace Blobs.Presentation
             }
 
             Sequence retirement = DOTween.Sequence();
-            retirement.Append(view.PlayDespawn(_despawnDuration));
+            retirement.Append(view.PlayDespawn(_settings.DespawnDuration));
             retirement.AppendCallback(() => _blobs.DestroyRetiringView(view));
             animation = retirement;
             return true;

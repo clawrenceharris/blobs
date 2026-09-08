@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Blobs.Application;
 using Blobs.Content;
 using Blobs.Core;
@@ -19,18 +21,22 @@ namespace Blobs.Tests.PlayMode
     /// Covers presentation behavior that depends on Unity frames, object destruction, cloning,
     /// and MonoBehaviour startup and therefore cannot be proven by the EditMode suite.
     /// </summary>
-    public sealed class PresentationRuntimeTests
+    public sealed partial class PresentationRuntimeTests
     {
         private readonly List<Object> _createdObjects = new();
 
         [UnityTearDown]
         public IEnumerator TearDown()
         {
+            // Scene objects must finish cleanup while their settings assets still exist.
             for (int i = _createdObjects.Count - 1; i >= 0; i--)
-            {
+                if (_createdObjects[i] is GameObject gameObject && gameObject != null)
+                    Object.Destroy(gameObject);
+            yield return null;
+
+            for (int i = _createdObjects.Count - 1; i >= 0; i--)
                 if (_createdObjects[i] != null)
                     Object.Destroy(_createdObjects[i]);
-            }
 
             _createdObjects.Clear();
             yield return null;
@@ -75,8 +81,8 @@ namespace Blobs.Tests.PlayMode
                         MoveStepKind.Merge,
                         new IBoardEffect[]
                         {
-                            new RemoveBlobEffect(target),
-                            new MoveBlobEffect(source.Id, source.Position, target.Position)
+                            MergeEffect.NormalMerge(new MoveContext(
+                                initial.Board, source.Position, source, target))
                         })
                 },
                 Snapshot(2, 1, source.WithPosition(target.Position)));
@@ -97,6 +103,148 @@ namespace Blobs.Tests.PlayMode
                 restoredSource.BlobMotionAnimator.CurrentState,
                 Is.EqualTo(BlobAnimationState.Idle));
             Assert.That(presenter.IsSynchronizedWith(initial), Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator GhostReturnFadesBodyOnceAndKeepsHaloVisible()
+        {
+            BlobState source = Blob("source", BlobColor.Red, 0, 0);
+            var ghost = new BlobState("ghost", BlobType.Ghost, new GridPosition(3, 0));
+            var initial = Snapshot(4, 1, source, ghost);
+            BoardPresenter presenter = CreatePresenter(initial);
+            presenter.TryGetBlobView("ghost", out BlobView view);
+            SpriteRenderer body = AddFadeGroup(view, out SpriteRenderer halo);
+            Vector3 start = view.transform.localPosition;
+            BoardState board = initial.Board.Clone();
+            MoveResult result = new MoveResolver().Resolve(board, new MoveIntent(source, ghost));
+            var final = new GameSessionSnapshot("ghost", board, 1, false);
+
+            presenter.ApplySteps(result.Steps, final);
+            yield return WaitUntil(() => body.color.a < 0.01f);
+            Assert.That(halo.color.a, Is.EqualTo(1f));
+            yield return WaitUntil(() => view.transform.localPosition.x < start.x - 0.1f);
+            Assert.That(body.color.a, Is.LessThan(0.01f));
+            yield return WaitUntil(() => !presenter.IsPresenting);
+            Assert.That(body.color.a, Is.EqualTo(0.6f).Within(0.001f));
+            Assert.That(halo.color.a, Is.EqualTo(1f));
+            Assert.That(presenter.TryGetBlobView("ghost", out BlobView survivor), Is.True);
+            Assert.That(survivor, Is.SameAs(view));
+            Assert.That(presenter.IsSynchronizedWith(final), Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator UndoDuringInvisibleReturnCancelsOldCompletion()
+        {
+            BlobState source = Blob("source", BlobColor.Red, 0, 0);
+            var ghost = new BlobState("ghost", BlobType.Ghost, new GridPosition(3, 0));
+            var initial = Snapshot(4, 1, source, ghost);
+            BoardPresenter presenter = CreatePresenter(initial);
+            presenter.TryGetBlobView("ghost", out BlobView view);
+            SpriteRenderer body = AddFadeGroup(view, out _);
+            BoardState board = initial.Board.Clone();
+            var result = new MoveResolver().Resolve(board, new MoveIntent(source, ghost));
+            int completed = 0;
+            presenter.SnapshotChanged += _ => completed++;
+            presenter.ApplySteps(result.Steps, new GameSessionSnapshot("ghost", board, 1, false));
+            yield return WaitUntil(() => body.color.a < 0.01f);
+            presenter.Rebuild(initial);
+            yield return new WaitForSeconds(0.8f);
+            Assert.That(presenter.IsPresenting, Is.False);
+            Assert.That(presenter.IsSynchronizedWith(initial), Is.True);
+            Assert.That(completed, Is.EqualTo(1), "Canceled playback must not publish its old snapshot.");
+        }
+
+        [UnityTest]
+        public IEnumerator SigilReturnClearsOnlyAfterTravel()
+        {
+            BlobState source = Blob("source", BlobColor.Red, 0, 0);
+            var ghost = new BlobState("ghost", BlobType.Ghost, new GridPosition(3, 0));
+            var board = new BoardState(4, 1, new[] { source, ghost }, new[]
+            {
+                new TileState("sigil", new GridPosition(1, 0), TileType.Sigil)
+            });
+            // Use the normal test surface; tiles are tested independently by Core.
+            var initial = Snapshot(4, 1, source, ghost);
+            BoardPresenter presenter = CreatePresenter(initial);
+            presenter.TryGetBlobView("ghost", out BlobView view);
+            SpriteRenderer body = AddFadeGroup(view, out SpriteRenderer halo);
+            var result = new MoveResolver().Resolve(board, new MoveIntent(source, ghost));
+            var final = Snapshot(4, 1);
+            presenter.ApplySteps(result.Steps, final);
+            yield return WaitUntil(() => body != null && body.color.a < 0.01f);
+            Assert.That(view != null, Is.True);
+            Assert.That(halo.color.a, Is.EqualTo(1f));
+            yield return WaitUntil(() => !presenter.IsPresenting);
+            yield return null;
+            Assert.That(view == null, Is.True);
+            Assert.That(presenter.VisibleBlobCount, Is.Zero);
+        }
+
+        [UnityTest]
+        public IEnumerator AwaitedPlaybackCancellationRestoresCommittedSnapshot()
+        {
+            var source = Blob("source", BlobColor.Red, 0, 0);
+            var ghost = new BlobState("ghost", BlobType.Ghost, new GridPosition(3, 0));
+            var initial = Snapshot(4, 1, source, ghost);
+            BoardPresenter presenter = CreatePresenter(initial);
+            BoardState board = initial.Board.Clone();
+            var result = new MoveResolver().Resolve(board, new MoveIntent(source, ghost));
+            var final = new GameSessionSnapshot("ghost", board, 1, false);
+            using var cancellation = new CancellationTokenSource();
+            var task = presenter.ApplyStepsAsync(result.Steps, final,
+                cancellationToken: cancellation.Token).SuppressCancellationThrow();
+            cancellation.Cancel();
+            yield return task.ToCoroutine(wasCanceled => Assert.That(wasCanceled, Is.True));
+            Assert.That(presenter.IsPresenting, Is.False);
+            Assert.That(presenter.IsSynchronizedWith(final), Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator LandingAbsorptionKeepsIntermediateTrailViews()
+        {
+            var source = new BlobState("source", BlobType.Trail, new GridPosition(0, 0))
+                .WithColor(BlobColor.Red).WithTrail(BlobColor.Blue);
+            var ghost = new BlobState("ghost", BlobType.Ghost, new GridPosition(3, 0));
+            var initial = Snapshot(4, 1, source, ghost);
+            var presenter = CreatePresenter(initial);
+            var board = initial.Board.Clone();
+            var result = new MoveResolver().Resolve(board, new MoveIntent(source, ghost));
+            var final = new GameSessionSnapshot("ghost", board, 1, false);
+            yield return presenter.ApplyStepsAsync(result.Steps, final).ToCoroutine();
+            Assert.That(presenter.IsSynchronizedWith(final), Is.True);
+            Assert.That(presenter.VisibleBlobCount, Is.EqualTo(3));
+        }
+
+        [UnityTest]
+        public IEnumerator DisabledPresenterAppliesGhostEffectsImmediately()
+        {
+            var source = Blob("source", BlobColor.Red, 0, 0);
+            var ghost = new BlobState("ghost", BlobType.Ghost, new GridPosition(3, 0));
+            var initial = Snapshot(4, 1, source, ghost);
+            var presenter = CreatePresenter(initial);
+            presenter.enabled = false;
+            var board = initial.Board.Clone();
+            var result = new MoveResolver().Resolve(board, new MoveIntent(source, ghost));
+            var final = new GameSessionSnapshot("ghost", board, 1, false);
+            var playback = presenter.ApplyStepsAsync(result.Steps, final);
+            Assert.That(playback.Status, Is.EqualTo(UniTaskStatus.Succeeded));
+            Assert.That(presenter.IsSynchronizedWith(final), Is.True);
+            yield return playback.ToCoroutine();
+        }
+
+        private SpriteRenderer AddFadeGroup(BlobView view, out SpriteRenderer halo)
+        {
+            var bodyObject = new GameObject("Body");
+            bodyObject.transform.SetParent(view.transform, false);
+            var body = bodyObject.AddComponent<SpriteRenderer>();
+            body.color = new Color(1f, 1f, 1f, 0.6f);
+            var haloObject = new GameObject("Halo");
+            haloObject.transform.SetParent(view.transform, false);
+            halo = haloObject.AddComponent<SpriteRenderer>();
+            var fade = view.gameObject.AddComponent<FadeableVisual>();
+            SetPrivateField(fade, "renderers", new[] { body });
+            SetPrivateField(view.BlobRenderer, "fadeableVisual", fade);
+            return body;
         }
 
         [UnityTest]
@@ -144,14 +292,15 @@ namespace Blobs.Tests.PlayMode
             surface.AddComponent<BoardSurfaceView>();
 
             BoardPresenter board = root.AddComponent<BoardPresenter>();
+            ConfigureAnimationSettings(root);
             GameplayInputAdapter input = root.AddComponent<GameplayInputAdapter>();
             GameplayCommandAdapter commands = root.AddComponent<GameplayCommandAdapter>();
             GameBootstrapper bootstrapper = root.AddComponent<GameBootstrapper>();
             LevelColorPaletteAsset palette = CreatePalette();
             LevelDefinitionAsset level = CreateEmptyLevel(palette);
-            BlobViewCatalogAsset blobCatalog = CreateAsset<BlobViewCatalogAsset>();
+            ViewCatalogAsset viewCatalog = CreateAsset<ViewCatalogAsset>();
 
-            SetPrivateField(board.GetComponent<BlobPresenter>(), "_blobViewCatalog", blobCatalog);
+            SetPrivateField(board.GetComponent<BlobPresenter>(), "_viewCatalog", viewCatalog);
             SetPrivateField(bootstrapper, "boardPresenter", board);
             SetPrivateField(bootstrapper, "levelAsset", level);
             SetPrivateField(bootstrapper, "inputAdapter", input);
@@ -202,8 +351,9 @@ namespace Blobs.Tests.PlayMode
             surface.transform.SetParent(root.transform, false);
             surface.AddComponent<BoardSurfaceView>();
             BoardPresenter presenter = root.AddComponent<BoardPresenter>();
+            var animationSettings = ConfigureAnimationSettings(root);
             LevelColorPaletteAsset palette = CreatePalette();
-            var factory = new RuntimeBlobViewFactory(palette);
+            var factory = new RuntimeBlobViewFactory(palette, animationSettings);
 
             root.SetActive(true);
             presenter.Initialize(
@@ -211,6 +361,18 @@ namespace Blobs.Tests.PlayMode
                 palette,
                 factory);
             return presenter;
+        }
+
+        private BlobAnimationSettingsAsset ConfigureAnimationSettings(GameObject root)
+        {
+            var settings = CreateAsset<BlobAnimationSettingsAsset>();
+            settings.BlobSelectionSettings = new BlobSelectionSettings();
+            settings.BlobIdleSettings = new BlobIdleSettings();
+            settings.BlobMotionSettings = new BlobMotionSettings();
+            settings.MergeImpactSettings = new BlobMergeImpactSettings();
+            settings.GhostReturnSettings = new GhostReturnSettings();
+            SetPrivateField(root.GetComponent<BlobPresenter>(), "blobAnimationSettings", settings);
+            return settings;
         }
 
         private LevelDefinitionAsset CreateEmptyLevel(LevelColorPaletteAsset palette)
@@ -340,9 +502,11 @@ namespace Blobs.Tests.PlayMode
         {
             private readonly LevelColorPaletteAsset _palette;
 
-            public RuntimeBlobViewFactory(LevelColorPaletteAsset palette)
+            private readonly BlobAnimationSettingsAsset _settings;
+            public RuntimeBlobViewFactory(LevelColorPaletteAsset palette, BlobAnimationSettingsAsset settings)
             {
                 _palette = palette;
+                _settings = settings;
             }
 
             public BlobView Create(
@@ -357,7 +521,8 @@ namespace Blobs.Tests.PlayMode
                 visualObject.transform.SetParent(viewObject.transform, false);
                 SortingGroup sortingGroup = viewObject.AddComponent<SortingGroup>();
                 BlobView view = viewObject.AddComponent<BlobView>();
-                viewObject.AddComponent<BlobMotionAnimator>();
+                var animator = viewObject.AddComponent<BlobMotionAnimator>();
+                SetPrivateField(animator, "_blobAnimationSettings", _settings);
                 SetPrivateField(view, "_visualRoot", visualObject.transform);
                 SetPrivateField(view, "_sortingGroup", sortingGroup);
                 view.Initialize(blob, _palette, cellSize, origin);

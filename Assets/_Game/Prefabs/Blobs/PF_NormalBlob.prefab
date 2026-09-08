@@ -62,11 +62,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12715ad903b44492b9ef46534b9cb391, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BlobRenderer
-  _fallbackBaseRenderer: {fileID: 6852378884847781655}
-  _targets:
+  fallbackBaseRenderer: {fileID: 6852378884847781655}
+  targets:
   - ColorBinding: 1
     Renderers:
     - {fileID: 6852378884847781655}
+  fadeableVisual: {fileID: 0}
 --- !u!114 &429713232074978795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -411,7 +412,6 @@ GameObject:
   m_Component:
   - component: {fileID: 258025591939114382}
   - component: {fileID: 2394599582724069473}
-  - component: {fileID: 7478114042668709670}
   m_Layer: 0
   m_Name: Shadow
   m_TagString: Untagged
@@ -493,19 +493,3 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &7478114042668709670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9142065078362767107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee158225ee1e59f4791627785501d950, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: AllIn1SpriteShaderAssembly::AllIn1SpriteShader.AllIn1Shader
-  currentShaderType: 0
-  normalStrength: 5
-  normalSmoothing: 1
-  computingNormal: 0

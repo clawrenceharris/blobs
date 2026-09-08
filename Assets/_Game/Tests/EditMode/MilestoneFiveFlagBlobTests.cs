@@ -223,12 +223,11 @@ namespace Blobs.Tests.EditMode
             // Per-tile timeline: traverse 0,0 -> 1,0, then the capture beat.
             Assert.That(result.Effects.Count, Is.EqualTo(2));
 
-            MergeIntoFlagEffect effect =
-                result.Effects[1] as MergeIntoFlagEffect;
+            MergeEffect effect = result.Effects[1] as MergeEffect;
 
             Assert.That(effect, Is.Not.Null);
-            Assert.That(effect.SourceId, Is.EqualTo("purple_normal"));
-            Assert.That(effect.FlagId, Is.EqualTo("purple_flag"));
+            Assert.That(effect.MovingBlobId, Is.EqualTo("purple_normal"));
+            Assert.That(effect.TargetBlobId, Is.EqualTo("purple_flag"));
             Assert.That(effect.From, Is.EqualTo(new GridPosition(1, 0)));
             Assert.That(effect.To, Is.EqualTo(flagPosition));
 
@@ -263,7 +262,7 @@ namespace Blobs.Tests.EditMode
 
             Assert.That(normalMerge.Succeeded, Is.True);
             Assert.That(flagMerge.Succeeded, Is.True);
-            Assert.That(flagMerge.Effects.Single(), Is.TypeOf<MergeIntoFlagEffect>());
+            Assert.That(flagMerge.Effects.Single(), Is.TypeOf<MergeEffect>());
             Assert.That(snapshot.Board.Blobs.Count, Is.EqualTo(1));
             Assert.That(snapshot.Board.Blobs.Single().Id, Is.EqualTo("purple_flag"));
             Assert.That(snapshot.MoveCount, Is.EqualTo(2));

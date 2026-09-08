@@ -7,7 +7,8 @@
         "Blobs.Application",
         "Blobs.Content",
         "Blobs.Input",
-        "Blobs.Presentation"
+        "Blobs.Presentation",
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

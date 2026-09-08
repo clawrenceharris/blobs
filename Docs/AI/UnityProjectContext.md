@@ -22,7 +22,7 @@
 | --- | --- | --- | --- |
 | Rendering | URP 17.0.3 and Unity 2D feature package 2.0.1 | Confirmed | `Packages/manifest.json`, `ProjectSettings/GraphicsSettings.asset` |
 | Input | Input System 1.18.0 | Confirmed | `Packages/manifest.json`, `ProjectSettings/ProjectSettings.asset` |
-| Animation | DOTween is used by Presentation | Confirmed | `Assets/_Game/Scripts/Presentation/Blobs.Presentation.asmdef`, Presentation code |
+| Animation | DOTween performs tweening; UniTask awaits presentation playback and cancellation | Confirmed | `Assets/_Game/Scripts/Presentation/Blobs.Presentation.asmdef`, Presentation code |
 | Testing | Unity Test Framework 1.4.5 with a first-party EditMode assembly | Confirmed | `Packages/manifest.json`, `Assets/_Game/Tests/EditMode/Blobs.Tests.EditMode.asmdef` |
 | Networking | No first-party multiplayer implementation found | Confirmed | production assemblies and representative code |
 
@@ -68,7 +68,7 @@
 
 - Namespace style: `Blobs.<Layer>` for production code
 - Serialized fields: private `[SerializeField]` fields; some files place the attribute on a separate line
-- Async: no general async framework observed; Presentation uses DOTween sequences
+- Async: UniTask is installed; Presentation uses DOTween sequences with UniTask playback orchestration
 - Comments/docs: XML summaries on public contracts and comments for non-obvious presentation ordering
 
 ## Testing And Validation

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Blobs.Application;
 using Blobs.Content;
 using Blobs.Core;
@@ -23,6 +25,9 @@ namespace Blobs.Presentation
         [SerializeField] private Vector2 origin;
 
         private PresentationTimeline _effectTimeline;
+        private CancellationTokenSource _playbackCancellation;
+        private GameSessionSnapshot _pendingSnapshot;
+        public bool IsPresenting => _playbackCancellation != null;
         private BoardEffectPresentationPipeline _effectPipeline;
         private readonly List<IBoardEffectPresentationHandler> _additionalEffectHandlers = new();
         private readonly List<IMoveStepPresentationHandler> _additionalMoveStepHandlers = new();
@@ -103,6 +108,9 @@ namespace Blobs.Presentation
             if (!result.Succeeded)
                 return;
 
+            if (_pendingSnapshot != null)
+                Rebuild(_pendingSnapshot);
+
             Action contactFeedback = InvokeOnce(
                 _blobPresenter.CreateContactFeedback(
                     result.SourceBlobId,
@@ -151,41 +159,101 @@ namespace Blobs.Presentation
             if (fallbackSnapshot == null)
                 throw new ArgumentNullException(nameof(fallbackSnapshot));
 
-            KillEffectTimeline();
-            PresentationTimeline timeline = PresentationTimeline.Create(ShouldAnimateEffects());
-            bool appliedAll = _effectPipeline.PresentOrderedEffects(effects, timeline);
-
-            CompleteEffectApplication(timeline, appliedAll, fallbackSnapshot);
+            ApplyEffectsAsync(effects, fallbackSnapshot).Forget(Debug.LogException);
         }
 
-        /// <summary>
-        /// Applies a step-based move timeline with each step presented as one animation beat.
-        /// </summary>
         public void ApplySteps(IReadOnlyList<MoveStep> steps, GameSessionSnapshot fallbackSnapshot)
         {
-            ApplyStepsInternal(steps, fallbackSnapshot, contactFeedback: null);
+            ApplyStepsAsync(steps, fallbackSnapshot).Forget(Debug.LogException);
         }
 
-        private void ApplyStepsInternal(
-            IReadOnlyList<MoveStep> steps,
-            GameSessionSnapshot fallbackSnapshot,
-            Action contactFeedback)
+        private void ApplyStepsInternal(IReadOnlyList<MoveStep> steps,
+            GameSessionSnapshot fallbackSnapshot, Action contactFeedback)
         {
-            if (steps == null)
-                throw new ArgumentNullException(nameof(steps));
-            if (fallbackSnapshot == null)
-                throw new ArgumentNullException(nameof(fallbackSnapshot));
+            ApplyStepsAsync(steps, fallbackSnapshot, contactFeedback).Forget(Debug.LogException);
+        }
 
+        public UniTask ApplyEffectsAsync(IReadOnlyList<IBoardEffect> effects,
+            GameSessionSnapshot fallbackSnapshot, CancellationToken cancellationToken = default)
+        {
+            if (effects == null) throw new ArgumentNullException(nameof(effects));
+            return PresentAsync(null, effects, fallbackSnapshot, null, cancellationToken);
+        }
+
+        public UniTask ApplyStepsAsync(IReadOnlyList<MoveStep> steps,
+            GameSessionSnapshot fallbackSnapshot, Action contactFeedback = null,
+            CancellationToken cancellationToken = default)
+        {
+            if (steps == null) throw new ArgumentNullException(nameof(steps));
+            return PresentAsync(steps, null, fallbackSnapshot, contactFeedback, cancellationToken);
+        }
+
+        private async UniTask PresentAsync(IReadOnlyList<MoveStep> steps,
+            IReadOnlyList<IBoardEffect> effects, GameSessionSnapshot snapshot,
+            Action contactFeedback, CancellationToken externalToken)
+        {
+            if (snapshot == null) throw new ArgumentNullException(nameof(snapshot));
+            externalToken.ThrowIfCancellationRequested();
+            // A new move starts from the previous move's committed state, even if its
+            // animation was still running. Rebuild/undo supplies its own snapshot instead.
+            GameSessionSnapshot interrupted = _pendingSnapshot;
             KillEffectTimeline();
-            PresentationTimeline timeline = PresentationTimeline.Create(ShouldAnimateEffects());
-            bool appliedAll = _effectPipeline.PresentSteps(
-                steps,
-                timeline,
-                contactFeedback);
+            if (interrupted != null) Rebuild(interrupted);
 
-            timeline.AppendCallback(contactFeedback);
-
-            CompleteEffectApplication(timeline, appliedAll, fallbackSnapshot);
+            var cancellation = CancellationTokenSource.CreateLinkedTokenSource(externalToken);
+            var timeline = PresentationTimeline.Create(ShouldAnimateEffects());
+            _playbackCancellation = cancellation;
+            _effectTimeline = timeline;
+            _pendingSnapshot = snapshot;
+            try
+            {
+                bool applied = steps != null
+                    ? await _effectPipeline.PresentStepsAsync(steps, timeline, contactFeedback, cancellation.Token)
+                    : await _effectPipeline.PresentOrderedEffectsAsync(effects, timeline, cancellation.Token);
+                cancellation.Token.ThrowIfCancellationRequested();
+                if (!applied || !IsSynchronizedWith(snapshot))
+                {
+                    timeline.Kill();
+                    _boardSurfacePresenter.Rebuild(snapshot.Board);
+                    _blobPresenter.Rebuild(snapshot.Board.Blobs);
+                    _tilePresenter.Rebuild(snapshot.Board);
+                }
+                contactFeedback?.Invoke();
+                SnapshotChanged?.Invoke(snapshot);
+            }
+            catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
+            {
+                if (_playbackCancellation == cancellation)
+                {
+                    timeline.Kill();
+                    _boardSurfacePresenter.Rebuild(snapshot.Board);
+                    _blobPresenter.Rebuild(snapshot.Board.Blobs);
+                    _tilePresenter.Rebuild(snapshot.Board);
+                }
+                if (externalToken.IsCancellationRequested) throw;
+            }
+            catch
+            {
+                if (_playbackCancellation == cancellation)
+                {
+                    timeline.Kill();
+                    _boardSurfacePresenter.Rebuild(snapshot.Board);
+                    _blobPresenter.Rebuild(snapshot.Board.Blobs);
+                    _tilePresenter.Rebuild(snapshot.Board);
+                }
+                throw;
+            }
+            finally
+            {
+                timeline.Kill();
+                if (_playbackCancellation == cancellation)
+                {
+                    _playbackCancellation = null;
+                    _effectTimeline = null;
+                    _pendingSnapshot = null;
+                }
+                cancellation.Dispose();
+            }
         }
 
         /// <summary>
@@ -227,32 +295,6 @@ namespace Blobs.Presentation
             _boardSurfacePresenter?.Clear();
         }
 
-        private void CompleteEffectApplication(
-            PresentationTimeline timeline,
-            bool appliedAll,
-            GameSessionSnapshot fallbackSnapshot)
-        {
-            if (!appliedAll || !IsSynchronizedWith(fallbackSnapshot))
-            {
-                timeline.Kill();
-                _blobPresenter.CompleteInterruptedAnimations();
-                Rebuild(fallbackSnapshot);
-                return;
-            }
-
-            if (timeline.IsActive && timeline.Duration > 0f)
-            {
-                _effectTimeline = timeline;
-                timeline.OnComplete(() => _effectTimeline = null);
-            }
-            else
-            {
-                timeline.Kill();
-            }
-
-            SnapshotChanged?.Invoke(fallbackSnapshot);
-        }
-
         private static Action InvokeOnce(Action callback)
         {
             if (callback == null)
@@ -271,14 +313,20 @@ namespace Blobs.Presentation
 
         private void KillEffectTimeline()
         {
-            if (_effectTimeline != null)
-            {
-                PresentationTimeline timeline = _effectTimeline;
-                _effectTimeline = null;
-                timeline.Kill();
-            }
-
+            var cancellation = _playbackCancellation;
+            _playbackCancellation = null;
+            _pendingSnapshot = null;
+            cancellation?.Cancel();
+            _effectTimeline?.Kill();
+            _effectTimeline = null;
             _blobPresenter?.CompleteInterruptedAnimations();
+        }
+
+        private void OnDisable()
+        {
+            GameSessionSnapshot pending = _pendingSnapshot;
+            KillEffectTimeline();
+            if (pending != null) Rebuild(pending);
         }
 
         private bool ShouldAnimateEffects()

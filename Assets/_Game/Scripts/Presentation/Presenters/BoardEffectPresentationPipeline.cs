@@ -1,113 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Blobs.Core;
 using DG.Tweening;
 
 namespace Blobs.Presentation
 {
     /// <summary>
-    /// Identifies where an effect contributes within a composed move beat.
-    /// The composer uses phases to preserve readable animation ordering without knowing effect types.
-    /// </summary>
-    public enum BoardEffectPresentationPhase
-    {
-        /// <summary>Movement that establishes the duration of a beat.</summary>
-        Travel,
-
-        /// <summary>Feedback created at the position an actor leaves.</summary>
-        Departure,
-
-        /// <summary>Changes that become visible after travel reaches its target.</summary>
-        Arrival,
-
-        /// <summary>Secondary feedback that follows the primary interaction.</summary>
-        Aftermath
-    }
-
-    /// <summary>
-    /// Presentation services and timing supplied to an effect handler.
-    /// </summary>
-    public readonly struct BoardEffectPresentationContext
-    {
-        internal BoardEffectPresentationContext(
-            BlobPresenter blobs,
-            TilePresenter tiles,
-            PresentationTimeline timeline,
-            Ease movementEase,
-            Action contactFeedback)
-        {
-            Blobs = blobs;
-            Tiles = tiles;
-            Timeline = timeline;
-            MovementEase = movementEase;
-            ContactFeedback = contactFeedback;
-        }
-
-        public BlobPresenter Blobs { get; }
-        public TilePresenter Tiles { get; }
-        public PresentationTimeline Timeline { get; }
-        public Ease MovementEase { get; }
-        public Action ContactFeedback { get; }
-        public bool IsAnimated => Timeline.IsAnimated;
-    }
-
-    /// <summary>
-    /// Adapts one Core board-effect type into presentation behavior.
-    /// Registering another handler extends effect presentation without changing <see cref="BoardPresenter"/>.
-    /// </summary>
-    public interface IBoardEffectPresentationHandler
-    {
-        Type EffectType { get; }
-        BoardEffectPresentationPhase Phase { get; }
-
-        /// <summary>
-        /// Whether this effect establishes an arrival point for final-step easing and contact feedback.
-        /// </summary>
-        bool RepresentsMovement { get; }
-
-        /// <summary>Presents the effect in its original order outside a semantic move step.</summary>
-        bool PresentOrdered(IBoardEffect effect, BoardEffectPresentationContext context);
-
-        /// <summary>Presents the effect within the handler's declared beat phase.</summary>
-        bool PresentInBeat(IBoardEffect effect, BoardEffectPresentationContext context);
-    }
-
-    /// <summary>
-    /// Strongly typed base class for presentation handlers registered by Core effect type.
-    /// </summary>
-    public abstract class BoardEffectPresentationHandler<TEffect> :
-        IBoardEffectPresentationHandler where TEffect : IBoardEffect
-    {
-        public Type EffectType => typeof(TEffect);
-        public abstract BoardEffectPresentationPhase Phase { get; }
-        public virtual bool RepresentsMovement => false;
-
-        public bool PresentOrdered(
-            IBoardEffect effect,
-            BoardEffectPresentationContext context)
-        {
-            return PresentOrdered((TEffect)effect, context);
-        }
-
-        public bool PresentInBeat(
-            IBoardEffect effect,
-            BoardEffectPresentationContext context)
-        {
-            return PresentInBeat((TEffect)effect, context);
-        }
-
-        protected abstract bool PresentOrdered(
-            TEffect effect,
-            BoardEffectPresentationContext context);
-
-        protected abstract bool PresentInBeat(
-            TEffect effect,
-            BoardEffectPresentationContext context);
-    }
-
-    /// <summary>
-    /// Resolves effect handlers and composes ordered effects or phase-aware move steps.
-    /// Concrete effect knowledge is intentionally kept out of the board coordinator.
+    /// Dispatches explicit Core effects by type and composes their animation beats.
+    /// A MergeEffect is one interaction; movement/removal pairs are never inferred as merges.
+    /// Flat lists preserve caller order. MoveStep lists additionally group concurrent effects
+    /// (for example, trail spawning joins the beginning of movement in the same step).
     /// </summary>
     internal sealed class BoardEffectPresentationPipeline
     {
@@ -121,8 +25,6 @@ namespace Blobs.Presentation
 
         private readonly Dictionary<Type, IBoardEffectPresentationHandler> _handlers = new();
         private readonly List<IMoveStepPresentationHandler> _moveStepHandlers = new();
-        private readonly List<IOrderedEffectSequencePresentationHandler>
-            _orderedSequenceHandlers = new();
         private readonly BlobPresenter _blobs;
         private readonly TilePresenter _tiles;
 
@@ -134,8 +36,9 @@ namespace Blobs.Presentation
             Register(new MoveBlobPresentationHandler());
             Register(new SpawnBlobPresentationHandler());
             Register(new RemoveBlobPresentationHandler());
-            Register(new MergeIntoFlagPresentationHandler());
-            RegisterDefault(new NormalMergeStepPresentationHandler());
+            Register(new MergePresentationHandler());
+            Register(new GhostReturnPresentationHandler());
+            Register(new ClearGhostPresentationHandler());
         }
 
         public void Register(IBoardEffectPresentationHandler handler)
@@ -149,12 +52,6 @@ namespace Blobs.Presentation
             ValidateHandler(handler);
             _moveStepHandlers.Remove(handler);
             _moveStepHandlers.Insert(0, handler);
-
-            if (handler is IOrderedEffectSequencePresentationHandler orderedHandler)
-            {
-                _orderedSequenceHandlers.Remove(orderedHandler);
-                _orderedSequenceHandlers.Insert(0, orderedHandler);
-            }
         }
 
         public static void ValidateHandler(IBoardEffectPresentationHandler handler)
@@ -178,26 +75,33 @@ namespace Blobs.Presentation
                 throw new ArgumentNullException(nameof(handler));
         }
 
+        public async UniTask<bool> PresentOrderedEffectsAsync(
+            IReadOnlyList<IBoardEffect> effects, PresentationTimeline timeline,
+            CancellationToken cancellationToken)
+        {
+            if (!PresentOrderedEffects(effects, timeline)) return false;
+            await timeline.PlayAsync(cancellationToken);
+            return true;
+        }
+
+        public async UniTask<bool> PresentStepsAsync(IReadOnlyList<MoveStep> steps,
+            PresentationTimeline timeline, Action contactFeedback, CancellationToken cancellationToken)
+        {
+            if (!PresentSteps(steps, timeline, contactFeedback)) return false;
+            await timeline.PlayAsync(cancellationToken);
+            return true;
+        }
+
+        /// <summary>
+        /// Flat-list compatibility path. Dispatch each effect exactly once in its supplied order;
+        /// interaction semantics must already be present in the effect itself.
+        /// </summary>
         public bool PresentOrderedEffects(
             IReadOnlyList<IBoardEffect> effects,
             PresentationTimeline timeline)
         {
             for (int i = 0; i < effects.Count; i++)
             {
-                if (TryPresentOrderedSequence(
-                        effects,
-                        i,
-                        timeline,
-                        out int handledEffectCount,
-                        out bool sequenceApplied))
-                {
-                    if (!sequenceApplied)
-                        return false;
-
-                    i += handledEffectCount - 1;
-                    continue;
-                }
-
                 if (!TryResolve(effects[i], out IBoardEffectPresentationHandler handler))
                     return false;
 
@@ -212,6 +116,10 @@ namespace Blobs.Presentation
             return true;
         }
 
+        /// <summary>
+        /// Canonical move path: each step becomes one beat; phase placement is local to that beat.
+        /// Playback awaits the beats in sequence after composition succeeds.
+        /// </summary>
         public bool PresentSteps(
             IReadOnlyList<MoveStep> steps,
             PresentationTimeline timeline,
@@ -389,32 +297,6 @@ namespace Blobs.Presentation
             return false;
         }
 
-        private bool TryPresentOrderedSequence(
-            IReadOnlyList<IBoardEffect> effects,
-            int startIndex,
-            PresentationTimeline timeline,
-            out int handledEffectCount,
-            out bool applied)
-        {
-            handledEffectCount = 0;
-            applied = false;
-            foreach (IOrderedEffectSequencePresentationHandler handler in _orderedSequenceHandlers)
-            {
-                if (!handler.CanPresent(effects, startIndex))
-                    continue;
-
-                var context = CreateContext(timeline, Ease.Linear, contactFeedback: null);
-                applied = handler.Present(
-                    effects,
-                    startIndex,
-                    context,
-                    out handledEffectCount);
-                return true;
-            }
-
-            return false;
-        }
-
         private bool TryResolve(
             MoveStep step,
             out IMoveStepPresentationHandler handler)
@@ -453,14 +335,6 @@ namespace Blobs.Presentation
                 contactFeedback);
         }
 
-        private void RegisterDefault(IMoveStepPresentationHandler handler)
-        {
-            ValidateHandler(handler);
-            _moveStepHandlers.Add(handler);
-            if (handler is IOrderedEffectSequencePresentationHandler orderedHandler)
-                _orderedSequenceHandlers.Add(orderedHandler);
-        }
-
         private readonly struct EffectWorkItem
         {
             public EffectWorkItem(
@@ -475,153 +349,5 @@ namespace Blobs.Presentation
             public IBoardEffectPresentationHandler Handler { get; }
         }
 
-        private sealed class MoveBlobPresentationHandler :
-            BoardEffectPresentationHandler<MoveBlobEffect>
-        {
-            public override BoardEffectPresentationPhase Phase =>
-                BoardEffectPresentationPhase.Travel;
-            public override bool RepresentsMovement => true;
-
-            protected override bool PresentOrdered(
-                MoveBlobEffect effect,
-                BoardEffectPresentationContext context)
-            {
-                if (!context.Blobs.Transitions.TryMove(
-                        effect.BlobId,
-                        effect.To,
-                        Ease.Linear,
-                        context.Timeline,
-                        onArrival: null,
-                        out Tween animation))
-                {
-                    return false;
-                }
-
-                context.Timeline.Append(animation);
-                return true;
-            }
-
-            protected override bool PresentInBeat(
-                MoveBlobEffect effect,
-                BoardEffectPresentationContext context)
-            {
-                if (!context.Blobs.Transitions.TryMove(
-                        effect.BlobId,
-                        effect.To,
-                        context.MovementEase,
-                        context.Timeline,
-                        context.ContactFeedback,
-                        out Tween animation))
-                {
-                    return false;
-                }
-
-                context.Timeline.Append(animation);
-                return true;
-            }
-        }
-
-        private sealed class SpawnBlobPresentationHandler :
-            BoardEffectPresentationHandler<SpawnBlobEffect>
-        {
-            public override BoardEffectPresentationPhase Phase =>
-                BoardEffectPresentationPhase.Departure;
-
-            protected override bool PresentOrdered(
-                SpawnBlobEffect effect,
-                BoardEffectPresentationContext context)
-            {
-                if (!context.Blobs.Transitions.TryCreate(
-                        effect.Blob,
-                        context.Timeline,
-                        out Tween animation))
-                {
-                    return false;
-                }
-
-                context.Timeline.Append(animation);
-                return true;
-            }
-
-            protected override bool PresentInBeat(
-                SpawnBlobEffect effect,
-                BoardEffectPresentationContext context)
-            {
-                if (!context.Blobs.Transitions.TryCreate(
-                        effect.Blob,
-                        context.Timeline,
-                        out Tween animation))
-                {
-                    return false;
-                }
-
-                context.Timeline.Join(animation);
-                return true;
-            }
-        }
-
-        private sealed class RemoveBlobPresentationHandler :
-            BoardEffectPresentationHandler<RemoveBlobEffect>
-        {
-            public override BoardEffectPresentationPhase Phase =>
-                BoardEffectPresentationPhase.Arrival;
-
-            protected override bool PresentOrdered(
-                RemoveBlobEffect effect,
-                BoardEffectPresentationContext context)
-            {
-                return PresentRemoval(effect, context);
-            }
-
-            protected override bool PresentInBeat(
-                RemoveBlobEffect effect,
-                BoardEffectPresentationContext context)
-            {
-                return PresentRemoval(effect, context);
-            }
-
-            private static bool PresentRemoval(
-                RemoveBlobEffect effect,
-                BoardEffectPresentationContext context)
-            {
-                if (!context.Blobs.Transitions.TryRemove(
-                        effect.BlobId,
-                        context.Timeline,
-                        out Tween animation))
-                {
-                    return false;
-                }
-
-                context.Timeline.Append(animation);
-                return true;
-            }
-        }
-
-        private sealed class MergeIntoFlagPresentationHandler :
-            BoardEffectPresentationHandler<MergeIntoFlagEffect>
-        {
-            public override BoardEffectPresentationPhase Phase =>
-                BoardEffectPresentationPhase.Travel;
-            public override bool RepresentsMovement => true;
-
-            protected override bool PresentOrdered(
-                MergeIntoFlagEffect effect,
-                BoardEffectPresentationContext context)
-            {
-                return context.Blobs.FlagCaptures.Present(
-                    effect,
-                    context.Timeline);
-            }
-
-            protected override bool PresentInBeat(
-                MergeIntoFlagEffect effect,
-                BoardEffectPresentationContext context)
-            {
-                return context.Blobs.FlagCaptures.Present(
-                    effect,
-                    context.Timeline,
-                    context.ContactFeedback);
-            }
-        }
     }
 }

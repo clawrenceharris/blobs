@@ -15,9 +15,9 @@ namespace Blobs.Presentation
 
     public sealed class BlobViewFactory : IBlobViewFactory
     {
-        private readonly BlobViewCatalogAsset _catalog;
+        private readonly ViewCatalogAsset _catalog;
         private readonly LevelColorPaletteAsset _palette;
-        public BlobViewFactory(BlobViewCatalogAsset catalog, LevelColorPaletteAsset palette)
+        public BlobViewFactory(ViewCatalogAsset catalog, LevelColorPaletteAsset palette)
         {
             _catalog = catalog != null
                 ? catalog
@@ -35,7 +35,7 @@ namespace Blobs.Presentation
             )
         {
             BlobView prefab =
-                _catalog.GetRequiredPrefab(blob.Type);
+                _catalog.GetRequiredBlobPrefab(blob.Type);
 
             BlobView instance =
                 Object.Instantiate(prefab, parent);

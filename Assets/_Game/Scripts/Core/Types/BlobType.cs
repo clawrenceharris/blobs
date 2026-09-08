@@ -12,7 +12,7 @@ namespace Blobs.Core
     {
         public static bool IsClearable(this BlobType type)
         {
-            return type == BlobType.Normal || type == BlobType.Trail;
+            return type == BlobType.Normal || type == BlobType.Trail || type == BlobType.Ghost;
         }
     }
 }

@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: eeda712fed0a442d7a6282a63002149a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - theme: {fileID: 11400000, guid: a760ad6f8971f49b5818d7635ba76e01, type: 2}
+  - gameObject: {instanceID: 0}
+  - cornerRight: {fileID: 21300000, guid: 8972faf76855042ca84d4b41751a9600, type: 3}
+  - cornerTop: {fileID: 21300000, guid: 8a15685fdfaca41a58ee670fbd17a69c, type: 3}
+  - cornerSingle: {fileID: 21300000, guid: 765fb9fec0ce94bf8aac3336754fd6ab, type: 3}
+  - cornerTopAndRight: {fileID: 21300000, guid: e8f96139d07e84b949dd860780ce3527, type: 3}
+  - leftEdgeBottom: {fileID: 21300000, guid: ac6d14947f7d942a0bf6298ebac9e70a, type: 3}
+  - leftEdgeBottomAndTop: {fileID: 21300000, guid: 3550cb92bdbac4cffa93ee5d03ccb5b3, type: 3}
+  - bottomEdgeLeft: {fileID: 21300000, guid: 1b62844440b2d489cbfde3d2da38b146, type: 3}
+  - bottomEdgeLeftAndRight: {fileID: 21300000, guid: 3b58e88cfe9364615bac4923ceb53929, type: 3}
+  - edgeSprite: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

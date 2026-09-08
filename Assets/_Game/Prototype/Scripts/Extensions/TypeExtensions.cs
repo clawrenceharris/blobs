@@ -1,0 +1,79 @@
+public static class TypeExtensions
+{
+    
+
+    public static bool IsColorBlob(this BlobType type)
+    {
+        return type == BlobType.Normal || type == BlobType.Switch || type == BlobType.Target || type == BlobType.Trail;
+    }
+
+    public static bool IsTrailBlob(this BlobType type)
+    {
+        return type == BlobType.Trail;
+    }
+    public static bool IsClearable(this BlobType type)
+    {
+        return type == BlobType.Normal || type == BlobType.Trail;
+    }
+    public static bool IsMultiMergeable(this BlobType type)
+    {
+        return type == BlobType.Normal || type == BlobType.Trail;
+    }
+    public static bool IsNormalBlob(this BlobType type)
+    {
+        return type == BlobType.Normal;
+    }
+
+    public static bool IsSwitchBlob(this BlobType type)
+    {
+        return type == BlobType.Switch;
+    }
+
+    public static bool IsTargetBlob(this BlobType type)
+    {
+        return type == BlobType.Target;
+    }
+     public static bool CanInitiateMerge(this BlobType type)
+    {
+        return type != BlobType.Target && type != BlobType.Rock && type != BlobType.Ghost && type != BlobType.Switch && type != BlobType.Enemy;
+    }
+    
+    public static bool IsBlob(this BlobType type)
+    {
+        return type == BlobType.Normal ||
+            type == BlobType.Switch ||
+            type == BlobType.Target ||
+            type == BlobType.Trail;
+    }
+
+   
+    public static bool IsMaxSizedBlob(this BlobType type)
+    {
+        return type == BlobType.Target || type == BlobType.Switch;
+    }
+   
+    
+    public static bool IsTraversable(this TileType type)
+    {
+        return type == TileType.Normal || type == TileType.Sigil;
+    }
+    public static bool IsSpikeTile(this TileType type)
+    {
+        return type == TileType.Spike;
+    }
+
+    public static bool IsLaserTile(this TileType type)
+    {
+        return type == TileType.Laser;
+    }
+     public static bool IsSigilTile(this TileType type)
+    {
+        return type == TileType.Sigil;
+    }
+
+   
+    public static bool IsStickyTile(this TileType type)
+    {
+        return type == TileType.Sticky;
+    }
+}

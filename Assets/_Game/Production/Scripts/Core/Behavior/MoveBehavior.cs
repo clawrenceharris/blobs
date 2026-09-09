@@ -57,6 +57,12 @@ namespace Blobs.Core
         {
             if (context.DepartedTileWasMergeSite)
                 return;
+            var tile = context.Board.GetTileAt(context.DepartedTile);
+            if (tile != null && tile.Type.IsGrave())
+            {
+                return;
+            }
+
 
 
             string id = context.IdFactory.CreateId(

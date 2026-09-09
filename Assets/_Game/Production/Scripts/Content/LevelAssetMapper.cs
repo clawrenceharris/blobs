@@ -110,11 +110,11 @@ namespace Blobs.Content
             switch (tile)
             {
 
-                case SigilTileAssetData sigil when sigil.type == TileType.Sigil:
-                    return new SigilTileDefinition(sigil.id, position);
-                case SigilTileAssetData sigil:
+                case GraveTileAssetData grave when grave.type == TileType.Grave:
+                    return new GraveTileDefinition(grave.id, position);
+                case GraveTileAssetData grave:
                     throw new InvalidOperationException(
-                        $"Sigil tile '{sigil.id}' declares unsupported type {sigil.type}.");
+                        $"Grave tile '{grave.id}' declares unsupported type {grave.type}.");
                 default:
                     throw new InvalidOperationException(
                         $"Unsupported tile asset data type: {tile.GetType().Name}.");

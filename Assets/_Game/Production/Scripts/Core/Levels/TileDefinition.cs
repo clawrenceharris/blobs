@@ -30,10 +30,10 @@ namespace Blobs.Core
     /// <summary>
     /// Basic traversable tile definition.
     /// </summary>
-    public sealed class SigilTileDefinition : TileDefinition
+    public sealed class GraveTileDefinition : TileDefinition
     {
-        public SigilTileDefinition(string id, GridPosition position)
-            : base(id, position, TileType.Sigil) { }
+        public GraveTileDefinition(string id, GridPosition position)
+            : base(id, position, TileType.Grave) { }
     }
 
 

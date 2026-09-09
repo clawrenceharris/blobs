@@ -35,7 +35,7 @@ namespace Blobs.Tests.EditMode
             TileState tile = new TileState(
                 "tile",
                 new GridPosition(1, 0),
-                TileType.Sigil);
+                TileType.Grave);
             var snapshot = new GameSessionSnapshot(
                 "presenter-separation",
                 new BoardState(2, 1, new[] { blob }, new[] { tile }),
@@ -141,7 +141,7 @@ namespace Blobs.Tests.EditMode
             var tile = new TileState(
                 "tile",
                 new GridPosition(1, 2),
-                TileType.Sigil);
+                TileType.Grave);
 
             view.Initialize(tile, 1f, Vector2.zero);
 
@@ -149,7 +149,7 @@ namespace Blobs.Tests.EditMode
             Assert.That(second.BindCount, Is.EqualTo(1));
             Assert.That(first.LastContext.View, Is.SameAs(view));
             Assert.That(first.LastContext.State, Is.SameAs(tile));
-            Assert.That(view.TileType, Is.EqualTo(TileType.Sigil));
+            Assert.That(view.TileType, Is.EqualTo(TileType.Grave));
         }
 
 
@@ -213,13 +213,13 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void SigilTilePrefabIsRegisteredInProductionCatalog()
+        public void GraveTilePrefabIsRegisteredInProductionCatalog()
         {
             ViewCatalogAsset catalog = AssetDatabase.LoadAssetAtPath<ViewCatalogAsset>(
                 "Assets/_Game/Production/Content/Presentation/ViewCatalog.asset");
 
             Assert.That(catalog, Is.Not.Null);
-            TileView prefab = catalog.GetRequiredTilePrefab(TileType.Sigil);
+            TileView prefab = catalog.GetRequiredTilePrefab(TileType.Grave);
             Assert.That(prefab, Is.Not.Null);
         }
 

@@ -16,7 +16,7 @@ namespace Blobs.Core
         public string SourceId { get; }
         public string GhostId { get; }
         public GridPosition At { get; }
-        /// <summary>Return destination, shortened to the first Sigil when clearing.</summary>
+        /// <summary>Return destination, shortened to the first Grave when clearing.</summary>
         public GridPosition FinalPosition { get; }
         public bool IsClear { get; }
 

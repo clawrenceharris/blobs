@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: -1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: f0283e3fc0fb64832a9400b7ac9b3d2e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8071778bd996c4a32a3d14ca0bfc010e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -104,7 +104,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4308dfb561940f3a16025e7c52cdcc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.TrailBlobColorBinding
-  blobMaterial: {fileID: 2100000, guid: 67d4f62ca65af4605bcf0257e28a7aa2, type: 2}
   targetRenderer: {fileID: 7049613652742966449}
 --- !u!1001 &3912473897929030523
 PrefabInstance:
@@ -159,7 +158,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: targets.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: _targets.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: targets.Array.data[1].ColorBinding
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
@@ -167,9 +174,17 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: targets.Array.data[1].Renderers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: _targets.Array.data[1].Renderers.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: 'targets.Array.data[1].Renderers.Array.data[0]'
+      value: 
+      objectReference: {fileID: 7049613652742966449}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: '_targets.Array.data[1].Renderers.Array.data[0]'
       value: 

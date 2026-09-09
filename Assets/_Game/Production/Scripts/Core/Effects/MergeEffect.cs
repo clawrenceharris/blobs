@@ -13,7 +13,6 @@ namespace Blobs.Core
             string movingBlobId,
             string targetBlobId,
             MergeSurvivor survivor,
-            string consumedBlobId,
             GridPosition from,
             GridPosition at
 
@@ -33,7 +32,6 @@ namespace Blobs.Core
             movingBlobId: context.Source.Id,
             targetBlobId: context.Target.Id,
             survivor: MergeSurvivor.MovingBlob,
-            consumedBlobId: context.Target.Id,
             from: context.Source.Position,
             at: context.Target.Position);
         public static MergeEffect ReverseMerge(MoveContext context) => new MergeEffect(
@@ -41,7 +39,6 @@ namespace Blobs.Core
             movingBlobId: context.Source.Id,
             targetBlobId: context.Target.Id,
             survivor: MergeSurvivor.TargetBlob,
-            consumedBlobId: context.Source.Id,
             from: context.Source.Position,
             at: context.Target.Position);
         public MergeSurvivor Survivor { get; }

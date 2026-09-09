@@ -41,27 +41,27 @@ namespace Blobs.Tests.PlayMode
         public IEnumerator ExplicitReverseMergePreservesFlagOrGhostInBothInputFormats()
         {
             foreach (var type in new[] { BlobType.Flag, BlobType.Ghost })
-            foreach (bool grouped in new[] { false, true })
-            {
-                var source = Blob("moving", BlobColor.Red, 0, 0);
-                var target = new BlobState("target", type, new GridPosition(1, 0));
-                var initial = Snapshot(2, 1, source, target);
-                var presenter = CreatePresenter(initial);
-                presenter.TryGetBlobView(source.Id, out BlobView movingView);
-                presenter.TryGetBlobView(target.Id, out BlobView targetView);
-                var merge = MergeEffect.ReverseMerge(new MoveContext(initial.Board, source.Position, source, target));
-                var expected = Snapshot(2, 1, target);
-                var playback = grouped
-                    ? presenter.ApplyStepsAsync(new[] { new MoveStep(MoveStepKind.Merge, new IBoardEffect[] { merge }) }, expected)
-                    : presenter.ApplyEffectsAsync(new IBoardEffect[] { merge }, expected);
-                yield return playback.ToCoroutine();
-                yield return null;
-                Assert.That(presenter.TryGetBlobView(target.Id, out BlobView survivor), Is.True);
-                Assert.That(survivor, Is.SameAs(targetView));
-                Assert.That(movingView == null, Is.True);
-                Assert.That(survivor.transform.localPosition.x, Is.EqualTo(presenter.CellSize).Within(0.001f));
-                Assert.That(presenter.IsSynchronizedWith(expected), Is.True);
-            }
+                foreach (bool grouped in new[] { false, true })
+                {
+                    var source = Blob("moving", BlobColor.Red, 0, 0);
+                    var target = new BlobState("target", type, new GridPosition(1, 0));
+                    var initial = Snapshot(2, 1, source, target);
+                    var presenter = CreatePresenter(initial);
+                    presenter.TryGetBlobView(source.Id, out BlobView movingView);
+                    presenter.TryGetBlobView(target.Id, out BlobView targetView);
+                    var merge = MergeEffect.ReverseMerge(new MoveContext(initial.Board, source.Position, source, target));
+                    var expected = Snapshot(2, 1, target);
+                    var playback = grouped
+                        ? presenter.ApplyStepsAsync(new[] { new MoveStep(MoveStepKind.Merge, new IBoardEffect[] { merge }) }, expected)
+                        : presenter.ApplyEffectsAsync(new IBoardEffect[] { merge }, expected);
+                    yield return playback.ToCoroutine();
+                    yield return null;
+                    Assert.That(presenter.TryGetBlobView(target.Id, out BlobView survivor), Is.True);
+                    Assert.That(survivor, Is.SameAs(targetView));
+                    Assert.That(movingView == null, Is.True);
+                    Assert.That(survivor.transform.localPosition.x, Is.EqualTo(presenter.CellSize).Within(0.001f));
+                    Assert.That(presenter.IsSynchronizedWith(expected), Is.True);
+                }
         }
 
         [UnityTest]
@@ -102,7 +102,7 @@ namespace Blobs.Tests.PlayMode
                 new MoveStep(MoveStepKind.Merge, new IBoardEffect[] { merge }),
                 new MoveStep(MoveStepKind.Traverse, new IBoardEffect[]
                 {
-                    new GhostReturnEffect(ghost.Id, new[] { new ReturnStep(ghost.Id, source.Position) })
+                    new GhostHauntEffect(ghost.Id, source.Id, new[] { source.Position })
                 })
             };
             var task = presenter.ApplyStepsAsync(steps, expected);

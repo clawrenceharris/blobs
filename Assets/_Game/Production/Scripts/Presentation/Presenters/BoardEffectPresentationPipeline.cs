@@ -37,7 +37,7 @@ namespace Blobs.Presentation
             Register(new SpawnBlobPresentationHandler());
             Register(new RemoveBlobPresentationHandler());
             Register(new MergePresentationHandler());
-            Register(new GhostReturnPresentationHandler());
+            Register(new GhostHauntPresentationHandler());
             Register(new ClearGhostPresentationHandler());
         }
 

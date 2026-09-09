@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: ef4513f53d06a4d378a17092960536b0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7de3ebe6909c24b308e0ee5d53ba8112, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -295,9 +295,21 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: targets.Array.data[0].Renderers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: _targets.Array.data[0].Renderers.Array.size
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: 'targets.Array.data[0].Renderers.Array.data[0]'
+      value: 
+      objectReference: {fileID: 257091627349198181}
+    - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: 'targets.Array.data[0].Renderers.Array.data[1]'
+      value: 
+      objectReference: {fileID: 3609697410622918580}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: '_targets.Array.data[0].Renderers.Array.data[0]'
       value: 

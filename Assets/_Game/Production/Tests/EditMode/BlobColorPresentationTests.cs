@@ -12,13 +12,13 @@ namespace Blobs.Tests.EditMode
     public sealed class BlobColorPresentationTests
     {
         private const string PalettePath =
-            "Assets/_Game/Content/Presentation/BlobColorPalette_Default.asset";
+            "Assets/_Game/Production/Content/Presentation/BlobColorPalette_Default.asset";
         private const string NormalPrefabPath =
-            "Assets/_Game/Prefabs/Blobs/PF_NormalBlob.prefab";
+            "Assets/_Game/Production/Prefabs/Blobs/PF_NormalBlob.prefab";
         private const string TrailPrefabPath =
-            "Assets/_Game/Prefabs/Blobs/PF_TrailBlob Variant.prefab";
+            "Assets/_Game/Production/Prefabs/Blobs/PF_TrailBlob Variant.prefab";
         private const string FlagPrefabPath =
-            "Assets/_Game/Prefabs/Blobs/PF_FlagBlob.prefab";
+            "Assets/_Game/Production/Prefabs/Blobs/PF_FlagBlob.prefab";
 
         private readonly List<UnityEngine.Object> _createdObjects = new();
 

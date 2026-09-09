@@ -41,7 +41,7 @@ namespace Blobs.Core
         bool TryGetMergeStrategy(
             BlobType sourceType,
             BlobType targetType,
-            out IMergeStrategy strategy);
+            out ICollisionStrategy strategy);
 
         bool TryGetMoveBehavior(
             BlobType type,
@@ -56,20 +56,20 @@ namespace Blobs.Core
     public sealed class BlobRuleBook : IBlobRuleBook
     {
         private readonly Dictionary<BlobType, BlobTraits> _traits;
-        private readonly Dictionary<MergeKey, IMergeStrategy> _mergeStrategies;
+        private readonly Dictionary<MergeKey, ICollisionStrategy> _mergeStrategies;
         private readonly Dictionary<BlobType, IMoveBehavior> _moveBehaviors;
         private readonly Dictionary<MergeKey, IMoveStrategy> _moveStrategies;
 
         public BlobRuleBook(
             IDictionary<BlobType, BlobTraits> traits,
-            IDictionary<MergeKey, IMergeStrategy> mergeStrategies,
+            IDictionary<MergeKey, ICollisionStrategy> mergeStrategies,
             IDictionary<MergeKey, IMoveStrategy> moveStrategies = null,
             IDictionary<BlobType, IMoveBehavior> moveBehaviors = null
            )
         {
             _traits = new Dictionary<BlobType, BlobTraits>(traits);
             _mergeStrategies =
-                new Dictionary<MergeKey, IMergeStrategy>(mergeStrategies);
+                new Dictionary<MergeKey, ICollisionStrategy>(mergeStrategies);
             _moveBehaviors = moveBehaviors != null
                 ? new Dictionary<BlobType, IMoveBehavior>(moveBehaviors)
                 : new Dictionary<BlobType, IMoveBehavior>();
@@ -99,7 +99,7 @@ namespace Blobs.Core
         public bool TryGetMergeStrategy(
             BlobType sourceType,
             BlobType targetType,
-            out IMergeStrategy strategy)
+            out ICollisionStrategy strategy)
         {
             return _mergeStrategies.TryGetValue(
                 new MergeKey(sourceType, targetType),
@@ -115,10 +115,10 @@ namespace Blobs.Core
 
         public static BlobRuleBook CreateDefault()
         {
-            var normalMerge = new NormalMergeStrategy();
-            var flagMerge = new FlagMergeStrategy();
-            var rockMerge = new RockMergeStrategy();
-            var ghostMerge = new GhostMergeStrategy();
+            var normalMerge = new NormalCollisionStrategy();
+            var flagMerge = new FlagCollisionStrategy();
+            var rockMerge = new RockCollisionStrategy();
+            var ghostMerge = new GhostCollisionStrategy();
 
             return new BlobRuleBook(
                 new Dictionary<BlobType, BlobTraits>
@@ -136,7 +136,7 @@ namespace Blobs.Core
                     [BlobType.Ghost] =
                         new BlobTraits(canBeSource: false, isClearable: true),
                 },
-                new Dictionary<MergeKey, IMergeStrategy>
+                new Dictionary<MergeKey, ICollisionStrategy>
                 {
                     // Normal blobs
                     [new MergeKey(BlobType.Normal, BlobType.Normal)] =

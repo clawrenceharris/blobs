@@ -112,7 +112,7 @@ namespace Blobs.Core
                     if (!_rules.TryGetMergeStrategy(
                             mover.Type,
                             occupant.Type,
-                            out IMergeStrategy mergeStrategy))
+                            out ICollisionStrategy mergeStrategy))
                     {
                         return MoveResult.Failed(
                             mover.Id, target.Id, MoveFailureReason.UnsupportedInteraction);

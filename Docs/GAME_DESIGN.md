@@ -20,14 +20,14 @@ Missing cells or impassable terrain encountered before forward movement ends rej
 
 A selected Flag is an explicit completion attempt: simulation must actually capture that Flag and leave no clearable blobs. Stopping at a Rock or being consumed by a Ghost before the selected Flag rejects the whole action, even if the alternative outcome would clear the board. Encountering an intermediate Flag while targeting another blob also rejects with an explanation.
 
-| Intended forward sequence | Outcome |
-| --- | --- |
-| Source → valid Normal merge → gap → target | Reject all effects: Path Blocked. |
-| Source → valid Normal merge → Rock → gap → target | Accept; stop immediately before Rock. |
-| Source → Ghost → gap → non-Flag target | Accept; source is consumed and haunt resolves. |
-| Source → same-colored blob → Rock → target | Reject all effects: color rule. |
-| Source → Rock → same-colored blob → non-Flag target | Accept; stop before Rock. |
-| Source → Rock or Ghost → selected Flag | Reject: selected Flag cannot be captured. |
+| Intended forward sequence                           | Outcome                                        |
+| --------------------------------------------------- | ---------------------------------------------- |
+| Source → valid Normal merge → gap → target          | Reject all effects: Path Blocked.              |
+| Source → valid Normal merge → Rock → gap → target   | Accept; stop immediately before Rock.          |
+| Source → Ghost → gap → non-Flag target              | Accept; source is consumed and haunt resolves. |
+| Source → same-colored blob → Rock → target          | Reject all effects: color rule.                |
+| Source → Rock → same-colored blob → non-Flag target | Accept; stop before Rock.                      |
+| Source → Rock or Ghost → selected Flag              | Reject: selected Flag cannot be captured.      |
 
 ## Blob interactions
 
@@ -76,13 +76,13 @@ These are structural checks, not a proof of solvability. Deliberate level design
 
 ## Outcomes, feedback, and move count
 
-| Result | Board | Move count / history | Feedback |
-| --- | --- | --- | --- |
-| Rejected action | Unchanged | Unchanged | Rejection shake/text; no merge feedback; clear selection. |
-| Valid unchanged contact | Unchanged | Unchanged | Contact audio/visuals. |
-| Valid board-changing action | Commit entire result | Add one move and one Undo entry | Forward sequence. |
-| Undo | Restore one whole action | Count unchanged; remove latest available entry | Reverse sequence with dedicated Undo audio/effects. |
-| Restart | Restore authored start | Count zero; history cleared | Cancel pending playback and victory. |
+| Result                      | Board                    | Move count / history                           | Feedback                                                  |
+| --------------------------- | ------------------------ | ---------------------------------------------- | --------------------------------------------------------- |
+| Rejected action             | Unchanged                | Unchanged                                      | Rejection shake/text; no merge feedback; clear selection. |
+| Valid unchanged contact     | Unchanged                | Unchanged                                      | Contact audio/visuals.                                    |
+| Valid board-changing action | Commit entire result     | Add one move and one Undo entry                | Forward sequence.                                         |
+| Undo                        | Restore one whole action | Count unchanged; remove latest available entry | Reverse sequence with dedicated Undo audio/effects.       |
+| Restart                     | Restore authored start   | Count zero; history cleared                    | Cancel pending playback and victory.                      |
 
 Move count measures committed board-changing forward actions since restart. It is **not Undo history length**. Rejections and unchanged contacts do not alter which move Undo will restore.
 

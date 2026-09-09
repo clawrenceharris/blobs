@@ -92,7 +92,7 @@ namespace Blobs.Tests.EditMode
         public void RockPrefabComposesContactAudioFeedback()
         {
             GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(
-                "Assets/_Game/Prefabs/Blobs/PF_RockBlob.prefab");
+                "Assets/_Game/Production/Prefabs/Blobs/PF_RockBlob.prefab");
 
             Assert.That(prefab, Is.Not.Null);
             Assert.That(prefab.GetComponent<BlobContactAudioFeedback>(), Is.Not.Null);
@@ -216,7 +216,7 @@ namespace Blobs.Tests.EditMode
         public void SigilTilePrefabIsRegisteredInProductionCatalog()
         {
             ViewCatalogAsset catalog = AssetDatabase.LoadAssetAtPath<ViewCatalogAsset>(
-                "Assets/_Game/Content/Presentation/TileViewCatalog.asset");
+                "Assets/_Game/Production/Content/Presentation/TileViewCatalog.asset");
 
             Assert.That(catalog, Is.Not.Null);
             TileView prefab = catalog.GetRequiredTilePrefab(TileType.Sigil);

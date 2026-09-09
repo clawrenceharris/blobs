@@ -14,7 +14,7 @@ namespace Blobs.Tests.EditMode
     public sealed class GameplayFeedbackPresenterTests
     {
         private const string CatalogPath =
-            "Assets/_Game/Content/Presentation/FailureFeedbackCatalog.asset";
+            "Assets/_Game/Production/Content/Presentation/FailureFeedbackCatalog.asset";
 
         private readonly List<GameObject> _createdObjects = new List<GameObject>();
 

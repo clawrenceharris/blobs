@@ -821,7 +821,7 @@ def write_runtime_asset(project_root: Path, output_dir: Path, asset_dir: Path) -
 
     asset_path = asset_dir / "BoardSurfaceSpriteSet.asset"
     asset_guid = guid_for_asset(asset_path, project_root)
-    script_path = project_root / "Assets/_Game/Scripts/Presentation/BoardSurface/BoardSurfaceSpriteSet.cs"
+    script_path = project_root / "Assets/_Game/Production/Scripts/Presentation/BoardSurface/BoardSurfaceSpriteSet.cs"
     script_guid = guid_for_asset(script_path, project_root)
 
     field_names = {
@@ -997,12 +997,12 @@ def main() -> None:
     write_runtime_asset(
         project_root,
         output_dir,
-        project_root / "Assets/_Game/Content/Board",
+        project_root / "Assets/_Game/Production/Content/Board",
     )
     write_runtime_asset(
         project_root,
         output_dir,
-        project_root / "Assets/Resources/Board",
+        project_root / "Assets/Production/Resources/Board",
     )
     write_text_meta(Path(__file__), project_root)
     validate(images, preview)

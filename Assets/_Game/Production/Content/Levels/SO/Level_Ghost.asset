@@ -20,7 +20,8 @@ MonoBehaviour:
   blobs:
   - rid: 3341776588519506014
   - rid: 3341776588519506015
-  tiles: []
+  tiles:
+  - rid: 3341776657424318693
   objective: 0
   palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
   references:
@@ -39,3 +40,9 @@ MonoBehaviour:
         position: {x: 0, y: 0}
         type: 0
         color: 2
+    - rid: 3341776657424318693
+      type: {class: SigilTileAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: sigil
+        position: {x: 2, y: 0}
+        type: 0

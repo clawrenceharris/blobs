@@ -1,5 +1,8 @@
 # Blobs Technical Architecture
 
+> September 9 rule alignment: [Game design](GAME_DESIGN.md) is authoritative. Application must own an independent move counter, whole-action Undo history, and playback-aware command availability. Presentation reverses recorded outcomes and signals completion; it does not determine legality. Restart cancels playback and pending victory at any point. See [implementation checklist](RULES_IMPLEMENTATION_PLAN.md). Older architectural sketches below describe boundaries, not completed features.
+
+
 **Status:** Proposed production architecture 0.9 — migration target for the current prototype  
 **Target:** Unity 6, native mobile, and Web
 

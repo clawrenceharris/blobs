@@ -60,7 +60,7 @@ namespace Blobs.Presentation
             {
                 Debug.LogWarning(
                     "Board surface sprite set is missing or incomplete. " +
-                    "Regenerate Assets/_Game/Art/Board/Generated.",
+                    "Regenerate Assets/_Game/Production/Art/Board/Generated.",
                     this);
                 return;
             }

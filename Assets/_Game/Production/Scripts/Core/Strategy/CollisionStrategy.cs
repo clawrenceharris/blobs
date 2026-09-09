@@ -9,7 +9,7 @@ namespace Blobs.Core
     /// Strategies emit collision-tile effects only; the resolver owns locomotion, so the
     /// same strategy works for intermediate chain merges and for the final target.
     /// </summary>
-    public interface IMergeStrategy
+    public interface ICollisionStrategy
     {
         CollisionPlan BuildPlan(MoveContext context);
     }
@@ -18,7 +18,7 @@ namespace Blobs.Core
     /// Standard color-clash merge: occupant is removed, the mover survives on its tile
     /// and may continue along its path. Requires differing colors.
     /// </summary>
-    public sealed class NormalMergeStrategy : IMergeStrategy
+    public sealed class NormalCollisionStrategy : ICollisionStrategy
     {
         public CollisionPlan BuildPlan(MoveContext context)
         {
@@ -37,7 +37,7 @@ namespace Blobs.Core
     /// Flag capture: requires matching color and a board containing only the mover and
     /// the flag. Consumes the mover; the flag stays in place.
     /// </summary>
-    public sealed class FlagMergeStrategy : IMergeStrategy
+    public sealed class FlagCollisionStrategy : ICollisionStrategy
     {
         public CollisionPlan BuildPlan(MoveContext context)
         {
@@ -59,7 +59,7 @@ namespace Blobs.Core
         }
     }
 
-    public sealed class RockMergeStrategy : IMergeStrategy
+    public sealed class RockCollisionStrategy : ICollisionStrategy
     {
         public CollisionPlan BuildPlan(MoveContext context)
         {
@@ -68,7 +68,7 @@ namespace Blobs.Core
         }
     }
 
-    public sealed class GhostMergeStrategy : IMergeStrategy
+    public sealed class GhostCollisionStrategy : ICollisionStrategy
     {
         public CollisionPlan BuildPlan(MoveContext context)
         {

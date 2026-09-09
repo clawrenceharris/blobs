@@ -168,11 +168,9 @@ namespace Blobs.Core
             foreach (MoveStep followUp in followUpSteps)
             {
                 var resolved = new List<IBoardEffect>();
-                foreach (IBoardEffect planned in followUp.Effects)
+                foreach (IBoardEffect effect in followUp.Effects)
                 {
-                    IBoardEffect effect = planned is GhostReturnEffect ghostReturn
-                        ? ghostReturn.ResolveLanding(simulation)
-                        : planned;
+
                     effect.Apply(simulation);
                     resolved.Add(effect);
                 }

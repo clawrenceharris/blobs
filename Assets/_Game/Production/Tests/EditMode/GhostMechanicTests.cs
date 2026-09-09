@@ -36,8 +36,8 @@ namespace Blobs.Tests.EditMode
             Assert.That(board.GetBlob("source"), Is.Null);
             Assert.That(board.GetBlob("ghost").Position, Is.EqualTo(new GridPosition(0, 0)));
             Assert.That(board.Blobs.Count(), Is.EqualTo(1));
-            var path = result.Effects.OfType<GhostReturnEffect>().Single();
-            CollectionAssert.AreEqual(new[] { 2, 1, 0 }, path.Steps.Select(x => x.Position.X));
+            var path = result.Effects.OfType<GhostHauntEffect>().Single();
+            CollectionAssert.AreEqual(new[] { 2, 1, 0 }, path.Path.Select(x => x.X));
             Assert.That(path.LandingBlobId, Is.Null);
             Assert.That(result.IsComplete, Is.False);
         }
@@ -51,12 +51,12 @@ namespace Blobs.Tests.EditMode
             MoveResult result = Move(board);
             Assert.That(result.Succeeded, Is.True);
             Assert.That(board.Blobs, Is.Empty);
-            var path = result.Effects.OfType<GhostReturnEffect>().Single();
-            Assert.That(path.LastStep.Position, Is.EqualTo(new GridPosition(sigil, 0)));
-            Assert.That(path.IsClearing, Is.True);
+            var path = result.Effects.OfType<GhostHauntEffect>().Single();
+            Assert.That(path.HauntDestination, Is.EqualTo(new GridPosition(sigil, 0)));
+            Assert.That(path.Rests, Is.True);
             Assert.That(result.Effects.OfType<ClearGhostEffect>().Single().At,
-                Is.EqualTo(path.LastStep.Position));
-            Assert.That(board.GetTileAt(path.LastStep.Position).Type, Is.EqualTo(TileType.Sigil));
+                Is.EqualTo(path.HauntDestination));
+            Assert.That(board.GetTileAt(path.HauntDestination).Type, Is.EqualTo(TileType.Sigil));
             Assert.That(ObjectiveEvaluator.IsComplete(board), Is.True);
         }
 
@@ -64,7 +64,7 @@ namespace Blobs.Tests.EditMode
         public void FirstSigilStopsReturn()
         {
             var result = Move(Board(false, 0, 2));
-            Assert.That(result.Effects.OfType<GhostReturnEffect>().Single().Steps.Count, Is.EqualTo(1));
+            Assert.That(result.Effects.OfType<GhostHauntEffect>().Single().LandingBlobId, Is.Null);
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace Blobs.Tests.EditMode
             BoardState board = Board(true);
             MoveResult result = Move(board);
             Assert.That(result.Succeeded, Is.True);
-            var path = result.Effects.OfType<GhostReturnEffect>().Single();
+            var path = result.Effects.OfType<GhostHauntEffect>().Single();
             Assert.That(path.LandingBlobId, Is.Not.Null);
             Assert.That(board.GetBlob(path.LandingBlobId), Is.Null);
             Assert.That(board.GetBlobAt(new GridPosition(0, 0)).Id, Is.EqualTo("ghost"));
@@ -116,7 +116,7 @@ namespace Blobs.Tests.EditMode
         [Test]
         public void EmptyReturnIsRejectedAtConstruction()
         {
-            Assert.Throws<ArgumentException>(() => new GhostReturnEffect("ghost", Array.Empty<ReturnStep>()));
+            Assert.Throws<ArgumentException>(() => new GhostHauntEffect("ghost", null, Array.Empty<GridPosition>()));
         }
     }
 }

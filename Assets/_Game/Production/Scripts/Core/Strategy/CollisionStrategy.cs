@@ -79,7 +79,7 @@ namespace Blobs.Core
 
             int dx = Math.Sign(goal.X - current.X);
             int dy = Math.Sign(goal.Y - current.Y);
-            var path = new List<ReturnStep>();
+            var path = new List<GridPosition>();
             bool clears = false;
             while (current != goal)
             {
@@ -87,7 +87,7 @@ namespace Blobs.Core
                 if (!context.Board.IsInside(current))
                     return CollisionPlan.Failed(MoveFailureReason.BlockedPath);
 
-                path.Add(new ReturnStep(context.Target.Id, current));
+                path.Add(current);
                 if (context.Board.GetTileAt(current)?.Type == TileType.Sigil)
                 {
                     clears = true;
@@ -95,17 +95,19 @@ namespace Blobs.Core
                 }
             }
 
-            var aftermath = new List<IBoardEffect>
-            {
-                new GhostReturnEffect(context.Target.Id, path, clears)
-            };
+            var followUp = new List<IBoardEffect>();
             if (clears)
-                aftermath.Add(new ClearGhostEffect(context.Target.Id, current));
+            {
+                followUp.Add(GhostHauntEffect.Rest(context.Target.Id, path));
+
+            }
+            else
+                followUp.Add(GhostHauntEffect.Haunt(context.Target.Id, path));
 
             return CollisionPlan.ConsumeMover(
                 MergeEffect.ReverseMerge(context)).WithFollowUpSteps(new[]
                 {
-                    new MoveStep(MoveStepKind.Traverse, aftermath)
+                    new MoveStep(MoveStepKind.Traverse, followUp)
                 });
         }
     }

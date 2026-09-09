@@ -8,18 +8,18 @@ using DG.Tweening;
 namespace Blobs.Presentation
 {
     /// <summary>One fade, one continuous return, and one materialization or Sigil departure.</summary>
-    internal sealed class GhostReturnPresenter
+    internal sealed class GhostHauntPresenter
     {
         private readonly BlobPresenter _blobs;
         private readonly GhostReturnSettings _settings;
-        public GhostReturnPresenter(BlobPresenter blobs, GhostReturnSettings settings)
+        public GhostHauntPresenter(BlobPresenter blobs, GhostReturnSettings settings)
         {
             _blobs = blobs;
             _settings = settings;
 
         }
 
-        public bool Present(GhostReturnEffect effect, PresentationTimeline timeline, Action onContact)
+        public bool Present(GhostHauntEffect effect, PresentationTimeline timeline, Action onContact)
         {
             if (!_blobs.TryGetView(effect.GhostId, out BlobView ghost)) return false;
             BlobView occupant = null;
@@ -28,7 +28,7 @@ namespace Blobs.Presentation
 
             if (!timeline.IsAnimated)
             {
-                ghost.SetGridPosition(effect.LastStep.Position);
+                ghost.SetGridPosition(effect.HauntDestination);
                 ghost.BlobRenderer?.FadeableVisual?.Restore();
                 if (occupant != null) _blobs.DestroyRetiringView(occupant);
                 onContact?.Invoke();
@@ -39,7 +39,7 @@ namespace Blobs.Presentation
             return true;
         }
 
-        private async UniTask ReturnAsync(GhostReturnEffect effect, BlobView ghost,
+        private async UniTask ReturnAsync(GhostHauntEffect effect, BlobView ghost,
             BlobView occupant, Action onContact, CancellationToken token)
         {
             FadeableVisual fade = ghost.BlobRenderer?.FadeableVisual;
@@ -48,14 +48,14 @@ namespace Blobs.Presentation
                 if (fade != null) await fade.FadeTo(0f, _settings.FadeDuration, token);
                 // A straight linear tween preserves constant speed across logical path cells.
                 await PresentationTimeline.AwaitTweenAsync(ghost.AnimateMoveTo(
-                    effect.LastStep.Position, _settings.MoveDuration * effect.Steps.Count, Ease.Linear), token);
+                    effect.HauntDestination, _settings.MoveDuration * effect.Path.Count, Ease.Linear), token);
                 if (occupant != null)
                 {
                     await PresentationTimeline.AwaitTweenAsync(
                         occupant.PlayDespawn(_settings.DespawnDuration), token);
                     _blobs.DestroyRetiringView(occupant);
                 }
-                if (!effect.IsClearing && fade != null)
+                if (!effect.Rests && fade != null)
                     await fade.FadeTo(1f, _settings.FadeDuration, token);
                 ghost.BlobMotionAnimator?.SetIdle();
                 onContact?.Invoke();
@@ -63,7 +63,7 @@ namespace Blobs.Presentation
             finally
             {
                 // A successful Sigil return stays ethereal until the clear beat.
-                if (fade != null && (!effect.IsClearing || token.IsCancellationRequested))
+                if (fade != null && (!effect.Rests || token.IsCancellationRequested))
                     fade.Restore();
             }
         }

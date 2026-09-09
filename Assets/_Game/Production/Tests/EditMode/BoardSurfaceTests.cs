@@ -87,7 +87,7 @@ namespace Blobs.Tests.EditMode
         public void GeneratedSpriteSetHasReadableTrueAlphaComponents()
         {
             BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
-                "Assets/_Game/Content/Board/BoardSurfaceSpriteSet.asset");
+                "Assets/_Game/Production/Content/Board/BoardSurfaceSpriteSet.asset");
 
             Assert.That(spriteSet, Is.Not.Null);
             Assert.That(spriteSet.IsConfigured, Is.True);
@@ -116,7 +116,7 @@ namespace Blobs.Tests.EditMode
         public void ComposedCellBleedsOpaqueCoverageTowardPresentNeighbor()
         {
             BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
-                "Assets/_Game/Content/Board/BoardSurfaceSpriteSet.asset");
+                "Assets/_Game/Production/Content/Board/BoardSurfaceSpriteSet.asset");
             using var composer = new BoardSurfaceSpriteComposer(spriteSet);
 
             Sprite sprite = composer.GetOrCreate(BoardSurfaceNeighborMask.East);
@@ -133,7 +133,7 @@ namespace Blobs.Tests.EditMode
         public void SeamBleedDoesNotExtendPerimeterArtworkPastAConcaveTangent()
         {
             BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
-                "Assets/_Game/Content/Board/BoardSurfaceSpriteSet.asset");
+                "Assets/_Game/Production/Content/Board/BoardSurfaceSpriteSet.asset");
             using var composer = new BoardSurfaceSpriteComposer(spriteSet);
 
             Sprite sprite = composer.GetOrCreate(
@@ -154,7 +154,7 @@ namespace Blobs.Tests.EditMode
         public void ConcaveFillIsClippedToItsSharedRadiusSquare()
         {
             BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
-                "Assets/_Game/Content/Board/BoardSurfaceSpriteSet.asset");
+                "Assets/_Game/Production/Content/Board/BoardSurfaceSpriteSet.asset");
             using var composer = new BoardSurfaceSpriteComposer(spriteSet);
 
             Sprite sprite = composer.GetOrCreate(
@@ -175,7 +175,7 @@ namespace Blobs.Tests.EditMode
         public void SouthEdgeHasAnOpaqueVisibleLowerBorder()
         {
             BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
-                "Assets/_Game/Content/Board/BoardSurfaceSpriteSet.asset");
+                "Assets/_Game/Production/Content/Board/BoardSurfaceSpriteSet.asset");
             using var composer = new BoardSurfaceSpriteComposer(spriteSet);
 
             Sprite sprite = composer.GetOrCreate(BoardSurfaceNeighborMask.None);
@@ -235,7 +235,7 @@ namespace Blobs.Tests.EditMode
         public void Level03UsesItsAuthoredSevenCellSurfaceLayout()
         {
             LevelDefinitionAsset level = AssetDatabase.LoadAssetAtPath<LevelDefinitionAsset>(
-                "Assets/_Game/Content/Levels/SO/Level_03.asset");
+                "Assets/_Game/Production/Content/Levels/SO/Level_03.asset");
 
             Assert.That(level, Is.Not.Null);
 
@@ -263,7 +263,7 @@ namespace Blobs.Tests.EditMode
         {
             BoardSurfacePaletteAsset palette =
                 AssetDatabase.LoadAssetAtPath<BoardSurfacePaletteAsset>(
-                    "Assets/_Game/Content/Board/Palettes/BoardSurfacePalette_Default.asset");
+                    "Assets/_Game/Production/Content/Board/Palettes/BoardSurfacePalette_Default.asset");
 
             Assert.That(palette, Is.Not.Null);
             Assert.That(palette.FillA.a, Is.EqualTo(1f));

@@ -1,5 +1,29 @@
 # Unity Project Context
 
+## September 9, 2026 rules decision
+
+[Game design](../GAME_DESIGN.md) now records the agreed rules. [Implementation checklist](../RULES_IMPLEMENTATION_PLAN.md) tracks pending code and acceptance work. Undo is required and leaves move count unchanged; the current intent history/count coupling must change. Flags accept matching Normal sources only, require explicit successful capture when targeted, and level validation requires exactly one Flag. Reached-path atomicity, stopping Rocks, and Ghost starting-Sigil clearing are explicit. This update documents decisions; it does not certify runtime implementation or test results.
+
+
+## September 8, 2026 baseline update
+
+The focused source review at commit `d2319d3` is recorded in
+[Project baseline](../PROJECT_BASELINE.md). Use that report for current feature
+status, rule differences, and known issues; the generated section below is an
+August snapshot and has not been fully revalidated.
+
+- Current roots are `Assets/_Game/Production` and `Assets/_Game/Prototype`.
+- Ghost/Sigil rules, presentation, and tests exist in production.
+- Core and Application declare no engine references, but both now also reference
+  `Blobs.Debugging`; their older dependency inventory below is incomplete.
+- Serialized Build Settings retain old scene paths and prototype scene GUIDs.
+  Production `Scenes/Game.unity` is not listed.
+- Several asset-based tests retain pre-reorganization paths. No test pass or
+  player-build success was established in this review.
+- Current user edits to production `Level_Ghost.asset`, `ViewCatalog.asset`, and
+  `Game.unity` were preserved. Unity MCP is unavailable on this tool surface;
+  Editor/Console state and device behavior remain unverified.
+
 <!-- unity-onboarding:generated:start -->
 
 ## Project Summary

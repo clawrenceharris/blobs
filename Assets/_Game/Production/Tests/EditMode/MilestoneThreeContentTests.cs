@@ -11,9 +11,9 @@ namespace Blobs.Tests.EditMode
     {
         private static readonly string[] AuthoredLevelPaths =
         {
-            "Assets/_Game/Content/Levels/SO/Sample_Level.asset",
-            "Assets/_Game/Content/Levels/SO/Level_02.asset",
-            "Assets/_Game/Content/Levels/SO/Level_03.asset"
+            "Assets/_Game/Production/Content/Levels/SO/Sample_Level.asset",
+            "Assets/_Game/Production/Content/Levels/SO/Level_02.asset",
+            "Assets/_Game/Production/Content/Levels/SO/Level_03.asset"
         };
 
         [Test]

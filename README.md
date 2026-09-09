@@ -1,17 +1,16 @@
 # Blobs
 
-Blobs is a Unity 6 grid puzzle game about selecting a source blob and merging it toward a target blob. The production rebuild lives under `Assets/_Game` and is intentionally separated from the older prototype code under `Assets/Scripts`.
+Blobs is a Unity 6 grid puzzle game about selecting a source blob and merging it toward a target blob. The production rebuild lives under `Assets/_Game/Production` and is intentionally separated from the older prototype code under `Assets/_Game/Prototype`.
 
 ## Current Production Direction
 
-- The first selected blob is the source.
-- The second selected blob is the target.
-- A move is a rook-aligned path from source to target. Every occupied cell on that path must be a valid merge (chain merging). Empty cells are traversed.
-- A normal merge removes the occupant; the source survives and may continue along the path.
-- Flag blobs cannot be selected as a source. A matching-color source can capture a flag only when those two blobs are the last remaining blobs; capture consumes the source.
-- Trail blobs move like normal blobs and leave Normal blobs of their trail color on departed tiles that were not merge sites.
-- Player-facing undo is not part of the current design direction. If a player wants to recover from a bad move, restart is the intended action.
-- Future mechanics (Ghost follow-up motion, tiles, cascades) compose as extra steps or collision follow-ups on the same timeline.
+The authoritative rules are in [Game design](Docs/GAME_DESIGN.md); pending code changes and acceptance scenarios are in [Rules implementation plan](Docs/RULES_IMPLEMENTATION_PLAN.md). These describe the September 9 decisions, some of which are not yet implemented.
+
+- Select a source and a blob target on the same row or column.
+- Simulate reached interactions atomically. Normal/Trail merges continue; Rocks stop; Ghosts consume and haunt. Reached color/terrain failures reject the whole action.
+- Every level has one Flag; only a matching Normal may capture it, leaving zero clearable blobs. Victory always means zero clearable blobs.
+- Trail spawns on departures except current-action merge sites. Ghost haunt returns to the original source position; ethereal Sigil contact clears it.
+- Undo reverses one whole action with dedicated feedback and never reduces move count. Restart always resets count/history and cancels playback.
 
 ## Architecture
 
@@ -46,16 +45,15 @@ Presentation timing must never decide whether a move is valid. Core and Applicat
 
 ## Useful Docs
 
-- `Docs/GAME_DESIGN.md` describes game rules, merge feel, restart-over-undo direction, and planned mechanics.
-- `Docs/TECHNICAL_ARCHITECTURE.md` describes layer responsibilities and dependency boundaries.
-- `Docs/PRODUCTION_PLAN.md` describes production milestones.
-- `Docs/MILESTONE_1_CHECKLIST.md`, `Docs/MILESTONE_2_CHECKLIST.md`, and
-  `Docs/MILESTONE_3_CHECKLIST.md` track completed production targets.
-- `Docs/MILESTONE_4_CHECKLIST.md` tracks the cascade-ready Presentation target.
+- [Game design](Docs/GAME_DESIGN.md): agreed rules and presentation direction.
+- [Rules implementation plan](Docs/RULES_IMPLEMENTATION_PLAN.md): pending changes and acceptance cases.
+- [Technical architecture](Docs/TECHNICAL_ARCHITECTURE.md): layer responsibilities.
+- [Production plan](Docs/PRODUCTION_PLAN.md): current delivery priorities.
+- [Project baseline](Docs/PROJECT_BASELINE.md): historical prototype/production inspection.
 
 ## Tests
 
-Edit Mode tests live in `Assets/_Game/Tests/EditMode`.
+Edit Mode tests live in `Assets/_Game/Production/Tests/EditMode`.
 
 The current focused tests verify:
 

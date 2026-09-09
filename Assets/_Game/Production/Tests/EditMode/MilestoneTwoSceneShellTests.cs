@@ -96,7 +96,7 @@ namespace Blobs.Tests.EditMode
             var commands = root.AddComponent<GameplayCommandAdapter>();
             var level = CreateLevelAsset();
             var viewCatalog = AssetDatabase.LoadAssetAtPath<ViewCatalogAsset>(
-                "Assets/_Game/Content/Presentation/BlobViewCatalog.asset");
+                "Assets/_Game/Production/Content/Presentation/BlobViewCatalog.asset");
 
             Assert.That(viewCatalog, Is.Not.Null);
 

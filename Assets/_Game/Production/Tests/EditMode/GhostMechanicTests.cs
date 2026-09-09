@@ -11,9 +11,9 @@ namespace Blobs.Tests.EditMode
             trail ? BlobType.Trail : BlobType.Normal, new GridPosition(0, 0))
             .WithColor(BlobColor.Red).WithTrail(BlobColor.Blue);
         private static BlobState Ghost(int x = 3) => new("ghost", BlobType.Ghost, new GridPosition(x, 0));
-        private static BoardState Board(bool trail = false, params int[] sigils) => new(4, 1,
-            new[] { Source(trail), Ghost() }, sigils.Select(x =>
-                new TileState("sigil-" + x, new GridPosition(x, 0), TileType.Sigil)));
+        private static BoardState Board(bool trail = false, params int[] graves) => new(4, 1,
+            new[] { Source(trail), Ghost() }, graves.Select(x =>
+                new TileState("grave-" + x, new GridPosition(x, 0), TileType.Grave)));
         private static MoveResult Move(BoardState board) => new MoveResolver().Resolve(board,
             new MoveIntent(board.GetBlob("source"), board.GetBlob("ghost")));
 
@@ -45,21 +45,21 @@ namespace Blobs.Tests.EditMode
         [TestCase(2)]
         [TestCase(1)]
         [TestCase(0)]
-        public void SigilCrossingIncludesSigilAndClearsGhost(int sigil)
+        public void GraveCrossingIncludesGraveAndClearsGhost(int grave)
         {
-            BoardState board = Board(false, sigil);
+            BoardState board = Board(false, grave);
             MoveResult result = Move(board);
             Assert.That(result.Succeeded, Is.True);
             Assert.That(board.Blobs, Is.Empty);
             var rest = result.Effects.OfType<GhostRestEffect>().Single();
-            Assert.That(rest.RestDestination, Is.EqualTo(new GridPosition(sigil, 0)));
+            Assert.That(rest.RestDestination, Is.EqualTo(new GridPosition(grave, 0)));
             Assert.That(result.Effects.OfType<GhostHauntEffect>(), Is.Empty);
-            Assert.That(board.GetTileAt(rest.RestDestination).Type, Is.EqualTo(TileType.Sigil));
+            Assert.That(board.GetTileAt(rest.RestDestination).Type, Is.EqualTo(TileType.Grave));
             Assert.That(ObjectiveEvaluator.IsComplete(board), Is.True);
         }
 
         [Test]
-        public void FirstSigilStopsReturn()
+        public void FirstGraveStopsReturn()
         {
             var result = Move(Board(false, 0, 2));
             Assert.That(result.Effects.OfType<GhostRestEffect>().Single().RestDestination.X, Is.EqualTo(2));
@@ -80,7 +80,7 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void OccupiedSigilClearsGhostWithoutAbsorbingTrailOccupant()
+        public void OccupiedGraveClearsGhostWithoutAbsorbingTrailOccupant()
         {
             BoardState board = Board(true, 2);
             Move(board);
@@ -112,7 +112,7 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void GhostAlreadyOnSigilRestsWhenHauntBegins()
+        public void GhostAlreadyOnGraveRestsWhenHauntBegins()
         {
             var board = Board(false, 3);
             var result = Move(board);

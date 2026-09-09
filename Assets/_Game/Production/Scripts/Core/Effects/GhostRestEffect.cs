@@ -4,12 +4,12 @@ using System.Linq;
 namespace Blobs.Core
 {
     /// <summary>
-    /// Clears a ghost upon crossing a Sigil, retaining the contact position for presentation.
+    /// Clears a ghost upon crossing a Grave, retaining the contact position for presentation.
     /// </summary>
     public sealed class GhostRestEffect : IBoardEffect
     {
         /// <summary>
-        /// Creates a ghost-clear event at the first Sigil on its return path.
+        /// Creates a ghost-clear event at the first Grave on its return path.
         /// </summary>
         public GhostRestEffect(string ghostId, IReadOnlyList<GridPosition> path)
         {

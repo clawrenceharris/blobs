@@ -7,7 +7,7 @@ using DG.Tweening;
 
 namespace Blobs.Presentation
 {
-    /// <summary>One fade, one continuous return, and one materialization or Sigil departure.</summary>
+    /// <summary>One fade, one continuous return, and one materialization or Grave departure.</summary>
     internal sealed class GhostHauntPresenter
     {
         private readonly BlobPresenter _blobs;
@@ -62,7 +62,7 @@ namespace Blobs.Presentation
             }
             finally
             {
-                // A successful Sigil return stays ethereal until the clear beat.
+                // A successful Grave return stays ethereal until the clear beat.
                 if (fade != null && token.IsCancellationRequested)
                     fade.Restore();
             }

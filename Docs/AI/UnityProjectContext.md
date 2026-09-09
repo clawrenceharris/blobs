@@ -2,7 +2,7 @@
 
 ## September 9, 2026 rules decision
 
-[Game design](../GAME_DESIGN.md) now records the agreed rules. [Implementation checklist](../RULES_IMPLEMENTATION_PLAN.md) tracks pending code and acceptance work. Undo is required and leaves move count unchanged; the current intent history/count coupling must change. Flags accept matching Normal sources only, require explicit successful capture when targeted, and level validation requires exactly one Flag. Reached-path atomicity, stopping Rocks, and Ghost starting-Sigil clearing are explicit. This update documents decisions; it does not certify runtime implementation or test results.
+[Game design](../GAME_DESIGN.md) now records the agreed rules. [Implementation checklist](../RULES_IMPLEMENTATION_PLAN.md) tracks pending code and acceptance work. Undo is required and leaves move count unchanged; the current intent history/count coupling must change. Flags accept matching Normal sources only, require explicit successful capture when targeted, and level validation requires exactly one Flag. Reached-path atomicity, stopping Rocks, and Ghost starting-Grave clearing are explicit. This update documents decisions; it does not certify runtime implementation or test results.
 
 ## September 10, 2026 testing update
 
@@ -22,7 +22,7 @@ status, rule differences, and known issues; the generated section below is an
 August snapshot and has not been fully revalidated.
 
 - Current roots are `Assets/_Game/Production` and `Assets/_Game/Prototype`.
-- Ghost/Sigil rules, presentation, and tests exist in production.
+- Ghost/Grave rules, presentation, and tests exist in production.
 - Core and Application declare no engine references, but both now also reference
   `Blobs.Debugging`; their older dependency inventory below is incomplete.
 - Serialized Build Settings retain old scene paths and prototype scene GUIDs.

@@ -34,9 +34,12 @@ namespace Blobs.Editor
             {
                 if (GUILayout.Button("Add Normal Tile"))
                     AddTile(new NormalTileAssetData());
-                if (GUILayout.Button("Add Sigil Tile"))
+                if (GUILayout.Button("Add Grave Tile"))
                 {
-                    AddTile(new SigilTileAssetData());
+                    AddTile(new GraveTileAssetData()
+                    {
+                        type = TileType.Grave
+                    });
                 }
             }
 

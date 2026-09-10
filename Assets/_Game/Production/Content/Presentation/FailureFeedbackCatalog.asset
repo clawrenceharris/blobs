@@ -27,7 +27,7 @@ MonoBehaviour:
     message: Blobs must share the same column or row to merge.
   - reason: 6
     showFeedback: 1
-    message: Another blob is in the way.
+    message: Path is blocked.
   - reason: 7
     showFeedback: 1
     message: Those blobs can't merge.
@@ -43,3 +43,9 @@ MonoBehaviour:
   - reason: 1
     showFeedback: 0
     message: Merge incomplete
+  - reason: 11
+    showFeedback: 1
+    message: Only a normal blob can merge with the flag.
+  - reason: 12
+    showFeedback: 1
+    message: This move must reach and clear into the selected flag.

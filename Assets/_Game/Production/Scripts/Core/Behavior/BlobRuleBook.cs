@@ -38,7 +38,7 @@ namespace Blobs.Core
     {
         BlobTraits GetTraits(BlobType type);
 
-        bool TryGetMergeStrategy(
+        bool TryGetCollisionStrategy(
             BlobType sourceType,
             BlobType targetType,
             out ICollisionStrategy strategy);
@@ -56,20 +56,20 @@ namespace Blobs.Core
     public sealed class BlobRuleBook : IBlobRuleBook
     {
         private readonly Dictionary<BlobType, BlobTraits> _traits;
-        private readonly Dictionary<MergeKey, ICollisionStrategy> _mergeStrategies;
+        private readonly Dictionary<MergeKey, ICollisionStrategy> _collisionStrategies;
         private readonly Dictionary<BlobType, IMoveBehavior> _moveBehaviors;
         private readonly Dictionary<MergeKey, IMoveStrategy> _moveStrategies;
 
         public BlobRuleBook(
             IDictionary<BlobType, BlobTraits> traits,
-            IDictionary<MergeKey, ICollisionStrategy> mergeStrategies,
+            IDictionary<MergeKey, ICollisionStrategy> collisionStrategies,
             IDictionary<MergeKey, IMoveStrategy> moveStrategies = null,
             IDictionary<BlobType, IMoveBehavior> moveBehaviors = null
            )
         {
             _traits = new Dictionary<BlobType, BlobTraits>(traits);
-            _mergeStrategies =
-                new Dictionary<MergeKey, ICollisionStrategy>(mergeStrategies);
+            _collisionStrategies =
+                new Dictionary<MergeKey, ICollisionStrategy>(collisionStrategies);
             _moveBehaviors = moveBehaviors != null
                 ? new Dictionary<BlobType, IMoveBehavior>(moveBehaviors)
                 : new Dictionary<BlobType, IMoveBehavior>();
@@ -96,12 +96,12 @@ namespace Blobs.Core
             return _moveStrategies.TryGetValue(new MergeKey(sourceType, targetType), out strategy);
         }
 
-        public bool TryGetMergeStrategy(
+        public bool TryGetCollisionStrategy(
             BlobType sourceType,
             BlobType targetType,
             out ICollisionStrategy strategy)
         {
-            return _mergeStrategies.TryGetValue(
+            return _collisionStrategies.TryGetValue(
                 new MergeKey(sourceType, targetType),
                 out strategy);
         }
@@ -176,9 +176,12 @@ namespace Blobs.Core
                      // Normal blobs
                      [new MergeKey(BlobType.Normal, BlobType.Normal)] = new NormalMoveStrategy(),
                      [new MergeKey(BlobType.Trail, BlobType.Normal)] = new NormalMoveStrategy(),
-                     // Rock blobs
-                     [new MergeKey(BlobType.Normal, BlobType.Rock)] = new RockMoveStrategy(),
-                     [new MergeKey(BlobType.Trail, BlobType.Rock)] = new RockMoveStrategy(),
+                     [new MergeKey(BlobType.Normal, BlobType.Rock)] = new NormalMoveStrategy(),
+                     [new MergeKey(BlobType.Trail, BlobType.Rock)] = new NormalMoveStrategy(),
+
+
+                     [new MergeKey(BlobType.Normal, BlobType.Trail)] = new NormalMoveStrategy(),
+                     [new MergeKey(BlobType.Trail, BlobType.Trail)] = new NormalMoveStrategy(),
 
                      // Flag blobs
                      [new MergeKey(BlobType.Normal, BlobType.Flag)] = new NormalMoveStrategy(),

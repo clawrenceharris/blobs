@@ -19,9 +19,9 @@ MonoBehaviour:
   emptyPositions: []
   blobs:
   - rid: 3341776588519506014
-  - rid: 3341776588519506015
+  - rid: 3341776657424318711
   tiles:
-  - rid: 3341776657424318693
+  - rid: 3341776657424318718
   objective: 0
   palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
   references:
@@ -33,14 +33,15 @@ MonoBehaviour:
         id: ghost
         position: {x: 4, y: 0}
         type: 4
-    - rid: 3341776588519506015
-      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+    - rid: 3341776657424318711
+      type: {class: TrailBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: normal
+        id: trail
         position: {x: 0, y: 0}
-        type: 0
+        type: 2
         color: 2
-    - rid: 3341776657424318693
+        trailColor: 0
+    - rid: 3341776657424318718
       type: {class: SigilTileAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
         id: sigil

@@ -12,20 +12,31 @@ namespace Blobs.Core
     {
         private MovePlan(
             bool succeeded,
-            Move movement,
-            MoveFailureReason failureReason,
-            IReadOnlyList<MoveStep> steps = null)
+            GridPosition start,
+            GridPosition end,
+            BlobState source,
+            BlobState target,
+            IReadOnlyList<MoveStep> steps = null,
+            MoveFailureReason failureReason = MoveFailureReason.None
+            )
         {
             Succeeded = succeeded;
             FailureReason = failureReason;
-            Move = movement;
+            StartPosition = start;
+            EndPosition = end;
             Steps = steps ?? Array.Empty<MoveStep>();
+            Source = source;
+            Target = target;
         }
 
         public bool Succeeded { get; }
         public MoveFailureReason FailureReason { get; }
 
-        public Move Move { get; }
+        public BlobState Source { get; }
+        public BlobState Target { get; }
+
+        public GridPosition StartPosition { get; }
+        public GridPosition EndPosition { get; }
 
         /// <summary>
         /// Steps appended after the main locomotion timeline. This is the hook for
@@ -40,21 +51,68 @@ namespace Blobs.Core
         /// <summary>
         /// Move resolved; the move is valid and the mover may continue.
         /// </summary>
-        public static MovePlan Continue(Move movement)
+        public MovePlan EndAt(GridPosition end)
         {
             return new MovePlan(
-                true, movement, MoveFailureReason.None);
+                succeeded: true,
+                start: StartPosition,
+                end: end,
+                failureReason: FailureReason,
+                steps: Steps,
+                source: Source,
+                target: Target);
+        }
+
+        public MovePlan WithTarget(BlobState target)
+        {
+            return new MovePlan(
+                succeeded: Succeeded,
+                start: StartPosition,
+                end: EndPosition,
+                failureReason: FailureReason,
+                steps: Steps,
+                source: Source,
+                target: target);
         }
 
 
+        public MovePlan StartAt(GridPosition start)
+        {
+            return new MovePlan(
+                succeeded: true,
+                start: start,
+                end: EndPosition,
+                failureReason: FailureReason,
+                steps: Steps,
+                source: Source,
+                target: Target);
+        }
+
+        public static MovePlan Move(BlobState source, BlobState target)
+        {
+            return new MovePlan(
+                succeeded: true,
+                start: source.Position,
+                end: target.Position,
+                failureReason: MoveFailureReason.None,
+                steps: Array.Empty<MoveStep>(),
+                source: source,
+                target: target);
+        }
 
         /// <summary>
         /// Move rejected. The whole move intent fails atomically with this reason.
         /// </summary>
-        public static MovePlan Failed(MoveFailureReason reason)
+        public MovePlan Failed(MoveFailureReason reason)
         {
             return new MovePlan(
-                false, Move.None(), reason);
+                succeeded: false,
+                start: StartPosition,
+                end: EndPosition,
+                failureReason: reason,
+                steps: Steps,
+                source: Source,
+                target: Target);
         }
 
 
@@ -65,7 +123,18 @@ namespace Blobs.Core
         public MovePlan WithSteps(IReadOnlyList<MoveStep> steps)
         {
             return new MovePlan(
-                Succeeded, Move, FailureReason, steps);
+                succeeded: Succeeded,
+                start: StartPosition,
+                end: EndPosition,
+                failureReason: FailureReason,
+                steps: steps,
+                source: Source,
+                target: Target);
+        }
+
+        public override string ToString()
+        {
+            return $"MovePlan: Succeeded:{Succeeded} FailureReason:{FailureReason} StartPosition:{StartPosition} EndPosition:{EndPosition} Source:{Source} Target:{Target} Steps:{Steps}";
         }
     }
 }

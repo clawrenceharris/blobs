@@ -3,6 +3,33 @@ using System.Collections.Generic;
 
 namespace Blobs.Core
 {
+
+    public enum CollisionKind
+    {
+        MoverSurvived,
+        MoverConsumed,
+        MoverBlocked,
+        Failed,
+    }
+    public static class CollisionKindExtensions
+    {
+        public static bool BlocksMover(this CollisionKind kind)
+        {
+            return kind == CollisionKind.MoverBlocked;
+        }
+        public static bool ConsumesMover(this CollisionKind kind)
+        {
+            return kind == CollisionKind.MoverConsumed;
+        }
+        public static bool Succeeded(this CollisionKind kind)
+        {
+            return kind == CollisionKind.MoverSurvived || kind == CollisionKind.MoverConsumed;
+        }
+        public static bool Failed(this CollisionKind kind)
+        {
+            return kind == CollisionKind.Failed;
+        }
+    }
     /// <summary>
     /// Outcome of resolving a single collision between a moving blob and the occupant
     /// of a cell on its path. Strategies describe only what happens at the collision
@@ -14,13 +41,13 @@ namespace Blobs.Core
             bool succeeded,
             MoveFailureReason failureReason,
             IReadOnlyList<IBoardEffect> effects,
-            bool consumesMover = false,
+            CollisionKind kind,
             IReadOnlyList<MoveStep> followUpSteps = null)
         {
             Succeeded = succeeded;
             FailureReason = failureReason;
             Effects = effects ?? Array.Empty<IBoardEffect>();
-            ConsumesMover = consumesMover;
+            Kind = kind;
             FollowUpSteps = followUpSteps ?? Array.Empty<MoveStep>();
         }
 
@@ -34,10 +61,9 @@ namespace Blobs.Core
         public IReadOnlyList<IBoardEffect> Effects { get; }
 
         /// <summary>
-        /// True when the collision consumes the moving blob. Locomotion ends at this tile
-        /// even if the intent targeted a farther blob.
+        /// The kind of collision that occurred.
         /// </summary>
-        public bool ConsumesMover { get; }
+        public CollisionKind Kind { get; }
 
         /// <summary>
         /// Steps appended after the main locomotion timeline. This is the hook for
@@ -52,7 +78,7 @@ namespace Blobs.Core
         public static CollisionPlan Continue(params IBoardEffect[] effects)
         {
             return new CollisionPlan(
-                true, MoveFailureReason.None, effects);
+                true, MoveFailureReason.None, effects, CollisionKind.MoverSurvived);
         }
 
         /// <summary>
@@ -61,7 +87,16 @@ namespace Blobs.Core
         public static CollisionPlan ConsumeMover(params IBoardEffect[] effects)
         {
             return new CollisionPlan(
-                true, MoveFailureReason.None, effects, consumesMover: true);
+                true, MoveFailureReason.None, effects, CollisionKind.MoverConsumed);
+        }
+
+        /// <summary>
+        /// Collision resolved; the mover is blocked and locomotion ends at this tile.
+        /// </summary>
+        public static CollisionPlan BlockMover(params IBoardEffect[] effects)
+        {
+            return new CollisionPlan(
+                true, MoveFailureReason.None, effects, CollisionKind.MoverBlocked);
         }
 
 
@@ -71,7 +106,7 @@ namespace Blobs.Core
         public static CollisionPlan Failed(MoveFailureReason reason)
         {
             return new CollisionPlan(
-                false, reason, null, consumesMover: false, followUpSteps: null);
+                false, reason, null, CollisionKind.Failed, followUpSteps: null);
         }
 
         /// <summary>
@@ -79,8 +114,7 @@ namespace Blobs.Core
         /// </summary>
         public CollisionPlan WithFollowUpSteps(IReadOnlyList<MoveStep> steps)
         {
-            return new CollisionPlan(
-                Succeeded, FailureReason, Effects, ConsumesMover, steps);
+            return new CollisionPlan(Succeeded, FailureReason, Effects, Kind, steps);
         }
     }
 }

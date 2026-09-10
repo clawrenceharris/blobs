@@ -8,11 +8,13 @@ namespace Blobs.Core
         MoveTimeout,
         SourceCannotMove,
         NotAligned,
-        BlockedPath,
+        PathBlocked,
         UnsupportedInteraction,
 
         NormalMergeRequiresDifferentColors,
         FlagRequiresMatchingColor,
-        FlagRequiresNoOtherBlobs
+        FlagRequiresNoOtherBlobs,
+        FlagRequiresNormalSource,
+        FlagCaptureRequired
     }
 }

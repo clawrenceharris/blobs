@@ -236,9 +236,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1217160663
+  m_SortingLayer: 4
+  m_SortingOrder: -200
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 7abcd00bb0d3d4030a1ad8de40b24d7a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
@@ -329,7 +329,7 @@ PrefabInstance:
     - target: {fileID: 3589974769046533848, guid: 5911ee8e221a4c6db2ccd901fe4d890a, type: 3}
       propertyPath: UVModule.sprites.Array.data[0].sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 4d976ac4f17a44a59b61d25302aa3380, type: 3}
+      objectReference: {fileID: 21300000, guid: 23d3a686e80d647649bcc795b1158ce3, type: 3}
     - target: {fileID: 3589974769046533848, guid: 5911ee8e221a4c6db2ccd901fe4d890a, type: 3}
       propertyPath: InitialModule.startLifetime.minMaxState
       value: 0
@@ -360,7 +360,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3589974769046533851, guid: 5911ee8e221a4c6db2ccd901fe4d890a, type: 3}
       propertyPath: m_SortingOrder
-      value: -1
+      value: -100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -400,6 +400,18 @@ PrefabInstance:
     - target: {fileID: 3589974769046533850, guid: 856ffb4bcbfe4fbbb994cddcc7db8454, type: 3}
       propertyPath: m_Name
       value: Highlight Sparkles
+      objectReference: {fileID: 0}
+    - target: {fileID: 3589974769046533851, guid: 856ffb4bcbfe4fbbb994cddcc7db8454, type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3589974769046533851, guid: 856ffb4bcbfe4fbbb994cddcc7db8454, type: 3}
+      propertyPath: m_SortingOrder
+      value: -100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3589974769046533851, guid: 856ffb4bcbfe4fbbb994cddcc7db8454, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1217160663
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

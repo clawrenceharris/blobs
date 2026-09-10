@@ -51,12 +51,10 @@ namespace Blobs.Tests.EditMode
             MoveResult result = Move(board);
             Assert.That(result.Succeeded, Is.True);
             Assert.That(board.Blobs, Is.Empty);
-            var path = result.Effects.OfType<GhostHauntEffect>().Single();
-            Assert.That(path.HauntDestination, Is.EqualTo(new GridPosition(sigil, 0)));
-            Assert.That(path.Rests, Is.True);
-            Assert.That(result.Effects.OfType<ClearGhostEffect>().Single().At,
-                Is.EqualTo(path.HauntDestination));
-            Assert.That(board.GetTileAt(path.HauntDestination).Type, Is.EqualTo(TileType.Sigil));
+            var rest = result.Effects.OfType<GhostRestEffect>().Single();
+            Assert.That(rest.RestDestination, Is.EqualTo(new GridPosition(sigil, 0)));
+            Assert.That(result.Effects.OfType<GhostHauntEffect>(), Is.Empty);
+            Assert.That(board.GetTileAt(rest.RestDestination).Type, Is.EqualTo(TileType.Sigil));
             Assert.That(ObjectiveEvaluator.IsComplete(board), Is.True);
         }
 
@@ -64,7 +62,7 @@ namespace Blobs.Tests.EditMode
         public void FirstSigilStopsReturn()
         {
             var result = Move(Board(false, 0, 2));
-            Assert.That(result.Effects.OfType<GhostHauntEffect>().Single().LandingBlobId, Is.Null);
+            Assert.That(result.Effects.OfType<GhostRestEffect>().Single().RestDestination.X, Is.EqualTo(2));
         }
 
         [Test]
@@ -114,9 +112,21 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
+        public void GhostAlreadyOnSigilRestsWhenHauntBegins()
+        {
+            var board = Board(false, 3);
+            var result = Move(board);
+            Assert.That(result.Succeeded, Is.True);
+            Assert.That(board.GetBlob("ghost"), Is.Null);
+            var rest = result.Effects.OfType<GhostRestEffect>().Single();
+            Assert.That(rest.RestDestination.X, Is.EqualTo(3));
+            Assert.That(rest.Path.Count, Is.EqualTo(1));
+        }
+
+        [Test]
         public void EmptyReturnIsRejectedAtConstruction()
         {
-            Assert.Throws<ArgumentException>(() => new GhostHauntEffect("ghost", null, Array.Empty<GridPosition>()));
+            Assert.Throws<ArgumentException>(() => new GhostHauntEffect("ghost", Array.Empty<GridPosition>()));
         }
     }
 }

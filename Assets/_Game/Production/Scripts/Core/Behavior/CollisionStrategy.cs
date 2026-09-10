@@ -63,46 +63,43 @@ namespace Blobs.Core
     {
         public CollisionPlan BuildPlan(MoveContext context)
         {
-            // Rocks block merges so we just continue with no effect.
-            return CollisionPlan.Continue();
+            return CollisionPlan.BlockMover();
         }
     }
+
 
     public sealed class GhostCollisionStrategy : ICollisionStrategy
     {
         public CollisionPlan BuildPlan(MoveContext context)
         {
             GridPosition current = context.Target.Position;
-            GridPosition goal = context.StartPosition;
+            GridPosition goal = context.Plan.StartPosition;
             if (!current.IsAlignedWith(goal) || current == goal)
                 return CollisionPlan.Failed(MoveFailureReason.NotAligned);
 
-            int dx = Math.Sign(goal.X - current.X);
-            int dy = Math.Sign(goal.Y - current.Y);
             var path = new List<GridPosition>();
-            bool clears = false;
-            while (current != goal)
+            var direction = (goal - current).Normalized();
+            bool rests = context.Board.GetTileAt(current)?.Type.IsSigil() == true;
+            if (rests) path.Add(current);
+            while (!rests && current != goal)
             {
-                current = new GridPosition(current.X + dx, current.Y + dy);
-                if (!context.Board.IsInside(current))
-                    return CollisionPlan.Failed(MoveFailureReason.BlockedPath);
 
+                current += direction;
                 path.Add(current);
-                if (context.Board.GetTileAt(current)?.Type == TileType.Sigil)
+                var tile = context.Board.GetTileAt(current);
+
+                if (tile != null && tile.Type.IsSigil())
                 {
-                    clears = true;
+                    rests = true;
                     break;
                 }
             }
 
             var followUp = new List<IBoardEffect>();
-            if (clears)
-            {
-                followUp.Add(GhostHauntEffect.Rest(context.Target.Id, path));
-
-            }
+            if (rests)
+                followUp.Add(new GhostRestEffect(context.Target.Id, path));
             else
-                followUp.Add(GhostHauntEffect.Haunt(context.Target.Id, path));
+                followUp.Add(new GhostHauntEffect(context.Target.Id, path));
 
             return CollisionPlan.ConsumeMover(
                 MergeEffect.ReverseMerge(context)).WithFollowUpSteps(new[]

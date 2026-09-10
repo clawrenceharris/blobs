@@ -77,10 +77,17 @@ namespace Blobs.Core
             return new GridPosition(left.X + right.X, left.Y + right.Y);
         }
 
-        // Normalizes the position to a unit step (cardinal direction only: up, down, left, right, or zero)
-        // This will return (1,0), (-1,0), (0,1), (0,-1), or (0,0). Diagonal vectors become (0,0).
-        public static GridPosition Normalize(GridPosition position)
+
+
+
+    }
+    public static class GridPositionExtensions
+    {
+        public static GridPosition Normalized(this GridPosition position)
         {
+
+
+
             int x = position.X;
             int y = position.Y;
 
@@ -89,7 +96,7 @@ namespace Blobs.Core
             y = y > 0 ? 1 : (y < 0 ? -1 : 0);
 
             return new GridPosition(x, y);
-
         }
+
     }
 }

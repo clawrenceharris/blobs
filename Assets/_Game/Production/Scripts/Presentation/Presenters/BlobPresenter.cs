@@ -31,7 +31,8 @@ namespace Blobs.Presentation
         internal BlobTransitionPresenter Transitions { get; private set; }
         internal MergePresenter Merges { get; private set; }
 
-        internal GhostHauntPresenter GhostReturns { get; private set; }
+        internal GhostHauntPresenter GhostHaunts { get; private set; }
+        internal GhostRestPresenter GhostRests { get; private set; }
 
         /// <summary>
         /// Configures view creation for the active gameplay session and clears views from any prior session.
@@ -56,7 +57,9 @@ namespace Blobs.Presentation
             Transitions = new BlobTransitionPresenter(
                 this,
                 blobAnimationSettings.BlobMotionSettings);
-            GhostReturns = new GhostHauntPresenter(this, blobAnimationSettings.GhostReturnSettings);
+            GhostHaunts = new GhostHauntPresenter(this, blobAnimationSettings.GhostReturnSettings);
+
+            GhostRests = new GhostRestPresenter(this, blobAnimationSettings.GhostReturnSettings);
             Merges = new MergePresenter(this, orchestrator,
                 blobAnimationSettings.MergeImpactSettings, blobAnimationSettings.BlobMotionSettings);
             _selectionPresenter = new BlobSelectionPresenter(this, state);

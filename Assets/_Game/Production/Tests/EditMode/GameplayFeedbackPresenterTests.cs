@@ -31,7 +31,7 @@ namespace Blobs.Tests.EditMode
         }
 
         [TestCase(MoveFailureReason.SourceCannotMove, "That blob can't move.")]
-        [TestCase(MoveFailureReason.BlockedPath, "Another blob is in the way.")]
+        [TestCase(MoveFailureReason.PathBlocked, "Another blob is in the way.")]
         [TestCase(MoveFailureReason.UnsupportedInteraction, "Those blobs can't merge.")]
         [TestCase(
             MoveFailureReason.NormalMergeRequiresDifferentColors,

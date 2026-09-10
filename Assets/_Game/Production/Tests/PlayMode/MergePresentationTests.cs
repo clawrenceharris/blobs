@@ -9,7 +9,7 @@ using UnityEngine.TestTools;
 
 namespace Blobs.Tests.PlayMode
 {
-    public sealed partial class PresentationRuntimeTests
+    public sealed class MergePresentationTests : PresentationTestFixture
     {
         [UnityTest]
         public IEnumerator ExplicitNormalMergeWorksInFlatListsAndSteps()

@@ -79,7 +79,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1381305635
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: -1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 8071778bd996c4a32a3d14ca0bfc010e, type: 3}
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4308dfb561940f3a16025e7c52cdcc8, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.TrailBlobColorBinding
   targetRenderer: {fileID: 7049613652742966449}
 --- !u!1001 &3912473897929030523
@@ -157,6 +157,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2394599582724069473, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value:
+      objectReference: {fileID: 2100000, guid: 5098eea16760040c689f5ce8fc532d8b, type: 2}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: targets.Array.size
       value: 2
@@ -183,11 +187,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: 'targets.Array.data[1].Renderers.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 7049613652742966449}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: '_targets.Array.data[1].Renderers.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 7049613652742966449}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

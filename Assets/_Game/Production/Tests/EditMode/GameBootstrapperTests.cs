@@ -12,7 +12,7 @@ using UnityEngine.TestTools;
 
 namespace Blobs.Tests.EditMode
 {
-    public sealed class MilestoneTwoSceneShellTests
+    public sealed class GameBootstrapperTests
     {
         private readonly List<Object> _createdObjects = new List<Object>();
 
@@ -96,7 +96,7 @@ namespace Blobs.Tests.EditMode
             var commands = root.AddComponent<GameplayCommandAdapter>();
             var level = CreateLevelAsset();
             var viewCatalog = AssetDatabase.LoadAssetAtPath<ViewCatalogAsset>(
-                "Assets/_Game/Production/Content/Presentation/BlobViewCatalog.asset");
+                "Assets/_Game/Production/Content/Presentation/ViewCatalog.asset");
 
             Assert.That(viewCatalog, Is.Not.Null);
 
@@ -120,11 +120,11 @@ namespace Blobs.Tests.EditMode
             var asset = ScriptableObject.CreateInstance<LevelDefinitionAsset>();
             _createdObjects.Add(asset);
 
-            SetPrivateField(asset, "levelId", "milestone-two-test");
+            SetPrivateField(asset, "levelId", "bootstrapper-test");
             SetPrivateField(asset, "schemaVersion", 1);
             SetPrivateField(asset, "width", 3);
             SetPrivateField(asset, "height", 1);
-            SetPrivateField(asset, "visualTheme", CreateThemeAsset());
+            SetPrivateField(asset, "palette", CreatePaletteAsset());
             SetPrivateField(asset, "blobs", new List<BlobAssetData>
             {
                 new NormalBlobAssetData
@@ -147,9 +147,9 @@ namespace Blobs.Tests.EditMode
             return asset;
         }
 
-        private LevelVisualThemeAsset CreateThemeAsset()
+        private LevelColorPaletteAsset CreatePaletteAsset()
         {
-            var theme = ScriptableObject.CreateInstance<LevelVisualThemeAsset>();
+            var theme = ScriptableObject.CreateInstance<LevelColorPaletteAsset>();
             _createdObjects.Add(theme);
             return theme;
         }

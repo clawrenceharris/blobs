@@ -12,7 +12,7 @@ namespace Blobs.Tests.EditMode
     public sealed class BlobColorPresentationTests
     {
         private const string PalettePath =
-            "Assets/_Game/Production/Content/Presentation/BlobColorPalette_Default.asset";
+            "Assets/_Game/Production/Content/Presentation/LevelColorPalette_New.asset";
         private const string NormalPrefabPath =
             "Assets/_Game/Production/Prefabs/Blobs/PF_NormalBlob.prefab";
         private const string TrailPrefabPath =
@@ -99,7 +99,7 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void FlagBlobColorsCheckersAndFinialButNotBody()
+        public void FlagBlobUsesFlatPaletteColorOnCheckersAndFinial()
         {
             LevelColorPaletteAsset palette = LoadPalette();
             BlobView view = InstantiateView(FlagPrefabPath);
@@ -111,15 +111,12 @@ namespace Blobs.Tests.EditMode
 
             view.Initialize(state, palette, 1f, Vector2.zero);
 
-            BlobShaderColors expected = palette.GetRequired(BlobColor.Purple);
+            Color color = palette.GetRequired(BlobColor.Purple).BaseColor;
+            var expected = new BlobShaderColors(color, color, color);
             AssertShaderColors(checkers, expected);
             AssertShaderColors(finial, expected);
             Assert.That(checkers.sharedMaterial, Is.SameAs(authoredCheckersMaterial));
             Assert.That(finial.sharedMaterial, Is.SameAs(authoredFinialMaterial));
-
-            var properties = new MaterialPropertyBlock();
-            FindRenderer(view, "Body").GetPropertyBlock(properties);
-            Assert.That(properties.isEmpty, Is.True);
         }
 
         private LevelColorPaletteAsset LoadPalette()

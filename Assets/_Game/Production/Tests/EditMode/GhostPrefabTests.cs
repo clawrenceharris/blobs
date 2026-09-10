@@ -13,9 +13,12 @@ namespace Blobs.Tests.EditMode
         public void CatalogsResolveGhostAndSigilPrefabs()
         {
             var blobs = AssetDatabase.LoadAssetAtPath<ViewCatalogAsset>(
-                "Assets/_Game/Production/Content/Presentation/BlobViewCatalog.asset");
+                "Assets/_Game/Production/Content/Presentation/ViewCatalog.asset");
             var tiles = AssetDatabase.LoadAssetAtPath<ViewCatalogAsset>(
-                "Assets/_Game/Production/Content/Presentation/TileViewCatalog.asset");
+                "Assets/_Game/Production/Content/Presentation/ViewCatalog.asset");
+            Assert.That(blobs, Is.Not.Null);
+            Assert.That(tiles, Is.Not.Null);
+            Assert.That(tiles.GetRequiredTilePrefab(TileType.Sigil), Is.Not.Null);
             Assert.That(blobs.GetRequiredBlobPrefab(BlobType.Ghost).GetComponent<BlobRenderer>().FadeableVisual,
                 Is.Not.Null);
         }

@@ -1,4 +1,6 @@
 using Blobs.Presentation;
+using Blobs.Content;
+using UnityEditor;
 using UnityEngine;
 
 namespace Blobs.Tests.EditMode
@@ -14,9 +16,23 @@ namespace Blobs.Tests.EditMode
 
             var surfaceObject = new GameObject("Board Surface");
             surfaceObject.transform.SetParent(root.transform, false);
-            surfaceObject.AddComponent<BoardSurfaceView>();
+            ConfigureSurface(surfaceObject.AddComponent<BoardSurfaceView>());
 
-            return root.AddComponent<BoardPresenter>();
+            var presenter = root.AddComponent<BoardPresenter>();
+            var serialized = new SerializedObject(root.GetComponent<BlobPresenter>());
+            serialized.FindProperty("blobAnimationSettings").objectReferenceValue =
+                AssetDatabase.LoadAssetAtPath<BlobAnimationSettingsAsset>(
+                    "Assets/_Game/Production/Content/Presentation/BlobAnimationSettings.asset");
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            return presenter;
+        }
+        public static void ConfigureSurface(BoardSurfaceView view)
+        {
+            var serialized = new SerializedObject(view);
+            serialized.FindProperty("spriteSet").objectReferenceValue =
+                AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
+                    "Assets/_Game/Production/Resources/BoardSurfaceSpriteSet.asset");
+            serialized.ApplyModifiedPropertiesWithoutUndo();
         }
     }
 }

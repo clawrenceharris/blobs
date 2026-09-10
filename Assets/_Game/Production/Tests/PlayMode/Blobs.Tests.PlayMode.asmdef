@@ -7,6 +7,9 @@
         "Blobs.Application",
         "Blobs.Content",
         "Blobs.Input",
+        "Blobs.UI",
+        "Unity.TextMeshPro",
+        "Unity.ugui",
         "Blobs.Presentation",
         "UniTask"
     ],

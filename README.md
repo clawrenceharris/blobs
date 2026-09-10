@@ -53,19 +53,33 @@ Presentation timing must never decide whether a move is valid. Core and Applicat
 
 ## Tests
 
-Edit Mode tests live in `Assets/_Game/Production/Tests/EditMode`.
+Production tests live in `Assets/_Game/Production/Tests`.
 
-The current focused tests verify:
+Test files are named for the feature or responsibility they cover rather than
+delivery milestones. Edit Mode covers deterministic Core/Application behavior
+and asset wiring; Play Mode covers Presentation behavior that needs real Unity
+frames, object destruction, animation playback, or UI lifecycle.
 
-- Core normal merge behavior and per-tile step timelines.
-- Chain merging, consuming merges, and atomic failure.
-- Flag capture rules.
-- Trail spawning, trail color, and merge-site spawn suppression.
-- Collision contract (`CollisionPlan`, merge strategies, follow-up steps).
-- Invalid move rejection.
-- Selection-driven move execution.
-- Restart restoring authored state.
-- Scene shell wiring through `GameBootstrapper`, `GameplayInputAdapter`, `GameplayCommandAdapter`, and `BoardPresenter`.
-- Step-driven Presentation apply/rebuild.
+The current focused suites verify:
+
+- `MoveResolverPathTests`, `TrailMechanicTests`, `GhostMechanicTests`,
+  `FlagMechanicTests`, and `ObjectiveEvaluatorTests` for core gameplay rules,
+  path timelines, atomic rejection, clearability, and completion.
+- `GameSessionTests` for selection, move execution, restart, move counting,
+  completion, and snapshot isolation around the deterministic core.
+- `LevelValidatorTests`, `LevelAssetMapperTests`, and `GameBootstrapperTests`
+  for authored content, scene composition, and production startup wiring.
+- `BoardPresenterTests`, `BoardSurfaceTests`, `PresenterSeparationTests`,
+  `BlobColorPresentationTests`, `GhostPrefabTests`, and
+  `GameplayFeedbackPresenterTests` for Edit Mode presentation composition and
+  asset contracts.
+- Play Mode presentation suites including `MergePresentationTests`,
+  `BoardPlaybackTests`, `GhostPresentationTests`,
+  `PresentationCompositionTests`, `CameraPresenterTests`, and
+  `GameplayHudPresenterTests`.
+
+Run them from Unity Test Runner with Edit Mode and Play Mode selected. The
+latest local validation was 114/114 Edit Mode tests and 20/20 Play Mode tests
+passing on Unity 6000.3.6f1.
 
 When changing gameplay rules, update tests and docs together so the intended behavior stays clear.

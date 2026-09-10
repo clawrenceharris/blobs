@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace Blobs.Tests.EditMode
 {
-    public sealed class MilestoneFiveFlagBlobTests
+    public sealed class FlagMechanicTests
     {
         [Test]
         public void SelectingFlagAsSourceIsRejectedWithoutChangingSessionState()
@@ -257,7 +257,7 @@ namespace Blobs.Tests.EditMode
             MoveResult normalMerge = session.ExecuteMove(
                 new MoveIntent(purpleBlob, blueBlob));
             MoveResult flagMerge = session.ExecuteMove(
-                new MoveIntent(purpleBlob, flagBlob));
+                new MoveIntent(session.CurrentState.GetBlob("purple_normal"), flagBlob));
             GameSessionSnapshot snapshot = session.CreateSnapshot();
 
             Assert.That(normalMerge.Succeeded, Is.True);

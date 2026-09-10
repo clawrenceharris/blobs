@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using UnityEngine.TestTools;
 using System.Collections.Generic;
 using System.Reflection;
 using Blobs.Application;
@@ -9,26 +11,27 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Blobs.Tests.EditMode
+namespace Blobs.Tests.PlayMode
 {
     public sealed class GameplayHudPresenterTests
     {
         private readonly List<UnityEngine.Object> _createdObjects = new List<UnityEngine.Object>();
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             for (int i = _createdObjects.Count - 1; i >= 0; i--)
             {
                 if (_createdObjects[i] != null)
-                    UnityEngine.Object.DestroyImmediate(_createdObjects[i]);
+                    UnityEngine.Object.Destroy(_createdObjects[i]);
             }
 
             _createdObjects.Clear();
+            yield return null;
         }
 
-        [Test]
-        public void HudBindsToSessionHostUpdatesMoveCountAndForwardsRestart()
+        [UnityTest]
+        public IEnumerator HudBindsToSessionHostUpdatesMoveCountAndForwardsRestart()
         {
             GameObject hud = CreateGameObject("HUD");
             hud.SetActive(false);
@@ -46,6 +49,7 @@ namespace Blobs.Tests.EditMode
 
             hud.SetActive(true);
             presenter.Initialize(host);
+            yield return null;
 
             Assert.That(moveText.text, Is.EqualTo("0"));
             Assert.That(completionRoot.activeSelf, Is.False);
@@ -54,6 +58,10 @@ namespace Blobs.Tests.EditMode
             state.RaiseSnapshotChanged();
 
             Assert.That(moveText.text, Is.EqualTo("2"));
+
+            state.IsComplete = true;
+            state.RaiseSnapshotChanged();
+            Assert.That(completionRoot.activeSelf, Is.True);
 
             restartButton.onClick.Invoke();
 
@@ -97,6 +105,7 @@ namespace Blobs.Tests.EditMode
             public event Action<BlobSelectionResult> BlobSelected;
 
             public int MoveCount { get; set; }
+            public bool IsComplete { get; set; }
 
             public GameSessionSnapshot CreateSnapshot()
             {
@@ -104,7 +113,7 @@ namespace Blobs.Tests.EditMode
                     "hud-test",
                     new BoardState(2, 1, new List<BlobState>(), new List<TileState>()),
                     MoveCount,
-                    false);
+                    IsComplete);
             }
 
             public void RaiseSnapshotChanged()

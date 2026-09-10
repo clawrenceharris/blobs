@@ -106,7 +106,10 @@ namespace Blobs.Presentation
         {
             var target = GridToLocal(position, _cellSize, _origin);
             GridPosition = position;
-            return transform.DOLocalMove(target, duration).SetEase(ease);
+            return transform
+                .DOLocalMove(target, duration)
+                .SetEase(ease)
+                .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
         }
 
 
@@ -131,14 +134,17 @@ namespace Blobs.Presentation
                 _origin);
 
             return DOTween.Sequence()
+                .SetLink(gameObject, LinkBehaviour.KillOnDestroy)
                 .Append(
                     transform
                         .DOLocalMove(target, moveDuration)
-                        .SetEase(Ease.InQuad))
+                        .SetEase(Ease.InQuad)
+                        .SetLink(gameObject, LinkBehaviour.KillOnDestroy))
                 .Append(
                     transform
                         .DOScale(Vector3.zero, despawnDuration)
-                        .SetEase(Ease.InBack));
+                        .SetEase(Ease.InBack)
+                        .SetLink(gameObject, LinkBehaviour.KillOnDestroy));
         }
 
         /// <summary>
@@ -147,7 +153,10 @@ namespace Blobs.Presentation
         public Tween PlaySpawn(float duration)
         {
             transform.localScale = Vector3.zero;
-            return transform.DOScale(_baseScale, duration).SetEase(Ease.OutBack);
+            return transform
+                .DOScale(_baseScale, duration)
+                .SetEase(Ease.OutBack)
+                .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
         }
 
         /// <summary>
@@ -155,7 +164,10 @@ namespace Blobs.Presentation
         /// </summary>
         public Tween PlayDespawn(float duration)
         {
-            return transform.DOScale(Vector3.zero, duration).SetEase(Ease.InBack);
+            return transform
+                .DOScale(Vector3.zero, duration)
+                .SetEase(Ease.InBack)
+                .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
         }
 
         /// <summary>

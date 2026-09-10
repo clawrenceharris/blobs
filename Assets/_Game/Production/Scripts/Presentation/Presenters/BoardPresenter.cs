@@ -50,6 +50,14 @@ namespace Blobs.Presentation
         public event Action<GameSessionSnapshot> SnapshotChanged;
 
         /// <summary>
+        /// Releases gameplay subscriptions and clears presentation views.
+        /// </summary>
+        public void Dispose()
+        {
+            Unsubscribe();
+        }
+
+        /// <summary>
         /// Adds or replaces the presentation handler for one Core effect type.
         /// This is the extension point for new effects that should not require changes to the board coordinator.
         /// </summary>
@@ -384,7 +392,7 @@ namespace Blobs.Presentation
 
         private void OnDestroy()
         {
-            Unsubscribe();
+            Dispose();
         }
     }
 }

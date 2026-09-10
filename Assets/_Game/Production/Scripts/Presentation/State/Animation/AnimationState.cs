@@ -64,7 +64,8 @@ namespace Blobs.Presentation
             StopSelectionLoop();
 
             // Create squish in/out loop: squash down (Y smaller, X larger) then return to base
-            _selectionSequence = DOTween.Sequence();
+            _selectionSequence = DOTween.Sequence()
+                .SetLink(_context.BlobView.gameObject, LinkBehaviour.KillOnDestroy);
             Vector3 squishScale = new Vector3(
                _context.BaseScale.x * stretchAmount,
                 _context.BaseScale.y * squishAmount,
@@ -74,11 +75,13 @@ namespace Blobs.Presentation
             // Squish in
             Transform visual = VisualTransform(_context);
             _selectionSequence.Append(visual.DOScale(squishScale, squishDuration)
-                .SetEase(Ease.OutQuad));
+                .SetEase(Ease.OutQuad)
+                .SetLink(_context.BlobView.gameObject, LinkBehaviour.KillOnDestroy));
 
             // Squish out (back to base)
             _selectionSequence.Append(visual.DOScale(_context.BaseScale, squishDuration)
-                .SetEase(Ease.InQuad));
+                .SetEase(Ease.InQuad)
+                .SetLink(_context.BlobView.gameObject, LinkBehaviour.KillOnDestroy));
 
             // Loop indefinitely
             return _selectionSequence.SetLoops(-1, LoopType.Restart);
@@ -148,7 +151,8 @@ namespace Blobs.Presentation
             StopIdleLoop();
 
             // Create squish in/out loop: squash down (Y smaller, X larger) then return to base
-            _idleSequence = DOTween.Sequence();
+            _idleSequence = DOTween.Sequence()
+                .SetLink(_context.BlobView.gameObject, LinkBehaviour.KillOnDestroy);
             Vector3 squishScale = new Vector3(
                _context.BaseScale.x * stretchAmount,
                 _context.BaseScale.y * squishAmount,
@@ -158,11 +162,13 @@ namespace Blobs.Presentation
             // Squish in
             Transform visual = VisualTransform(_context);
             _idleSequence.Append(visual.DOScale(squishScale, squishDuration)
-                .SetEase(Ease.Linear));
+                .SetEase(Ease.Linear)
+                .SetLink(_context.BlobView.gameObject, LinkBehaviour.KillOnDestroy));
 
             // Squish out (back to base)
             _idleSequence.Append(visual.DOScale(_context.BaseScale, squishDuration)
-                .SetEase(Ease.Linear));
+                .SetEase(Ease.Linear)
+                .SetLink(_context.BlobView.gameObject, LinkBehaviour.KillOnDestroy));
 
             // Loop indefinitely
             return _idleSequence.SetLoops(-1, LoopType.Restart);

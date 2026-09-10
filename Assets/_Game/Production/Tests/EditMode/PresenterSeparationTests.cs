@@ -216,7 +216,7 @@ namespace Blobs.Tests.EditMode
         public void SigilTilePrefabIsRegisteredInProductionCatalog()
         {
             ViewCatalogAsset catalog = AssetDatabase.LoadAssetAtPath<ViewCatalogAsset>(
-                "Assets/_Game/Production/Content/Presentation/TileViewCatalog.asset");
+                "Assets/_Game/Production/Content/Presentation/ViewCatalog.asset");
 
             Assert.That(catalog, Is.Not.Null);
             TileView prefab = catalog.GetRequiredTilePrefab(TileType.Sigil);
@@ -385,8 +385,7 @@ namespace Blobs.Tests.EditMode
             Assert.That(secondView.BlobMotionAnimator.CurrentState, Is.EqualTo(BlobAnimationState.Selected));
             Assert.That(unrelatedView.BlobMotionAnimator.CurrentState, Is.EqualTo(BlobAnimationState.Moving));
 
-            UnityEngine.Object.DestroyImmediate(_root);
-            _root = null;
+            presenter.Dispose();
             Assert.That(state.BlobSelectionSubscriberCount, Is.Zero);
         }
 
@@ -413,7 +412,14 @@ namespace Blobs.Tests.EditMode
                 gameObject.transform.SetParent(parent, false);
                 BlobView view = gameObject.AddComponent<BlobView>();
                 if (_includeMotionAnimator)
-                    gameObject.AddComponent<BlobMotionAnimator>();
+                {
+                    var animator = gameObject.AddComponent<BlobMotionAnimator>();
+                    SetPrivateField(
+                        animator,
+                        "_blobAnimationSettings",
+                        AssetDatabase.LoadAssetAtPath<BlobAnimationSettingsAsset>(
+                            "Assets/_Game/Production/Content/Presentation/BlobAnimationSettings.asset"));
+                }
                 view.Initialize(blob, _palette, cellSize, origin);
                 return view;
             }

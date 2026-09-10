@@ -4,6 +4,15 @@
 
 [Game design](../GAME_DESIGN.md) now records the agreed rules. [Implementation checklist](../RULES_IMPLEMENTATION_PLAN.md) tracks pending code and acceptance work. Undo is required and leaves move count unchanged; the current intent history/count coupling must change. Flags accept matching Normal sources only, require explicit successful capture when targeted, and level validation requires exactly one Flag. Reached-path atomicity, stopping Rocks, and Ghost starting-Sigil clearing are explicit. This update documents decisions; it does not certify runtime implementation or test results.
 
+## September 10, 2026 testing update
+
+Production tests now live under feature/responsibility names instead of milestone
+names. Core/Application coverage includes move resolution paths, Trail, Ghost,
+Flag, objective evaluation, and GameSession state behavior. Presentation coverage
+is split between Edit Mode asset/composition contracts and Play Mode animation,
+playback, ghost, camera, composition, and HUD behavior. Local validation on Unity
+6000.3.6f1 passed 114/114 Edit Mode tests and 20/20 Play Mode tests.
+
 
 ## September 8, 2026 baseline update
 

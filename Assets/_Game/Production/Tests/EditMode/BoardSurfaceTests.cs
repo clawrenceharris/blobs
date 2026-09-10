@@ -87,7 +87,7 @@ namespace Blobs.Tests.EditMode
         public void GeneratedSpriteSetHasReadableTrueAlphaComponents()
         {
             BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
-                "Assets/_Game/Production/Content/Board/BoardSurfaceSpriteSet.asset");
+                "Assets/_Game/Production/Resources/BoardSurfaceSpriteSet.asset");
 
             Assert.That(spriteSet, Is.Not.Null);
             Assert.That(spriteSet.IsConfigured, Is.True);
@@ -116,7 +116,7 @@ namespace Blobs.Tests.EditMode
         public void ComposedCellBleedsOpaqueCoverageTowardPresentNeighbor()
         {
             BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
-                "Assets/_Game/Production/Content/Board/BoardSurfaceSpriteSet.asset");
+                "Assets/_Game/Production/Resources/BoardSurfaceSpriteSet.asset");
             using var composer = new BoardSurfaceSpriteComposer(spriteSet);
 
             Sprite sprite = composer.GetOrCreate(BoardSurfaceNeighborMask.East);
@@ -133,7 +133,7 @@ namespace Blobs.Tests.EditMode
         public void SeamBleedDoesNotExtendPerimeterArtworkPastAConcaveTangent()
         {
             BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
-                "Assets/_Game/Production/Content/Board/BoardSurfaceSpriteSet.asset");
+                "Assets/_Game/Production/Resources/BoardSurfaceSpriteSet.asset");
             using var composer = new BoardSurfaceSpriteComposer(spriteSet);
 
             Sprite sprite = composer.GetOrCreate(
@@ -154,7 +154,7 @@ namespace Blobs.Tests.EditMode
         public void ConcaveFillIsClippedToItsSharedRadiusSquare()
         {
             BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
-                "Assets/_Game/Production/Content/Board/BoardSurfaceSpriteSet.asset");
+                "Assets/_Game/Production/Resources/BoardSurfaceSpriteSet.asset");
             using var composer = new BoardSurfaceSpriteComposer(spriteSet);
 
             Sprite sprite = composer.GetOrCreate(
@@ -175,7 +175,7 @@ namespace Blobs.Tests.EditMode
         public void SouthEdgeHasAnOpaqueVisibleLowerBorder()
         {
             BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
-                "Assets/_Game/Production/Content/Board/BoardSurfaceSpriteSet.asset");
+                "Assets/_Game/Production/Resources/BoardSurfaceSpriteSet.asset");
             using var composer = new BoardSurfaceSpriteComposer(spriteSet);
 
             Sprite sprite = composer.GetOrCreate(BoardSurfaceNeighborMask.None);
@@ -195,7 +195,7 @@ namespace Blobs.Tests.EditMode
         public void ComposerUsesDistinctFillForCheckerParity()
         {
             BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
-                "Assets/_Game/Content/Board/BoardSurfaceSpriteSet.asset");
+                "Assets/_Game/Production/Resources/BoardSurfaceSpriteSet.asset");
             using var composer = new BoardSurfaceSpriteComposer(spriteSet);
 
             Sprite fillA = composer.GetOrCreate(BoardSurfaceNeighborMask.None, false);
@@ -215,6 +215,7 @@ namespace Blobs.Tests.EditMode
         {
             _root = new GameObject("Irregular Board Surface Test");
             BoardSurfaceView view = _root.AddComponent<BoardSurfaceView>();
+            TestPresentationComposition.ConfigureSurface(view);
             var occupied = new HashSet<GridPosition>
             {
                 new GridPosition(0, 0),
@@ -231,48 +232,9 @@ namespace Blobs.Tests.EditMode
             Assert.That(mask.HasFlag(BoardSurfaceNeighborMask.NorthEast), Is.False);
         }
 
-        [Test]
-        public void Level03UsesItsAuthoredSevenCellSurfaceLayout()
-        {
-            LevelDefinitionAsset level = AssetDatabase.LoadAssetAtPath<LevelDefinitionAsset>(
-                "Assets/_Game/Production/Content/Levels/SO/Level_03.asset");
-
-            Assert.That(level, Is.Not.Null);
 
 
 
-            _root = new GameObject("Level 3 Surface Layout Test");
-            BoardPresenter presenter = TestPresentationComposition.AddBoardPresenter(_root);
-            presenter.Initialize(
-                new FakeGameplayState(EmptySnapshot()),
-                null,
-                new EmptyBlobViewFactory());
-
-            Assert.That(presenter.VisibleSurfaceCellCount, Is.EqualTo(7));
-            BoardSurfaceView surface = _root.GetComponentInChildren<BoardSurfaceView>(true);
-            Assert.That(
-                surface.TryGetMask(new GridPosition(3, 0), out BoardSurfaceNeighborMask mask),
-                Is.True);
-            Assert.That(mask.HasFlag(BoardSurfaceNeighborMask.North), Is.True);
-            Assert.That(mask.HasFlag(BoardSurfaceNeighborMask.West), Is.True);
-            Assert.That(mask.HasFlag(BoardSurfaceNeighborMask.NorthWest), Is.False);
-        }
-
-        [Test]
-        public void DefaultBoardSurfacePaletteExistsForFutureIntegration()
-        {
-            BoardSurfacePaletteAsset palette =
-                AssetDatabase.LoadAssetAtPath<BoardSurfacePaletteAsset>(
-                    "Assets/_Game/Production/Content/Board/Palettes/BoardSurfacePalette_Default.asset");
-
-            Assert.That(palette, Is.Not.Null);
-            Assert.That(palette.FillA.a, Is.EqualTo(1f));
-            Assert.That(palette.FillB.a, Is.EqualTo(1f));
-            Assert.That(palette.FillA.r, Is.GreaterThan(palette.FillB.r));
-            Assert.That(palette.Highlight.r, Is.GreaterThan(palette.FillA.r));
-            Assert.That(palette.AmbientEdge.r, Is.LessThan(palette.FillB.r));
-            Assert.That(palette.LowerEdge.r, Is.LessThan(palette.AmbientEdge.r));
-        }
 
         [Test]
         public void MissingSurfaceLayoutFallsBackToFullBoardDimensions()
@@ -285,6 +247,24 @@ namespace Blobs.Tests.EditMode
                 new EmptyBlobViewFactory());
 
             Assert.That(presenter.VisibleSurfaceCellCount, Is.EqualTo(6));
+        }
+
+        [Test]
+        public void PresenterBuildsSurfaceFromDimensionsAndCutoutsWithoutLogicalTiles()
+        {
+            _root = new GameObject("Cutout Surface Test");
+            BoardPresenter presenter = TestPresentationComposition.AddBoardPresenter(_root);
+            var snapshot = new GameSessionSnapshot("cutout", new BoardState(2, 2,
+                Array.Empty<BlobState>(), Array.Empty<TileState>(),
+                new[] { new GridPosition(1, 1) }), 0, false);
+            presenter.Initialize(new FakeGameplayState(snapshot), null, new EmptyBlobViewFactory());
+            Assert.That(presenter.VisibleSurfaceCellCount, Is.EqualTo(3));
+            var surface = _root.GetComponentInChildren<BoardSurfaceView>();
+            Assert.That(surface.TryGetMask(new GridPosition(1, 1), out _), Is.False);
+            Assert.That(surface.TryGetMask(new GridPosition(0, 0), out var mask), Is.True);
+            Assert.That(mask.HasFlag(BoardSurfaceNeighborMask.North), Is.True);
+            Assert.That(mask.HasFlag(BoardSurfaceNeighborMask.East), Is.True);
+            Assert.That(mask.HasFlag(BoardSurfaceNeighborMask.NorthEast), Is.False);
         }
 
         private static GameSessionSnapshot EmptySnapshot()

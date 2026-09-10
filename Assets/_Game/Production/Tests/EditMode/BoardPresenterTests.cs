@@ -10,7 +10,7 @@ using Object = UnityEngine.Object;
 
 namespace Blobs.Tests.EditMode
 {
-    public sealed class MilestoneFourPresentationTests
+    public sealed class BoardPresenterTests
     {
         private readonly List<Object> _createdObjects = new List<Object>();
 
@@ -158,7 +158,7 @@ namespace Blobs.Tests.EditMode
 
         private BoardPresenter CreatePresenter(GameSessionSnapshot initialSnapshot)
         {
-            var gameObject = new GameObject("Milestone 4 Board Presenter");
+            var gameObject = new GameObject("Board Presenter Test");
             _createdObjects.Add(gameObject);
             var palette = ScriptableObject.CreateInstance<LevelColorPaletteAsset>();
             _createdObjects.Add(palette);
@@ -181,8 +181,8 @@ namespace Blobs.Tests.EditMode
         private static GameSessionSnapshot Snapshot(params BlobState[] blobs)
         {
             return new GameSessionSnapshot(
-                "milestone-four-test",
-                new BoardState(2, 1, blobs, new List<TileState>()),
+                "board-presenter-test",
+                new BoardState(3, 2, blobs, new List<TileState>()),
                 0,
                 false);
         }

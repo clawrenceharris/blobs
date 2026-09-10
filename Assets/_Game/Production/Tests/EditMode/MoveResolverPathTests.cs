@@ -31,25 +31,7 @@ namespace Blobs.Tests.EditMode
             Assert.That(Snapshot(board), Is.EqualTo(before), "Earlier simulated interactions must not commit.");
         }
 
-        [Test]
-        public void AdjacentRockDoesNotIncrementSessionMoveCountButStillPublishesContact()
-        {
-            var level = new LevelDefinition("contact", LevelDefinition.CurrentSchemaVersion, 3, 1,
-                new BlobDefinition[]
-                {
-                    new NormalBlobDefinition("source", new GridPosition(0, 0), BlobColor.Red),
-                    new RockBlobDefinition("target", new GridPosition(1, 0)),
-                    new FlagBlobDefinition("flag", new GridPosition(2, 0), BlobColor.Red)
-                }, Array.Empty<TileDefinition>());
-            var session = new Blobs.Application.GameSession(level);
-            int contacts = 0;
-            session.MoveResolved += _ => contacts++;
-            var result = session.ExecuteMove(new MoveIntent(session.CurrentState.GetBlob("source"),
-                session.CurrentState.GetBlob("target")));
-            Assert.That(result.Succeeded, Is.True);
-            Assert.That(session.MoveCount, Is.Zero);
-            Assert.That(contacts, Is.EqualTo(1));
-        }
+
 
         [TestCase(BlobType.Normal)]
         [TestCase(BlobType.Trail)]

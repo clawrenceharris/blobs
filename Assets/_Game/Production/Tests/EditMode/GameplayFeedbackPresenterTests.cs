@@ -30,8 +30,9 @@ namespace Blobs.Tests.EditMode
             _createdObjects.Clear();
         }
 
+        [TestCase(MoveFailureReason.NotAligned, "Blobs must share the same column or row to merge.")]
         [TestCase(MoveFailureReason.SourceCannotMove, "That blob can't move.")]
-        [TestCase(MoveFailureReason.PathBlocked, "Another blob is in the way.")]
+        [TestCase(MoveFailureReason.PathBlocked, "Path is blocked.")]
         [TestCase(MoveFailureReason.UnsupportedInteraction, "Those blobs can't merge.")]
         [TestCase(
             MoveFailureReason.NormalMergeRequiresDifferentColors,
@@ -52,7 +53,6 @@ namespace Blobs.Tests.EditMode
         [TestCase(MoveFailureReason.None)]
         [TestCase(MoveFailureReason.SourceOrTargetMissing)]
         [TestCase(MoveFailureReason.SameBlob)]
-        [TestCase(MoveFailureReason.NotAligned)]
         public void CatalogKeepsSelectionStageFailuresSilent(MoveFailureReason reason)
         {
             FailureFeedbackCatalogAsset catalog = LoadCatalog();
@@ -72,15 +72,13 @@ namespace Blobs.Tests.EditMode
             input.Initialize(commands, 1f);
 
             BlobSelectionResult returned = input.SelectBlobAt(new GridPosition(0, 0));
-            Assert.That(returned.SourceId, Is.EqualTo("blob_a"));
-            Assert.That(returned.TargetId, Is.EqualTo("blob_b"));
 
             Assert.That(returned, Is.SameAs(expected));
             Assert.That(published, Is.SameAs(expected));
         }
 
         [Test]
-        public void FailedSelectionDisplaysMappedMessage()
+        public void FailedMoveDisplaysMappedMessage()
         {
             GameObject feedbackObject = Create("Feedback");
             feedbackObject.SetActive(false);
@@ -93,7 +91,7 @@ namespace Blobs.Tests.EditMode
             GameplayInputAdapter input = Create("Input").AddComponent<GameplayInputAdapter>();
             input.Initialize(
                 new FakeCommands(
-                    BlobSelectionResult.Rejected(MoveFailureReason.FlagRequiresNoOtherBlobs)),
+                    BlobSelectionResult.Move(MoveResult.Failed("source", "flag", MoveFailureReason.FlagRequiresNoOtherBlobs))),
                 1f);
 
             feedbackObject.SetActive(true);

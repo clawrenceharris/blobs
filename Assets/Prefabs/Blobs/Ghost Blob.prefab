@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3399742769679583475}
   - component: {fileID: 6111696923431916385}
-  - component: {fileID: 3492563350622678284}
   m_Layer: 0
   m_Name: Halo
   m_TagString: Untagged
@@ -35,6 +34,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6111696923431916385
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -53,10 +53,12 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0d4bbaa10c675466891253ebb5c3895b, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -74,9 +76,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1839430605
   m_SortingLayer: 2
   m_SortingOrder: 2
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 45e83263eba2b40088880dcc3763deed, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -86,24 +90,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3492563350622678284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3942341544303062725}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee158225ee1e59f4791627785501d950, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentShaderType: 0
-  normalStrength: 5
-  normalSmoothing: 1
-  computingNormal: 0
 --- !u!1001 &4906576934258824666
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -183,8 +170,16 @@ PrefabInstance:
       addedObject: {fileID: 8246436865046865391}
     - targetCorrespondingSourceObject: {fileID: 3808715570948269502, guid: 018c5f23b791d4bfa97bbd780a5e2cbc, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5487175279102719110}
+      addedObject: {fileID: 1027991619032614549}
+    - targetCorrespondingSourceObject: {fileID: 3808715570948269502, guid: 018c5f23b791d4bfa97bbd780a5e2cbc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6743432105329561828}
   m_SourcePrefab: {fileID: 100100000, guid: 018c5f23b791d4bfa97bbd780a5e2cbc, type: 3}
+--- !u!212 &1949816694220395213 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6852378884847781655, guid: 018c5f23b791d4bfa97bbd780a5e2cbc, type: 3}
+  m_PrefabInstance: {fileID: 4906576934258824666}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5784876863124260400 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1468080444204028906, guid: 018c5f23b791d4bfa97bbd780a5e2cbc, type: 3}
@@ -212,7 +207,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3808715570948269502, guid: 018c5f23b791d4bfa97bbd780a5e2cbc, type: 3}
   m_PrefabInstance: {fileID: 4906576934258824666}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5487175279102719110
+--- !u!114 &1027991619032614549
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -221,10 +216,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 8128134315419742308}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee158225ee1e59f4791627785501d950, type: 3}
+  m_Script: {fileID: 11500000, guid: a06909fd292a844a6b60a79691429242, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  currentShaderType: 0
-  normalStrength: 5
-  normalSmoothing: 1
-  computingNormal: 0
+  m_EditorClassIdentifier: Assembly-CSharp::BlobVisuals
+  SpriteRenderer: {fileID: 1949816694220395213}
+  Highlight: {fileID: 0}
+  Particles: {fileID: 0}
+--- !u!114 &6743432105329561828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8128134315419742308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6cfe9c85093842e3ba475bed6535242, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostBlobView

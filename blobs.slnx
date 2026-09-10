@@ -1,6 +1,5 @@
 ﻿<Solution>
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Assembly-CSharp-firstpass.csproj" />
-  <Project Path="AllIn1SpriteShaderAssembly.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
 </Solution>

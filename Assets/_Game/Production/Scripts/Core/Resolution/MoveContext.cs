@@ -11,16 +11,16 @@ namespace Blobs.Core
     {
         public MoveContext(
             BoardState board,
-            GridPosition startPosition,
+            MovePlan plan,
             BlobState source,
             BlobState target,
             bool isFinalTarget = true)
         {
             Board = board;
+            Plan = plan;
             Source = source;
             Target = target;
             IsFinalTarget = isFinalTarget;
-            StartPosition = startPosition;
         }
 
         public BoardState Board { get; }
@@ -33,9 +33,9 @@ namespace Blobs.Core
 
 
         /// <summary>
-        /// The start position of the merge.
+        /// The plan for the move.
         /// </summary>
-        public GridPosition StartPosition { get; }
+        public MovePlan Plan { get; }
 
 
         /// <summary>

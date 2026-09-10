@@ -12,5 +12,9 @@ namespace Blobs.Core
         {
             return type == TileType.Sigil;
         }
+        public static bool IsTraversable(this TileType type)
+        {
+            return type == TileType.Sigil;
+        }
     }
 }

@@ -55,7 +55,7 @@ namespace Blobs.Presentation
                         occupant.PlayDespawn(_settings.DespawnDuration), token);
                     _blobs.DestroyRetiringView(occupant);
                 }
-                if (!effect.Rests && fade != null)
+                if (fade != null)
                     await fade.FadeTo(1f, _settings.FadeDuration, token);
                 ghost.BlobMotionAnimator?.SetIdle();
                 onContact?.Invoke();
@@ -63,7 +63,7 @@ namespace Blobs.Presentation
             finally
             {
                 // A successful Sigil return stays ethereal until the clear beat.
-                if (fade != null && (!effect.Rests || token.IsCancellationRequested))
+                if (fade != null && token.IsCancellationRequested)
                     fade.Restore();
             }
         }

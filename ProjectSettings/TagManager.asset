@@ -50,6 +50,9 @@ TagManager:
   - name: Tiles
     uniqueID: 239408943
     locked: 0
+  - name: Blob VFX
+    uniqueID: 1217160663
+    locked: 0
   - name: Blobs
     uniqueID: 1381305635
     locked: 0

@@ -144,9 +144,9 @@ namespace Blobs.Tests.EditMode
                 color);
         }
 
-        private static SigilTileDefinition Tile(string id, int x, int y)
+        private static GraveTileDefinition Tile(string id, int x, int y)
         {
-            return new SigilTileDefinition(id, new GridPosition(x, y));
+            return new GraveTileDefinition(id, new GridPosition(x, y));
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Blobs.Tests.EditMode
     public sealed class GhostPrefabTests
     {
         [Test]
-        public void CatalogsResolveGhostAndSigilPrefabs()
+        public void CatalogsResolveGhostAndGravePrefabs()
         {
             var blobs = AssetDatabase.LoadAssetAtPath<ViewCatalogAsset>(
                 "Assets/_Game/Production/Content/Presentation/ViewCatalog.asset");
@@ -18,7 +18,7 @@ namespace Blobs.Tests.EditMode
                 "Assets/_Game/Production/Content/Presentation/ViewCatalog.asset");
             Assert.That(blobs, Is.Not.Null);
             Assert.That(tiles, Is.Not.Null);
-            Assert.That(tiles.GetRequiredTilePrefab(TileType.Sigil), Is.Not.Null);
+            Assert.That(tiles.GetRequiredTilePrefab(TileType.Grave), Is.Not.Null);
             Assert.That(blobs.GetRequiredBlobPrefab(BlobType.Ghost).GetComponent<BlobRenderer>().FadeableVisual,
                 Is.Not.Null);
         }

@@ -106,7 +106,7 @@ namespace Blobs.Content
     }
 
     [Serializable]
-    public sealed class SigilTileAssetData : TileAssetData
+    public sealed class GraveTileAssetData : TileAssetData
     {
     }
 }

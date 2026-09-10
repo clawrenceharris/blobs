@@ -79,7 +79,7 @@ namespace Blobs.Core
 
             var path = new List<GridPosition>();
             var direction = (goal - current).Normalized();
-            bool rests = context.Board.GetTileAt(current)?.Type.IsSigil() == true;
+            bool rests = context.Board.GetTileAt(current)?.Type.IsGrave() == true;
             if (rests) path.Add(current);
             while (!rests && current != goal)
             {
@@ -88,7 +88,7 @@ namespace Blobs.Core
                 path.Add(current);
                 var tile = context.Board.GetTileAt(current);
 
-                if (tile != null && tile.Type.IsSigil())
+                if (tile != null && tile.Type.IsGrave())
                 {
                     rests = true;
                     break;

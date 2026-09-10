@@ -7,7 +7,7 @@ using DG.Tweening;
 
 namespace Blobs.Presentation
 {
-    /// <summary>One fade, one continuous return, and one materialization or Sigil departure.</summary>
+    /// <summary>One fade, one continuous return, and one materialization or Grave departure.</summary>
     internal sealed class GhostRestPresenter
     {
         private readonly BlobPresenter _blobs;

@@ -69,13 +69,13 @@ namespace Blobs.Tests.PlayMode
         }
 
         [UnityTest]
-        public IEnumerator SigilReturnClearsOnlyAfterTravel()
+        public IEnumerator GraveReturnClearsOnlyAfterTravel()
         {
             BlobState source = Blob("source", BlobColor.Red, 0, 0);
             var ghost = new BlobState("ghost", BlobType.Ghost, new GridPosition(3, 0));
             var board = new BoardState(4, 1, new[] { source, ghost }, new[]
             {
-                new TileState("sigil", new GridPosition(1, 0), TileType.Sigil)
+                new TileState("grave", new GridPosition(1, 0), TileType.Grave)
             });
             // Use the normal test surface; tiles are tested independently by Core.
             var initial = Snapshot(4, 1, source, ghost);

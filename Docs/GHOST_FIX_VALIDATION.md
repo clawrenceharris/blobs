@@ -10,7 +10,7 @@ The current resolver now evaluates intermediate collisions on the simulation boa
 - Preserved explicit Flag intent: Normal source eligibility, matching color, no intermediate Flag capture, and no successful action that stops/consumes before the selected Flag. Added corresponding failure text with new enum values appended to preserve existing serialized values.
 - Added Normal/Trail movement registrations for Trail targets.
 - Preserved valid adjacent Rock feedback without incrementing `GameSession` history/move count.
-- A Ghost beginning haunt on a Sigil now emits rest immediately at that cell.
+- A Ghost beginning haunt on a Grave now emits rest immediately at that cell.
 - Updated tests to the current separate `GhostHauntEffect` and `GhostRestEffect` contracts. Removed an incorrect test landing ID that referred to the source already consumed by the preceding reverse merge.
 
 ## Ghost view lifetime cause
@@ -53,15 +53,15 @@ PASS SelectedFlagCannotBeReplacedByAnIntermediateGhost
 PASS IntermediateFlagRejectsEvenWhenItsColorMatches 
 PASS GhostCannotBeSourceAndCountsTowardObjective 
 PASS EmptyReturnPathPreservesGhostIdentityAndConsumesSource 
-PASS SigilCrossingIncludesSigilAndClearsGhost 2
-PASS SigilCrossingIncludesSigilAndClearsGhost 1
-PASS SigilCrossingIncludesSigilAndClearsGhost 0
-PASS FirstSigilStopsReturn 
+PASS GraveCrossingIncludesGraveAndClearsGhost 2
+PASS GraveCrossingIncludesGraveAndClearsGhost 1
+PASS GraveCrossingIncludesGraveAndClearsGhost 0
+PASS FirstGraveStopsReturn 
 PASS ReturnPhasesThroughTrailAndAbsorbsOnlyLandingOccupant 
-PASS OccupiedSigilClearsGhostWithoutAbsorbingTrailOccupant 
+PASS OccupiedGraveClearsGhostWithoutAbsorbingTrailOccupant 
 PASS ChainMergeReturnsToOriginalSourcePosition 
 PASS InvalidOutboundCollisionLeavesBoardUnchanged 
-PASS GhostAlreadyOnSigilRestsWhenHauntBegins 
+PASS GhostAlreadyOnGraveRestsWhenHauntBegins 
 PASS EmptyReturnIsRejectedAtConstruction 
 TOTAL: 28 passed, 0 failed
 

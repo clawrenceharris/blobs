@@ -4134,7 +4134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ba75b1e94e3950f873efd4c687cec7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BoardSurfaceView
-  spriteSet: {fileID: 11400000, guid: 4080aacd9dd834d08bdb6e059f225299, type: 2}
+  spriteSet: {fileID: 11400000, guid: f62220b7c58ee82a43ae530e087dd4ee, type: 2}
   sortingLayerName: Board
   sortingOrder: -100
 --- !u!1 &1667895271

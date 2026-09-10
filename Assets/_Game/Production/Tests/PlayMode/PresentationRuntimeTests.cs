@@ -82,7 +82,7 @@ namespace Blobs.Tests.PlayMode
                         new IBoardEffect[]
                         {
                             MergeEffect.NormalMerge(new MoveContext(
-                                initial.Board, source.Position, source, target))
+                                initial.Board, MovePlan.Move(source, target), source, target))
                         })
                 },
                 Snapshot(2, 1, source.WithPosition(target.Position)));

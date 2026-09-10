@@ -44,6 +44,8 @@ namespace Blobs.Core
         public BlobState WithColor(BlobColor color) => WithComponents(Components.WithColor(color));
 
         public BlobState WithTrail(BlobColor trailColor) => WithComponents(Components.WithTrail(trailColor));
+
+        public override string ToString() => $"{Id}_{Type}_{Position}";
     }
 
 

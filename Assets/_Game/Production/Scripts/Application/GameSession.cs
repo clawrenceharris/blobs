@@ -161,7 +161,9 @@ namespace Blobs.Application
             if (!result.Succeeded)
                 return result;
             IsComplete = result.IsComplete;
-            _history.Add(new ResolvedMoveCommand(intent));
+            // Valid contact can produce feedback without changing the board.
+            if (result.Effects.Count > 0)
+                _history.Add(new ResolvedMoveCommand(intent));
             MoveResolved?.Invoke(result);
             SnapshotChanged?.Invoke(CreateSnapshot());
             return result;

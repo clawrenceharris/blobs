@@ -6,7 +6,7 @@ A ghost cannot initiate a move. A normal or trail blob can merge into it; the so
 
 The return passes through intermediate occupants without changing them. On landing it absorbs the occupant, including a trail blob spawned during the source's departure. The first Sigil crossed ends the return and clears the ghost instead; an occupant on that Sigil survives. Sigils are reusable. Ghosts count toward the clear-board objective and must be cleared before flag capture.
 
-`GhostMergeStrategy` emits a reverse `MergeEffect` followed by a `GhostReturnEffect` containing the ordered path, and optionally `ClearGhostEffect`. The resolver finalizes landing occupancy and applies the entire aftermath to its simulation before committing any effects to the real board. This also handles adjacent Sigils and empty return cells.
+`GhostCollisionStrategy` emits a reverse `MergeEffect` followed by a `GhostHauntEffect` containing the ordered path, and optionally `GhostRestEffect`. The resolver finalizes landing occupancy and applies the entire aftermath to its simulation before committing any effects to the real board. This also handles adjacent Sigils and empty return cells.
 
 ## Playback
 

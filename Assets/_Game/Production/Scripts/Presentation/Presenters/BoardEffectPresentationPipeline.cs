@@ -38,7 +38,7 @@ namespace Blobs.Presentation
             Register(new RemoveBlobPresentationHandler());
             Register(new MergePresentationHandler());
             Register(new GhostHauntPresentationHandler());
-            Register(new ClearGhostPresentationHandler());
+            Register(new GhostRestPresentationHandler());
         }
 
         public void Register(IBoardEffectPresentationHandler handler)

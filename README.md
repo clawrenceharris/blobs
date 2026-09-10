@@ -9,7 +9,7 @@ The authoritative rules are in [Game design](Docs/GAME_DESIGN.md); pending code 
 - Select a source and a blob target on the same row or column.
 - Simulate reached interactions atomically. Normal/Trail merges continue; Rocks stop; Ghosts consume and haunt. Reached color/terrain failures reject the whole action.
 - Every level has one Flag; only a matching Normal may capture it, leaving zero clearable blobs. Victory always means zero clearable blobs.
-- Trail spawns on departures except current-action merge sites. Ghost haunt returns to the original source position; ethereal Sigil contact clears it.
+- Trail spawns on departures except current-action merge sites. Ghost haunt returns to the original source position; ethereal Grave contact clears it.
 - Undo reverses one whole action with dedicated feedback and never reduces move count. Restart always resets count/history and cancels playback.
 
 ## Architecture

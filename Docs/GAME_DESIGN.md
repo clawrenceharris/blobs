@@ -6,7 +6,7 @@
 
 The sole win condition is **zero clearable blobs remaining**. Normal, Trail, and Ghost blobs are clearable; Rocks and Flags are not. Every authored level must contain exactly one Flag for consistency, but capturing it is not a separate victory condition. A non-Flag action that clears all clearable blobs also wins.
 
-Semester mechanics: Normal, Trail, Rock, Flag, Ghost, Sigil, traversable cells, and missing/impassable cells. Undo is required in the 15-week deliverable. Mini and Fat blobs are possible future types; size is not a universal merge property. Bombs, switches, lasers, spikes, ice, sticky tiles, portals, and other variants are future work with no additional mechanics implied by this document. Existing examples of impassable terrain illustrate the path rule, not a commitment to implement every tile. The former target-tile mechanic is scrapped.
+Semester mechanics: Normal, Trail, Rock, Flag, Ghost, Grave, traversable cells, and missing/impassable cells. Undo is required in the 15-week deliverable. Mini and Fat blobs are possible future types; size is not a universal merge property. Bombs, switches, lasers, spikes, ice, sticky tiles, portals, and other variants are future work with no additional mechanics implied by this document. Existing examples of impassable terrain illustrate the path rule, not a commitment to implement every tile. The former target-tile mechanic is scrapped.
 
 ## Selection
 
@@ -57,7 +57,7 @@ A Ghost consumes the arriving source in a reverse merge, then becomes ethereal a
 
 While ethereal, it passes through other blobs without affecting them. At its destination it becomes non-ethereal and consumes any occupant regardless of color or type. Thus a Trail→Ghost action leaves its intermediate trail blobs intact, but the trail blob spawned at the original starting cell is consumed on Ghost landing. Trail departures resolve before haunt.
 
-The first Sigil occupied while ethereal clears the Ghost, including its starting cell when haunt begins and its destination. A blob sharing a crossed Sigil is preserved because the Ghost clears without landing. An idle Ghost on a Sigil is legal and is not cleared until it becomes ethereal. No level-validation prohibition is needed for that arrangement.
+The first Grave occupied while ethereal clears the Ghost, including its starting cell when haunt begins and its destination. A blob sharing a crossed Grave is preserved because the Ghost clears without landing. An idle Ghost on a Grave is legal and is not cleared until it becomes ethereal. No level-validation prohibition is needed for that arrangement.
 
 Haunt retraces the source's validated forward route, so current mechanics cannot put impassable terrain on that route. A future terrain-changing mechanic would need an explicit interaction rule.
 
@@ -88,7 +88,7 @@ Move count measures committed board-changing forward actions since restart. It i
 
 ## Undo and restart
 
-Undo is in semester scope. One Undo restores the complete state before one board-changing action: intermediate merges, Trail spawns, Ghost consumption/haunt/landing, and Sigil clearing all belong to that unit. Play the entire action in reverse order, with special Undo audio and effects rather than forward impact feedback. Preserve enough action information to restore removed occupants and their identities/properties.
+Undo is in semester scope. One Undo restores the complete state before one board-changing action: intermediate merges, Trail spawns, Ghost consumption/haunt/landing, and Grave clearing all belong to that unit. Play the entire action in reverse order, with special Undo audio and effects rather than forward impact feedback. Preserve enough action information to restore removed occupants and their identities/properties.
 
 Undo never reduces or increases move count. Repeated Undo is allowed back to the initial state with no use limit. There is no Redo; a new forward action discards the undone future.
 

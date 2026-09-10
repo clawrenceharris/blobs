@@ -2,19 +2,19 @@ namespace Blobs.Core
 {
     public enum TileType
     {
-        Sigil
+        Grave
 
     }
 
     public static class TileTypeExtensions
     {
-        public static bool IsSigil(this TileType type)
+        public static bool IsGrave(this TileType type)
         {
-            return type == TileType.Sigil;
+            return type == TileType.Grave;
         }
         public static bool IsTraversable(this TileType type)
         {
-            return type == TileType.Sigil;
+            return type == TileType.Grave;
         }
     }
 }

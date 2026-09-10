@@ -10,7 +10,7 @@ Presentation consumes `MergeEffect` directly. Its moving, target, surviving, and
 4. `MergePresenter` retires the explicit consumed view and animates the explicit mover. A surviving mover uses normal merge deformation; a surviving target uses absorption choreography. This decision depends on the effect's roles, not a blob-type check.
 5. The owning `PresentationTimeline` awaits playback and handles cancellation through `BoardPresenter`.
 
-Ghost return and Sigil clear remain separate handlers. A ghost merge is the same reverse merge interaction used for flag capture, followed by ghost-specific effects.
+Ghost return and Grave clear remain separate handlers. A ghost merge is the same reverse merge interaction used for flag capture, followed by ghost-specific effects.
 
 ## Flat lists versus beats
 

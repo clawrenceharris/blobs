@@ -296,4 +296,4 @@ Move toward this layout without a big-bang rewrite:
 2. Keep `MoveResolver` → effects → `BoardTransaction` as the Core spine; thin Application over command history.
 3. Push animation, pooling, and DOTween entirely into Presentation consumers of effect lists.
 4. Replace scene-coupled win checks and input with Application session + Input adapters.
-5. Add Edit Mode tests for every merge rule and cascade before adding new mechanics (trail, bomb, ghost, sigil, ice, sticky, portals).
+5. Add Edit Mode tests for every merge rule and cascade before adding new mechanics (trail, bomb, ghost, grave, ice, sticky, portals).

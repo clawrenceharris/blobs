@@ -30,11 +30,11 @@ public class BoardPresenter : MonoBehaviour
         _laserPresenter = FindFirstObjectByType<LaserBeamPresenter>();
         _tutorial = FindFirstObjectByType<TutorialPresenter>();
     }
-    private void Start()
+    private void OnEnable()
     {
         BoardLogic.OnBlobCreated += HandleBlobCreated;
         BoardLogic.OnBlobRemoved += HandleBlobRemoved;
-        BoardLogic.OnBoardCleared += HandleBoardCleared;
+
         BoardLogic.OnTileCreated += HandleTileCreated;
         BoardLogic.OnBlobMoved += HandleBlobMoved;
 
@@ -43,6 +43,7 @@ public class BoardPresenter : MonoBehaviour
     {
 
 
+        ClearBoard();
         BlobViews = new Dictionary<string, BlobView>();
         TileViews = new Dictionary<string, TileView>();
         LevelData level = levelManager.Level;
@@ -54,23 +55,55 @@ public class BoardPresenter : MonoBehaviour
         StartCoroutine(AnimateInitialBlobs());
     }
 
-    void OnDestroy()
+    private void OnDisable()
     {
-        if (BoardLogic != null)
-        {
-            BoardLogic.OnBlobCreated -= HandleBlobCreated;
-            BoardLogic.OnTileCreated -= HandleTileCreated;
-            BoardLogic.OnBlobMoved -= HandleBlobMoved;
-            BoardLogic.OnBlobRemoved -= HandleBlobRemoved;
-            BoardLogic.OnBoardCleared -= HandleBoardCleared;
-
-        }
-
+        BoardLogic.OnBlobCreated -= HandleBlobCreated;
+        BoardLogic.OnTileCreated -= HandleTileCreated;
+        BoardLogic.OnBlobMoved -= HandleBlobMoved;
+        BoardLogic.OnBlobRemoved -= HandleBlobRemoved;
+        ClearBoard();
     }
 
+    public void ClearBoard()
+    {
+        StopAllCoroutines();
+        CancelInvoke();
+        if (_firstSelectedBlob != null) OnBlobDeactivated?.Invoke(_firstSelectedBlob);
+        _firstSelectedBlob = null;
+        if (_laserPresenter != null) _laserPresenter.ClearAllBeams();
+        if (BlobViews != null)
+        {
+            foreach (var view in BlobViews.Values)
+            {
+                if (view == null) continue;
+                view.Input.OnBlobSelected -= HandleBlobSelected;
+                view.Input.OnBlobDeselected -= HandleBlobDeselected;
+                view.Input.OnBlobSwiped -= HandleBlobSwiped;
+                DestroyView(view.gameObject);
+            }
+            BlobViews.Clear();
+        }
+        if (TileViews != null)
+        {
+            foreach (var view in TileViews.Values)
+                if (view != null) DestroyView(view.gameObject);
+            TileViews.Clear();
+        }
+        BoardLogic = null;
+        MergeInvoker.DisableMerges();
+        ActionInvoker._actions.Clear();
+    }
 
-
-
+    private static void DestroyView(GameObject view)
+    {
+        foreach (var child in view.GetComponentsInChildren<Transform>(true))
+        {
+            child.DOKill();
+            foreach (var sprite in child.GetComponents<SpriteRenderer>()) sprite.DOKill();
+        }
+        view.SetActive(false);
+        Destroy(view);
+    }
 
     private void SetUpBoard(LevelData level)
     {
@@ -91,7 +124,7 @@ public class BoardPresenter : MonoBehaviour
         _laserPresenter.Setup(this);
 
     }
-    public IEnumerator CompleteMergeCo(Blob winningBlob)
+    public IEnumerator CompleteMergeCo(Blob winningBlob, Action onComplete = null)
     {
 
         // Add the dramatic pause
@@ -99,22 +132,27 @@ public class BoardPresenter : MonoBehaviour
         yield return AnimateRemove(winningBlob);
 
         yield return new WaitForSeconds(0.3f);
+        List<Coroutine> coroutines = new List<Coroutine>();
         foreach (var tile in BoardLogic.TileGrid)
         {
             if (tile != null && GetTileView(tile.ID) is { } view)
             {
-                StartCoroutine(view.Remove());
+                coroutines.Add(StartCoroutine(view.Remove()));
             }
         }
         foreach (var blob in BoardLogic.BlobGrid)
         {
             if (blob != null && GetBlobView(blob.ID) is { } view)
             {
-                StartCoroutine(view.Remove(scaleDuration));
+                coroutines.Add(StartCoroutine(view.Remove(scaleDuration)));
             }
         }
-        
-    }  
+        foreach (var coroutine in coroutines)
+        {
+            yield return coroutine;
+        }
+        onComplete?.Invoke();
+    }
 
     private void HandleBlobCreated(Blob blob)
     {
@@ -126,6 +164,7 @@ public class BoardPresenter : MonoBehaviour
         view.Setup(blob);
         view.Input.OnBlobSelected += HandleBlobSelected;
         view.Input.OnBlobDeselected += HandleBlobDeselected;
+        view.Input.OnBlobSwiped += HandleBlobSwiped;
 
         // Store the view for later access
         BlobViews.Add(blob.ID, view);
@@ -166,6 +205,7 @@ public class BoardPresenter : MonoBehaviour
         {
             view.Input.OnBlobSelected -= HandleBlobSelected;
             view.Input.OnBlobDeselected -= HandleBlobDeselected;
+            view.Input.OnBlobSwiped -= HandleBlobSwiped;
         }
 
     }
@@ -188,11 +228,6 @@ public class BoardPresenter : MonoBehaviour
 
     }
 
-    private void HandleBoardCleared()
-    {
-        Invoke(nameof(SetUpBoard), 3f);
-    }
-
     private IEnumerator AnimateTurnSequence(MergePlan plan)
     {
 
@@ -204,16 +239,17 @@ public class BoardPresenter : MonoBehaviour
         }
 
 
-        
+
+        BlobInput.EnableInput();
         OnMergeComplete?.Invoke(plan);
 
     }
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Z))
+        if (BoardLogic != null && BlobInput.InputEnabled && Input.GetKeyUp(KeyCode.Z))
         {
             MergeAction action = MergeInvoker.UndoMerge(BoardLogic);
-            if (action.Plan != null)
+            if (action != null && action.Plan != null)
                 StartCoroutine(AnimateTurnSequence(-action.Plan));
         }
     }
@@ -229,8 +265,20 @@ public class BoardPresenter : MonoBehaviour
 
     }
 
+    private void HandleBlobSwiped(Blob source, Blob target)
+    {
+        if (!BlobInput.InputEnabled || BoardLogic == null) return;
+        HandleBlobDeselected(source);
+        if (target == null || target == source) return;
+        // Use the actual press/release blobs, with the same merge validation and
+        // tutorial restrictions as taps. Never infer a target from direction.
+        HandleBlobSelected(source);
+        HandleBlobSelected(target);
+    }
+
     private void HandleBlobSelected(Blob selectedBlob)
     {
+        if (!BlobInput.InputEnabled) return;
         if (_firstSelectedBlob == null)
         {
             _firstSelectedBlob = selectedBlob;
@@ -254,9 +302,10 @@ public class BoardPresenter : MonoBehaviour
                 return;
             }
 
-            if (_tutorial.TutorialLogic.IsValidMove(sourceBlob, targetBlob))
+            if (_tutorial == null || _tutorial.TutorialLogic == null || _tutorial.TutorialLogic.IsValidMove(sourceBlob, targetBlob))
             {
 
+                BlobInput.DisableInput();
                 MergeAction action = new(plan);
                 MergeInvoker.ExecuteMerge(action, BoardLogic);
                 StartCoroutine(AnimateTurnSequence(plan));
@@ -271,11 +320,11 @@ public class BoardPresenter : MonoBehaviour
 
     #region Animation
 
-   
+
     [SerializeField] private float moveDuration;
     [SerializeField] private float scaleDuration;
 
-   
+
 
 
     public IEnumerator AnimateMergeFromPlan(Plan plan)
@@ -314,7 +363,7 @@ public class BoardPresenter : MonoBehaviour
             StartCoroutine(view.Merge());
         }
 
-        
+
         foreach (Blob blob in plan.BlobsToRemoveAfterMerge)
         {
             yield return AnimateRemove(blob);
@@ -325,12 +374,12 @@ public class BoardPresenter : MonoBehaviour
         }
 
         plan.OnMergeComplete?.Invoke(plan);
-       
+
 
 
 
     }
-   
+
     public IEnumerator AnimateMove(Blob blob, Vector2Int toPosition, float duration = 0.5f, Ease ease = Ease.Linear)
     {
 
@@ -340,7 +389,7 @@ public class BoardPresenter : MonoBehaviour
             yield return view.StartMove();
 
             yield return view.transform.DOMove(worldPos, duration).SetEase(ease).WaitForCompletion();
-       
+
             yield return view.EndMove();
 
 
@@ -352,16 +401,16 @@ public class BoardPresenter : MonoBehaviour
     {
         if (GetBlobView(blob.ID) is { } view)
         {
-            yield return view.Remove(scaleDuration);           
-            
+            yield return view.Remove(scaleDuration);
+
             BlobViews.Remove(view.ID);
             if (view != null) Destroy(view.gameObject);
-        
+
 
 
         }
-        
-        
+
+
     }
 
     public IEnumerator AnimateSpawn(Blob blob)

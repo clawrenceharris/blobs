@@ -17,6 +17,7 @@ public static class MergeInvoker
     public static MergeAction UndoMerge(BoardLogic board)
     {
         
+        if (_merges.Count == 0) return null;
         MergeAction action = _merges.Pop();
         ActionInvoker.UndoAction(board);
 

@@ -17,6 +17,9 @@ public class TutorialLogic
 
     public void InitializeTutorial(TutorialStep[] tutorialSteps, BoardLogic board)
     {
+        StartBlob = null;
+        EndBlob = null;
+        CurrentStep = null;
         _index = 0;
         _tutorialSteps = tutorialSteps;
         _board = board;
@@ -31,6 +34,7 @@ public class TutorialLogic
     public bool IsValidMove(Blob source, Blob target)
     {
 
+        if (IsFinished) return true;
         if (StartBlob != null && EndBlob != null)
         {
             if (source.ID != StartBlob.ID || target.ID != EndBlob.ID)
@@ -46,6 +50,12 @@ public class TutorialLogic
        
         _index++;
         StartTutorialStep(_index);
+        if (IsFinished)
+        {
+            StartBlob = null;
+            EndBlob = null;
+            CurrentStep = null;
+        }
         
 
     }

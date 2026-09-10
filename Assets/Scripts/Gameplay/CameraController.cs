@@ -31,18 +31,16 @@ public class CameraController : MonoBehaviour
   
     void RepositionCamera(BoardLogic board)
     {
-        int x = board.Width - 1;
-        int y = board.Height - 1;
-        Vector3 tempPosition = new(x / 2, y / 2, -1);
-        transform.position = tempPosition;
-        if (board.Width >= board.Height)
-        {
-            Camera.main.orthographicSize = (x / 2 + padding) / _aspectRatio;
-        }
-        else
-        {
-            Camera.main.orthographicSize = y / 2 + padding;
-        }
+        float width = (board.Width - 1) * BoardPresenter.TileSize;
+        float height = (board.Height - 1) * BoardPresenter.TileSize;
+        transform.position = new Vector3(width / 2f, height / 2f, transform.position.z);
+
+        // Reserve the existing narrow board area for tutorial text, but fit tall
+        // boards too. Board positions are in world units, not integer grid cells.
+        float aspect = Mathf.Min(_aspectRatio, _cam.aspect);
+        float margin = Mathf.Max(padding, BoardPresenter.TileSize);
+        _cam.orthographicSize = Mathf.Max((width / 2f + margin) / aspect,
+            height / 2f + margin);
 
     }
 

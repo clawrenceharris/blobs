@@ -14,8 +14,8 @@ public class GhostBlobView : BlobView
 
         main.startColor = Color.white;
         particles.Play();
-        yield return new WaitForSeconds(duration);
-        Destroy(particles);
+        Destroy(particles.gameObject, duration);
+        yield break;
     }
 
     public override IEnumerator StartMove()

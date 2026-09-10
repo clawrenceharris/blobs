@@ -8,6 +8,7 @@ public class LevelLoader
 {
 
     public static LevelData Level;
+    public static bool HasLevel(int levelNum) => File.Exists(Application.dataPath + "/Levels/level_" + levelNum + ".json");
      public static LevelData LoadLevelData(TextAsset textAsset){
 
         var settings = new JsonSerializerSettings
@@ -22,6 +23,7 @@ public class LevelLoader
     public static LevelData LoadLevelData(int levelNum)
     {
         string path = Application.dataPath + "/Levels/level_" + levelNum + ".json";
+        if (!File.Exists(path)) return null;
         string json = File.ReadAllText(path);
 
         var settings = new JsonSerializerSettings

@@ -16,27 +16,29 @@ public class LevelManager : MonoBehaviour
     public int LevelNum;
     public LevelData Level { get; private set; }
     public static int MoveCount { get; private set; } = 0;
-    public bool IsHighscore{get; private set;}
+    public bool IsHighscore { get; private set; }
     public static event Action<LevelCompletedEventArgs> OnLevelComplete;
     private LevelStateManager _stateManager;
     private WinConditionSystem _winConditionSystem;
+    private TutorialPresenter _tutorial;
+    private bool _completing;
 
     public bool IsTutorial
     {
         get
         {
-            return Level != null && Level.tutorialSteps.Length > 0;
+            return Level != null && Level.tutorialSteps != null && Level.tutorialSteps.Length > 0;
         }
     }
     public BoardPresenter Board { get; private set; }
 
     private static ColorScheme _theme;
-    
+
     public ColorScheme Theme
     {
         get
         {
-            if(_theme == null)
+            if (_theme == null)
             {
                 _theme = FindFirstObjectByType<ColorScheme>();
             }
@@ -47,9 +49,10 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
-        
-      
+
+
         Board = FindFirstObjectByType<BoardPresenter>();
+        _tutorial = FindFirstObjectByType<TutorialPresenter>();
         _stateManager = GetComponent<LevelStateManager>();
     }
 
@@ -68,27 +71,47 @@ public class LevelManager : MonoBehaviour
 
     private void HandleMergeComplete(MergePlan plan)
     {
+        if (_completing || Level == null) return;
         Blob winningBlob = _winConditionSystem.CheckForWin(Board.BoardLogic);
         if (winningBlob != null)
         {
+            _completing = true;
+            _stateManager.SetState(new AnimationState(_stateManager));
+            _tutorial?.ResetTutorial();
             OnLevelComplete?.Invoke(new LevelCompletedEventArgs(LevelNum));
-            StartCoroutine(Board.CompleteMergeCo(winningBlob));
-            
-            _stateManager.SetState(null);
+            StartCoroutine(Board.CompleteMergeCo(winningBlob, () =>
+            {
+                _stateManager.SetState(null);
+
+                StartNextLevel();
+            }));
+
+
         }
     }
 
-   
+
     public void StartLevel(int levelNum)
     {
 
-        Level = LevelLoader.LoadLevelData(levelNum);
+        LevelData nextLevel = LevelLoader.LoadLevelData(levelNum);
+        if (nextLevel == null)
+        {
+            return;
+        }
+        StopAllCoroutines();
+        _tutorial?.ResetTutorial();
+        Level = nextLevel;
+        LevelNum = levelNum;
+        _completing = false;
+        IsHighscore = false;
         MoveCount = 0;
 
         Board.Init(this);
 
         _winConditionSystem = new WinConditionSystem();
         _stateManager.SetState(new PlayingState(_stateManager));
+        _tutorial?.InitializeTutorial();
 
     }
     private void OnBoardCleared()
@@ -126,45 +149,49 @@ public class LevelManager : MonoBehaviour
         MenuController.Instance.ReplacePage(PageType.LevelComplete);
         _stateManager.SetState(null);
     }
-    
+
     private int CalculateScore()
     {
         int baseScore = Level.scoring.baseScore;
         int movePenalty = Level.scoring.movePenalty;
-       
+
         float score = baseScore - (movePenalty * Math.Max(0, MoveCount - Level.minMoves));
         return (int)Math.Round(score);
     }
 
-   
+
     private int DetermineStars()
     {
         double score = CalculateScore();
-        double percentage = score / Level.scoring.baseScore *100;
-        
+        double percentage = score / Level.scoring.baseScore * 100;
+
         if (percentage >= Level.scoring.starThresholds[2])
             return 3;
 
-        
+
         else if (percentage >= Level.scoring.starThresholds[1])
             return 2;
 
-        
+
         else if (percentage >= Level.scoring.starThresholds[0])
             return 1;
 
-        
+
         else
             return 0;
 
 
 
     }
-    
+
 
 
     public void LeaveLevel()
-    {   
+    {
+        StopAllCoroutines();
+        _stateManager.SetState(null);
+        _tutorial?.ResetTutorial();
+        Board.ClearBoard();
         OnLevelEnd?.Invoke();
 
     }
@@ -174,28 +201,33 @@ public class LevelManager : MonoBehaviour
         MoveCount++;
     }
 
-   
-
-    private void OnMoveUndone(Blob blob)
-    {
-        MoveCount--;
-
-    }
 
 
     public void StartNextLevel()
     {
-        OnLevelEnd?.Invoke();
-        StartLevel(Level.levelNum +1);
-        
+        int nextLevel = Level.levelNum + 1;
+        LeaveLevel();
+        if (LevelLoader.HasLevel(nextLevel))
+            StartLevel(nextLevel);
+        else
+            Debug.Log("Presentation complete: all available levels finished.");
+
     }
 
 
     public void Restart()
     {
-        OnLevelRestart?.Invoke();
         StartLevel(Level.levelNum);
+        OnLevelRestart?.Invoke();
 
+    }
+
+    private void OnDestroy()
+    {
+        BoardLogic.OnBoardCleared -= OnBoardCleared;
+        BoardLogic.OnBlobMoved -= OnBlobMoved;
+        BoardPresenter.OnMergeComplete -= HandleMergeComplete;
+        BlobInput.DisableInput();
     }
 
 }

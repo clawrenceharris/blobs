@@ -15,15 +15,15 @@ public class BombBlobView : BlobView
   .DOScale(1.5f, 0.7f)
   .SetLoops(3, LoopType.Yoyo)
   .SetEase(Ease.InOutQuad).WaitForCompletion();
-    StartCoroutine(base.Remove(duration));
+    yield return base.Remove(duration);
 
     GameObject ring = Instantiate(visuals.ExplosionRing, (Vector2)Model.GridPosition * BoardPresenter.TileSize, Quaternion.identity);
     ring.transform.DOScale(3.5f * BoardPresenter.TileSize * Vector2.one, 0.8f).SetEase(Ease.InBack);
     SpriteRenderer sr = ring.GetComponent<SpriteRenderer>();
-    sr.DOFade(0, 0.8f).OnComplete(()=>
+    yield return sr.DOFade(0, 0.8f).OnComplete(()=>
     {
       Destroy(ring);
-    });
+    }).WaitForCompletion();
 
 
     

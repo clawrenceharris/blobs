@@ -79,7 +79,7 @@ public class BlobView : MonoBehaviour
     {
         yield return null;
         StartCoroutine(CreateParticles());
-        transform.DOScale(Vector3.zero, duration).SetEase(Ease.InBack);
+        yield return transform.DOScale(Vector3.zero, duration).SetEase(Ease.InBack).WaitForCompletion();
     }
 
     protected virtual IEnumerator CreateParticles()
@@ -92,8 +92,8 @@ public class BlobView : MonoBehaviour
 
         main.startColor = ColorSchemeManager.FromBlobColor(Model.Color);
         particles.Play();
-        yield return new WaitForSeconds(duration);
-        Destroy(particles);
+        Destroy(particles.gameObject, duration);
+        yield break;
 
     }
 

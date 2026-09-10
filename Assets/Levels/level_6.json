@@ -1,118 +1,112 @@
 {
-  "levelNum": 6,
-  "width": 3,
-  "height": 4,
-  "minMoves": 5,
-  "padding": 1,
+  "levelNum": 7,
+  "width": 5,
+  "height": 3,
+  "minMoves": 2,
   "scoring": {
-    "baseScore": 5000,
-    "movePenalty": 40,
-    "starThresholds": [0, 90, 100],
+    "baseScore": 2000,
+    "movePenalty": 30,
+    "starThresholds": [0, 0, 100],
     "gemBonus": 0
   },
-  "tutorialSteps": [],
+  "tutorialSteps": [
+    {
+      "topText": "Rock Blobs have entered the board! Mergable blobs will try to merge with Rocks but it won't work. Instead, Rocks will block direct merges.",
+      "bottomText": "Try merging the blue Blob with the rock above it.",
+      "startX": 1,
+      "startY": 0,
+      "endX": 1,
+      "endY": 2
+    },
+    {
+      "topText": "The Rock Blob prevented the merge! This also means they can never be cleared, but they can still be helpful for positioning other Blobs.",
+      "bottomText": "Rocks will be cleared on their own after no other blobs remain. Try positioning the purple blob in line with the blue blob.",
+      "startX": 2,
+      "startY": 2,
+      "endX": 2,
+      "endY": 0
+    },
+    {
+      "topText": "Finish the level by merging the pink blob with the Flag!",
+      "startX": 0,
+      "startY": 1,
+      "endX": 3,
+      "endY": 1
+    }
+  ],
 
   "blobs": [
     {
-      "t": "fb",
-      "s": 4,
-      "c": "r",
+      "t": "nb",
+      "c": "pk",
+      "s": "n",
+      "x": 0,
+      "y": 1
+    },
+    {
+      "t": "nb",
+      "c": "b",
+      "s": "n",
       "x": 1,
       "y": 0
     },
-    {
-      "t": "nb",
-      "s": 4,
-      "c": "y",
-      "x": 0,
-      "y": 1
-    },
-    {
-      "t": "nb",
-      "s": 4,
-      "c": "r",
-      "x": 1,
-      "y": 1
-    },
-    {
-      "t": "nt",
-      "s": 4,
-      "c": "r",
-      "x": 1,
-      "y": 2
-    },
 
     {
-      "t": "nt",
-      "s": 5,
-      "c": "y",
+      "t": "rb",
       "x": 2,
+      "y": 0
+    },
+    {
+      "t": "fb",
+      "c": "pk",
+      "x": 3,
       "y": 1
     },
     {
       "t": "nb",
-      "s": 4,
-      "c": "pk",
+      "c": "p",
+      "s": "n",
       "x": 2,
       "y": 2
     },
-
     {
-      "t": "nb",
-      "s": 4,
-      "c": "r",
-      "x": 0,
-      "y": 3
-    },
-
-    {
-      "t": "nb",
-      "s": 4,
-      "c": "r",
+      "t": "rb",
       "x": 1,
-      "y": 3
-    },
-    {
-      "t": "nb",
-      "s": 2,
-      "c": "pk",
-      "x": 2,
-      "y": 3
+      "y": 2
     }
   ],
   "tiles": [
     {
       "t": "nt",
+      "x": 0,
+      "y": 1
+    },
+
+    {
+      "t": "nt",
+      "x": 2,
+      "y": 1
+    },
+    {
+      "t": "nt",
+      "x": 3,
+      "y": 1
+    },
+    {
+      "t": "nt",
+      "x": 1,
+      "y": 1
+    },
+    {
+      "t": "nt",
       "x": 1,
       "y": 0
     },
     {
       "t": "nt",
-      "x": 0,
-      "y": 1
-    },
-
-    {
-      "t": "nt",
-      "x": 1,
-      "y": 1
-    },
-    {
-      "t": "nt",
       "x": 2,
-      "y": 1
+      "y": 0
     },
-    {
-      "t": "nt",
-      "x": 0,
-      "y": 2
-    },
-    {
-      "t": "nt",
-      "x": 1,
-      "y": 2
-    },
-
     {
       "t": "nt",
       "x": 2,
@@ -120,18 +114,8 @@
     },
     {
       "t": "nt",
-      "x": 0,
-      "y": 3
-    },
-    {
-      "t": "nt",
       "x": 1,
-      "y": 3
-    },
-    {
-      "t": "nt",
-      "x": 2,
-      "y": 3
+      "y": 2
     }
   ]
 }

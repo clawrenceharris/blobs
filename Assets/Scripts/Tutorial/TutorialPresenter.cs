@@ -38,22 +38,10 @@ public class TutorialPresenter : MonoBehaviour
         _board = FindFirstObjectByType<BoardPresenter>();
     }
    
-    private void Start()
-    {
-
-        if (_levelManager.IsTutorial)
-        {
-            InitializeTutorial();
-            TutorialLogic.StartTutorial();
-            StartCoroutine(UpdateMessages());
-
-
-        }
-    }
-
-   
     public void InitializeTutorial()
     {
+        ResetTutorial();
+        if (!_levelManager.IsTutorial) return;
         TutorialLogic = new TutorialLogic();
 
         _tutorialSteps = _levelManager.Level.tutorialSteps;
@@ -63,6 +51,8 @@ public class TutorialPresenter : MonoBehaviour
         TutorialLogic.InitializeTutorial(_tutorialSteps, _board.BoardLogic);
 
         Setup();
+        TutorialLogic.StartTutorial();
+        StartCoroutine(UpdateMessages());
 
     }
 
@@ -71,7 +61,10 @@ public class TutorialPresenter : MonoBehaviour
     {
         DisableAllBlobs();
 
-        _tutorialPointerSprite = Instantiate(_tutorialPointerPrefab).GetComponent<SpriteRenderer>();
+        _tutorialPointerSprite = Instantiate(_tutorialPointerPrefab, transform).GetComponent<SpriteRenderer>();
+        var color = _tutorialPointerSprite.color;
+        color.a = 0;
+        _tutorialPointerSprite.color = color;
         BoardPresenter.OnMergeComplete += HandleMergeComplete;
         TutorialLogic.OnBlobsHighlighted += HandleBlobsHighlighted;
 
@@ -82,7 +75,6 @@ public class TutorialPresenter : MonoBehaviour
         
         if (TutorialLogic == null || TutorialLogic.IsFinished)
         {
-            HidePointer();
             return;
         }
         _elapsedTime += Time.deltaTime;
@@ -112,23 +104,51 @@ public class TutorialPresenter : MonoBehaviour
 
     private void HandleMergeComplete(MergePlan plan)
     {
-        if (TutorialLogic.IsFinished)
-        {
-
-            EnableAllBlobs();
-            StartCoroutine(UpdateMessages());
-            return;
-
-        }
+        // A completion callback may have already reset this tutorial.
+        if (TutorialLogic == null || TutorialLogic.IsFinished) return;
+        StopAllCoroutines();
+        TutorialPanel.DOKill();
+        HidePointer();
+        _elapsedTime = 0;
         DisableBlob(TutorialLogic.StartBlob);
         DisableBlob(TutorialLogic.EndBlob);
-
         TutorialLogic.NextTutorialStep();
+        if (TutorialLogic.IsFinished) EnableAllBlobs();
         StartCoroutine(UpdateMessages());
-
-
-       
     }
+
+    public void ResetTutorial()
+    {
+        BoardPresenter.OnMergeComplete -= HandleMergeComplete;
+        if (TutorialLogic != null)
+            TutorialLogic.OnBlobsHighlighted -= HandleBlobsHighlighted;
+        StopAllCoroutines();
+        if (TutorialPanel != null)
+        {
+            TutorialPanel.DOKill();
+            TutorialPanel.alpha = 0;
+        }
+        if (_tutorialPointerSprite != null)
+        {
+            _tutorialPointerSprite.DOKill();
+            _tutorialPointerSprite.transform.DOKill();
+            _tutorialPointerSprite.gameObject.SetActive(false);
+            Destroy(_tutorialPointerSprite.gameObject);
+        }
+        _tutorialPointerSprite = null;
+        if (_topText != null) _topText.text = "";
+        if (_bottomText != null) _bottomText.text = "";
+        _elapsedTime = 0;
+        TutorialLogic = null;
+        _tutorialSteps = null;
+        _blobs = null;
+    }
+
+    private void OnDisable()
+    {
+        ResetTutorial();
+    }
+
     private IEnumerator UpdateMessages()
     {
         yield return FadeOut();
@@ -177,6 +197,9 @@ public class TutorialPresenter : MonoBehaviour
 
     private void HidePointer()
     {
+        if (_tutorialPointerSprite == null) return;
+        _tutorialPointerSprite.DOKill();
+        _tutorialPointerSprite.transform.DOKill();
         _tutorialPointerSprite.DOFade(0, 0.3f);
 
     }

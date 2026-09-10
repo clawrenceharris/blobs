@@ -13,36 +13,34 @@
     "tutorialSteps": [],
     "blobs": [
         {
-            "color": "green",
-            "size": 4,
+            "c": "g",
+            "s": "n",
             "x": 0,
             "y": 0,
-            "type": "normal",
-            "trailColor": ""
+            "t": "nb"
 
 
         },
         {
-            "color": "light blue",
-            "size": 4,
+            "c": "lb",
+            "s": "n",
             "x": 1,
             "y": 0,
-            "type": "normal",
-            "trailColor": ""
+            "t": "nb"
         },
 
         {
-            "color": "light blue",
-            "size": 4,
-            "type": "normal",
+            "c": "lb",
+            "s": "n",
+            "t": "nb",
             "x": 1,
             "y": 2
         },
 
         {
-            "color": "green",
-            "size": 5,
-            "type": "flag",
+            "c": "g",
+            "s": "b",
+            "t": "fb",
             "x": 3,
             "y": 2
         }
@@ -51,40 +49,40 @@
     "tiles": [
 
         {
-            "type": "normal",
-            "color": "",
+            "t": "nt",
+            "c": "x",
             "x": 0,
             "y": 0
 
         },
         {
-            "type": "normal",
-            "color": "",
+            "t": "nt",
+            "c": "x",
             "x": 1,
             "y": 0
         },
         {
-            "type": "normal",
-            "color": "",
+            "t": "nt",
+            "c": "x",
             "x": 1,
             "y": 1
         },
 
         {
-            "type": "normal",
-            "color": "",
+            "t": "nt",
+            "c": "x",
             "x": 1,
             "y": 2
         },
         {
-            "type": "normal",
-            "color": "",
+            "t": "nt",
+            "c": "x",
             "x": 2,
             "y": 2
         },
         {
-            "type": "normal",
-            "color": "",
+            "t": "nt",
+            "c": "x",
             "x": 3,
             "y": 2
         }

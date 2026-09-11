@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.ViewCatalogAsset
   tileEntries:
   - type: 0
-    prefab: {fileID: 7451000000000000003, guid: 0f968449314145cc80e01ccd790f8687, type: 3}
+    prefab: {fileID: 83505007895932164, guid: 64c8f545d1aea43119815b4cb516aa94, type: 3}
   blobEntries:
   - type: 0
     prefab: {fileID: 2149106020715233295, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}

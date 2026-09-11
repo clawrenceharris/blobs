@@ -10,33 +10,40 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 228f01d3da5254622b9b1236a3d1c0ff, type: 3}
-  m_Name: Sample_Level
+  m_Name: Level_01
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
-  levelId: level-sample
+  levelId: level-02-columns
   schemaVersion: 1
   width: 3
-  height: 1
-  maximumBeats: 12
+  height: 3
+  emptyPositions: []
   blobs:
-  - rid: 7441116775194820694
-  - rid: 7441116775194820697
-  tiles: []
+  - rid: 820000000000000001
+  - rid: 820000000000000002
+  tiles:
+  - rid: 3341776717243744605
   objective: 0
-  visualTheme: {fileID: 11400000, guid: b5998ed730be04ebe92db77229a4677f, type: 2}
+  palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: 7441116775194820694
+    - rid: 820000000000000001
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: 0
-        position: {x: 0, y: 0}
-        color: 1
+        id: level02-red
+        position: {x: 1, y: 0}
         type: 0
-    - rid: 7441116775194820697
+        color: 0
+    - rid: 820000000000000002
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: 1
-        position: {x: 2, y: 0}
-        color: 2
+        id: level02-yellow
+        position: {x: 1, y: 2}
+        type: 0
+        color: 3
+    - rid: 3341776717243744605
+      type: {class: GraveTileAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: grave
+        position: {x: 0, y: 0}
         type: 0

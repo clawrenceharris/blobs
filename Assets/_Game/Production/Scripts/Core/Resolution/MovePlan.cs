@@ -4,10 +4,15 @@ using System.Collections.Generic;
 namespace Blobs.Core
 {
     /// <summary>
-    /// Outcome of resolving a single collision between a moving blob and the occupant
-    /// of a cell on its path. Strategies describe only what happens at the collision
-    /// tile; locomotion is owned by the resolver.
+    /// Initial route produced from a selected source/target move intent before
+    /// per-tile simulation begins.
     /// </summary>
+    /// <remarks>
+    /// A move plan may rewrite the source, target, start, or end that the resolver uses
+    /// to walk the path. It does not describe what happens when the mover reaches an
+    /// occupied cell; that belongs to <see cref="CollisionPlan"/> and
+    /// <see cref="ICollisionStrategy"/>.
+    /// </remarks>
     public sealed class MovePlan
     {
         private MovePlan(
@@ -29,32 +34,52 @@ namespace Blobs.Core
             Target = target;
         }
 
+        /// <summary>
+        /// Whether the selected source/target intent is valid enough for path
+        /// simulation to begin.
+        /// </summary>
         public bool Succeeded { get; }
+
+        /// <summary>
+        /// Reason the initial move intent was rejected.
+        /// </summary>
         public MoveFailureReason FailureReason { get; }
 
+        /// <summary>
+        /// Blob that the resolver treats as the mover when simulation begins.
+        /// </summary>
         public BlobState Source { get; }
+
+        /// <summary>
+        /// Intended final target for the move. Intermediate occupants are still handled
+        /// as collisions as the resolver reaches them.
+        /// </summary>
         public BlobState Target { get; }
 
+        /// <summary>
+        /// Position where the resolver starts walking the planned path.
+        /// </summary>
         public GridPosition StartPosition { get; }
+
+        /// <summary>
+        /// Position the resolver walks toward unless a collision ends locomotion first.
+        /// </summary>
         public GridPosition EndPosition { get; }
 
         /// <summary>
-        /// Steps appended after the main locomotion timeline. This is the hook for
-        /// mechanics like the Ghost blob that perform their own movement in response
-        /// to a merge.
+        /// Reserved follow-up steps for move-level mechanics that need to append their
+        /// own timeline after the main path. Most collision aftermath should use
+        /// <see cref="CollisionPlan.FollowUpSteps"/> instead.
         /// </summary>
         public IReadOnlyList<MoveStep> Steps { get; }
 
         /// <summary>
-        /// Modify the move plan to a new move.
+        /// Returns a copy that walks toward a different end position.
         /// </summary>
-        /// <summary>
-        /// Move resolved; the move is valid and the mover may continue.
-        /// </summary>
-        public MovePlan EndAt(GridPosition end)
+        public MovePlan WithEndPosition(GridPosition end)
         {
             return new MovePlan(
-                succeeded: true,
+                succeeded: Succeeded,
                 start: StartPosition,
                 end: end,
                 failureReason: FailureReason,
@@ -63,6 +88,9 @@ namespace Blobs.Core
                 target: Target);
         }
 
+        /// <summary>
+        /// Returns a copy that treats a different blob as the intended final target.
+        /// </summary>
         public MovePlan WithTarget(BlobState target)
         {
             return new MovePlan(
@@ -76,10 +104,13 @@ namespace Blobs.Core
         }
 
 
-        public MovePlan StartAt(GridPosition start)
+        /// <summary>
+        /// Returns a copy that starts path simulation from a different position.
+        /// </summary>
+        public MovePlan WithStartPosition(GridPosition start)
         {
             return new MovePlan(
-                succeeded: true,
+                succeeded: Succeeded,
                 start: start,
                 end: EndPosition,
                 failureReason: FailureReason,
@@ -88,7 +119,11 @@ namespace Blobs.Core
                 target: Target);
         }
 
-        public static MovePlan Move(BlobState source, BlobState target)
+        /// <summary>
+        /// Creates the unmodified direct plan from the selected source to the selected
+        /// target.
+        /// </summary>
+        public static MovePlan Default(BlobState source, BlobState target)
         {
             return new MovePlan(
                 succeeded: true,
@@ -96,6 +131,36 @@ namespace Blobs.Core
                 end: target.Position,
                 failureReason: MoveFailureReason.None,
                 steps: Array.Empty<MoveStep>(),
+                source: source,
+                target: target);
+        }
+
+        /// <summary>
+        /// Marks the move intent as valid with an explicit start and end position.
+        /// </summary>
+        public MovePlan Success(GridPosition start, GridPosition end)
+        {
+            return new MovePlan(
+                succeeded: true,
+                start: start,
+                end: end,
+                failureReason: MoveFailureReason.None,
+                steps: Steps,
+                source: Source,
+                target: Target);
+        }
+
+        /// <summary>
+        /// Marks the move intent as valid with an explicit source and intended target.
+        /// </summary>
+        public MovePlan Success(BlobState source, BlobState target)
+        {
+            return new MovePlan(
+                succeeded: true,
+                start: source.Position,
+                end: target.Position,
+                failureReason: MoveFailureReason.None,
+                steps: Steps,
                 source: source,
                 target: target);
         }

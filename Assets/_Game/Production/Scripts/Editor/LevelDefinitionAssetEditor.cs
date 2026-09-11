@@ -36,10 +36,7 @@ namespace Blobs.Editor
                     AddTile(new NormalTileAssetData());
                 if (GUILayout.Button("Add Grave Tile"))
                 {
-                    AddTile(new GraveTileAssetData()
-                    {
-                        type = TileType.Grave
-                    });
+                    AddTile(new GraveTileAssetData());
                 }
             }
 

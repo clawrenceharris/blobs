@@ -14,12 +14,14 @@ namespace Blobs.Core
             MovePlan plan,
             BlobState source,
             BlobState target,
+            MoveIntent intent,
             bool isFinalTarget = true)
         {
             Board = board;
             Plan = plan;
             Source = source;
             Target = target;
+            Intent = intent;
             IsFinalTarget = isFinalTarget;
         }
 
@@ -36,6 +38,13 @@ namespace Blobs.Core
         /// The plan for the move.
         /// </summary>
         public MovePlan Plan { get; }
+
+
+        /// <summary>
+        /// The initial move intent.
+        /// </summary>
+
+        public MoveIntent Intent { get; }
 
 
         /// <summary>

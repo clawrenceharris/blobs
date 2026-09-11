@@ -1,0 +1,12 @@
+Use case: precise-object-edit
+Asset type: transparent 2D game tile sprite
+Input images: Image 1 is the edit target.
+Primary request: Make the gravestone noticeably squarer, with nearly vertical sides and a mostly flat top with only softly rounded upper corners, matching the original square grave-tile concept. Move the entire green moss bunch from the upper-right to the bottom-right corner, so matching moss bunches frame both bottom corners.
+Subject: one lavender-gray "RIP" gravestone with two engraved lines and two green moss bunches.
+Composition/framing: centered front view, square footprint, full object visible with even transparent padding.
+Text (verbatim): "RIP"
+Constraints: Change only the silhouette from domed to square and move the upper-right moss to the bottom-right. Keep the existing cute blob-game style, colors, glossy highlights, soft gradients, engraving, proportions, and all other foreground details intact. Produce a genuinely transparent PNG with alpha outside the foreground. Clean smooth antialiased edges. Do not draw or bake a checkerboard or any colored background.
+Avoid: dome-shaped top, moss on either upper corner, extra objects, ghosts, skulls, flowers, scene, floor, shadows outside the sprite, watermark.
+
+Generation mode: built-in image_gen edit.
+Final processing: deterministic checkerboard extraction and high-quality resize to 526x526 with transparent alpha.

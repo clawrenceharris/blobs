@@ -9,8 +9,20 @@ namespace Blobs.Core
     /// Strategies emit collision-tile effects only; the resolver owns locomotion, so the
     /// same strategy works for intermediate chain merges and for the final target.
     /// </summary>
+    /// <remarks>
+    /// Use collision strategies for rules that depend on the actual occupant reached
+    /// during path simulation. This is the correct home for blocking rocks, normal
+    /// merges, flag captures, and other contact behavior. Use <see cref="IMoveStrategy"/>
+    /// only for source/target intent validation or route shaping that must happen before
+    /// the path is walked.
+    /// </remarks>
     public interface ICollisionStrategy
     {
+        /// <summary>
+        /// Builds the plan for the single occupied cell the mover has reached.
+        /// The resolver applies this plan, then decides whether the mover enters the
+        /// cell, stops before it, is consumed, or continues walking.
+        /// </summary>
         CollisionPlan BuildPlan(MoveContext context);
     }
 
@@ -22,12 +34,9 @@ namespace Blobs.Core
     {
         public CollisionPlan BuildPlan(MoveContext context)
         {
-            if (context.Source.Components.Color.HasValue && context.Target.Components.Color.HasValue &&
-              context.Source.Components.Color.Value.Color == context.Target.Components.Color.Value.Color)
-            {
-                return CollisionPlan.Failed(
-                    MoveFailureReason.NormalMergeRequiresDifferentColors);
-            }
+
+            if (context.Source.Components.Color?.Color == context.Target.Components.Color?.Color)
+                return CollisionPlan.Failed(MoveFailureReason.NormalMergeRequiresDifferentColors);
 
             return CollisionPlan.Continue(MergeEffect.NormalMerge(context));
         }
@@ -41,12 +50,21 @@ namespace Blobs.Core
     {
         public CollisionPlan BuildPlan(MoveContext context)
         {
-            if (context.Source.Components.Color.HasValue && context.Target.Components.Color.HasValue &&
-                context.Source.Components.Color.Value.Color != context.Target.Components.Color.Value.Color)
+            if (context.Target.Id != context.Intent.Target.Id)
+            {
+                return CollisionPlan.Failed(MoveFailureReason.FlagCaptureRequired);
+            }
+            if (context.Source.Type != BlobType.Normal)
+            {
+                return CollisionPlan.Failed(MoveFailureReason.FlagRequiresNormalSource);
+
+            }
+            if (context.Source.Components.Color?.Color != context.Target.Components.Color?.Color)
             {
                 return CollisionPlan.Failed(
                     MoveFailureReason.FlagRequiresMatchingColor);
             }
+
 
             // The board may contain exactly the mover and the flag at capture time.
             if (context.Board.Blobs.Where(b => b.Type.IsClearable()).Count() > 1)
@@ -59,6 +77,11 @@ namespace Blobs.Core
         }
     }
 
+    /// <summary>
+    /// Rock contact: the mover is allowed to travel up to the rock, but cannot enter
+    /// the rock's occupied cell. Because this is a collision strategy, rocks behave the
+    /// same whether they are the selected target or an intermediate occupant.
+    /// </summary>
     public sealed class RockCollisionStrategy : ICollisionStrategy
     {
         public CollisionPlan BuildPlan(MoveContext context)
@@ -68,6 +91,10 @@ namespace Blobs.Core
     }
 
 
+    /// <summary>
+    /// Ghost contact: the mover is consumed at the ghost's cell, then ghost aftermath
+    /// is appended as follow-up steps after the main locomotion timeline.
+    /// </summary>
     public sealed class GhostCollisionStrategy : ICollisionStrategy
     {
         public CollisionPlan BuildPlan(MoveContext context)

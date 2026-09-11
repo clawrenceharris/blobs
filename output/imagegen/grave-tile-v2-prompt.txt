@@ -1,0 +1,9 @@
+Use case: stylized-concept
+Asset type: single transparent 2D game sprite, grave tile for a cute blob puzzle game.
+Primary request: redesign the grave tile in reference 1 to match the actual game art in references 2–4. Reference 1 is subject/layout inspiration; references 2–4 are style references, not additional subjects.
+Subject: one squat, chunky lavender-gray gravestone slab, almost square with a gently domed top and generously rounded corners, slight visible thickness at bottom and right. Preserve recognizable engraved text "RIP" in large friendly rounded letters and two short engraved lines below. Small soft clumps of rounded mint-green moss hug the upper-right and lower-left corners like the original, simplified into a few plump forms.
+Style: polished cute 2D cartoon sprite matching the blob references: broad soft gradients, thick colored edge shading rather than black ink outlines, smooth inflated-looking bevels, simple broad upper-left highlights. Stone should feel soft and friendly but still stone. Muted lavender stone, slightly darker purple engraving, fresh gentle green moss. Clear large shapes readable at 64px.
+Composition: single isolated centered asset, front view with only shallow depth, nearly square footprint filling about 85% of a square canvas. Entire object visible.
+Constraints: genuinely transparent background, preserve alpha. No scene, floor, backdrop, checkerboard, additional characters, floating ghosts, skulls, crosses, flowers, particles, dramatic glow, photorealistic texture or fine noise. Do not add eyes to the gravestone. Only text is "RIP".
+
+Generation mode: built-in image_gen.

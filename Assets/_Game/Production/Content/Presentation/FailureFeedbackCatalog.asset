@@ -23,7 +23,7 @@ MonoBehaviour:
     showFeedback: 1
     message: That blob can't move.
   - reason: 5
-    showFeedback: 1
+    showFeedback: 0
     message: Blobs must share the same column or row to merge.
   - reason: 6
     showFeedback: 1
@@ -45,7 +45,7 @@ MonoBehaviour:
     message: Merge incomplete
   - reason: 11
     showFeedback: 1
-    message: Only a normal blob can merge with the flag.
+    message: Only a normal blob can merge with a flag.
   - reason: 12
     showFeedback: 1
-    message: This move must reach and clear into the selected flag.
+    message: Only your last blob can merge with a flag.

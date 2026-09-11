@@ -22,21 +22,26 @@ namespace Blobs.Presentation
         public bool Present(GhostRestEffect effect, PresentationTimeline timeline, Action onContact)
         {
             if (!_blobs.TryRetireView(effect.GhostId, out BlobView ghost)) return false;
+            BlobView occupant = null;
+            if (effect.LandingBlobId != null &&
+                !_blobs.TryRetireView(effect.LandingBlobId, out occupant)) return false;
+
 
             if (!timeline.IsAnimated)
             {
                 ghost.SetGridPosition(effect.RestDestination);
                 ghost.BlobRenderer?.FadeableVisual?.Restore();
+                if (occupant != null) _blobs.DestroyRetiringView(occupant);
                 _blobs.DestroyRetiringView(ghost);
                 onContact?.Invoke();
                 return true;
             }
 
-            timeline.AppendAsync(token => ReturnAsync(effect, ghost, onContact, token));
+            timeline.AppendAsync(token => ReturnAsync(effect, ghost, occupant, onContact, token));
             return true;
         }
 
-        private async UniTask ReturnAsync(GhostRestEffect effect, BlobView ghost, Action onContact, CancellationToken token)
+        private async UniTask ReturnAsync(GhostRestEffect effect, BlobView ghost, BlobView occupant, Action onContact, CancellationToken token)
         {
             FadeableVisual fade = ghost.BlobRenderer?.FadeableVisual;
             try
@@ -50,6 +55,12 @@ namespace Blobs.Presentation
                 // Destruction must be the final operation on this view.
                 if (fade != null)
                     await fade.FadeTo(1f, _settings.FadeDuration, token);
+                if (occupant != null)
+                {
+                    await PresentationTimeline.AwaitTweenAsync(
+                        occupant.PlayDespawn(_settings.DespawnDuration), token);
+                    _blobs.DestroyRetiringView(occupant);
+                }
                 onContact?.Invoke();
                 token.ThrowIfCancellationRequested();
                 await PresentationTimeline.AwaitTweenAsync(

@@ -22,7 +22,8 @@ namespace Blobs.Tests.PlayMode
                 var presenter = CreatePresenter(initial);
                 presenter.TryGetBlobView(source.Id, out BlobView movingView);
                 presenter.TryGetBlobView(target.Id, out BlobView targetView);
-                var merge = MergeEffect.NormalMerge(new MoveContext(initial.Board, MovePlan.Move(source, target), source, target));
+                var intent = new MoveIntent(source, target);
+                var merge = MergeEffect.NormalMerge(new MoveContext(initial.Board, MovePlan.Default(source, target), source, target, intent));
                 var expected = Snapshot(2, 1, source.WithPosition(target.Position));
                 var playback = grouped
                     ? presenter.ApplyStepsAsync(new[] { new MoveStep(MoveStepKind.Merge, new IBoardEffect[] { merge }) }, expected)
@@ -49,7 +50,8 @@ namespace Blobs.Tests.PlayMode
                     var presenter = CreatePresenter(initial);
                     presenter.TryGetBlobView(source.Id, out BlobView movingView);
                     presenter.TryGetBlobView(target.Id, out BlobView targetView);
-                    var merge = MergeEffect.ReverseMerge(new MoveContext(initial.Board, MovePlan.Move(source, target), source, target));
+                    var intent = new MoveIntent(source, target);
+                    var merge = MergeEffect.ReverseMerge(new MoveContext(initial.Board, MovePlan.Default(source, target), source, target, intent));
                     var expected = Snapshot(2, 1, target);
                     var playback = grouped
                         ? presenter.ApplyStepsAsync(new[] { new MoveStep(MoveStepKind.Merge, new IBoardEffect[] { merge }) }, expected)
@@ -73,9 +75,10 @@ namespace Blobs.Tests.PlayMode
                 var target = Blob("target", BlobColor.Blue, 1, 0);
                 var trail = Blob("departure", BlobColor.Green, 0, 0);
                 var initial = Snapshot(2, 1, source, target);
+                var intent = new MoveIntent(source, target);
                 var presenter = CreatePresenter(initial);
                 presenter.TryGetBlobView(source.Id, out BlobView movingView);
-                var merge = MergeEffect.NormalMerge(new MoveContext(initial.Board, MovePlan.Move(source, target), source, target));
+                var merge = MergeEffect.NormalMerge(new MoveContext(initial.Board, MovePlan.Default(source, target), source, target, intent));
                 var spawn = new SpawnBlobEffect(trail);
                 IBoardEffect[] effects = spawnFirst ? new IBoardEffect[] { spawn, merge } : new IBoardEffect[] { merge, spawn };
                 var expected = Snapshot(2, 1, source.WithPosition(target.Position), trail);
@@ -92,10 +95,11 @@ namespace Blobs.Tests.PlayMode
             var source = Blob("moving", BlobColor.Red, 0, 0);
             var ghost = new BlobState("ghost", BlobType.Ghost, new GridPosition(1, 0));
             var initial = Snapshot(2, 1, source, ghost);
+            var intent = new MoveIntent(source, ghost);
             var presenter = CreatePresenter(initial);
             presenter.TryGetBlobView(ghost.Id, out BlobView ghostView);
             var body = AddFadeGroup(ghostView, out var halo);
-            var merge = MergeEffect.ReverseMerge(new MoveContext(initial.Board, MovePlan.Move(source, ghost), source, ghost));
+            var merge = MergeEffect.ReverseMerge(new MoveContext(initial.Board, MovePlan.Default(source, ghost), source, ghost, intent));
             var expected = Snapshot(2, 1, ghost.WithPosition(source.Position));
             var steps = new[]
             {
@@ -120,11 +124,12 @@ namespace Blobs.Tests.PlayMode
             var source = Blob("moving", BlobColor.Red, 0, 0);
             var ghost = new BlobState("ghost", BlobType.Ghost, new GridPosition(1, 0));
             var initial = Snapshot(2, 1, source, ghost);
+            var intent = new MoveIntent(source, ghost);
             var presenter = CreatePresenter(initial);
             presenter.TryGetBlobView(ghost.Id, out BlobView ghostView);
             var body = AddFadeGroup(ghostView, out var halo);
             var merge = MergeEffect.ReverseMerge(new MoveContext(initial.Board,
-                MovePlan.Move(source, ghost), source, ghost));
+                MovePlan.Default(source, ghost), source, ghost, intent));
             var expected = Snapshot(2, 1);
             var playback = presenter.ApplyStepsAsync(new[]
             {
@@ -153,8 +158,9 @@ namespace Blobs.Tests.PlayMode
             var source = Blob("moving", BlobColor.Red, 0, 0);
             var ghost = new BlobState("ghost", BlobType.Ghost, new GridPosition(1, 0));
             var initial = Snapshot(2, 1, source, ghost);
+            var intent = new MoveIntent(source, ghost);
             var presenter = CreatePresenter(initial);
-            var merge = MergeEffect.ReverseMerge(new MoveContext(initial.Board, MovePlan.Move(source, ghost), source, ghost));
+            var merge = MergeEffect.ReverseMerge(new MoveContext(initial.Board, MovePlan.Default(source, ghost), source, ghost, intent));
             int notifications = 0;
             presenter.SnapshotChanged += _ => notifications++;
             presenter.ApplySteps(new[] { new MoveStep(MoveStepKind.Merge, new IBoardEffect[] { merge }) },
@@ -196,10 +202,11 @@ namespace Blobs.Tests.PlayMode
             {
                 var source = Blob("moving", BlobColor.Red, 0, 0);
                 var target = Blob("target", BlobColor.Blue, 1, 0);
+                var intent = new MoveIntent(source, target);
                 var initial = Snapshot(2, 1, source, target);
                 var presenter = CreatePresenter(initial);
                 presenter.enabled = false;
-                var context = new MoveContext(initial.Board, MovePlan.Move(source, target), source, target);
+                var context = new MoveContext(initial.Board, MovePlan.Default(source, target), source, target, intent);
                 var merge = reverse ? MergeEffect.ReverseMerge(context) : MergeEffect.NormalMerge(context);
                 presenter.TryGetBlobView(merge.SurvivingBlobId, out BlobView expectedView);
                 var expected = Snapshot(2, 1, reverse ? target : source.WithPosition(target.Position));

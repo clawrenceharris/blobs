@@ -115,10 +115,7 @@ namespace Blobs.Core
 
         public static BlobRuleBook CreateDefault()
         {
-            var normalMerge = new NormalCollisionStrategy();
-            var flagMerge = new FlagCollisionStrategy();
-            var rockMerge = new RockCollisionStrategy();
-            var ghostMerge = new GhostCollisionStrategy();
+
 
             return new BlobRuleBook(
                 new Dictionary<BlobType, BlobTraits>
@@ -140,57 +137,70 @@ namespace Blobs.Core
                 {
                     // Normal blobs
                     [new MergeKey(BlobType.Normal, BlobType.Normal)] =
-                        normalMerge,
+                        new NormalCollisionStrategy(),
                     [new MergeKey(BlobType.Trail, BlobType.Normal)] =
-                        normalMerge,
+                        new NormalCollisionStrategy(),
 
                     // Trail blobs
                     [new MergeKey(BlobType.Trail, BlobType.Trail)] =
-                        normalMerge,
+                        new NormalCollisionStrategy(),
                     [new MergeKey(BlobType.Normal, BlobType.Trail)] =
-                        normalMerge,
+                        new NormalCollisionStrategy(),
 
                     // Flag blobs
                     [new MergeKey(BlobType.Normal, BlobType.Flag)] =
-                        flagMerge,
+                        new FlagCollisionStrategy(),
                     [new MergeKey(BlobType.Trail, BlobType.Flag)] =
-                        flagMerge,
+                        new FlagCollisionStrategy(),
 
                     // Rock blobs
                     [new MergeKey(BlobType.Normal, BlobType.Rock)] =
-                        rockMerge,
+                        new RockCollisionStrategy(),
                     [new MergeKey(BlobType.Trail, BlobType.Rock)] =
-                        rockMerge,
+                        new RockCollisionStrategy(),
 
                     // Ghost blobs
                     [new MergeKey(BlobType.Normal, BlobType.Ghost)] =
-                        ghostMerge,
+                        new GhostCollisionStrategy(),
                     [new MergeKey(BlobType.Trail, BlobType.Ghost)] =
-                        ghostMerge,
+                        new GhostCollisionStrategy(),
 
 
 
                 },
-                 new Dictionary<MergeKey, IMoveStrategy>
-                 {
-                     // Normal blobs
-                     [new MergeKey(BlobType.Normal, BlobType.Normal)] = new NormalMoveStrategy(),
-                     [new MergeKey(BlobType.Trail, BlobType.Normal)] = new NormalMoveStrategy(),
-                     [new MergeKey(BlobType.Normal, BlobType.Rock)] = new NormalMoveStrategy(),
-                     [new MergeKey(BlobType.Trail, BlobType.Rock)] = new NormalMoveStrategy(),
+                new Dictionary<MergeKey, IMoveStrategy>
+                {
+                    // Normal blobs
+                    [new MergeKey(BlobType.Normal, BlobType.Normal)] =
+                        new NormalMoveStrategy(),
+                    [new MergeKey(BlobType.Trail, BlobType.Normal)] =
+                        new NormalMoveStrategy(),
 
+                    // Trail blobs
+                    [new MergeKey(BlobType.Trail, BlobType.Trail)] =
+                        new NormalMoveStrategy(),
+                    [new MergeKey(BlobType.Normal, BlobType.Trail)] =
+                        new NormalMoveStrategy(),
 
-                     [new MergeKey(BlobType.Normal, BlobType.Trail)] = new NormalMoveStrategy(),
-                     [new MergeKey(BlobType.Trail, BlobType.Trail)] = new NormalMoveStrategy(),
+                    // Flag blobs
+                    [new MergeKey(BlobType.Normal, BlobType.Flag)] =
+                        new FlagMoveStrategy(),
+                    [new MergeKey(BlobType.Trail, BlobType.Flag)] =
+                        new FlagMoveStrategy(),
 
-                     // Flag blobs
-                     [new MergeKey(BlobType.Normal, BlobType.Flag)] = new NormalMoveStrategy(),
-                     [new MergeKey(BlobType.Trail, BlobType.Flag)] = new NormalMoveStrategy(),
+                    // Rock blobs
+                    [new MergeKey(BlobType.Normal, BlobType.Rock)] =
+                        new NormalMoveStrategy(),
+                    [new MergeKey(BlobType.Trail, BlobType.Rock)] =
+                        new NormalMoveStrategy(),
 
-                     // Ghost blobs
-                     [new MergeKey(BlobType.Normal, BlobType.Ghost)] = new NormalMoveStrategy(),
-                     [new MergeKey(BlobType.Trail, BlobType.Ghost)] = new NormalMoveStrategy(),
-                 },
+                    // Ghost blobs
+                    [new MergeKey(BlobType.Normal, BlobType.Ghost)] =
+                        new NormalMoveStrategy(),
+                    [new MergeKey(BlobType.Trail, BlobType.Ghost)] =
+                        new NormalMoveStrategy(),
+
+                },
 
 
                  new Dictionary<BlobType, IMoveBehavior>

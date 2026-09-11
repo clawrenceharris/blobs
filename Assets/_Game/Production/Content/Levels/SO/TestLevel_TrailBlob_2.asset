@@ -10,56 +10,53 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 228f01d3da5254622b9b1236a3d1c0ff, type: 3}
-  m_Name: BlockedPath_Test_With_Rock
+  m_Name: TestLevel_TrailBlob_2
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
   levelId: level-new
   schemaVersion: 1
-  width: 6
-  height: 1
-  emptyPositions: []
+  width: 3
+  height: 4
+  emptyPositions:
+  - {x: 1, y: 1}
+  - {x: 2, y: 1}
+  - {x: 1, y: 2}
+  - {x: 2, y: 2}
   blobs:
-  - rid: 3341776657424318735
-  - rid: 3341776657424318736
-  - rid: 3341776657424318737
-  - rid: 3341776657424318740
-  - rid: 3341776657424318752
+  - rid: 3341776741192433723
+  - rid: 3341776741192433725
+  - rid: 3341776741192433726
+  - rid: 3341776741192433757
   tiles: []
   objective: 0
   palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: 3341776657424318735
-      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+    - rid: 3341776741192433723
+      type: {class: TrailBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: blob-1
+        id: trail
         position: {x: 0, y: 0}
-        type: 0
+        type: 2
         color: 1
-    - rid: 3341776657424318736
+        trailColor: 2
+    - rid: 3341776741192433725
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: blob-2
-        position: {x: 1, y: 0}
-        type: 0
-        color: 2
-    - rid: 3341776657424318737
-      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: blob-3
-        position: {x: 3, y: 0}
-        type: 0
-        color: 1
-    - rid: 3341776657424318740
-      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: blob-4
-        position: {x: 4, y: 0}
+        id: red-01
+        position: {x: 2, y: 0}
         type: 0
         color: 0
-    - rid: 3341776657424318752
+    - rid: 3341776741192433726
+      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: flag
+        position: {x: 0, y: 2}
+        type: 1
+        color: 2
+    - rid: 3341776741192433757
       type: {class: RockBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
         id: rock
-        position: {x: 2, y: 0}
+        position: {x: 0, y: 3}
         type: 3

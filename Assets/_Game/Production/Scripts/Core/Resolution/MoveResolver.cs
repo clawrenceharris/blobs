@@ -52,14 +52,6 @@ namespace Blobs.Core
             if (!source.Position.IsAlignedWith(intendedTarget.Position))
                 return MoveResult.Failed(source.Id, intendedTarget.Id, MoveFailureReason.NotAligned);
 
-            if (intendedTarget.Type == BlobType.Flag)
-            {
-                if (source.Type != BlobType.Normal)
-                    return MoveResult.Failed(source.Id, intendedTarget.Id, MoveFailureReason.FlagRequiresNormalSource);
-                if (source.Components.Color?.Color != intendedTarget.Components.Color?.Color)
-                    return MoveResult.Failed(source.Id, intendedTarget.Id, MoveFailureReason.FlagRequiresMatchingColor);
-            }
-
             BoardState simulation = board.Clone();
 
             if (!_rules.TryGetMoveStrategy(source.Type, intendedTarget.Type, out IMoveStrategy moveStrategy))
@@ -68,9 +60,10 @@ namespace Blobs.Core
             }
             MovePlan movePlan = moveStrategy.BuildPlan(new MoveContext(
                 board: simulation,
-                plan: MovePlan.Move(source, intendedTarget),
+                plan: MovePlan.Default(source, intendedTarget),
                 source: source,
                 target: intendedTarget,
+                intent: intent,
                 isFinalTarget: true
             ));
 
@@ -125,8 +118,6 @@ namespace Blobs.Core
                 else
                 {
                     kind = MoveStepKind.Merge;
-                    if (occupant.Type == BlobType.Flag && occupant.Id != intendedTarget.Id)
-                        return MoveResult.Failed(source.Id, intendedTarget.Id, MoveFailureReason.FlagCaptureRequired);
 
                     if (!_rules.TryGetCollisionStrategy(
                             mover.Type,
@@ -139,9 +130,10 @@ namespace Blobs.Core
 
                     var context = new MoveContext(
                       board: simulation,
-                      plan: MovePlan.Move(source, target),
+                      plan: movePlan,
                       source: mover,
                       target: occupant,
+                      intent: intent,
                       isFinalTarget: occupant.Id == target.Id);
                     CollisionPlan collisionPlan = collisionStrategy.BuildPlan(context);
                     if (!collisionPlan.Succeeded)

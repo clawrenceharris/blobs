@@ -1,19 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Blobs.Application;
-using Blobs.Content;
 using Blobs.Core;
-using Blobs.Input;
 using Blobs.Presentation;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.TestTools;
-using Object = UnityEngine.Object;
 
 namespace Blobs.Tests.PlayMode
 {
@@ -59,7 +54,7 @@ namespace Blobs.Tests.PlayMode
                         new IBoardEffect[]
                         {
                             MergeEffect.NormalMerge(new MoveContext(
-                                initial.Board, MovePlan.Move(source, target), source, target))
+                                initial.Board, MovePlan.Default(source, target), source, target, new MoveIntent(source, target)))
                         })
                 },
                 Snapshot(2, 1, source.WithPosition(target.Position)));

@@ -85,7 +85,7 @@ namespace Blobs.Tests.EditMode
             BoardState board = Board(true, 2);
             Move(board);
             Assert.That(board.GetBlob("ghost"), Is.Null);
-            Assert.That(board.GetBlobAt(new GridPosition(2, 0)), Is.Not.Null);
+            Assert.That(board.GetBlobAt(new GridPosition(2, 0)), Is.Null);
         }
 
         [Test]

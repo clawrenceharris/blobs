@@ -20,11 +20,15 @@ namespace Blobs.Core
         public string GhostId { get; }
         public IReadOnlyList<GridPosition> Path { get; }
         public GridPosition RestDestination => Path.Last();
+        public string LandingBlobId { get; private set; }
 
         /// <inheritdoc />
         public void Apply(BoardState board)
         {
             board.RemoveBlob(GhostId);
+            LandingBlobId = board.GetBlobAt(Path.Last())?.Id;
+            if (LandingBlobId != null)
+                board.RemoveBlob(LandingBlobId);
         }
     }
 }

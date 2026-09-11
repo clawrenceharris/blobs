@@ -937,6 +937,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7cab251b8afa49388084d6cb0a57a1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Blobs.Core.UI.PausePanelView
+  _canvasGroup: {fileID: 0}
+  _rectTransform: {fileID: 0}
+  _resumeButton: {fileID: 0}
+  _retryPauseButton: {fileID: 0}
+  _menuPauseButton: {fileID: 0}
 --- !u!224 &411374098
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2215,7 +2220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.GameBootstrapper
   boardPresenter: {fileID: 1341500224}
-  levelAsset: {fileID: 11400000, guid: ea5471c9f0ead44a5a7b5be1763ae310, type: 2}
+  levelAsset: {fileID: 11400000, guid: 2d99ef7721e2640b79a00f809db82f1d, type: 2}
   backgroundView: {fileID: 0}
   cameraPresenter: {fileID: 983718534}
   inputAdapter: {fileID: 1046084939}
@@ -2312,6 +2317,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 366ffc90412a94d65876dddae4d0fd3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Blobs.Core.UI.WinPanelView
+  _canvasGroup: {fileID: 0}
+  _rectTransform: {fileID: 0}
+  _winStarImages: []
+  _starFilledSprite: {fileID: 0}
+  _starEmptySprite: {fileID: 0}
+  _winScoreText: {fileID: 0}
+  _nextLevelButton: {fileID: 0}
+  _retryButton: {fileID: 0}
+  _menuButton: {fileID: 0}
 --- !u!224 &965240320
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3536,6 +3550,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec186ebd8fc504bbf8418aac201ceda9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HUDView
+  _moveCountText: {fileID: 0}
+  _undoButton: {fileID: 0}
+  _pauseButton: {fileID: 0}
 --- !u!224 &1403663693
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4849,6 +4866,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115eb4cb23f5b4cdeb0b7d679fb334ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialView
+  _tutorialPointerPrefab: {fileID: 0}
+  _canvasGroup: {fileID: 0}
+  _topText: {fileID: 0}
+  _bottomText: {fileID: 0}
 --- !u!224 &1808347029
 RectTransform:
   m_ObjectHideFlags: 0

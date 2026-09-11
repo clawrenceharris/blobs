@@ -6,9 +6,16 @@ namespace Blobs.Core
 
     public enum CollisionKind
     {
+        /// <summary>The mover enters the collision cell and may keep walking.</summary>
         MoverSurvived,
+
+        /// <summary>The mover is removed or otherwise consumed at the collision cell.</summary>
         MoverConsumed,
+
+        /// <summary>The mover stops before entering the occupied collision cell.</summary>
         MoverBlocked,
+
+        /// <summary>The collision is invalid and the whole move intent fails.</summary>
         Failed,
     }
     public static class CollisionKindExtensions
@@ -35,6 +42,12 @@ namespace Blobs.Core
     /// of a cell on its path. Strategies describe only what happens at the collision
     /// tile; locomotion is owned by the resolver.
     /// </summary>
+    /// <remarks>
+    /// A collision plan is evaluated after the resolver has already walked to an
+    /// occupied cell. Use it for contact rules such as merging, consuming the mover, or
+    /// blocking before the occupant. Do not use <see cref="MovePlan"/> for these rules
+    /// unless the route itself must be changed before traversal begins.
+    /// </remarks>
     public sealed class CollisionPlan
     {
         private CollisionPlan(
@@ -55,13 +68,14 @@ namespace Blobs.Core
         public MoveFailureReason FailureReason { get; }
 
         /// <summary>
-        /// Effects that resolve the collision tile (e.g. remove the occupant) before the
-        /// mover enters it. The resolver appends the mover's locomotion effect itself.
+        /// Effects that resolve the collision tile, such as removing the occupant,
+        /// before the resolver decides whether to append the mover's locomotion effect.
         /// </summary>
         public IReadOnlyList<IBoardEffect> Effects { get; }
 
         /// <summary>
-        /// The kind of collision that occurred.
+        /// How the collision affects locomotion after collision-tile effects are
+        /// applied.
         /// </summary>
         public CollisionKind Kind { get; }
 
@@ -91,7 +105,8 @@ namespace Blobs.Core
         }
 
         /// <summary>
-        /// Collision resolved; the mover is blocked and locomotion ends at this tile.
+        /// Collision resolved; the mover is blocked before entering the occupied tile
+        /// and locomotion ends. This is the natural result for rock contact.
         /// </summary>
         public static CollisionPlan BlockMover(params IBoardEffect[] effects)
         {

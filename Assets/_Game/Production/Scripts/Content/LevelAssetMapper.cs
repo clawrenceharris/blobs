@@ -45,8 +45,7 @@ namespace Blobs.Content
             return definition;
         }
 
-        private static GridPosition ToCore(Vector2Int position) =>
-            new GridPosition(position.x, position.y);
+        private static GridPosition ToCore(Vector2Int position) => new(position.x, position.y);
 
         private static BlobDefinition ToCore(BlobAssetData blob)
         {

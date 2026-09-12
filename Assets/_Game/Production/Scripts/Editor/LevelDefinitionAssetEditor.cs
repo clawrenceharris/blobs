@@ -32,11 +32,14 @@ namespace Blobs.Editor
 
             using (new EditorGUILayout.HorizontalScope())
             {
-                if (GUILayout.Button("Add Normal Tile"))
-                    AddTile(new NormalTileAssetData());
+
                 if (GUILayout.Button("Add Grave Tile"))
                 {
-                    AddTile(new GraveTileAssetData());
+                    AddTile(new GraveTileAssetData()
+                    {
+                        id = $"tile-{_tiles.arraySize - 1}",
+                        type = TileType.Grave,
+                    });
                 }
             }
 
@@ -49,16 +52,36 @@ namespace Blobs.Editor
             using (new EditorGUILayout.HorizontalScope())
             {
                 if (GUILayout.Button("Add Normal Blob"))
-                    AddBlob(new NormalBlobAssetData());
+                    AddBlob(new NormalBlobAssetData()
+                    {
+                        id = $"blob-{_blobs.arraySize}",
+                        type = BlobType.Normal,
+                    });
 
                 if (GUILayout.Button("Add Flag Blob"))
-                    AddBlob(new FlagBlobAssetData());
+                    AddBlob(new FlagBlobAssetData()
+                    {
+                        id = $"blob-{_blobs.arraySize}",
+                        type = BlobType.Flag,
+                    });
                 if (GUILayout.Button("Add Trail Blob"))
-                    AddBlob(new TrailBlobAssetData());
+                    AddBlob(new TrailBlobAssetData()
+                    {
+                        id = $"blob-{_blobs.arraySize}",
+                        type = BlobType.Trail,
+                    });
                 if (GUILayout.Button("Add Rock Blob"))
-                    AddBlob(new RockBlobAssetData());
+                    AddBlob(new RockBlobAssetData()
+                    {
+                        id = $"blob-{_blobs.arraySize}",
+                        type = BlobType.Rock,
+                    });
                 if (GUILayout.Button("Add Ghost Blob"))
-                    AddBlob(new GhostBlobAssetData());
+                    AddBlob(new GhostBlobAssetData()
+                    {
+                        id = $"blob-{_blobs.arraySize}",
+                        type = BlobType.Ghost,
+                    });
             }
 
             serializedObject.ApplyModifiedProperties();

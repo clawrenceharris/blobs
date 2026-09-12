@@ -1,6 +1,6 @@
 # Blobs
 
-Blobs is a Unity 6 grid puzzle game about selecting a source blob and merging it toward a target blob. The production rebuild lives under `Assets/_Game/Production` and is intentionally separated from the older prototype code under `Assets/_Game/Prototype`.
+Blobs is a Unity 6 grid puzzle game about selecting a source blob and merging it toward a target blob. The production rebuild lives under `Assets/_Game/Production`.
 
 ## Current Production Direction
 

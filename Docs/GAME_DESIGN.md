@@ -72,8 +72,7 @@ Authored levels must have:
 - At least one clearable blob and at least one selectable Normal or Trail source.
 - Valid IDs, types, colors, coordinates, dimensions, and supported content data.
 
-These are structural checks, not a proof of solvability. Deliberate level design, solution records, and playtesting establish solvability and whether bypassing Flag capture is desirable. Production authoring uses `LevelDefinitionAsset` mapped to Core data; obsolete prototype `LevelData` is not the production rule contract.
-
+These are structural checks, not a proof of solvability. Deliberate level design, solution records, and playtesting establish solvability and whether bypassing Flag capture is desirable. Production authoring uses `LevelDefinitionAsset` mapped to Core data;
 ## Outcomes, feedback, and move count
 
 | Result                      | Board                    | Move count / history                           | Feedback                                                  |

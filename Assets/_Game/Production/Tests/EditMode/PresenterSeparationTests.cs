@@ -466,6 +466,7 @@ namespace Blobs.Tests.EditMode
 #pragma warning disable CS0067
             public event Action<GameSessionSnapshot> SnapshotChanged;
             public event Action<MoveResult> MoveResolved;
+            public event Action<UndoResult> UndoResolved;
             public event Action<GameSessionSnapshot> StateRestored;
 #pragma warning restore CS0067
 
@@ -484,6 +485,8 @@ namespace Blobs.Tests.EditMode
             {
                 return _snapshot;
             }
+
+            public bool CanUndo => false;
         }
 
         private sealed class RecordingContactFeedback : MonoBehaviour, IBlobContactFeedback
@@ -577,6 +580,15 @@ namespace Blobs.Tests.EditMode
                 PresentCount++;
                 handledEffects = new[] { step.Effects[0] };
                 return true;
+            }
+
+            public bool PresentReverse(
+                MoveStep step,
+                BoardEffectPresentationContext context,
+                out IReadOnlyList<IBoardEffect> handledEffects)
+            {
+                handledEffects = Array.Empty<IBoardEffect>();
+                return false;
             }
         }
 

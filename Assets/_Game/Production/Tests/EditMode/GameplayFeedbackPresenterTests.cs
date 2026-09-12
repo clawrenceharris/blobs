@@ -30,7 +30,6 @@ namespace Blobs.Tests.EditMode
             _createdObjects.Clear();
         }
 
-        [TestCase(MoveFailureReason.NotAligned, "Blobs must share the same column or row to merge.")]
         [TestCase(MoveFailureReason.SourceCannotMove, "That blob can't move.")]
         [TestCase(MoveFailureReason.PathBlocked, "Path is blocked.")]
         [TestCase(MoveFailureReason.UnsupportedInteraction, "Those blobs can't merge.")]
@@ -50,6 +49,7 @@ namespace Blobs.Tests.EditMode
             Assert.That(message, Is.EqualTo(expected));
         }
 
+        [TestCase(MoveFailureReason.NotAligned)]
         [TestCase(MoveFailureReason.None)]
         [TestCase(MoveFailureReason.SourceOrTargetMissing)]
         [TestCase(MoveFailureReason.SameBlob)]
@@ -156,6 +156,11 @@ namespace Blobs.Tests.EditMode
 
             public void Restart()
             {
+            }
+
+            public bool Undo()
+            {
+                return false;
             }
         }
     }

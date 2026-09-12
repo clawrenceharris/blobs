@@ -51,6 +51,7 @@ namespace Blobs.Content
         public string id;
         public Vector2Int position;
         public BlobType type;
+
     }
 
     [Serializable]
@@ -67,6 +68,7 @@ namespace Blobs.Content
     [Serializable]
     public sealed class FlagBlobAssetData : ColorBlobAssetData
     {
+
     }
 
     [Serializable]
@@ -74,6 +76,7 @@ namespace Blobs.Content
     {
         [Tooltip("Color of the normal blobs left behind on tiles this blob departs.")]
         public BlobColor trailColor;
+
     }
     [Serializable]
     public sealed class RockBlobAssetData : BlobAssetData
@@ -95,15 +98,7 @@ namespace Blobs.Content
         public TileType type;
     }
 
-    [Serializable]
-    public sealed class NormalTileAssetData : TileAssetData
-    {
-    }
 
-    [Serializable]
-    public sealed class EmptyTileAssetData : TileAssetData
-    {
-    }
 
     [Serializable]
     public sealed class GraveTileAssetData : TileAssetData

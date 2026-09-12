@@ -34,6 +34,7 @@ namespace Blobs.Core
             var tileIds = new HashSet<string>(StringComparer.Ordinal);
             var blobPositions = new HashSet<GridPosition>();
             var tilePositions = new HashSet<GridPosition>();
+            var flagIds = new HashSet<string>(StringComparer.Ordinal);
 
             foreach (BlobDefinition blob in level.Blobs)
             {
@@ -50,7 +51,14 @@ namespace Blobs.Core
                     RequireEnumValue(colorBlob.Color, "blob color");
                 }
                 RequireEnumValue(blob.Type, "blob type");
+                if (blob is FlagBlobDefinition)
+                {
+                    flagIds.Add(blob.Id);
+                }
             }
+            RequireExactlyOneFlag(flagIds);
+            RequireAtLeastOneSelectableSource(level.Blobs);
+
 
 
             foreach (TileDefinition tile in level.Tiles)
@@ -71,6 +79,32 @@ namespace Blobs.Core
                 throw new InvalidOperationException("Level objective is required.");
 
             RequireEnumValue(level.Objective.Type, "level objective");
+
+
+        }
+
+
+        private static void RequireAtLeastOneSelectableSource(IReadOnlyList<BlobDefinition> blobDefinitions)
+        {
+            var rules = BlobRuleBook.CreateDefault();
+            foreach (BlobDefinition blob in blobDefinitions)
+            {
+                if (rules.GetTraits(blob.Type).CanBeSource)
+                {
+                    return;
+                }
+            }
+            throw new InvalidOperationException("Level must have at least one selectable source blob.");
+        }
+
+
+
+        private static void RequireExactlyOneFlag(HashSet<string> flagIds)
+        {
+            if (flagIds.Count != 1)
+            {
+                throw new InvalidOperationException("Level must have exactly one flag.");
+            }
         }
 
         private static void RequireId(string id, string label, ISet<string> ids)

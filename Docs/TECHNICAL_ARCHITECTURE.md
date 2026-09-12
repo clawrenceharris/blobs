@@ -87,8 +87,6 @@ Assets/_Game/Production/
     PlayMode/
 ```
 
-Prototype code under `Assets/Scripts/` remains the feel reference until production assemblies replace it piece by piece.
-
 ## Assembly boundaries
 
 Create assembly definitions when implementation begins:

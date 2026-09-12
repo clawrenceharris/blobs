@@ -23,6 +23,20 @@ namespace Blobs.Presentation
             return PresentRemoval(effect, context);
         }
 
+        protected override bool PresentReverse(
+            RemoveBlobEffect effect,
+            BoardEffectPresentationContext context)
+        {
+            return PresentRestore(effect, context, join: false);
+        }
+
+        protected override bool PresentReverseInBeat(
+            RemoveBlobEffect effect,
+            BoardEffectPresentationContext context)
+        {
+            return PresentRestore(effect, context, join: false);
+        }
+
         private static bool PresentRemoval(
             RemoveBlobEffect effect,
             BoardEffectPresentationContext context)
@@ -36,6 +50,30 @@ namespace Blobs.Presentation
             }
 
             context.Timeline.Append(animation);
+            return true;
+        }
+
+        private static bool PresentRestore(
+            RemoveBlobEffect effect,
+            BoardEffectPresentationContext context,
+            bool join)
+        {
+            BlobState restored = context.ResolveRestoredBlob(effect.BlobId, effect.Blob);
+            if (restored == null)
+                return false;
+
+            if (!context.Blobs.Transitions.TryCreate(
+                    restored.WithPosition(effect.At),
+                    context.Timeline,
+                    out Tween animation))
+            {
+                return false;
+            }
+
+            if (join)
+                context.Timeline.Join(animation);
+            else
+                context.Timeline.Append(animation);
             return true;
         }
     }

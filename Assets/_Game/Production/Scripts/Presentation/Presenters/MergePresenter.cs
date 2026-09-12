@@ -89,5 +89,46 @@ namespace Blobs.Presentation
             }
             return true;
         }
+
+        public bool PresentReverse(MergeEffect effect, BoardEffectPresentationContext context)
+        {
+            bool moverSurvives = effect.SurvivingBlobId == effect.MovingBlobId &&
+                effect.ConsumedBlobId == effect.TargetBlobId;
+            bool targetSurvives = effect.SurvivingBlobId == effect.TargetBlobId &&
+                effect.ConsumedBlobId == effect.MovingBlobId;
+            BlobState consumed = context.ResolveRestoredBlob(effect.ConsumedBlobId, effect.ConsumedBlob);
+            if ((!moverSurvives && !targetSurvives) || consumed == null)
+                return false;
+
+            GridPosition restoreAt = moverSurvives ? effect.At : effect.From;
+            BlobState restoredState = consumed.WithPosition(restoreAt);
+            if (!_blobs.TryCreateView(restoredState, out BlobView restored))
+                return false;
+
+            PresentationTimeline timeline = context.Timeline;
+            if (!timeline.IsAnimated)
+            {
+                if (moverSurvives && _blobs.TryGetView(effect.MovingBlobId, out BlobView mover))
+                    mover.SetGridPosition(effect.From);
+                restored.SetGridPosition(restoreAt);
+                return true;
+            }
+
+            Sequence undo = DOTween.Sequence();
+            Tween spawn = restored.PlaySpawn(_motionSettings.SpawnDuration);
+            if (spawn != null)
+                undo.Join(spawn);
+
+            if (moverSurvives)
+            {
+                if (!_blobs.TryGetView(effect.MovingBlobId, out BlobView mover))
+                    return false;
+                undo.Join(mover.AnimateMoveTo(effect.From, _motionSettings.MoveDuration, Ease.OutQuad));
+                undo.OnComplete(() => mover.BlobMotionAnimator?.SetIdle());
+            }
+
+            timeline.Append(undo);
+            return true;
+        }
     }
 }

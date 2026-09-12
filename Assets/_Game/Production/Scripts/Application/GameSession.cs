@@ -16,6 +16,11 @@ namespace Blobs.Application
         BlobSelectionResult SelectBlobAt(GridPosition position);
 
         /// <summary>
+        /// Restores the complete state before the latest board-changing action.
+        /// </summary>
+        bool Undo();
+
+        /// <summary>
         /// Restores the authored initial level state and clears transient session state.
         /// </summary>
         void Restart();
@@ -32,6 +37,12 @@ namespace Blobs.Application
         GameSessionSnapshot CreateSnapshot();
 
         /// <summary>
+        /// True when history contains a board-changing action that is legal to undo.
+        /// Winning actions lock undo immediately.
+        /// </summary>
+        bool CanUndo { get; }
+
+        /// <summary>
         /// Raised after any session state change that should refresh UI or snapshot-driven presenters.
         /// </summary>
         event Action<GameSessionSnapshot> SnapshotChanged;
@@ -40,6 +51,11 @@ namespace Blobs.Application
         /// Raised after a successful move has updated Core state.
         /// </summary>
         event Action<MoveResult> MoveResolved;
+
+        /// <summary>
+        /// Raised after a whole-action Undo restores Core state. Presentation reverses the recorded timeline.
+        /// </summary>
+        event Action<UndoResult> UndoResolved;
 
         /// <summary>
         /// Raised after restart reconstructs the authored initial state.
@@ -60,10 +76,11 @@ namespace Blobs.Application
     public class GameSession : IGameplayCommands, IGameplayState
     {
         private readonly MoveResolver _resolver;
-        private readonly List<ResolvedMoveCommand> _history;
+        private readonly List<UndoActionRecord> _history;
         private readonly LevelDefinition _level;
         private BoardState _board;
         private string _selectedBlobId;
+        private int _committedMoveCount;
         public BoardState CurrentState => _board;
         /// <summary>
         /// Raised after a successful move or restart changes the session snapshot.
@@ -72,6 +89,9 @@ namespace Blobs.Application
 
         /// <inheritdoc />
         public event Action<MoveResult> MoveResolved;
+
+        /// <inheritdoc />
+        public event Action<UndoResult> UndoResolved;
 
         public static event Action<string> MessageLogged;
 
@@ -83,7 +103,8 @@ namespace Blobs.Application
         public event Action<BlobSelectionResult> BlobSelected;
 
         public string LevelId => _level.Id;
-        public int MoveCount => _history.Count;
+        public int MoveCount => _committedMoveCount;
+        public bool CanUndo => _history.Count > 0 && !IsComplete;
         public bool IsComplete { get; private set; }
         public string SelectedBlobId => _selectedBlobId;
 
@@ -94,7 +115,7 @@ namespace Blobs.Application
         {
             _level = level ?? throw new ArgumentNullException(nameof(level));
             _resolver = resolver ?? new MoveResolver();
-            _history = new List<ResolvedMoveCommand>();
+            _history = new List<UndoActionRecord>();
             _board = LevelFactory.CreateInitialBoard(level);
             IsComplete = ObjectiveEvaluator.IsComplete(_board, _level.Objective);
         }
@@ -157,16 +178,43 @@ namespace Blobs.Application
         /// </summary>
         public MoveResult ExecuteMove(MoveIntent intent)
         {
+            BoardState previous = _board.Clone();
             var result = _resolver.Resolve(_board, intent, _level.Objective);
             if (!result.Succeeded)
                 return result;
             IsComplete = result.IsComplete;
             // Valid contact can produce feedback without changing the board.
             if (result.Effects.Count > 0)
-                _history.Add(new ResolvedMoveCommand(intent));
+            {
+                _committedMoveCount++;
+                _history.Add(new UndoActionRecord(
+                    previous,
+                    result,
+                    BuildRestorationBlobs(previous, result)));
+            }
             MoveResolved?.Invoke(result);
             SnapshotChanged?.Invoke(CreateSnapshot());
             return result;
+        }
+
+        /// <inheritdoc />
+        public bool Undo()
+        {
+            if (!CanUndo)
+                return false;
+
+            UndoActionRecord record = _history[_history.Count - 1];
+            _history.RemoveAt(_history.Count - 1);
+            _board = record.PreviousBoard.Clone();
+            _selectedBlobId = null;
+            IsComplete = ObjectiveEvaluator.IsComplete(_board, _level.Objective);
+            var snapshot = CreateSnapshot();
+            UndoResolved?.Invoke(new UndoResult(
+                record.ForwardResult,
+                snapshot,
+                record.RestorationBlobs));
+            SnapshotChanged?.Invoke(snapshot);
+            return true;
         }
 
 
@@ -174,6 +222,7 @@ namespace Blobs.Application
         public void Restart()
         {
             _history.Clear();
+            _committedMoveCount = 0;
             _board = LevelFactory.CreateInitialBoard(_level);
             _selectedBlobId = null;
             IsComplete = ObjectiveEvaluator.IsComplete(_board, _level.Objective);
@@ -189,17 +238,61 @@ namespace Blobs.Application
                 _level.Id,
                 _board.Clone(),
                 MoveCount,
-                IsComplete);
+                IsComplete,
+                CanUndo);
         }
 
-        private sealed class ResolvedMoveCommand
+        private static IReadOnlyDictionary<string, BlobState> BuildRestorationBlobs(
+            BoardState previous,
+            MoveResult result)
         {
-            public ResolvedMoveCommand(MoveIntent intent)
+            var catalog = new Dictionary<string, BlobState>();
+            foreach (BlobState blob in previous.Blobs)
+                catalog[blob.Id] = blob;
+
+            foreach (IBoardEffect effect in result.Effects)
             {
-                Intent = intent;
+                switch (effect)
+                {
+                    case SpawnBlobEffect spawn:
+                        catalog[spawn.Blob.Id] = spawn.Blob;
+                        break;
+                    case MergeEffect merge when merge.ConsumedBlob != null:
+                        catalog[merge.ConsumedBlob.Id] = merge.ConsumedBlob;
+                        break;
+                    case RemoveBlobEffect remove when remove.Blob != null:
+                        catalog[remove.Blob.Id] = remove.Blob;
+                        break;
+                    case GhostHauntEffect haunt when haunt.LandingBlob != null:
+                        catalog[haunt.LandingBlob.Id] = haunt.LandingBlob;
+                        break;
+                    case GhostRestEffect rest:
+                        if (rest.GhostBlob != null)
+                            catalog[rest.GhostBlob.Id] = rest.GhostBlob;
+                        if (rest.LandingBlob != null)
+                            catalog[rest.LandingBlob.Id] = rest.LandingBlob;
+                        break;
+                }
             }
 
-            public MoveIntent Intent { get; }
+            return catalog;
+        }
+
+        private sealed class UndoActionRecord
+        {
+            public UndoActionRecord(
+                BoardState previousBoard,
+                MoveResult forwardResult,
+                IReadOnlyDictionary<string, BlobState> restorationBlobs)
+            {
+                PreviousBoard = previousBoard;
+                ForwardResult = forwardResult;
+                RestorationBlobs = restorationBlobs;
+            }
+
+            public BoardState PreviousBoard { get; }
+            public MoveResult ForwardResult { get; }
+            public IReadOnlyDictionary<string, BlobState> RestorationBlobs { get; }
         }
     }
 }

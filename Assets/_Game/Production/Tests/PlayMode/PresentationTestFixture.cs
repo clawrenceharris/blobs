@@ -57,7 +57,9 @@ namespace Blobs.Tests.PlayMode
             return body;
         }
 
-        protected BoardPresenter CreatePresenter(GameSessionSnapshot initialSnapshot)
+        protected BoardPresenter CreatePresenter(
+            GameSessionSnapshot initialSnapshot,
+            FakeGameplayState state = null)
         {
             GameObject root = CreateGameObject("PlayMode Board Presenter", active: false);
             root.AddComponent<MergeAnimationOrchestrator>();
@@ -72,7 +74,7 @@ namespace Blobs.Tests.PlayMode
 
             root.SetActive(true);
             presenter.Initialize(
-                new FakeGameplayState(initialSnapshot),
+                state ?? new FakeGameplayState(initialSnapshot),
                 palette,
                 factory);
             return presenter;
@@ -183,33 +185,22 @@ namespace Blobs.Tests.PlayMode
                 _snapshot = snapshot;
             }
 
-            public event Action<GameSessionSnapshot> SnapshotChanged
-            {
-                add { }
-                remove { }
-            }
-
-            public event Action<MoveResult> MoveResolved
-            {
-                add { }
-                remove { }
-            }
-
-            public event Action<GameSessionSnapshot> StateRestored
-            {
-                add { }
-                remove { }
-            }
-
-            public event Action<BlobSelectionResult> BlobSelected
-            {
-                add { }
-                remove { }
-            }
+            public event Action<GameSessionSnapshot> SnapshotChanged;
+            public event Action<MoveResult> MoveResolved;
+            public event Action<GameSessionSnapshot> StateRestored;
+            public event Action<UndoResult> UndoResolved;
+            public event Action<BlobSelectionResult> BlobSelected;
 
             public GameSessionSnapshot CreateSnapshot()
             {
                 return _snapshot;
+            }
+
+            public bool CanUndo => false;
+
+            public void RaiseUndoResolved(UndoResult undo)
+            {
+                UndoResolved?.Invoke(undo);
             }
         }
 
@@ -277,6 +268,15 @@ namespace Blobs.Tests.PlayMode
                     () => _events.Add("end-" + stepNumber));
                 handledEffects = Array.Empty<IBoardEffect>();
                 return true;
+            }
+
+            public bool PresentReverse(
+                MoveStep step,
+                BoardEffectPresentationContext context,
+                out IReadOnlyList<IBoardEffect> handledEffects)
+            {
+                handledEffects = Array.Empty<IBoardEffect>();
+                return false;
             }
         }
 

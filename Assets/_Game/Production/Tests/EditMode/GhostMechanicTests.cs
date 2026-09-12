@@ -80,7 +80,7 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void OccupiedGraveClearsGhostWithoutAbsorbingTrailOccupant()
+        public void OccupiedGraveClearsGhostAndAbsorbsOccupant()
         {
             BoardState board = Board(true, 2);
             Move(board);

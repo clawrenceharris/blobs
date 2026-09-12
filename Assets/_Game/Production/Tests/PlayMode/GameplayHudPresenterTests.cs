@@ -95,17 +95,24 @@ namespace Blobs.Tests.PlayMode
             {
                 RestartCount++;
             }
+
+            public bool Undo()
+            {
+                return false;
+            }
         }
 
         private sealed class FakeState : IGameplayState
         {
             public event Action<MoveResult> MoveResolved;
+            public event Action<UndoResult> UndoResolved;
             public event Action<GameSessionSnapshot> SnapshotChanged;
             public event Action<GameSessionSnapshot> StateRestored;
             public event Action<BlobSelectionResult> BlobSelected;
 
             public int MoveCount { get; set; }
             public bool IsComplete { get; set; }
+            public bool CanUndo => false;
 
             public GameSessionSnapshot CreateSnapshot()
             {

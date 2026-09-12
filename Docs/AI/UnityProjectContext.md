@@ -21,7 +21,7 @@ The focused source review at commit `d2319d3` is recorded in
 status, rule differences, and known issues; the generated section below is an
 August snapshot and has not been fully revalidated.
 
-- Current roots are `Assets/_Game/Production` and `Assets/_Game/Prototype`.
+- Current roots are `Assets/_Game/Production`
 - Ghost/Grave rules, presentation, and tests exist in production.
 - Core and Application declare no engine references, but both now also reference
   `Blobs.Debugging`; their older dependency inventory below is incomplete.

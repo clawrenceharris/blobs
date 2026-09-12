@@ -15,11 +15,13 @@ namespace Blobs.UI
         [SerializeField] private TMP_Text moveCountText;
         [SerializeField] private TMP_Text statusText;
         [SerializeField] private Button restartButton;
+        [SerializeField] private Button undoButton;
         [SerializeField] private GameObject completionRoot;
         [SerializeField] private string playingStatus = "";
         [SerializeField] private string completeStatus = "Complete!";
 
         private IGameplaySessionHost _sessionHost;
+
         private IGameplayCommands _commands;
         private IGameplayState _state;
 
@@ -27,6 +29,9 @@ namespace Blobs.UI
         {
             if (restartButton != null)
                 restartButton.onClick.AddListener(Restart);
+
+            if (undoButton != null)
+                undoButton.onClick.AddListener(Undo);
 
             BindToHost();
         }
@@ -40,6 +45,9 @@ namespace Blobs.UI
         {
             if (restartButton != null)
                 restartButton.onClick.RemoveListener(Restart);
+
+            if (undoButton != null)
+                undoButton.onClick.RemoveListener(Undo);
 
             UnbindState();
 
@@ -108,6 +116,11 @@ namespace Blobs.UI
         private void Restart()
         {
             _commands?.Restart();
+        }
+
+        private void Undo()
+        {
+            _commands?.Undo();
         }
 
         private void Render(GameSessionSnapshot snapshot)

@@ -1,3 +1,4 @@
+using System;
 using Blobs.Core;
 using DG.Tweening;
 
@@ -14,31 +15,48 @@ namespace Blobs.Presentation
             MoveBlobEffect effect,
             BoardEffectPresentationContext context)
         {
-            if (!context.Blobs.Transitions.TryMove(
-                    effect.BlobId,
-                    effect.To,
-                    Ease.Linear,
-                    context.Timeline,
-                    onArrival: null,
-                    out Tween animation))
-            {
-                return false;
-            }
-
-            context.Timeline.Append(animation);
-            return true;
+            return PresentMove(effect.BlobId, effect.To, Ease.Linear, context, onArrival: null);
         }
 
         protected override bool PresentInBeat(
             MoveBlobEffect effect,
             BoardEffectPresentationContext context)
         {
+            return PresentMove(
+                effect.BlobId,
+                effect.To,
+                context.MovementEase,
+                context,
+                context.ContactFeedback);
+        }
+
+        protected override bool PresentReverse(
+            MoveBlobEffect effect,
+            BoardEffectPresentationContext context)
+        {
+            return PresentMove(effect.BlobId, effect.From, Ease.Linear, context, onArrival: null);
+        }
+
+        protected override bool PresentReverseInBeat(
+            MoveBlobEffect effect,
+            BoardEffectPresentationContext context)
+        {
+            return PresentMove(effect.BlobId, effect.From, context.MovementEase, context, onArrival: null);
+        }
+
+        private static bool PresentMove(
+            string blobId,
+            GridPosition to,
+            Ease ease,
+            BoardEffectPresentationContext context,
+            Action onArrival)
+        {
             if (!context.Blobs.Transitions.TryMove(
-                    effect.BlobId,
-                    effect.To,
-                    context.MovementEase,
+                    blobId,
+                    to,
+                    ease,
                     context.Timeline,
-                    context.ContactFeedback,
+                    onArrival,
                     out Tween animation))
             {
                 return false;

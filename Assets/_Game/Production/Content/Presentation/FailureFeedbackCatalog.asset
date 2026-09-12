@@ -33,7 +33,7 @@ MonoBehaviour:
     message: Those blobs can't merge.
   - reason: 8
     showFeedback: 1
-    message: Normal blobs need different colors.
+    message: This kind of merge requires different colored blobs
   - reason: 9
     showFeedback: 1
     message: Match the flag's color.
@@ -45,7 +45,7 @@ MonoBehaviour:
     message: Merge incomplete
   - reason: 11
     showFeedback: 1
-    message: Only a normal blob can merge with a flag.
+    message: Only a normal blob can merge with a Flag.
   - reason: 12
     showFeedback: 1
-    message: Only your last blob can merge with a flag.
+    message: Path is blocked by the Flag.

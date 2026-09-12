@@ -69,7 +69,7 @@ namespace Blobs.Presentation
             inputAdapter.Initialize(_session, boardPresenter.CellSize);
             commandAdapter.Initialize(_session);
             if (feedbackPresenter != null)
-                feedbackPresenter.Initialize(inputAdapter);
+                feedbackPresenter.Initialize(inputAdapter, _session);
             if (cameraPresenter != null)
                 cameraPresenter.FitCameraToBoard(_session.CurrentState.Width, _session.CurrentState.Height, boardPresenter.CellSize);
 

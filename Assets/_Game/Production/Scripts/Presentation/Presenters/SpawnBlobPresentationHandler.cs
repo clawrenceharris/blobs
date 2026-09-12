@@ -40,5 +40,37 @@ namespace Blobs.Presentation
             context.Timeline.Join(animation);
             return true;
         }
+
+        protected override bool PresentReverse(
+            SpawnBlobEffect effect,
+            BoardEffectPresentationContext context)
+        {
+            if (!context.Blobs.Transitions.TryRemove(
+                    effect.BlobId,
+                    context.Timeline,
+                    out Tween animation))
+            {
+                return false;
+            }
+
+            context.Timeline.Append(animation);
+            return true;
+        }
+
+        protected override bool PresentReverseInBeat(
+            SpawnBlobEffect effect,
+            BoardEffectPresentationContext context)
+        {
+            if (!context.Blobs.Transitions.TryRemove(
+                    effect.BlobId,
+                    context.Timeline,
+                    out Tween animation))
+            {
+                return false;
+            }
+
+            context.Timeline.Join(animation);
+            return true;
+        }
     }
 }

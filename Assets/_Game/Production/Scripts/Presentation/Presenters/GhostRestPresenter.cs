@@ -41,6 +41,68 @@ namespace Blobs.Presentation
             return true;
         }
 
+        public bool PresentReverse(GhostRestEffect effect, BoardEffectPresentationContext context)
+        {
+            BlobState ghostState = context.ResolveRestoredBlob(effect.GhostId, effect.GhostBlob);
+            if (ghostState == null)
+                return false;
+
+            BlobState landing = context.ResolveRestoredBlob(effect.LandingBlobId, effect.LandingBlob);
+            BlobState ghostAtRest = ghostState.WithPosition(effect.RestDestination);
+            if (!_blobs.TryCreateView(ghostAtRest, out BlobView ghost))
+                return false;
+
+            if (!context.Timeline.IsAnimated)
+            {
+                ghost.SetGridPosition(ghostState.Position);
+                ghost.BlobRenderer?.FadeableVisual?.Restore();
+                if (landing != null && !_blobs.TryCreateView(landing, out _))
+                    return false;
+                return true;
+            }
+
+            context.Timeline.AppendAsync(token => UndoReturnAsync(effect, ghost, ghostState, landing, token));
+            return true;
+        }
+
+        private async UniTask UndoReturnAsync(
+            GhostRestEffect effect,
+            BlobView ghost,
+            BlobState ghostState,
+            BlobState landing,
+            CancellationToken token)
+        {
+            FadeableVisual fade = ghost.BlobRenderer?.FadeableVisual;
+            try
+            {
+                await PresentationTimeline.AwaitTweenAsync(
+                    ghost.PlaySpawn(_settings.DespawnDuration), token);
+                if (landing != null)
+                {
+                    if (!_blobs.TryCreateView(landing, out BlobView occupant))
+                        return;
+                    await PresentationTimeline.AwaitTweenAsync(
+                        occupant.PlaySpawn(_settings.DespawnDuration), token);
+                }
+                if (fade != null)
+                    await fade.FadeTo(0f, _settings.FadeDuration, token);
+                await PresentationTimeline.AwaitTweenAsync(
+                    ghost.AnimateMoveTo(
+                        ghostState.Position,
+                        _settings.MoveDuration * Math.Max(1, effect.Path.Count),
+                        Ease.Linear),
+                    token);
+                if (fade != null)
+                    await fade.FadeTo(1f, _settings.FadeDuration, token);
+                ghost.BlobMotionAnimator?.SetIdle();
+            }
+            finally
+            {
+                if (ghost != null && fade != null && token.IsCancellationRequested)
+                    fade.Restore();
+            }
+        }
+
         private async UniTask ReturnAsync(GhostRestEffect effect, BlobView ghost, BlobView occupant, Action onContact, CancellationToken token)
         {
             FadeableVisual fade = ghost.BlobRenderer?.FadeableVisual;

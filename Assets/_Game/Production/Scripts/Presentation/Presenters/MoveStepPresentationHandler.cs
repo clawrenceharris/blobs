@@ -25,6 +25,15 @@ namespace Blobs.Presentation
             MoveStep step,
             BoardEffectPresentationContext context,
             out IReadOnlyList<IBoardEffect> handledEffects);
+
+        /// <summary>
+        /// Presents the inverse of a composite step. Unconsumed effects are reversed by
+        /// their registered effect handlers.
+        /// </summary>
+        bool PresentReverse(
+            MoveStep step,
+            BoardEffectPresentationContext context,
+            out IReadOnlyList<IBoardEffect> handledEffects);
     }
 
 }

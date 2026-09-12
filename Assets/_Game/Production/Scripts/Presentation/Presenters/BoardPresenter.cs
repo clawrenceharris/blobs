@@ -107,8 +107,52 @@ namespace Blobs.Presentation
             _boardSurfacePresenter.Initialize(cellSize, origin);
 
             _state.MoveResolved += HandleMoveResolved;
+            _state.UndoResolved += HandleUndoResolved;
             _state.StateRestored += Rebuild;
             Rebuild(_state.CreateSnapshot());
+        }
+
+        private void HandleUndoResolved(UndoResult undo)
+        {
+            if (undo == null)
+                return;
+
+            GameSessionSnapshot interrupted = _pendingSnapshot;
+            KillEffectTimeline();
+            if (interrupted != null)
+                Rebuild(interrupted);
+
+            PlayUndoFeedback();
+
+            IReadOnlyList<MoveStep> steps = undo.ForwardAction?.Steps;
+            if (steps != null && steps.Count > 0)
+            {
+                PresentAsync(
+                    steps,
+                    null,
+                    undo.RestoredSnapshot,
+                    contactFeedback: null,
+                    default,
+                    reverse: true,
+                    undo.RestorationBlobs).Forget(Debug.LogException);
+                return;
+            }
+
+            PresentAsync(
+                null,
+                undo.ForwardAction?.Effects ?? Array.Empty<IBoardEffect>(),
+                undo.RestoredSnapshot,
+                contactFeedback: null,
+                default,
+                reverse: true,
+                undo.RestorationBlobs).Forget(Debug.LogException);
+        }
+
+        private void PlayUndoFeedback()
+        {
+            IUndoPlaybackFeedback[] channels = GetComponents<IUndoPlaybackFeedback>();
+            for (int i = 0; i < channels.Length; i++)
+                channels[i].PlayUndo();
         }
 
         private void HandleMoveResolved(MoveResult result)
@@ -196,9 +240,47 @@ namespace Blobs.Presentation
             return PresentAsync(steps, null, fallbackSnapshot, contactFeedback, cancellationToken);
         }
 
+        public UniTask ApplyStepsReversedAsync(
+            IReadOnlyList<MoveStep> steps,
+            GameSessionSnapshot restoredSnapshot,
+            IReadOnlyDictionary<string, BlobState> restorationBlobs,
+            CancellationToken cancellationToken = default)
+        {
+            if (steps == null) throw new ArgumentNullException(nameof(steps));
+            if (restoredSnapshot == null) throw new ArgumentNullException(nameof(restoredSnapshot));
+            return PresentAsync(
+                steps,
+                null,
+                restoredSnapshot,
+                null,
+                cancellationToken,
+                reverse: true,
+                restorationBlobs);
+        }
+
+        public UniTask ApplyEffectsReversedAsync(
+            IReadOnlyList<IBoardEffect> effects,
+            GameSessionSnapshot restoredSnapshot,
+            IReadOnlyDictionary<string, BlobState> restorationBlobs,
+            CancellationToken cancellationToken = default)
+        {
+            if (effects == null) throw new ArgumentNullException(nameof(effects));
+            if (restoredSnapshot == null) throw new ArgumentNullException(nameof(restoredSnapshot));
+            return PresentAsync(
+                null,
+                effects,
+                restoredSnapshot,
+                null,
+                cancellationToken,
+                reverse: true,
+                restorationBlobs);
+        }
+
         private async UniTask PresentAsync(IReadOnlyList<MoveStep> steps,
             IReadOnlyList<IBoardEffect> effects, GameSessionSnapshot snapshot,
-            Action contactFeedback, CancellationToken externalToken)
+            Action contactFeedback, CancellationToken externalToken,
+            bool reverse = false,
+            IReadOnlyDictionary<string, BlobState> restorationBlobs = null)
         {
             if (snapshot == null) throw new ArgumentNullException(nameof(snapshot));
             externalToken.ThrowIfCancellationRequested();
@@ -215,9 +297,23 @@ namespace Blobs.Presentation
             _pendingSnapshot = snapshot;
             try
             {
-                bool applied = steps != null
-                    ? await _effectPipeline.PresentStepsAsync(steps, timeline, contactFeedback, cancellation.Token)
-                    : await _effectPipeline.PresentOrderedEffectsAsync(effects, timeline, cancellation.Token);
+                bool applied;
+                if (reverse)
+                {
+                    applied = steps != null
+                        ? await _effectPipeline.PresentStepsReversedAsync(
+                            steps, timeline, restorationBlobs, cancellation.Token)
+                        : await _effectPipeline.PresentOrderedEffectsReversedAsync(
+                            effects, timeline, restorationBlobs, cancellation.Token);
+                }
+                else
+                {
+                    applied = steps != null
+                        ? await _effectPipeline.PresentStepsAsync(
+                            steps, timeline, contactFeedback, cancellation.Token)
+                        : await _effectPipeline.PresentOrderedEffectsAsync(
+                            effects, timeline, cancellation.Token);
+                }
                 cancellation.Token.ThrowIfCancellationRequested();
                 if (!applied || !IsSynchronizedWith(snapshot))
                 {
@@ -384,6 +480,7 @@ namespace Blobs.Presentation
                 return;
 
             _state.MoveResolved -= HandleMoveResolved;
+            _state.UndoResolved -= HandleUndoResolved;
             _state.StateRestored -= Rebuild;
             _state = null;
             _blobPresenter?.DisconnectFromState();

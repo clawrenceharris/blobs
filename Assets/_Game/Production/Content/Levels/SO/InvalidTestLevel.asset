@@ -10,47 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 228f01d3da5254622b9b1236a3d1c0ff, type: 3}
-  m_Name: TestLevel_Ghost
+  m_Name: InvalidTestLevel
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
   levelId: level-new
   schemaVersion: 1
-  width: 5
+  width: 3
   height: 1
   emptyPositions: []
   blobs:
-  - rid: 3341776717243744613
-  - rid: 3341776717243744614
-  - rid: 3341776741192433736
-  tiles:
-  - rid: 3341776717243744612
+  - rid: 3341776741192433799
+  - rid: 3341776741192433800
+  tiles: []
   objective: 0
   palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: 3341776717243744612
-      type: {class: GraveTileAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: grave
-        position: {x: 2, y: 0}
-        type: 0
-    - rid: 3341776717243744613
-      type: {class: GhostBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: ghost
-        position: {x: 4, y: 0}
-        type: 4
-    - rid: 3341776717243744614
+    - rid: 3341776741192433799
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: red
+        id: blob-0
         position: {x: 0, y: 0}
         type: 0
         color: 0
-    - rid: 3341776741192433736
-      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+    - rid: 3341776741192433800
+      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: blue
+        id: blob-1
         position: {x: 1, y: 0}
-        type: 0
-        color: 1
+        type: 1
+        color: 0

@@ -15,10 +15,14 @@ namespace Blobs.Core
         }
 
         public RemoveBlobEffect(BlobState blob, GridPosition? at = null)
-            : this(blob.Id, at ?? blob.Position) { }
+            : this(blob.Id, at ?? blob.Position)
+        {
+            Blob = blob;
+        }
 
         public string BlobId { get; }
         public GridPosition At { get; }
+        public BlobState Blob { get; }
 
         /// <inheritdoc />
         public void Apply(BoardState board)

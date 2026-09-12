@@ -14,8 +14,8 @@ namespace Blobs.Core
             string targetBlobId,
             MergeSurvivor survivor,
             GridPosition from,
-            GridPosition at
-
+            GridPosition at,
+            BlobState consumedBlob = null
         )
         {
             SourceBlobId = sourceBlobId;
@@ -24,6 +24,7 @@ namespace Blobs.Core
             MovingBlobId = movingBlobId;
             At = at;
             From = from;
+            ConsumedBlob = consumedBlob;
         }
 
 
@@ -33,14 +34,16 @@ namespace Blobs.Core
             targetBlobId: context.Target.Id,
             survivor: MergeSurvivor.MovingBlob,
             from: context.Source.Position,
-            at: context.Target.Position);
+            at: context.Target.Position,
+            consumedBlob: context.Target);
         public static MergeEffect ReverseMerge(MoveContext context) => new MergeEffect(
             sourceBlobId: context.Source.Id,
             movingBlobId: context.Source.Id,
             targetBlobId: context.Target.Id,
             survivor: MergeSurvivor.TargetBlob,
             from: context.Source.Position,
-            at: context.Target.Position);
+            at: context.Target.Position,
+            consumedBlob: context.Source);
         public MergeSurvivor Survivor { get; }
         public string SurvivingBlobId =>
             Survivor == MergeSurvivor.MovingBlob
@@ -50,7 +53,9 @@ namespace Blobs.Core
         public string ConsumedBlobId =>
             Survivor == MergeSurvivor.MovingBlob
                 ? TargetBlobId
-                : MovingBlobId; public string TargetBlobId { get; }
+                : MovingBlobId;
+        public BlobState ConsumedBlob { get; }
+        public string TargetBlobId { get; }
         public string MovingBlobId { get; }
         public string SourceBlobId { get; }
         public GridPosition At { get; }

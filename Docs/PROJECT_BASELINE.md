@@ -11,7 +11,6 @@ This is the starting-state inventory for the 15-week independent study. It compa
 
 Current roots:
 
-- Prototype: `Assets/_Game/Prototype/`
 - Production: `Assets/_Game/Production/`
 - Unity: 6000.3.6f1; URP 17.0.3; Input System 1.18.0; Unity Test Framework 1.4.5; DOTween and UniTask used for presentation.
 

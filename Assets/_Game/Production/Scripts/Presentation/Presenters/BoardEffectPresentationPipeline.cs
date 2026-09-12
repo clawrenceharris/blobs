@@ -138,6 +138,70 @@ namespace Blobs.Presentation
             return true;
         }
 
+        public async UniTask<bool> PresentOrderedEffectsReversedAsync(
+            IReadOnlyList<IBoardEffect> effects,
+            PresentationTimeline timeline,
+            IReadOnlyDictionary<string, BlobState> restorationBlobs,
+            CancellationToken cancellationToken)
+        {
+            if (!PresentOrderedEffectsReversed(effects, timeline, restorationBlobs))
+                return false;
+            await timeline.PlayAsync(cancellationToken);
+            return true;
+        }
+
+        public async UniTask<bool> PresentStepsReversedAsync(
+            IReadOnlyList<MoveStep> steps,
+            PresentationTimeline timeline,
+            IReadOnlyDictionary<string, BlobState> restorationBlobs,
+            CancellationToken cancellationToken)
+        {
+            if (!PresentStepsReversed(steps, timeline, restorationBlobs))
+                return false;
+            await timeline.PlayAsync(cancellationToken);
+            return true;
+        }
+
+        public bool PresentOrderedEffectsReversed(
+            IReadOnlyList<IBoardEffect> effects,
+            PresentationTimeline timeline,
+            IReadOnlyDictionary<string, BlobState> restorationBlobs)
+        {
+            for (int i = effects.Count - 1; i >= 0; i--)
+            {
+                if (!TryResolve(effects[i], out IBoardEffectPresentationHandler handler))
+                    return false;
+
+                var context = CreateContext(
+                    timeline,
+                    Ease.Linear,
+                    contactFeedback: null,
+                    isUndo: true,
+                    restorationBlobs);
+                if (!handler.PresentReverse(effects[i], context))
+                    return false;
+            }
+
+            return true;
+        }
+
+        public bool PresentStepsReversed(
+            IReadOnlyList<MoveStep> steps,
+            PresentationTimeline timeline,
+            IReadOnlyDictionary<string, BlobState> restorationBlobs)
+        {
+            int firstMovementStep = FindLastMovementStep(steps);
+
+            for (int i = steps.Count - 1; i >= 0; i--)
+            {
+                Ease movementEase = i == firstMovementStep ? Ease.OutQuad : Ease.Linear;
+                if (!PresentStepReversed(steps[i], timeline, movementEase, restorationBlobs))
+                    return false;
+            }
+
+            return true;
+        }
+
         private bool PresentStep(
             MoveStep step,
             PresentationTimeline outerTimeline,
@@ -179,6 +243,47 @@ namespace Blobs.Presentation
             return true;
         }
 
+        private bool PresentStepReversed(
+            MoveStep step,
+            PresentationTimeline outerTimeline,
+            Ease movementEase,
+            IReadOnlyDictionary<string, BlobState> restorationBlobs)
+        {
+            PresentationTimeline beat = outerTimeline.CreateBeat();
+            if (TryResolve(step, out IMoveStepPresentationHandler stepHandler))
+            {
+                var context = CreateContext(beat, movementEase, null, true, restorationBlobs);
+                if (!stepHandler.PresentReverse(step, context, out IReadOnlyList<IBoardEffect> handledEffects))
+                {
+                    beat.Kill();
+                    return false;
+                }
+
+                if (!PresentUnhandledEffectsReversed(
+                        step.Effects,
+                        handledEffects,
+                        beat,
+                        movementEase,
+                        restorationBlobs))
+                {
+                    beat.Kill();
+                    return false;
+                }
+            }
+            else if (!PresentPhasedEffectsReversed(
+                         step.Effects,
+                         beat,
+                         movementEase,
+                         restorationBlobs))
+            {
+                beat.Kill();
+                return false;
+            }
+
+            outerTimeline.Append(beat);
+            return true;
+        }
+
         private bool PresentUnhandledEffects(
             IReadOnlyList<IBoardEffect> effects,
             IReadOnlyList<IBoardEffect> handledEffects,
@@ -204,6 +309,31 @@ namespace Blobs.Presentation
                 contactFeedback);
         }
 
+        private bool PresentUnhandledEffectsReversed(
+            IReadOnlyList<IBoardEffect> effects,
+            IReadOnlyList<IBoardEffect> handledEffects,
+            PresentationTimeline beat,
+            Ease movementEase,
+            IReadOnlyDictionary<string, BlobState> restorationBlobs)
+        {
+            List<EffectWorkItem>[] phases = CreatePhaseBuckets();
+            foreach (IBoardEffect effect in effects)
+            {
+                if (ContainsReference(handledEffects, effect))
+                    continue;
+
+                if (!TryResolve(effect, out IBoardEffectPresentationHandler handler))
+                    return false;
+                phases[(int)handler.Phase].Add(new EffectWorkItem(effect, handler));
+            }
+
+            return PresentPhaseBucketsReversed(
+                phases,
+                beat,
+                movementEase,
+                restorationBlobs);
+        }
+
         private bool PresentPhasedEffects(
             IReadOnlyList<IBoardEffect> effects,
             PresentationTimeline beat,
@@ -219,6 +349,27 @@ namespace Blobs.Presentation
             }
 
             return PresentPhaseBuckets(phases, beat, movementEase, contactFeedback);
+        }
+
+        private bool PresentPhasedEffectsReversed(
+            IReadOnlyList<IBoardEffect> effects,
+            PresentationTimeline beat,
+            Ease movementEase,
+            IReadOnlyDictionary<string, BlobState> restorationBlobs)
+        {
+            List<EffectWorkItem>[] phases = CreatePhaseBuckets();
+            foreach (IBoardEffect effect in effects)
+            {
+                if (!TryResolve(effect, out IBoardEffectPresentationHandler handler))
+                    return false;
+                phases[(int)handler.Phase].Add(new EffectWorkItem(effect, handler));
+            }
+
+            return PresentPhaseBucketsReversed(
+                phases,
+                beat,
+                movementEase,
+                restorationBlobs);
         }
 
         private bool PresentPhaseBuckets(
@@ -238,6 +389,38 @@ namespace Blobs.Presentation
                         movementEase,
                         contactFeedback);
                     if (!item.Handler.PresentInBeat(item.Effect, context))
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static readonly BoardEffectPresentationPhase[] ReversePhaseOrder =
+        {
+            BoardEffectPresentationPhase.Aftermath,
+            BoardEffectPresentationPhase.Arrival,
+            BoardEffectPresentationPhase.Travel,
+            BoardEffectPresentationPhase.Departure
+        };
+
+        private bool PresentPhaseBucketsReversed(
+            IReadOnlyList<EffectWorkItem>[] phases,
+            PresentationTimeline beat,
+            Ease movementEase,
+            IReadOnlyDictionary<string, BlobState> restorationBlobs)
+        {
+            foreach (BoardEffectPresentationPhase phase in ReversePhaseOrder)
+            {
+                foreach (EffectWorkItem item in phases[(int)phase])
+                {
+                    var context = CreateContext(
+                        beat,
+                        movementEase,
+                        contactFeedback: null,
+                        isUndo: true,
+                        restorationBlobs);
+                    if (!item.Handler.PresentReverseInBeat(item.Effect, context))
                         return false;
                 }
             }
@@ -325,14 +508,18 @@ namespace Blobs.Presentation
         private BoardEffectPresentationContext CreateContext(
             PresentationTimeline timeline,
             Ease movementEase,
-            Action contactFeedback)
+            Action contactFeedback,
+            bool isUndo = false,
+            IReadOnlyDictionary<string, BlobState> restorationBlobs = null)
         {
             return new BoardEffectPresentationContext(
                 _blobs,
                 _tiles,
                 timeline,
                 movementEase,
-                contactFeedback);
+                contactFeedback,
+                isUndo,
+                restorationBlobs);
         }
 
         private readonly struct EffectWorkItem

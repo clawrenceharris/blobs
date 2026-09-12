@@ -16,5 +16,11 @@ namespace Blobs.Presentation
 
         protected override bool PresentInBeat(MergeEffect effect, BoardEffectPresentationContext context)
             => PresentOrdered(effect, context);
+
+        protected override bool PresentReverse(MergeEffect effect, BoardEffectPresentationContext context)
+            => context.Blobs.Merges.PresentReverse(effect, context);
+
+        protected override bool PresentReverseInBeat(MergeEffect effect, BoardEffectPresentationContext context)
+            => PresentReverse(effect, context);
     }
 }

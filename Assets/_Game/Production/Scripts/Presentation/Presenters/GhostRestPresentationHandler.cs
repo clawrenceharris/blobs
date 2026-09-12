@@ -11,5 +11,11 @@ namespace Blobs.Presentation
                 effect, context.Timeline, context.ContactFeedback);
         protected override bool PresentInBeat(GhostRestEffect effect,
             BoardEffectPresentationContext context) => PresentOrdered(effect, context);
+
+        protected override bool PresentReverse(GhostRestEffect effect,
+            BoardEffectPresentationContext context) => context.Blobs.GhostRests.PresentReverse(
+                effect, context);
+        protected override bool PresentReverseInBeat(GhostRestEffect effect,
+            BoardEffectPresentationContext context) => PresentReverse(effect, context);
     }
 }

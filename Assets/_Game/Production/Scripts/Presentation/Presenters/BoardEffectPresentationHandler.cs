@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Blobs.Core;
 using DG.Tweening;
 
@@ -33,13 +34,17 @@ namespace Blobs.Presentation
             TilePresenter tiles,
             PresentationTimeline timeline,
             Ease movementEase,
-            Action contactFeedback)
+            Action contactFeedback,
+            bool isUndo = false,
+            IReadOnlyDictionary<string, BlobState> restorationBlobs = null)
         {
             Blobs = blobs;
             Tiles = tiles;
             Timeline = timeline;
             MovementEase = movementEase;
-            ContactFeedback = contactFeedback;
+            ContactFeedback = isUndo ? null : contactFeedback;
+            IsUndo = isUndo;
+            RestorationBlobs = restorationBlobs;
         }
 
         public BlobPresenter Blobs { get; }
@@ -48,6 +53,22 @@ namespace Blobs.Presentation
         public Ease MovementEase { get; }
         public Action ContactFeedback { get; }
         public bool IsAnimated => Timeline.IsAnimated;
+        public bool IsUndo { get; }
+        public IReadOnlyDictionary<string, BlobState> RestorationBlobs { get; }
+
+        public BlobState ResolveRestoredBlob(string blobId, BlobState preferred = null)
+        {
+            if (preferred != null)
+                return preferred;
+            if (blobId != null &&
+                RestorationBlobs != null &&
+                RestorationBlobs.TryGetValue(blobId, out BlobState blob))
+            {
+                return blob;
+            }
+
+            return null;
+        }
     }
 
     /// <summary>
@@ -75,6 +96,16 @@ namespace Blobs.Presentation
         /// Join existing travel (departure spawns) or Append later work (arrival removal).
         /// </summary>
         bool PresentInBeat(IBoardEffect effect, BoardEffectPresentationContext context);
+
+        /// <summary>
+        /// Composes the inverse of this explicit effect in reverse flat-list order.
+        /// </summary>
+        bool PresentReverse(IBoardEffect effect, BoardEffectPresentationContext context);
+
+        /// <summary>
+        /// Composes the inverse of this effect inside a reversed grouped step.
+        /// </summary>
+        bool PresentReverseInBeat(IBoardEffect effect, BoardEffectPresentationContext context);
     }
 
     /// <summary>
@@ -101,6 +132,20 @@ namespace Blobs.Presentation
             return PresentInBeat((TEffect)effect, context);
         }
 
+        public bool PresentReverse(
+            IBoardEffect effect,
+            BoardEffectPresentationContext context)
+        {
+            return PresentReverse((TEffect)effect, context);
+        }
+
+        public bool PresentReverseInBeat(
+            IBoardEffect effect,
+            BoardEffectPresentationContext context)
+        {
+            return PresentReverseInBeat((TEffect)effect, context);
+        }
+
         protected abstract bool PresentOrdered(
             TEffect effect,
             BoardEffectPresentationContext context);
@@ -108,6 +153,20 @@ namespace Blobs.Presentation
         protected abstract bool PresentInBeat(
             TEffect effect,
             BoardEffectPresentationContext context);
+
+        protected virtual bool PresentReverse(
+            TEffect effect,
+            BoardEffectPresentationContext context)
+        {
+            return false;
+        }
+
+        protected virtual bool PresentReverseInBeat(
+            TEffect effect,
+            BoardEffectPresentationContext context)
+        {
+            return PresentReverse(effect, context);
+        }
     }
 
 }

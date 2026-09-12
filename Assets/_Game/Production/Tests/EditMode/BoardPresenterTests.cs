@@ -245,6 +245,14 @@ namespace Blobs.Tests.EditMode
                 remove { }
             }
 
+            public event Action<UndoResult> UndoResolved
+            {
+                add { }
+                remove { }
+            }
+
+            public bool CanUndo => false;
+
             public GameSessionSnapshot CreateSnapshot()
             {
                 return _snapshot;

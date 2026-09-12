@@ -1,6 +1,6 @@
 # Blobs production plan
 
-Updated September 9, 2026. The production foundation already exists under `Assets/_Game/Production`; prototype reference code is under `Assets/_Game/Prototype`.
+Updated September 9, 2026. The production foundation already exists under `Assets/_Game/Production`;
 
 Use [Game design](GAME_DESIGN.md) as the rule authority and [Rules implementation plan](RULES_IMPLEMENTATION_PLAN.md) as the ordered implementation/acceptance checklist. The old foundation milestones are superseded by this plan; their completion does not establish conformance to the newly agreed rules.
 

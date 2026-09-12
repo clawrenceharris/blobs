@@ -26,5 +26,13 @@ namespace Blobs.Presentation
         {
             _commands?.Restart();
         }
+
+        /// <summary>
+        /// Undoes the latest board-changing action. Intended for UI buttons or temporary editor wiring.
+        /// </summary>
+        public bool Undo()
+        {
+            return _commands != null && _commands.Undo();
+        }
     }
 }

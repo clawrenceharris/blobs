@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 228f01d3da5254622b9b1236a3d1c0ff, type: 3}
+  m_Name: TestLevel_Ghost_1
+  m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
+  levelId: level-new
+  schemaVersion: 1
+  width: 6
+  height: 3
+  emptyPositions:
+  - {x: 5, y: 1}
+  - {x: 0, y: 0}
+  - {x: 5, y: 2}
+  - {x: 4, y: 2}
+  - {x: 3, y: 2}
+  - {x: 2, y: 2}
+  - {x: 0, y: 2}
+  blobs:
+  - rid: 3341776717243744614
+  - rid: 3341776741192433810
+  - rid: 3341776741192433811
+  - rid: 3341776741192433813
+  - rid: 3341776741192433819
+  - rid: 3341776741192433824
+  - rid: 3341776741192433828
+  tiles:
+  - rid: 3341776717243744612
+  objective: 0
+  palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 3341776717243744612
+      type: {class: GraveTileAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: grave
+        position: {x: 1, y: 1}
+        type: 0
+    - rid: 3341776717243744614
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blob-0
+        position: {x: 1, y: 0}
+        type: 0
+        color: 0
+    - rid: 3341776741192433810
+      type: {class: TrailBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blob-1
+        position: {x: 2, y: 0}
+        type: 2
+        color: 0
+        trailColor: 1
+    - rid: 3341776741192433811
+      type: {class: GhostBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blob-2
+        position: {x: 4, y: 0}
+        type: 4
+    - rid: 3341776741192433813
+      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blob-3
+        position: {x: 5, y: 0}
+        type: 1
+        color: 0
+    - rid: 3341776741192433819
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blob-4
+        position: {x: 1, y: 2}
+        type: 0
+        color: 1
+    - rid: 3341776741192433824
+      type: {class: RockBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blob-5
+        position: {x: 4, y: 1}
+        type: 3
+    - rid: 3341776741192433828
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blob-6
+        position: {x: 0, y: 1}
+        type: 0
+        color: 0

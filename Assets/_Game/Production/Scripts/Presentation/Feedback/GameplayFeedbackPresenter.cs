@@ -32,6 +32,7 @@ namespace Blobs.Presentation
         [SerializeField, Min(1f)] private float popScale = 1.1f;
 
         private GameplayInputAdapter _inputAdapter;
+        private IGameplayState _state;
         private Sequence _feedbackSequence;
         private Vector2 _originalPosition;
         private Vector3 _originalScale;
@@ -69,11 +70,12 @@ namespace Blobs.Presentation
         /// <summary>
         /// Connects this view to the input boundary that publishes selection and move outcomes.
         /// </summary>
-        public void Initialize(GameplayInputAdapter inputAdapter)
+        public void Initialize(GameplayInputAdapter inputAdapter, IGameplayState state = null)
         {
             Unsubscribe();
             HideImmediately();
             _inputAdapter = inputAdapter;
+            _state = state;
             CacheViewState();
 
             if (feedbackCatalog == null)
@@ -117,6 +119,42 @@ namespace Blobs.Presentation
                 return;
             }
             ShowFailure(message);
+        }
+
+        private void HandleUndoResolved(UndoResult undo)
+        {
+            if (undo == null)
+                return;
+
+            ShowUndoCue();
+        }
+
+        private void ShowUndoCue()
+        {
+            if (feedbackText == null)
+                return;
+
+            KillAnimation();
+            ResetTransform();
+            feedbackText.text = "Undo";
+            feedbackText.alpha = 0f;
+
+            _feedbackSequence = DOTween.Sequence()
+                .Append(DOTween.To(
+                        () => feedbackText.alpha,
+                        alpha => feedbackText.alpha = alpha,
+                        1f,
+                        fadeInDuration)
+                    .SetEase(Ease.OutQuad))
+                .AppendInterval(holdDuration * 0.5f)
+                .Append(DOTween.To(
+                        () => feedbackText.alpha,
+                        alpha => feedbackText.alpha = alpha,
+                        0f,
+                        fadeOutDuration)
+                    .SetEase(Ease.InQuad))
+                .OnComplete(ResetTransform)
+                .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
         }
 
         private void ShowFailure(string message)
@@ -214,6 +252,8 @@ namespace Blobs.Presentation
                 return;
 
             _inputAdapter.BlobSelectionResolved += HandleSelectionResolved;
+            if (_state != null)
+                _state.UndoResolved += HandleUndoResolved;
             _subscribed = true;
         }
 
@@ -223,6 +263,8 @@ namespace Blobs.Presentation
                 return;
 
             _inputAdapter.BlobSelectionResolved -= HandleSelectionResolved;
+            if (_state != null)
+                _state.UndoResolved -= HandleUndoResolved;
             _subscribed = false;
         }
     }

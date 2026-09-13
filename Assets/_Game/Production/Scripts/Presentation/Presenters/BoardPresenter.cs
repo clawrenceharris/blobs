@@ -26,6 +26,7 @@ namespace Blobs.Presentation
 
         private PresentationTimeline _effectTimeline;
         private CancellationTokenSource _playbackCancellation;
+        private UniTaskCompletionSource _playbackCompletion;
         private GameSessionSnapshot _pendingSnapshot;
         public bool IsPresenting => _playbackCancellation != null;
         private BoardEffectPresentationPipeline _effectPipeline;
@@ -292,7 +293,9 @@ namespace Blobs.Presentation
 
             var cancellation = CancellationTokenSource.CreateLinkedTokenSource(externalToken);
             var timeline = PresentationTimeline.Create(ShouldAnimateEffects());
+            var playbackCompletion = new UniTaskCompletionSource();
             _playbackCancellation = cancellation;
+            _playbackCompletion = playbackCompletion;
             _effectTimeline = timeline;
             _pendingSnapshot = snapshot;
             try
@@ -353,9 +356,11 @@ namespace Blobs.Presentation
                 if (_playbackCancellation == cancellation)
                 {
                     _playbackCancellation = null;
+                    _playbackCompletion = null;
                     _effectTimeline = null;
                     _pendingSnapshot = null;
                 }
+                playbackCompletion.TrySetResult();
                 cancellation.Dispose();
             }
         }
@@ -413,6 +418,12 @@ namespace Blobs.Presentation
                 invoked = true;
                 callback();
             };
+        }
+
+        public UniTask WaitUntilIdleAsync()
+        {
+            UniTaskCompletionSource completion = _playbackCompletion;
+            return completion != null ? completion.Task : UniTask.CompletedTask;
         }
 
         private void KillEffectTimeline()

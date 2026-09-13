@@ -32,7 +32,10 @@ namespace Blobs.Presentation
         /// </summary>
         public bool Undo()
         {
-            return _commands != null && _commands.Undo();
+            if (_commands == null)
+                return false;
+
+            return _commands.Undo();
         }
     }
 }

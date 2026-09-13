@@ -24,12 +24,13 @@ namespace Blobs.Presentation
         [SerializeField] private GameplayFeedbackPresenter feedbackPresenter;
 
         private GameSession _session;
+        private IGameplayCommands _commands;
 
         /// <inheritdoc />
         public event Action<IGameplayCommands, IGameplayState> SessionStarted;
 
         /// <inheritdoc />
-        public IGameplayCommands CurrentCommands => _session;
+        public IGameplayCommands CurrentCommands => _commands ?? _session;
 
         /// <inheritdoc />
         public IGameplayState CurrentState => _session;
@@ -66,14 +67,15 @@ namespace Blobs.Presentation
             boardPresenter.Initialize(
                 _session,
                 asset.Palette);
-            inputAdapter.Initialize(_session, boardPresenter.CellSize);
-            commandAdapter.Initialize(_session);
+            _commands = new QueuedGameplayCommands(_session, boardPresenter);
+            inputAdapter.Initialize(_commands, boardPresenter.CellSize);
+            commandAdapter.Initialize(_commands);
             if (feedbackPresenter != null)
                 feedbackPresenter.Initialize(inputAdapter, _session);
             if (cameraPresenter != null)
                 cameraPresenter.FitCameraToBoard(_session.CurrentState.Width, _session.CurrentState.Height, boardPresenter.CellSize);
 
-            SessionStarted?.Invoke(_session, _session);
+            SessionStarted?.Invoke(_commands, _session);
         }
 
         /// <summary>

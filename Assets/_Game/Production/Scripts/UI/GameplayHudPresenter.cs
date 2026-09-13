@@ -135,6 +135,18 @@ namespace Blobs.UI
 
             if (completionRoot != null)
                 completionRoot.SetActive(isComplete);
+
+
+            if (undoButton == null)
+                return;
+
+            if (snapshot == null || isComplete || !snapshot.CanUndo)
+            {
+                undoButton.interactable = false;
+                return;
+            }
+
+            undoButton.interactable = true;
         }
 
         private void UnbindState()

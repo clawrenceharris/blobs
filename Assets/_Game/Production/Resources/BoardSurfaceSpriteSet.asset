@@ -26,6 +26,7 @@ MonoBehaviour:
   concaveNE: {fileID: 21300000, guid: bc298d06b820dcaf6e3f9572f527ed12, type: 3}
   concaveSW: {fileID: 21300000, guid: 84e0839bf683b0735f3c05bbcb567b09, type: 3}
   concaveSE: {fileID: 21300000, guid: a779a7fe6c01c77f4eed6fabe71c705f, type: 3}
+  cellInset: {fileID: 21300000, guid: 55387090d75633ac94376d3713945d28, type: 3}
   logicalCellSize: 256
   componentSize: 384
   componentPadding: 64

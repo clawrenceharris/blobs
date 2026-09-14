@@ -61,8 +61,7 @@ namespace Blobs.Tests.PlayMode
             root.AddComponent<MergeAnimationOrchestrator>();
             var surface = new GameObject("Board Surface");
             surface.transform.SetParent(root.transform, false);
-            SetPrivateField(surface.AddComponent<BoardSurfaceView>(), "spriteSet",
-                Resources.Load<BoardSurfaceSpriteSet>("BoardSurfaceSpriteSet"));
+            surface.AddComponent<BoardSurfaceView>();
 
             BoardPresenter board = root.AddComponent<BoardPresenter>();
             ConfigureAnimationSettings(root);

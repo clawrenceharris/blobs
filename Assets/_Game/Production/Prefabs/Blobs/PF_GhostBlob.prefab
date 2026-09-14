@@ -78,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1381305635
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 96d81b41c045f442ca8dd99e01d2af19, type: 3}
@@ -101,11 +101,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 258025591939114382, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.6
+      value: 0.6279085
       objectReference: {fileID: 0}
     - target: {fileID: 258025591939114382, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.2
+      value: 0.1597
       objectReference: {fileID: 0}
     - target: {fileID: 258025591939114382, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_LocalPosition.x
@@ -165,7 +165,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2394599582724069473, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_Color.a
-      value: 0.19215687
+      value: 0.105882354
       objectReference: {fileID: 0}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: fadeableVisual

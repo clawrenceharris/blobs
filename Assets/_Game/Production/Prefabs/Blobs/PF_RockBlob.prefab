@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 258025591939114382, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8772486
+      objectReference: {fileID: 0}
+    - target: {fileID: 258025591939114382, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1468080444204028906, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_Name
       value: PF_RockBlob
@@ -54,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2394599582724069473, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: 5098eea16760040c689f5ce8fc532d8b, type: 2}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: targets.Array.size
@@ -70,15 +78,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4066925320797062944, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: '_targets.Array.data[0].Renderers.Array.data[1]'
-      value:
+      value: 
       objectReference: {fileID: 948446978080531608}
     - target: {fileID: 6852378884847781655, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_Sprite
-      value:
+      value: 
       objectReference: {fileID: 21300000, guid: da63aa372e6d547eab87aaa214506054, type: 3}
     - target: {fileID: 6852378884847781655, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value:
+      value: 
       objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -108,7 +116,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cd125f64cb2a4384bcf3f99360e080af, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BlobContactAudioFeedback
   clip: {fileID: 0}
   volume: 0.8

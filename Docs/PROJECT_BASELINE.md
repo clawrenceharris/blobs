@@ -64,6 +64,23 @@ These describe the inspected implementation. Disagreements with prose and unreso
 
 ## Known issues and gaps
 
+## Current standing as of September 13, 2026
+
+This baseline is now historical. Since the September 8 inspection, the production branch has moved quickly through the early rule and stability work. Treat the list below as the original gap register, then use this status summary for current planning:
+
+| ID  | Current status | Evidence and remaining work |
+| --- | -------------- | --------------------------- |
+| B01 | **Partially open** | `ProjectSettings/EditorBuildSettings.asset` still lists prototype scenes, so the production player build path is not yet proven. The prototype folder no longer exists at the searched path, which makes this more important to clean up before a build. |
+| B02 | **Done, pending fresh full-suite validation** | `BlobRuleBook` now registers Normal/Trail movement and collision combinations, with coverage in `MoveResolverPathTests`. |
+| B03 | **Done, pending fresh full-suite validation** | Intermediate and adjacent Rock behavior is implemented and covered by resolver/session tests, including unchanged contact not incrementing move count. |
+| B04 | **Done, pending fresh full-suite validation** | The level editor now creates Grave tiles and initializes special blob `type` values that match the mapper. |
+| B05 | **Done, pending fresh full-suite validation** | Production tests now reference `Assets/_Game/Production/...` asset paths. README records a recent local pass of 114 Edit Mode and 20 Play Mode tests. |
+| B06 | **Done, pending fresh full-suite validation** | `MoveResolver` checks board bounds, `EmptyPositions`, and non-traversable tiles during reached-path simulation. |
+| B07 | **Open** | This is now the main product gap: production still needs a complete menu/level sequence, completion flow, scoped persistence decision, and end-to-end player journey validation. |
+| B08 | **Mostly done, ongoing** | Core rule docs, architecture notes, README, and implementation checklist have been reconciled. Continue updating docs alongside code and validation evidence. |
+
+For week planning, the early baseline tasks should no longer occupy weeks 1-3. They are now a Week 1 closeout and verification lane. The semester should pivot toward content, player flow, polish, and evidence.
+
 
 ### B01 — Build configuration and prototype Editor dependency
 
@@ -124,14 +141,22 @@ These describe the inspected implementation. Disagreements with prose and unreso
 
 ## Implications for the 15-week plan
 
-| Weeks | Work justified by this baseline                                                   | Reviewable outcome                                                                    |
-| ----- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| 1–3   | Agree on rules; address B01–B05; run a baseline test pass and production build.   | Rule decisions, issue list, passing/failing test record, launchable production build. |
-| 4     | Stabilize mechanics and board-hole policy (B06); decide optional scope.           | Tested interaction matrix for retained mechanics.                                     |
-| 5–6   | Tune existing animation/audio/VFX; validate special-interaction clarity.          | Comparable gameplay captures and feedback revisions.                                  |
-| 7–10  | Validate/reuse authored content and extend it into a teaching/challenge sequence. | Curated levels with solutions and learning goals.                                     |
-| 11    | Complete campaign flow and scoped persistence (B07).                              | Entire sequence playable without Editor intervention.                                 |
-| 12–13 | Playtest, revise difficulty, and unify presentation.                              | Recorded observations and resulting changes.                                          |
-| 14–15 | Regression/build validation, final polish, documentation, website presentation.   | Final build and evidence of progress from this baseline.                              |
+| Week | Work justified by current state | Reviewable outcome |
+| ---- | ------------------------------- | ------------------ |
+| 1 | Rule alignment and baseline gap closure: finish B02-B06, implement required Undo foundation, document decisions, and identify remaining build/player-flow risks. | Agreed rules, updated baseline status, targeted rule tests, Undo foundation, and a current issue list. |
+| 2 | Production build and player-loop stabilization: fix B01 build settings, verify production scene launch, finish queued Undo/input/victory/restart behavior, and rerun EditMode/PlayMode tests. | Launchable production build or documented blocker, current test results, and stable single-level runtime flow. |
+| 3 | Level set audit: load every production level asset, remove duplicates/test-only content from the playable list, record intended solution paths, and classify each level by taught mechanic. | Level inventory with pass/fail validation, solution notes, and a proposed teaching order. |
+| 4 | Core level sequence v1: create or revise the first playable run of tutorial and early challenge levels using Normal, Rock, Trail, Flag, Ghost, and Grave. | Playable level sequence v1 with each level’s goal, mechanic lesson, and expected move route. |
+| 5 | Campaign shell and level navigation: menu to level, completion to next/retry/menu, restart behavior, and final-level handling. Decide whether persistence is required for the course deliverable. | Complete no-Editor player loop through the current sequence. |
+| 6 | Game feel pass 1: tune selection, merge, Rock contact, Trail spawning, Ghost haunt/rest, Undo feedback, and camera framing for readability. | Before/after gameplay captures and revised timing/settings. |
+| 7 | Content expansion: build additional levels around one mechanic at a time, then simple combinations. | Expanded curated level set with solution notes and difficulty labels. |
+| 8 | Content expansion with combination puzzles: Ghost/Grave plus Trail/Rock/Flag interactions, avoiding optional mechanics that would displace polish. | Mid-semester playable sequence with all retained mechanics represented. |
+| 9 | Internal playtest and difficulty revision: play through the full sequence, log confusion points, failed reads, move-count outliers, and unclear feedback. | Playtest notes and prioritized changes. |
+| 10 | Production flow polish: HUD, pause/settings if retained, completion presentation, menu polish, audio mix, and accessibility/readability fixes. | Full flow feels cohesive and understandable. |
+| 11 | Persistence or deliberate omission: implement simple level unlock/progress if required, or document why the deliverable stays session-based. | Verified save/reload behavior or documented scope decision. |
+| 12 | External playtest 1: observe players, collect completion times, retries, misunderstood rules, and level ratings. | Playtest report and revised backlog. |
+| 13 | External playtest 2 and content lock: revise levels and feedback, then freeze mechanics and level count. | Content-lock candidate and remaining bug list. |
+| 14 | Release validation: full EditMode/PlayMode run, production player build, smoke test from fresh launch through completion, and regression fixes. | Release candidate with validation evidence. |
+| 15 | Final documentation and presentation: package final build, update docs, prepare website/process evidence, and write the semester reflection. | Final deliverables and evidence of progress from the baseline. |
 
-Foundations already implemented should be credited as the starting point. Optional Bombs, lasers, switches, size mechanics, stars, and undo should not silently become required migration work. The baseline supports a semester focused on reliability, content, and polish while retaining targeted architecture learning.
+Foundations already implemented should be credited as the starting point. AI-assisted development means the early rule-fix lane can finish quickly, but the semester still needs time for puzzle design, playtesting, polish, and validation. Optional Bombs, lasers, switches, size mechanics, stars, Mini/Fat blobs, and other new mechanics should not silently become required migration work.

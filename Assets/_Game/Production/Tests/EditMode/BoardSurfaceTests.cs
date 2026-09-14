@@ -100,6 +100,10 @@ namespace Blobs.Tests.EditMode
             Assert.That(spriteSet.FillA.texture.height, Is.EqualTo(384));
             Assert.That(spriteSet.FillA.textureRect.width, Is.EqualTo(384));
             Assert.That(spriteSet.FillA.textureRect.height, Is.EqualTo(384));
+            Assert.That(spriteSet.CellInset, Is.Not.Null);
+            Assert.That(spriteSet.CellInset.texture.isReadable, Is.True);
+            Assert.That(spriteSet.CellInset.texture.width, Is.EqualTo(256));
+            Assert.That(spriteSet.CellInset.texture.height, Is.EqualTo(256));
 
             Color32[] fill = spriteSet.FillA.texture.GetPixels32();
             int width = spriteSet.FillA.texture.width;
@@ -172,7 +176,7 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void SouthEdgeHasAnOpaqueVisibleLowerBorder()
+        public void SouthEdgeHasAStrongDirectionalLowerLip()
         {
             BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
                 "Assets/_Game/Production/Resources/BoardSurfaceSpriteSet.asset");
@@ -187,8 +191,45 @@ namespace Blobs.Tests.EditMode
 
             Assert.That(
                 pixels[textureY * size + imageX].a,
-                Is.GreaterThanOrEqualTo(240),
-                "The lower lip must remain visible after runtime sprite composition and scaling.");
+                Is.GreaterThanOrEqualTo(230),
+                "The warm south-facing underside should remain visibly thick and opaque.");
+
+            int lowerImageY = spriteSet.ComponentPadding + spriteSet.LogicalCellSize + 22;
+            int lowerTextureY = size - 1 - lowerImageY;
+            Assert.That(
+                pixels[lowerTextureY * size + imageX].a,
+                Is.GreaterThanOrEqualTo(220),
+                "The south lip should retain substantial depth below the top surface.");
+
+            Color32 surface = pixels[
+                (size - 1 - (spriteSet.ComponentPadding + spriteSet.LogicalCellSize / 2))
+                * size + imageX];
+            Color32 front = pixels[lowerTextureY * size + imageX];
+            int surfaceValue = surface.r + surface.g + surface.b;
+            int frontValue = front.r + front.g + front.b;
+            Assert.That(
+                surfaceValue - frontValue,
+                Is.GreaterThanOrEqualTo(75),
+                "The front face must read as a separate, darker plane from the cream top.");
+        }
+
+        [Test]
+        public void CellInsetHasTransparentCornersSubtleEdgeAndClearCenter()
+        {
+            BoardSurfaceSpriteSet spriteSet = AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
+                "Assets/_Game/Production/Resources/BoardSurfaceSpriteSet.asset");
+
+            Color32[] pixels = spriteSet.CellInset.texture.GetPixels32();
+            int size = spriteSet.LogicalCellSize;
+            Assert.That(pixels[0].a, Is.EqualTo(0));
+            Assert.That(pixels[size - 1].a, Is.EqualTo(0));
+            Assert.That(pixels[(size - 1) * size].a, Is.EqualTo(0));
+            Assert.That(pixels[size * size - 1].a, Is.EqualTo(0));
+
+            int edgeAlpha = pixels[(size - 1 - 8) * size + size / 2].a;
+            int centerAlpha = pixels[(size / 2) * size + size / 2].a;
+            Assert.That(edgeAlpha, Is.InRange(24, 160));
+            Assert.That(centerAlpha, Is.LessThanOrEqualTo(8));
         }
 
         [Test]
@@ -227,9 +268,297 @@ namespace Blobs.Tests.EditMode
 
             Assert.That(view.VisibleCellCount, Is.EqualTo(3));
             Assert.That(
+                view.GetComponentsInChildren<SpriteRenderer>().Length,
+                Is.EqualTo(1));
+            Assert.That(
                 view.TryGetMask(new GridPosition(0, 0), out BoardSurfaceNeighborMask mask),
                 Is.True);
             Assert.That(mask.HasFlag(BoardSurfaceNeighborMask.NorthEast), Is.False);
+        }
+
+        private const int BakeResolution = 128;
+
+        [Test]
+        public void BakerFramesASingleCellOnEverySideInsteadOfShrinkingIt()
+        {
+            var occupied = new HashSet<GridPosition> { new GridPosition(0, 0) };
+            using BoardSurfaceBaker.Bake bake = BoardSurfaceBaker.BakeOccupied(
+                occupied, BoardSurfaceBaker.DefaultStyle(BakeResolution));
+            int pad = bake.Pad;
+            int cell = bake.PixelsPerCell;
+            int margin = bake.FrameMargin;
+            int mid = pad + cell / 2;
+
+            Assert.That(bake.Get(mid, mid).a, Is.EqualTo(255));
+            Assert.That(bake.Get(1, 1).a, Is.LessThan(30));
+
+            // The cream frame is a dilation of occupancy, so it exists outside the
+            // logical cell on north, east and west, not only under the south lip.
+            Assert.That(bake.Get(mid, pad + cell + margin / 2).a, Is.EqualTo(255), "north frame");
+            Assert.That(bake.Get(pad - margin / 2, mid).a, Is.EqualTo(255), "west frame");
+            Assert.That(bake.Get(pad + cell + margin / 2, mid).a, Is.EqualTo(255), "east frame");
+            Assert.That(
+                bake.Get(mid, pad + cell + margin + 6).a,
+                Is.LessThan(200),
+                "The frame must stop a fixed distance outside the cell.");
+        }
+
+        [Test]
+        public void BakerGivesExposedAndInteriorCellsTheSamePad()
+        {
+            // A plus: the centre cell is enclosed, the arms are exposed on three sides.
+            var occupied = new HashSet<GridPosition>
+            {
+                new GridPosition(1, 1),
+                new GridPosition(0, 1),
+                new GridPosition(2, 1),
+                new GridPosition(1, 0),
+                new GridPosition(1, 2)
+            };
+            using BoardSurfaceBaker.Bake bake = BoardSurfaceBaker.BakeOccupied(
+                occupied, BoardSurfaceBaker.DefaultStyle(BakeResolution));
+
+            int interior = PadEdgeOffset(bake, new GridPosition(1, 1), -1, 0);
+            foreach (GridPosition exposed in occupied)
+            {
+                Assert.That(
+                    PadEdgeOffset(bake, exposed, -1, 0),
+                    Is.EqualTo(interior).Within(1),
+                    $"west pad edge of {exposed} drifted from the interior cell");
+                Assert.That(
+                    PadEdgeOffset(bake, exposed, 0, -1),
+                    Is.EqualTo(interior).Within(1),
+                    $"south pad edge of {exposed} drifted from the interior cell");
+            }
+        }
+
+        [Test]
+        public void BakerKeepsEveryCellCentreInsideItsOwnPad()
+        {
+            var occupied = new HashSet<GridPosition>
+            {
+                new GridPosition(0, 0),
+                new GridPosition(1, 0),
+                new GridPosition(0, 1)
+            };
+            using BoardSurfaceBaker.Bake bake = BoardSurfaceBaker.BakeOccupied(
+                occupied, BoardSurfaceBaker.DefaultStyle(BakeResolution));
+            int cell = bake.PixelsPerCell;
+
+            // Pieces are placed on the logical lattice, so the lattice centre has to
+            // land on flat pad floor rather than on a groove or the frame.
+            foreach (GridPosition position in occupied)
+            {
+                Color32 centre = CellPixel(bake, position, 0, 0);
+                Assert.That(centre.a, Is.EqualTo(255));
+                Assert.That(
+                    CellPixel(bake, position, cell / 4, cell / 4),
+                    Is.EqualTo(centre),
+                    $"pad floor of {position} is not flat around its centre");
+            }
+        }
+
+        [Test]
+        public void BakerSharesASeamAndKeepsTheCheckerSubtle()
+        {
+            var occupied = new HashSet<GridPosition>
+            {
+                new GridPosition(0, 0),
+                new GridPosition(1, 0)
+            };
+            using BoardSurfaceBaker.Bake bake = BoardSurfaceBaker.BakeOccupied(
+                occupied, BoardSurfaceBaker.DefaultStyle(BakeResolution));
+            int pad = bake.Pad;
+            int cell = bake.PixelsPerCell;
+            Color32 seam = bake.Get(pad + cell, pad + cell / 2);
+            Color32 left = CellPixel(bake, new GridPosition(0, 0), 0, 0);
+            Color32 right = CellPixel(bake, new GridPosition(1, 0), 0, 0);
+
+            Assert.That(seam.a, Is.EqualTo(255), "adjacent cells must not open a gap");
+            Assert.That(left, Is.Not.EqualTo(right));
+            int delta = Mathf.Max(
+                Mathf.Abs(left.r - right.r),
+                Mathf.Abs(left.g - right.g),
+                Mathf.Abs(left.b - right.b));
+            Assert.That(delta, Is.GreaterThan(0));
+            Assert.That(delta, Is.LessThanOrEqualTo(16));
+        }
+
+        [Test]
+        public void BakerAntiAliasesTheSilhouetteWithPartialCoverage()
+        {
+            var occupied = new HashSet<GridPosition> { new GridPosition(0, 0) };
+            using BoardSurfaceBaker.Bake bake = BoardSurfaceBaker.BakeOccupied(
+                occupied, BoardSurfaceBaker.DefaultStyle(BakeResolution));
+            int cell = bake.PixelsPerCell;
+            int radius = Mathf.RoundToInt(51f * cell / 256f);
+            int y = bake.Pad + cell + bake.FrameMargin - radius / 2;
+
+            // Walking in along a rounded corner must cross a partially covered pixel;
+            // a binary hull mask can only ever produce 0 or 255 here.
+            bool sawCoverage = false;
+            for (int x = 0; x < bake.Width && !sawCoverage; x++)
+                sawCoverage = bake.Get(x, y).a is > 40 and < 215;
+
+            Assert.That(sawCoverage, Is.True, "the silhouette is not coverage anti-aliased");
+        }
+
+        [Test]
+        public void BakerKeepsTheSouthLipAThinStepUnderTheSlab()
+        {
+            var occupied = new HashSet<GridPosition> { new GridPosition(0, 0) };
+            using BoardSurfaceBaker.Bake bake = BoardSurfaceBaker.BakeOccupied(
+                occupied, BoardSurfaceBaker.DefaultStyle(BakeResolution));
+            int pad = bake.Pad;
+            int cell = bake.PixelsPerCell;
+            int margin = bake.FrameMargin;
+            int lip = bake.LipOffset;
+            int mid = pad + cell / 2;
+            int wallTop = pad - margin;
+
+            Assert.That(lip, Is.LessThanOrEqualTo(cell * 3 / 20), "the lip must read as a step, not a crust");
+            Color32 wall = bake.Get(mid, wallTop - lip / 2);
+            Color32 face = bake.Get(mid, mid);
+            Assert.That(wall.a, Is.GreaterThanOrEqualTo(200));
+            Assert.That(
+                face.r + face.g + face.b - (wall.r + wall.g + wall.b),
+                Is.GreaterThanOrEqualTo(40),
+                "the wall must read as a separate, darker plane from the cream top");
+            Assert.That(
+                bake.Get(mid, wallTop - lip - 4).a,
+                Is.LessThan(200),
+                "nothing opaque may hang below the wall");
+            Assert.That(
+                bake.Get(mid, Mathf.Max(0, wallTop - lip - 12)).a,
+                Is.GreaterThanOrEqualTo(50),
+                "The contact shadow under the slab should remain visible.");
+        }
+
+        [Test]
+        public void BakerLipTintShiftsTheUndersideTowardThePalette()
+        {
+            var occupied = new HashSet<GridPosition> { new GridPosition(0, 0) };
+            BoardSurfaceBaker.Style purple = BoardSurfaceBaker.DefaultStyle(BakeResolution);
+            BoardSurfaceBaker.Style yellow = purple;
+            yellow.LipTint = new Color(1f, 0.82f, 0.2f, 1f);
+            yellow.LipTintStrength = 0.85f;
+
+            using BoardSurfaceBaker.Bake purpleBake =
+                BoardSurfaceBaker.BakeOccupied(occupied, purple);
+            using BoardSurfaceBaker.Bake yellowBake =
+                BoardSurfaceBaker.BakeOccupied(occupied, yellow);
+            int x = purpleBake.Pad + purpleBake.PixelsPerCell / 2;
+            int y = purpleBake.Pad - purpleBake.FrameMargin - purpleBake.LipOffset / 2;
+            Color32 purpleLip = purpleBake.Get(x, y);
+            Color32 yellowLip = yellowBake.Get(x, y);
+
+            Assert.That(purpleLip.a, Is.GreaterThanOrEqualTo(200));
+            Assert.That(yellowLip.a, Is.GreaterThanOrEqualTo(200));
+            Assert.That(yellowLip.b, Is.LessThan(purpleLip.b));
+            Assert.That(yellowLip.r, Is.GreaterThan(purpleLip.r));
+        }
+
+        [Test]
+        public void BakerFramesAHoleAndFilletsAConcaveCorner()
+        {
+            var donut = new HashSet<GridPosition>();
+            for (int x = 0; x < 3; x++)
+                for (int y = 0; y < 3; y++)
+                {
+                    if (x == 1 && y == 1)
+                        continue;
+                    donut.Add(new GridPosition(x, y));
+                }
+
+            using BoardSurfaceBaker.Bake bake = BoardSurfaceBaker.BakeOccupied(
+                donut, BoardSurfaceBaker.DefaultStyle(BakeResolution));
+            int pad = bake.Pad;
+            int cell = bake.PixelsPerCell;
+            int margin = bake.FrameMargin;
+
+            Assert.That(
+                bake.Get(pad + cell + cell / 2, pad + cell + cell / 2).a,
+                Is.LessThan(40),
+                "the hole must stay open");
+            Assert.That(
+                bake.Get(pad + cell / 2, pad + cell + cell / 2).a,
+                Is.EqualTo(255));
+            Assert.That(
+                bake.Get(pad + cell + margin / 2, pad + cell + cell / 2).a,
+                Is.EqualTo(255),
+                "the frame wraps the hole too, so the hole is smaller than a cell");
+
+            var ell = new HashSet<GridPosition>
+            {
+                new GridPosition(0, 1),
+                new GridPosition(1, 0),
+                new GridPosition(1, 1)
+            };
+            using BoardSurfaceBaker.Bake bakedEll = BoardSurfaceBaker.BakeOccupied(
+                ell, BoardSurfaceBaker.DefaultStyle(BakeResolution));
+            Assert.That(
+                bakedEll.Get(bakedEll.Pad + bakedEll.PixelsPerCell - 4,
+                    bakedEll.Pad + bakedEll.PixelsPerCell - 4).a,
+                Is.EqualTo(255),
+                "the concave join must be filleted, not notched open");
+        }
+
+        [Test]
+        public void DefaultPaletteMatchesTheBakerArtDirection()
+        {
+            BoardSurfacePaletteAsset palette =
+                AssetDatabase.LoadAssetAtPath<BoardSurfacePaletteAsset>(
+                    "Assets/_Game/Production/Content/Presentation/BoardSurfacePalette_Default.asset");
+            BoardSurfaceBaker.Style plain = BoardSurfaceBaker.DefaultStyle(BakeResolution);
+            BoardSurfaceBaker.Style tinted = BoardSurfaceBaker.WithPalette(plain, palette);
+
+            // The preview PNG is baked from the Python defaults, which mirror
+            // DefaultStyle. If the shipped palette drifts, the preview stops being a
+            // truthful reference for what ships.
+            Assert.That(tinted.Fill, Is.EqualTo(plain.Fill));
+            Assert.That(tinted.FillB, Is.EqualTo(plain.FillB));
+            Assert.That(tinted.Ambient, Is.EqualTo(plain.Ambient));
+            Assert.That(tinted.Highlight, Is.EqualTo(plain.Highlight));
+            Assert.That(tinted.Shadow, Is.EqualTo(plain.Shadow));
+            Assert.That(tinted.LipShade, Is.EqualTo(plain.LipShade));
+            Assert.That(tinted.LipTint, Is.EqualTo(plain.LipTint));
+            Assert.That(tinted.LipTintStrength, Is.EqualTo(plain.LipTintStrength).Within(0.001f));
+        }
+
+        private static Color32 CellPixel(
+            BoardSurfaceBaker.Bake bake, GridPosition position, int offsetX, int offsetY)
+        {
+            int cell = bake.PixelsPerCell;
+            int x = bake.Pad + (position.X - bake.MinX) * cell + cell / 2 + offsetX;
+            int y = bake.Pad + (position.Y - bake.MinY) * cell + cell / 2 + offsetY;
+            return bake.Get(x, y);
+        }
+
+        /// <summary>
+        /// Distance from a cell's centre to the darkest pixel of its pad groove along
+        /// the given direction. Uniform pads put this at the same offset for every cell.
+        /// </summary>
+        private static int PadEdgeOffset(
+            BoardSurfaceBaker.Bake bake, GridPosition position, int stepX, int stepY)
+        {
+            int cell = bake.PixelsPerCell;
+            int limit = cell / 2 + bake.FrameMargin;
+            int darkest = 0;
+            int lowest = int.MaxValue;
+            for (int step = cell / 4; step <= limit; step++)
+            {
+                Color32 pixel = CellPixel(bake, position, stepX * step, stepY * step);
+                if (pixel.a < 255)
+                    break;
+                int value = pixel.r + pixel.g + pixel.b;
+                if (value < lowest)
+                {
+                    lowest = value;
+                    darkest = step;
+                }
+            }
+
+            return darkest;
         }
 
 

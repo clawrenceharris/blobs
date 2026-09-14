@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Deterministically generate Blobs' modular checkerboard board-surface assets.
+"""Deterministically generate Blobs' modular board-surface assets.
 
-The script has no third-party dependencies. Geometry is evaluated from one
-shared style dictionary, antialiased with a fixed supersample grid, and written
-as true-alpha PNGs with Python's standard library.
+The script has no third-party dependencies. Tile components remain for the
+current Unity compositor. Preview boards are baked from occupancy as one
+rounded slab (see bake_board_surface.py).
 """
 
 from __future__ import annotations
@@ -12,10 +12,13 @@ import hashlib
 import json
 import math
 import struct
+import sys
 import zlib
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Dict, Iterable, List, Sequence, Set, Tuple
+
+from bake_board_surface import render_preview_cards, validate_baker
 
 
 RGBA = Tuple[float, float, float, float]
@@ -31,21 +34,54 @@ STYLE = {
     "perimeter_roundness": 48,
     "border_softness": 3,
     "ambient_edge_width": 5,
-    "lower_border_width": 18,
-    "shadow_offset": [4, 13],
-    "shadow_blur": 10,
+    "lower_border_width": 26,
+    "front_face_strength": 0.34,
+    "shadow_strength": 0.30,
+    "shadow_offset": [4, 12],
+    "shadow_blur": 18,
+    "cell_inset_margin": 8,
+    "cell_inset_radius": 28,
+    "cell_inset_border_width": 5,
+    "cell_inset_inner_shadow_width": 12,
     "supersample": 4,
     "pixels_per_unit": 256,
     "palette": {
-        "fill_a": "#F8F6EF",
-        "fill_b": "#F1F0EA",
-        "ambient_edge": "#D8D7D1",
-        "lower_edge": "#D0CEC7",
-        "highlight": "#FFFFFF",
-        "shadow": "#30264A",
-        "preview_background": "#3B2B68",
-        "preview_card": "#4A3976",
+        "fill_a": "#FFF9EA",
+        "fill_b": "#FEF8E9",
+        "ambient_edge": "#F3E7D2",
+        "lower_edge": "#E6CFB4",
+        "lower_edge_shade": "#CFAA89",
+        "highlight": "#FFFFFA",
+        "shadow": "#37058C",
+        "preview_background": "#7119D5",
+        "preview_card": "#5D22A5",
     },
+    "baker_corner_radius": 51,
+    "baker_concave_radius": 40,
+    "baker_frame_margin": 16,
+    "baker_lip_offset": 24,
+    "baker_pad": 160,
+    "baker_shadow_offset": [20, 28],
+    "baker_shadow_blur": 36,
+    "baker_shadow_strength": 0.74,
+    "baker_rim_width": 10.0,
+    "baker_rim_strength": 0.80,
+    "baker_ambient_width": 24.0,
+    "baker_ambient_strength": 0.18,
+    "baker_cell_gap": 6.0,
+    "baker_cell_radius": 28.0,
+    "baker_cell_bevel": 9.0,
+    "baker_cell_bevel_strength": 0.85,
+    "baker_cell_ring": 13.0,
+    "baker_cell_ring_strength": 0.18,
+    "baker_fill": "#FAF2E5",
+    "baker_fill_b": "#F2EBE1",
+    "baker_lip_highlight": "#D0BAAC",
+    "baker_lip_shade": "#C2A797",
+    "baker_lip_tint": "#C9A2D8",
+    "baker_lip_tint_strength": 0.60,
+    "baker_cell_shadow": "#B8A492",
+    "baker_cell_highlight": "#FFFEFB",
 }
 
 
@@ -105,6 +141,7 @@ FILL_A = hex_rgba(STYLE["palette"]["fill_a"])
 FILL_B = hex_rgba(STYLE["palette"]["fill_b"])
 AMBIENT_EDGE = hex_rgba(STYLE["palette"]["ambient_edge"])
 LOWER_EDGE = hex_rgba(STYLE["palette"]["lower_edge"])
+LOWER_EDGE_SHADE = hex_rgba(STYLE["palette"]["lower_edge_shade"])
 HIGHLIGHT = hex_rgba(STYLE["palette"]["highlight"])
 SHADOW = hex_rgba(STYLE["palette"]["shadow"])
 
@@ -215,12 +252,16 @@ def write_png(path: Path, image: Image) -> None:
 
 def render(sample: Callable[[float, float], RGBA]) -> Image:
     size = int(STYLE["component_size"])
+    return render_sized(size, size, sample)
+
+
+def render_sized(width: int, height: int, sample: Callable[[float, float], RGBA]) -> Image:
     supersample = int(STYLE["supersample"])
-    image = Image.transparent(size, size)
+    image = Image.transparent(width, height)
     inv_samples = 1.0 / (supersample * supersample)
 
-    for y in range(size):
-        for x in range(size):
+    for y in range(height):
+        for x in range(width):
             premul_r = premul_g = premul_b = alpha = 0.0
             for sy in range(supersample):
                 fy = y + (sy + 0.5) / supersample
@@ -271,12 +312,17 @@ def boundary_treatment(sd: float, nx: float, ny: float) -> RGBA:
     softness = float(STYLE["border_softness"])
     edge_width = float(STYLE["ambient_edge_width"])
     lower_border_width = float(STYLE["lower_border_width"])
+    front_face_strength = float(STYLE["front_face_strength"])
+    shadow_strength = float(STYLE["shadow_strength"])
     blur = float(STYLE["shadow_blur"])
     offset_x, offset_y = (float(v) for v in STYLE["shadow_offset"])
 
-    light = clamp01(-nx * 0.28 - ny * 0.72)
-    # Plate thickness belongs only to downward-facing geometry. Letting the
-    # horizontal normal contribute here creates an unwanted gray side border.
+    # One soft upper-left light direction drives straight and curved pieces alike.
+    light = clamp01(-nx * 0.45 - ny * 0.89)
+    shade = clamp01(nx * 0.18 + ny * 0.98)
+    # The toy-like underside exists only on south-facing geometry. Curved
+    # corners inherit a smoothly tapered amount from their normal, while the
+    # north/east/west edges remain clean and nearly flat.
     lower = clamp01(ny)
     lower_border_extent = lower_border_width * lower
     shadow_center = nx * offset_x + ny * offset_y
@@ -284,16 +330,16 @@ def boundary_treatment(sd: float, nx: float, ny: float) -> RGBA:
     result: RGBA = (0.0, 0.0, 0.0, 0.0)
 
     if sd > 0.0:
-        shadow_alpha = (0.09 + 0.055 * lower) * math.exp(
+        shadow_alpha = shadow_strength * (0.18 + 0.82 * lower) * math.exp(
             -0.5 * ((sd - shadow_center) / blur) ** 2
         )
         result = over(result, with_alpha(SHADOW, shadow_alpha))
 
-        # A fractional outside cover softens the silhouette without reading as a border.
+        # A fractional outside cover rounds the silhouette without a dark outline.
         outside_cover = 1.0 - smoothstep(0.0, softness, sd)
-        result = over(result, with_alpha(AMBIENT_EDGE, 0.16 * outside_cover))
+        result = over(result, with_alpha(AMBIENT_EDGE, 0.18 * outside_cover))
 
-        if sd <= lower_border_extent:
+        if lower_border_extent > 0.0 and sd <= lower_border_extent:
             outer_softness_start = max(0.0, lower_border_extent - softness)
             lower_edge_alpha = 1.0 - smoothstep(
                 outer_softness_start,
@@ -301,13 +347,100 @@ def boundary_treatment(sd: float, nx: float, ny: float) -> RGBA:
                 sd,
             )
             result = over(result, with_alpha(LOWER_EDGE, lower_edge_alpha))
+            lip_highlight = 1.0 - smoothstep(0.0, min(6.0, lower_border_extent), sd)
+            result = over(result, with_alpha(HIGHLIGHT, 0.14 * lip_highlight))
+            lip_shade = smoothstep(
+                3.0,
+                max(4.0, lower_border_extent * 0.72),
+                sd,
+            ) * lower_edge_alpha
+            result = over(
+                result,
+                with_alpha(LOWER_EDGE_SHADE, front_face_strength * lip_shade),
+            )
 
     if -edge_width <= sd <= 0.0:
         rim = smoothstep(-edge_width, 0.0, sd)
-        result = over(result, with_alpha(AMBIENT_EDGE, (0.08 + 0.06 * lower) * rim))
-        result = over(result, with_alpha(HIGHLIGHT, 0.055 * light * rim))
+        result = over(result, with_alpha(AMBIENT_EDGE, (0.04 + 0.12 * shade) * rim))
+        result = over(result, with_alpha(HIGHLIGHT, 0.11 * light * rim))
 
     return result
+
+
+def rounded_rect_signed_distance(
+    x: float,
+    y: float,
+    center_x: float,
+    center_y: float,
+    half_width: float,
+    half_height: float,
+    radius: float,
+) -> float:
+    qx = abs(x - center_x) - (half_width - radius)
+    qy = abs(y - center_y) - (half_height - radius)
+    outside = math.hypot(max(qx, 0.0), max(qy, 0.0))
+    return outside + min(max(qx, qy), 0.0) - radius
+
+
+def sample_cell_inset(x: float, y: float) -> RGBA:
+    size = float(STYLE["logical_cell_size"])
+    margin = float(STYLE["cell_inset_margin"])
+    radius = float(STYLE["cell_inset_radius"])
+    border_width = float(STYLE["cell_inset_border_width"])
+    inner_width = float(STYLE["cell_inset_inner_shadow_width"])
+    center = size * 0.5
+    half_extent = center - margin
+
+    sd = rounded_rect_signed_distance(
+        x,
+        y,
+        center,
+        center,
+        half_extent,
+        half_extent,
+        radius,
+    )
+    if sd > 0.0:
+        return (0.0, 0.0, 0.0, 0.0)
+
+    # Derive the rounded-square normal from the same distance field so the
+    # directional light rotates smoothly around every corner.
+    epsilon = 0.5
+    nx = rounded_rect_signed_distance(
+        x + epsilon, y, center, center, half_extent, half_extent, radius
+    ) - rounded_rect_signed_distance(
+        x - epsilon, y, center, center, half_extent, half_extent, radius
+    )
+    ny = rounded_rect_signed_distance(
+        x, y + epsilon, center, center, half_extent, half_extent, radius
+    ) - rounded_rect_signed_distance(
+        x, y - epsilon, center, center, half_extent, half_extent, radius
+    )
+    normal_length = math.hypot(nx, ny)
+    if normal_length > 1e-6:
+        nx /= normal_length
+        ny /= normal_length
+
+    depth = -sd
+    light = clamp01(-nx * 0.45 - ny * 0.89)
+    shade = clamp01(nx * 0.34 + ny * 0.94)
+    outer_ring = 1.0 - smoothstep(0.0, border_width, depth)
+    inner_ring = smoothstep(1.5, 4.0, depth) * (
+        1.0 - smoothstep(4.0, inner_width, depth)
+    )
+
+    result: RGBA = (0.0, 0.0, 0.0, 0.0)
+    # Low-alpha overlays let the continuous board color remain the visual center.
+    result = over(result, with_alpha(AMBIENT_EDGE, 0.18 * outer_ring))
+    result = over(result, with_alpha(HIGHLIGHT, 0.36 * light * outer_ring))
+    result = over(result, with_alpha(LOWER_EDGE, 0.13 * shade * outer_ring))
+    result = over(result, with_alpha(SHADOW, (0.025 + 0.055 * shade) * inner_ring))
+    return result
+
+
+def render_cell_inset() -> Image:
+    size = int(STYLE["logical_cell_size"])
+    return render_sized(size, size, sample_cell_inset)
 
 
 def sample_fill(color: RGBA, x: float, y: float) -> RGBA:
@@ -588,36 +721,8 @@ def render_board(
     return board
 
 
-def render_preview(images: Dict[str, Image]) -> Image:
-    configurations: List[Set[Point]] = [
-        {(x, y) for x in range(4) for y in range(3)},
-        {(x, 3) for x in range(4)} | {(3, y) for y in range(4)},
-        {(x, y) for x in range(5) for y in range(4) if not (x == 2 and y in (1, 2))},
-        {(x, y) for x in range(5) for y in range(4)} - {(4, 0), (3, 0), (4, 1)},
-        {(0, 0), (1, 0), (2, 0), (2, 1), (2, 2), (3, 2), (4, 2)},
-        {(0, 0)},
-    ]
-
-    background = hex_rgba(STYLE["palette"]["preview_background"])
-    card = hex_rgba(STYLE["palette"]["preview_card"])
-    preview = Image.solid(2240, 1376, background)
-    slot_width, slot_height = 704, 608
-    margin_x, margin_y = 48, 56
-    composed_cache: Dict[Tuple[str, ...], Image] = {}
-
-    for index, occupied in enumerate(configurations):
-        column = index % 3
-        row = index // 3
-        card_left = margin_x + column * (slot_width + 16)
-        card_top = margin_y + row * (slot_height + 48)
-        draw_rounded_rect(preview, card_left, card_top, slot_width, slot_height, 32, card)
-
-        board = downsample_half(render_board(images, occupied, composed_cache))
-        left = card_left + (slot_width - board.width) // 2
-        top = card_top + (slot_height - board.height) // 2
-        preview.paste_over(board, left, top)
-
-    return preview
+def render_preview() -> Image:
+    return render_preview_cards(Image, downsample_half, draw_rounded_rect, STYLE)
 
 
 def deterministic_guid(relative_path: str) -> str:
@@ -845,6 +950,9 @@ def write_runtime_asset(project_root: Path, output_dir: Path, asset_dir: Path) -
         png_path = output_dir / f"{name}.png"
         guid = guid_for_asset(png_path, project_root)
         references.append(f"  {field_names[name]}: {{fileID: 21300000, guid: {guid}, type: 3}}")
+    inset_path = output_dir / "Cell_Inset.png"
+    inset_guid = guid_for_asset(inset_path, project_root)
+    references.append(f"  cellInset: {{fileID: 21300000, guid: {inset_guid}, type: 3}}")
 
     asset_path.write_text(
         "%YAML 1.1\n"
@@ -892,7 +1000,7 @@ def write_manifest_files(project_root: Path, output_dir: Path, atlas_mapping: Di
     write_text_meta(mapping_path, project_root)
 
 
-def validate(images: Dict[str, Image], preview: Image) -> None:
+def validate(images: Dict[str, Image], cell_inset: Image, preview: Image) -> None:
     size = int(STYLE["component_size"])
     pad = int(STYLE["component_padding"])
     cell = int(STYLE["logical_cell_size"])
@@ -907,6 +1015,9 @@ def validate(images: Dict[str, Image], preview: Image) -> None:
     assert images["Fill_A"].get(pad + cell // 2, pad + cell // 2) != images["Fill_B"].get(
         pad + cell // 2, pad + cell // 2
     )
+    fill_a = images["Fill_A"].get(pad + cell // 2, pad + cell // 2)
+    fill_b = images["Fill_B"].get(pad + cell // 2, pad + cell // 2)
+    assert max(abs(fill_a[channel] - fill_b[channel]) for channel in range(3)) <= 3
     # The reference uses flat uninterrupted checker cells. Any accidental
     # per-cell gradient, inset pad, grain, or facet must fail generation.
     for name in ("Fill_A", "Fill_B"):
@@ -919,21 +1030,46 @@ def validate(images: Dict[str, Image], preview: Image) -> None:
         any(image.pixels[index] == 0 for index in range(3, len(image.pixels), 4))
         for image in images.values()
     )
+    validate_baker(STYLE, Image)
     assert preview.width == 2240 and preview.height == 1376
+    assert cell_inset.width == cell and cell_inset.height == cell
+    assert all(cell_inset.get(x, y)[3] == 0 for x, y in (
+        (0, 0),
+        (cell - 1, 0),
+        (0, cell - 1),
+        (cell - 1, cell - 1),
+    ))
+    inset_edge_alpha = cell_inset.get(cell // 2, int(STYLE["cell_inset_margin"]))[3]
+    inset_center_alpha = cell_inset.get(cell // 2, cell // 2)[3]
+    assert 24 <= inset_edge_alpha <= 160
+    assert inset_center_alpha <= 8
 
     south_border = images["Edge_S"].get(
         pad + cell // 2,
         pad + cell + 6,
     )
-    assert south_border[3] >= 240
+    south_lower_border = images["Edge_S"].get(
+        pad + cell // 2,
+        pad + cell + 22,
+    )
+    south_shadow = images["Edge_S"].get(
+        pad + cell // 2,
+        pad + cell + 36,
+    )
+    assert south_border[3] >= 230
+    assert south_lower_border[3] >= 220
+    assert 24 <= south_shadow[3] < 96
 
-    # Thickness is directional: only the lower edge may become an opaque lip.
-    # The other sides contain just soft antialiasing/shadow and cannot turn
-    # into the dark gray outline seen in the failed iteration.
+    surface_color = images["Fill_A"].get(pad + cell // 2, pad + cell // 2)
+    assert sum(surface_color[:3]) - sum(south_lower_border[:3]) >= 75
+
+    # The opaque underside is directional: north/east/west contain only soft
+    # bevel lighting and shadow, never a matching slab wall.
     north_outside = images["Edge_N"].get(pad + cell // 2, pad - 6)
     east_outside = images["Edge_E"].get(pad + cell + 6, pad + cell // 2)
     west_outside = images["Edge_W"].get(pad - 6, pad + cell // 2)
-    assert max(north_outside[3], east_outside[3], west_outside[3]) < 96
+    assert max(north_outside[3], east_outside[3], west_outside[3]) < 80
+    assert south_border[3] > max(north_outside[3], east_outside[3], west_outside[3]) + 150
 
     concave_tangent_guard = images["Corner_Concave_NW"].get(
         pad - int(STYLE["corner_radius"]) - 8,
@@ -966,7 +1102,22 @@ def main() -> None:
     ):
         write_folder_meta(folder, project_root)
 
+    write_text_meta(Path(__file__), project_root)
+    write_text_meta(output_dir / "bake_board_surface.py", project_root)
+
+    preview_only = "--preview-only" in sys.argv
+    if preview_only:
+        preview = render_preview()
+        preview_path = preview_dir / "board_atlas_preview.png"
+        write_png(preview_path, preview)
+        write_sprite_meta(preview_path, project_root, readable=False)
+        validate_baker(STYLE, Image)
+        assert preview.width == 2240 and preview.height == 1376
+        print(f"Generated preview: {preview_path}")
+        return
+
     images = render_components()
+    cell_inset = render_cell_inset()
 
     # Keep the directory aligned with this generator's intentionally small
     # component set. This also removes assets from abandoned style experiments.
@@ -982,11 +1133,15 @@ def main() -> None:
         write_png(path, images[name])
         write_sprite_meta(path, project_root, readable=True)
 
+    cell_inset_path = output_dir / "Cell_Inset.png"
+    write_png(cell_inset_path, cell_inset)
+    write_sprite_meta(cell_inset_path, project_root, readable=True)
+
     atlas_path, mapping = write_atlas(images, output_dir)
     write_sprite_meta(atlas_path, project_root, readable=False)
     write_manifest_files(project_root, output_dir, mapping)
 
-    preview = render_preview(images)
+    preview = render_preview()
     preview_path = preview_dir / "board_atlas_preview.png"
     write_png(preview_path, preview)
     write_sprite_meta(preview_path, project_root, readable=False)
@@ -997,17 +1152,12 @@ def main() -> None:
     write_runtime_asset(
         project_root,
         output_dir,
-        project_root / "Assets/_Game/Production/Content/Board",
+        project_root / "Assets/_Game/Production/Resources",
     )
-    write_runtime_asset(
-        project_root,
-        output_dir,
-        project_root / "Assets/Production/Resources/Board",
-    )
-    write_text_meta(Path(__file__), project_root)
-    validate(images, preview)
+    validate(images, cell_inset, preview)
 
     print(f"Generated {len(COMPONENTS)} components in {output_dir}")
+    print(f"Generated cell inset: {cell_inset_path}")
     print(f"Generated atlas: {atlas_path}")
     print(f"Generated preview: {preview_path}")
 

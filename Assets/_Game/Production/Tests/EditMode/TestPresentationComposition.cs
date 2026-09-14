@@ -29,9 +29,9 @@ namespace Blobs.Tests.EditMode
         public static void ConfigureSurface(BoardSurfaceView view)
         {
             var serialized = new SerializedObject(view);
-            serialized.FindProperty("spriteSet").objectReferenceValue =
-                AssetDatabase.LoadAssetAtPath<BoardSurfaceSpriteSet>(
-                    "Assets/_Game/Production/Resources/BoardSurfaceSpriteSet.asset");
+            serialized.FindProperty("palette").objectReferenceValue =
+                AssetDatabase.LoadAssetAtPath<BoardSurfacePaletteAsset>(
+                    "Assets/_Game/Production/Content/Presentation/BoardSurfacePalette_Default.asset");
             serialized.ApplyModifiedPropertiesWithoutUndo();
         }
     }

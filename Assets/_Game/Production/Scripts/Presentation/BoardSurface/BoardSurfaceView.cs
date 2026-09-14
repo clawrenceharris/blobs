@@ -1,28 +1,32 @@
 using System;
 using System.Collections.Generic;
+using Blobs.Content;
 using Blobs.Core;
 using UnityEngine;
 
 namespace Blobs.Presentation
 {
     /// <summary>
-    /// Builds the continuous visual board surface from independent logical tile cells.
+    /// Builds the visual board as one occupancy-baked slab.
     /// </summary>
     public sealed class BoardSurfaceView : MonoBehaviour
     {
-        private const string DefaultSpriteSetResource = "Board/BoardSurfaceSpriteSet";
-
-        [SerializeField] private BoardSurfaceSpriteSet spriteSet;
+        [SerializeField] private BoardSurfacePaletteAsset palette;
         [SerializeField] private string sortingLayerName = "Default";
         [SerializeField] private int sortingOrder = -100;
+        [SerializeField, Min(32)] private int pixelsPerCell = 160;
 
-        private readonly List<GameObject> _cells = new List<GameObject>();
         private readonly Dictionary<GridPosition, BoardSurfaceNeighborMask> _masks =
             new Dictionary<GridPosition, BoardSurfaceNeighborMask>();
-        private BoardSurfaceSpriteComposer _composer;
-        private BoardSurfaceSpriteSet _activeSpriteSet;
+        private GameObject _surfaceObject;
+        private BoardSurfaceBaker.Bake _bake;
 
-        public int VisibleCellCount => _cells.Count;
+        public int VisibleCellCount => _masks.Count;
+
+        public void SetPalette(BoardSurfacePaletteAsset value)
+        {
+            palette = value;
+        }
 
         public void Rebuild(
             IReadOnlyList<TileState> tiles,
@@ -55,24 +59,27 @@ namespace Blobs.Presentation
             if (occupied.Count == 0)
                 return;
 
-            BoardSurfaceSpriteSet resolved = ResolveSpriteSet();
-            if (resolved == null || !resolved.IsConfigured)
-            {
-                Debug.LogWarning(
-                    "Board surface sprite set is missing or incomplete. " +
-                    "Regenerate Assets/_Game/Production/Art/Board/Generated.",
-                    this);
-                return;
-            }
-
-            EnsureComposer(resolved);
             foreach (GridPosition position in occupied)
             {
-                BoardSurfaceNeighborMask mask =
-                    BoardSurfaceNeighborMaskResolver.Resolve(occupied, position);
-                CreateCell(position, mask, cellSize, origin);
-                _masks.Add(position, mask);
+                _masks.Add(position, BoardSurfaceNeighborMaskResolver.Resolve(occupied, position));
             }
+
+            BoardSurfaceBaker.Style style = BoardSurfaceBaker.WithPalette(
+                BoardSurfaceBaker.DefaultStyle(pixelsPerCell),
+                palette);
+            _bake = BoardSurfaceBaker.BakeOccupied(occupied, style);
+            _surfaceObject = new GameObject("Board Surface Bake");
+            _surfaceObject.transform.SetParent(transform, false);
+            _surfaceObject.transform.localPosition = new Vector3(
+                origin.x + (_bake.MinX + _bake.MaxX) * 0.5f * cellSize,
+                origin.y + (_bake.MinY + _bake.MaxY) * 0.5f * cellSize,
+                0f);
+            _surfaceObject.transform.localScale = Vector3.one * cellSize;
+
+            SpriteRenderer renderer = _surfaceObject.AddComponent<SpriteRenderer>();
+            renderer.sprite = _bake.Sprite;
+            renderer.sortingLayerName = sortingLayerName;
+            renderer.sortingOrder = sortingOrder;
         }
 
         public bool TryGetMask(
@@ -84,65 +91,23 @@ namespace Blobs.Presentation
 
         public void ClearCells()
         {
-            for (int i = _cells.Count - 1; i >= 0; i--)
+            if (_surfaceObject != null)
             {
-                if (_cells[i] == null)
-                    continue;
                 if (UnityEngine.Application.isPlaying)
-                    Destroy(_cells[i]);
+                    Destroy(_surfaceObject);
                 else
-                    DestroyImmediate(_cells[i]);
+                    DestroyImmediate(_surfaceObject);
+                _surfaceObject = null;
             }
 
-            _cells.Clear();
+            _bake?.Dispose();
+            _bake = null;
             _masks.Clear();
-        }
-
-        private void CreateCell(
-            GridPosition position,
-            BoardSurfaceNeighborMask mask,
-            float cellSize,
-            Vector2 origin)
-        {
-            var cell = new GameObject($"Board Surface ({position.X}, {position.Y})");
-            cell.transform.SetParent(transform, false);
-            cell.transform.localPosition = new Vector3(
-                origin.x + position.X * cellSize,
-                origin.y + position.Y * cellSize,
-                0f);
-            cell.transform.localScale = Vector3.one * cellSize;
-
-            SpriteRenderer renderer = cell.AddComponent<SpriteRenderer>();
-            bool useAlternateFill = ((position.X + position.Y) & 1) != 0;
-            renderer.sprite = _composer.GetOrCreate(mask, useAlternateFill);
-            renderer.sortingLayerName = sortingLayerName;
-            renderer.sortingOrder = sortingOrder;
-            _cells.Add(cell);
-        }
-
-        private BoardSurfaceSpriteSet ResolveSpriteSet()
-        {
-            if (spriteSet != null)
-                return spriteSet;
-            return Resources.Load<BoardSurfaceSpriteSet>(DefaultSpriteSetResource);
-        }
-
-        private void EnsureComposer(BoardSurfaceSpriteSet resolved)
-        {
-            if (_composer != null && _activeSpriteSet == resolved)
-                return;
-
-            _composer?.Dispose();
-            _activeSpriteSet = resolved;
-            _composer = new BoardSurfaceSpriteComposer(resolved);
         }
 
         private void OnDestroy()
         {
             ClearCells();
-            _composer?.Dispose();
-            _composer = null;
-            _activeSpriteSet = null;
         }
     }
 }

@@ -54,7 +54,27 @@ These are executable-test specifications to implement, not completed tests. Ever
 
 ## Semester scheduling
 
-Keep the deliverable at exactly 15 weeks. Weeks 1–3 establish rules, resolution, validation, and baseline build; week 4 stabilizes special interactions. Use weeks 5–6 for reverse playback/Undo feedback alongside forward game-feel work. Weeks 7–10 remain level design; week 11 completes HUD/Undo integration and player flow. Weeks 12–13 playtest and revise; weeks 14–15 validate and deliver. Limit optional new mechanics to preserve time for the now-required Undo work.
+Keep the deliverable at exactly 15 weeks, but no longer reserve three weeks for the original baseline fixes. AI-assisted implementation and the current production foundation make the early rule-fix lane a Week 1 closeout plus Week 2 verification/build lane.
+
+| Week | Focus | Reviewable outcome |
+| ---- | ----- | ------------------ |
+| 1 | Agreed rules, baseline gap closure, required Undo foundation, and documentation alignment. | Rule authority docs, original B02-B06 gaps addressed, Undo foundation in place, current issue list. |
+| 2 | Production build path, queued Undo/input/victory/restart polish, and fresh validation. | Production scenes configured, EditMode/PlayMode results recorded, launchable build or explicit blocker. |
+| 3 | Level inventory and sequence planning. | Validated level list, solution notes, mechanic tags, proposed order. |
+| 4 | First curated level sequence. | Playable tutorial/early challenge sequence using retained mechanics. |
+| 5 | Menu, level navigation, completion flow, and persistence scope decision. | Complete no-Editor player loop through the sequence. |
+| 6 | Game feel pass 1. | Tuned selection, merge, Rock, Trail, Ghost/Grave, Undo, camera, and feedback captures. |
+| 7 | Content expansion by single mechanic. | Additional solvable levels with difficulty labels and solution notes. |
+| 8 | Content expansion by combined mechanics. | Mid-semester sequence covering mechanic combinations without adding optional systems. |
+| 9 | Internal playtest and difficulty revision. | Playtest notes, revised levels, and prioritized fixes. |
+| 10 | Production flow and presentation polish. | Cohesive HUD/menu/completion/audio/readability pass. |
+| 11 | Persistence implementation or documented omission. | Verified progress save/reload or clear scope note. |
+| 12 | External playtest 1. | Observations, metrics, and revision backlog. |
+| 13 | External playtest 2 and content lock. | Content-lock candidate and remaining bug list. |
+| 14 | Release validation and regression fixes. | Full test/build evidence and release-candidate build. |
+| 15 | Final documentation and presentation. | Final build, docs, website/process evidence, and reflection. |
+
+Limit optional mechanics to preserve time for level design, playtesting, and delivery. New mechanics are useful only if they improve the level sequence without destabilizing the rules already agreed.
 
 ## Completion evidence
 

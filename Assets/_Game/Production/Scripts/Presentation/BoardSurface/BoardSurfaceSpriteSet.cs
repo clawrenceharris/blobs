@@ -29,6 +29,9 @@ namespace Blobs.Presentation
         [SerializeField] private Sprite concaveSW;
         [SerializeField] private Sprite concaveSE;
 
+        [Header("Cell Overlay")]
+        [SerializeField] private Sprite cellInset;
+
         [Header("Shared Geometry")]
         [SerializeField, Min(1)] private int logicalCellSize = 256;
         [SerializeField, Min(1)] private int componentSize = 384;
@@ -38,6 +41,7 @@ namespace Blobs.Presentation
 
         public Sprite FillA => fillA;
         public Sprite FillB => fillB;
+        public Sprite CellInset => cellInset;
         public int LogicalCellSize => logicalCellSize;
         public int ComponentSize => componentSize;
         public int ComponentPadding => componentPadding;

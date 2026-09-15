@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: LevelColorPalette_New
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelColorPaletteAsset
   red:
-    baseColor: {r: 0.996, g: 0.278, b: 0.467, a: 1}
-    shadowColor: {r: 0.71, g: 0.105, b: 0.275, a: 1}
-    highlightColor: {r: 1, g: 0.62, b: 0.735, a: 1}
+    baseColor: {r: 1, g: 0.13679248, b: 0.3632073, a: 1}
+    shadowColor: {r: 0.8867924, g: 0.26352793, b: 0.44892928, a: 1}
+    highlightColor: {r: 1, g: 0.24056602, b: 0.6818959, a: 1}
   blue:
-    baseColor: {r: 0.335, g: 0.72, b: 1, a: 1}
-    shadowColor: {r: 0.11, g: 0.39, b: 0.735, a: 1}
-    highlightColor: {r: 0.665, g: 0.9, b: 1, a: 1}
+    baseColor: {r: 0.06132078, g: 0.6799358, b: 1, a: 1}
+    shadowColor: {r: 0.26274508, g: 0.6765421, b: 0.8862745, a: 1}
+    highlightColor: {r: 0.23921567, g: 1, b: 0.9544756, a: 1}
   green:
     baseColor: {r: 0.478, g: 0.976, b: 0.694, a: 1}
     shadowColor: {r: 0.145, g: 0.61, b: 0.365, a: 1}
@@ -29,8 +29,8 @@ MonoBehaviour:
     shadowColor: {r: 0.765, g: 0.475, b: 0.095, a: 1}
     highlightColor: {r: 1, g: 0.94, b: 0.62, a: 1}
   purple:
-    baseColor: {r: 0.527, g: 0.4, b: 1, a: 1}
-    shadowColor: {r: 0.305, g: 0.175, b: 0.68, a: 1}
+    baseColor: {r: 0.45162782, g: 0.3066038, b: 1, a: 1}
+    shadowColor: {r: 0.36538738, g: 0.21048418, b: 0.8113208, a: 1}
     highlightColor: {r: 0.76, g: 0.68, b: 1, a: 1}
   clear:
     baseColor: {r: 0, g: 0, b: 0, a: 0}

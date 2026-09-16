@@ -177,4 +177,6 @@ InitTestScene*.unity*
 /[Aa]ssets/[Ss]ceneDependencyCache*
 
 # Burst compiler debug output
-/[Bb]urst[Dd]ebug[Ii]nformation/
+/[Bb]urst[Dd]ebug[Ii]nformation/output/
+
+output/

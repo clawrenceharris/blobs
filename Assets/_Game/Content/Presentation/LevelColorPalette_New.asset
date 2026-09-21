@@ -36,10 +36,25 @@ MonoBehaviour:
     baseColor: {r: 0, g: 0, b: 0, a: 0}
     shadowColor: {r: 0, g: 0, b: 0, a: 0}
     highlightColor: {r: 0, g: 0, b: 0, a: 0}
-  materials:
-  - material: {fileID: 2100000, guid: ab0638ea023b34097ba572c65d9f92d7, type: 2}
-    color: 0
-  - material: {fileID: 2100000, guid: 7872f22e4939f43e1aa0fb4854c04b1c, type: 2}
-    color: 1
-  - material: {fileID: 2100000, guid: 031e112b02826406c84ad52b6db364f2, type: 2}
-    color: 4
+  sharedBlobMaterial: {fileID: 2100000, guid: ab0638ea023b34097ba572c65d9f92d7, type: 2}
+  redRamp:
+    hueShift: 0
+    saturation: 1.06
+    brightness: 1
+  blueRamp:
+    hueShift: 134
+    saturation: 1.02
+    brightness: 1
+  greenRamp:
+    hueShift: 240
+    saturation: 1
+    brightness: 1
+  yellowRamp:
+    hueShift: 300
+    saturation: 1
+    brightness: 1
+  purpleRamp:
+    hueShift: 68
+    saturation: 1.06
+    brightness: 1
+  materials: []

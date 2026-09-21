@@ -183,8 +183,9 @@ namespace Blobs.Presentation
                 MergeEffectSkin = skin;
                 if (material != null)
                 {
-                    _skinApplier.Apply(this, material);
-                    MergeEffectColor = material.color;
+                    BlobRampHsv rampHsv = colorPalette.GetRampHsv(blob.Components.Color.Value.Color);
+                    _skinApplier.Apply(this, material, rampHsv);
+                    MergeEffectColor = skin.BaseColor;
                 }
                 else
                 {

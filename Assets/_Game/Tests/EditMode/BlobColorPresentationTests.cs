@@ -12,13 +12,13 @@ namespace Blobs.Tests.EditMode
     public sealed class BlobColorPresentationTests
     {
         private const string PalettePath =
-            "Assets/_Game/Production/Content/Presentation/LevelColorPalette_New.asset";
+            "Assets/_Game/Content/Presentation/LevelColorPalette_New.asset";
         private const string NormalPrefabPath =
-            "Assets/_Game/Production/Prefabs/Blobs/PF_NormalBlob.prefab";
+            "Assets/_Game/Prefabs/PF_Blob_Normal.prefab";
         private const string TrailPrefabPath =
-            "Assets/_Game/Production/Prefabs/Blobs/PF_TrailBlob Variant.prefab";
+            "Assets/_Game/Prefabs/PF_Blob_Trail.prefab";
         private const string FlagPrefabPath =
-            "Assets/_Game/Production/Prefabs/Blobs/PF_FlagBlob.prefab";
+            "Assets/_Game/Prefabs/PF_Blob_Flag.prefab";
 
         private readonly List<UnityEngine.Object> _createdObjects = new();
 
@@ -35,36 +35,41 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void PaletteDefinesThreeShaderColorsForEveryBlobColor()
+        public void PaletteDefinesShaderColorsAndRampHsvForEveryBlobColor()
         {
             LevelColorPaletteAsset palette = LoadPalette();
+
+            Assert.That(palette.SharedBlobMaterial, Is.Not.Null);
+            Assert.That(palette.SharedBlobMaterial.IsKeywordEnabled("COLORRAMP_ON"), Is.True);
+            Assert.That(palette.SharedBlobMaterial.IsKeywordEnabled("HSV_ON"), Is.True);
+            Assert.That(palette.SharedBlobMaterial.GetTexture("_ColorRampTex"), Is.Not.Null);
 
             foreach (BlobColor color in Enum.GetValues(typeof(BlobColor)))
             {
                 BlobShaderColors colors = palette.GetRequired(color);
+                BlobRampHsv rampHsv = palette.GetRampHsv(color);
 
                 Assert.That(colors, Is.Not.Null, color.ToString());
                 Assert.That(colors.ShadowColor, Is.Not.EqualTo(colors.BaseColor), color.ToString());
                 Assert.That(colors.HighlightColor, Is.Not.EqualTo(colors.BaseColor), color.ToString());
+                Assert.That(rampHsv, Is.Not.Null, color.ToString());
+                Assert.That(rampHsv.HueShift, Is.InRange(0f, 360f), color.ToString());
+                Assert.That(rampHsv.Saturation, Is.GreaterThanOrEqualTo(0f), color.ToString());
+                Assert.That(rampHsv.Brightness, Is.GreaterThanOrEqualTo(0f), color.ToString());
             }
         }
 
         [Test]
-        public void NormalBlobAppliesPaletteToBodyShaderProperties()
+        public void NormalBlobUsesSharedRampMaterialAndPaletteHsv()
         {
             LevelColorPaletteAsset palette = LoadPalette();
             BlobView view = InstantiateView(NormalPrefabPath);
             BlobState state = Blob("normal", BlobType.Normal, BlobColor.Red);
             SpriteRenderer body = FindRenderer(view, "Body");
-            Material authoredMaterial = body.sharedMaterial;
 
             view.Initialize(state, palette, 1f, Vector2.zero);
 
-            AssertShaderColors(body, palette.GetRequired(BlobColor.Red));
-            Assert.That(body.sharedMaterial, Is.SameAs(authoredMaterial));
-            Assert.That(body.sharedMaterial.HasProperty("_BaseColor"), Is.True);
-            Assert.That(body.sharedMaterial.HasProperty("_ShadowColor"), Is.True);
-            Assert.That(body.sharedMaterial.HasProperty("_HighlightColor"), Is.True);
+            AssertRampSkin(body, palette, BlobColor.Red);
         }
 
         [Test]
@@ -80,43 +85,29 @@ namespace Blobs.Tests.EditMode
             .WithTrail(BlobColor.Blue);
             SpriteRenderer body = FindRenderer(view, "Body");
             SpriteRenderer puddle = FindRenderer(view, "Puddle");
-            Material authoredBodyMaterial = body.sharedMaterial;
-            Material authoredPuddleMaterial = puddle.sharedMaterial;
 
             view.Initialize(state, palette, 1f, Vector2.zero);
 
-            AssertShaderColors(
-                body,
-                palette.GetRequired(BlobColor.Red));
-            AssertShaderColors(
-                puddle,
-                palette.GetRequired(BlobColor.Blue));
-            Assert.That(body.sharedMaterial, Is.SameAs(authoredBodyMaterial));
-            Assert.That(puddle.sharedMaterial, Is.SameAs(authoredPuddleMaterial));
+            AssertRampSkin(body, palette, BlobColor.Red);
+            AssertRampSkin(puddle, palette, BlobColor.Blue);
             Assert.That(
                 view.GetComponentInChildren<TrailBlobColorBinding>(true),
                 Is.Not.Null);
         }
 
         [Test]
-        public void FlagBlobUsesFlatPaletteColorOnCheckersAndFinial()
+        public void FlagBlobUsesSharedRampMaterialOnCheckersAndFinial()
         {
             LevelColorPaletteAsset palette = LoadPalette();
             BlobView view = InstantiateView(FlagPrefabPath);
             BlobState state = Blob("flag", BlobType.Flag, BlobColor.Purple);
             SpriteRenderer checkers = FindRenderer(view, "Checkers");
             SpriteRenderer finial = FindRenderer(view, "Finial");
-            Material authoredCheckersMaterial = checkers.sharedMaterial;
-            Material authoredFinialMaterial = finial.sharedMaterial;
 
             view.Initialize(state, palette, 1f, Vector2.zero);
 
-            Color color = palette.GetRequired(BlobColor.Purple).BaseColor;
-            var expected = new BlobShaderColors(color, color, color);
-            AssertShaderColors(checkers, expected);
-            AssertShaderColors(finial, expected);
-            Assert.That(checkers.sharedMaterial, Is.SameAs(authoredCheckersMaterial));
-            Assert.That(finial.sharedMaterial, Is.SameAs(authoredFinialMaterial));
+            AssertRampSkin(checkers, palette, BlobColor.Purple);
+            AssertRampSkin(finial, palette, BlobColor.Purple);
         }
 
         private LevelColorPaletteAsset LoadPalette()
@@ -155,16 +146,19 @@ namespace Blobs.Tests.EditMode
             return null;
         }
 
-        private static void AssertShaderColors(
+        private static void AssertRampSkin(
             SpriteRenderer renderer,
-            BlobShaderColors expected)
+            LevelColorPaletteAsset palette,
+            BlobColor color)
         {
+            BlobRampHsv expected = palette.GetRampHsv(color);
             var properties = new MaterialPropertyBlock();
             renderer.GetPropertyBlock(properties);
 
-            Assert.That(properties.GetColor("_BaseColor"), Is.EqualTo(expected.BaseColor));
-            Assert.That(properties.GetColor("_ShadowColor"), Is.EqualTo(expected.ShadowColor));
-            Assert.That(properties.GetColor("_HighlightColor"), Is.EqualTo(expected.HighlightColor));
+            Assert.That(renderer.sharedMaterial, Is.SameAs(palette.SharedBlobMaterial));
+            Assert.That(properties.GetFloat("_HsvShift"), Is.EqualTo(expected.HueShift));
+            Assert.That(properties.GetFloat("_HsvSaturation"), Is.EqualTo(expected.Saturation));
+            Assert.That(properties.GetFloat("_HsvBright"), Is.EqualTo(expected.Brightness));
             Assert.That(renderer.color.r, Is.EqualTo(1f));
             Assert.That(renderer.color.g, Is.EqualTo(1f));
             Assert.That(renderer.color.b, Is.EqualTo(1f));

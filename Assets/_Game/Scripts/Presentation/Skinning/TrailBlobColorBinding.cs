@@ -31,10 +31,22 @@ namespace Blobs.Presentation
             }
 
             Skin skin = _resolver.ResolveSkin(blob.Components.Trail.Value.TrailColor, palette);
-            BlobRenderer.ApplyShaderSkin(
-                targetRenderer,
-                skin,
-                ref _properties);
+            Material material = _resolver.ResolveMaterial(blob.Components.Trail.Value.TrailColor, palette);
+            if (material != null)
+            {
+                BlobRenderer.ApplyRampSkin(
+                    targetRenderer,
+                    material,
+                    palette.GetRampHsv(blob.Components.Trail.Value.TrailColor),
+                    ref _properties);
+            }
+            else
+            {
+                BlobRenderer.ApplyShaderSkin(
+                    targetRenderer,
+                    skin,
+                    ref _properties);
+            }
         }
     }
 }

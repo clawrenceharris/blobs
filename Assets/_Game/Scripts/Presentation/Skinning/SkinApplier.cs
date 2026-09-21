@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using Blobs.Content;
 
 namespace Blobs.Presentation
 {
@@ -27,10 +28,10 @@ namespace Blobs.Presentation
             view.BlobRenderer.ApplySkin(skin);
         }
 
-        public void Apply(BlobView view, Material material)
+        public void Apply(BlobView view, Material material, BlobRampHsv rampHsv)
         {
             if (view == null || view.BlobRenderer == null) return;
-            view.BlobRenderer.ApplySkin(material);
+            view.BlobRenderer.ApplySkin(material, rampHsv);
         }
     }
 

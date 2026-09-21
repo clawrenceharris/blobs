@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using Blobs.Content;
 using UnityEngine;
 using UnityEngine.Serialization;
 namespace Blobs.Presentation
@@ -31,6 +31,9 @@ namespace Blobs.Presentation
         private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
         private static readonly int ShadowColorId = Shader.PropertyToID("_ShadowColor");
         private static readonly int HighlightColorId = Shader.PropertyToID("_HighlightColor");
+        private static readonly int HsvShiftId = Shader.PropertyToID("_HsvShift");
+        private static readonly int HsvSaturationId = Shader.PropertyToID("_HsvSaturation");
+        private static readonly int HsvBrightnessId = Shader.PropertyToID("_HsvBright");
 
         [SerializeField] private FadeableVisual fadeableVisual;
         public Target[] Targets => targets;
@@ -46,7 +49,7 @@ namespace Blobs.Presentation
         }
 
         /// <summary>
-        /// Applies the blob's three-color shader skin to targets bound to the blob color.
+        /// Applies the legacy three-color shader fallback to targets bound to the blob color.
         /// </summary>
         public void ApplySkin(Skin skin)
         {
@@ -82,9 +85,9 @@ namespace Blobs.Presentation
                     ref _properties);
         }
 
-        public void ApplySkin(Material material)
+        public void ApplySkin(Material material, BlobRampHsv rampHsv)
         {
-            if (material == null)
+            if (material == null || rampHsv == null)
                 return;
             bool applied = false;
             if (targets != null)
@@ -102,24 +105,49 @@ namespace Blobs.Presentation
                     for (int j = 0; j < binding.Renderers.Length; j++)
                     {
                         if (binding.Renderers[j] == null) continue;
-                        ApplyMaterial(binding.Renderers[j], material);
+                        ApplyRampSkin(
+                            binding.Renderers[j],
+                            material,
+                            rampHsv,
+                            ref _properties);
                         applied = true;
                     }
                 }
             }
 
             if (!applied && fallbackBaseRenderer != null)
-                ApplyMaterial(fallbackBaseRenderer, material);
+            {
+                ApplyRampSkin(
+                    fallbackBaseRenderer,
+                    material,
+                    rampHsv,
+                    ref _properties);
+            }
         }
 
-        internal static void ApplyMaterial(
+        /// <summary>
+        /// Applies one shared All In 1 Sprite Shader material plus per-renderer palette values.
+        /// Keeping color variation in a property block avoids cloning materials per blob or level.
+        /// </summary>
+        internal static void ApplyRampSkin(
             SpriteRenderer renderer,
-            Material material)
+            Material material,
+            BlobRampHsv rampHsv,
+            ref MaterialPropertyBlock properties)
         {
-            if (renderer == null)
+            if (renderer == null || material == null || rampHsv == null)
                 return;
 
-            renderer.SetMaterials(new List<Material> { material });
+            renderer.sharedMaterial = material;
+            properties ??= new MaterialPropertyBlock();
+            renderer.GetPropertyBlock(properties);
+            properties.SetFloat(HsvShiftId, rampHsv.HueShift);
+            properties.SetFloat(HsvSaturationId, rampHsv.Saturation);
+            properties.SetFloat(HsvBrightnessId, rampHsv.Brightness);
+            renderer.SetPropertyBlock(properties);
+
+            Color tint = renderer.color;
+            renderer.color = new Color(1f, 1f, 1f, tint.a);
         }
         /// <summary>
         /// Applies per-renderer shader values without cloning or replacing the authored material.

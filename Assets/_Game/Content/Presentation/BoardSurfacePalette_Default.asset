@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25bada3954eb4f1c816119dbfbd073ba, type: 3}
   m_Name: BoardSurfacePalette_Default
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.BoardSurfacePaletteAsset
-  fillA: {r: 0.98039216, g: 0.9490196, b: 0.8980392, a: 1}
-  fillB: {r: 0.9490196, g: 0.92156863, b: 0.88235295, a: 1}
-  ambientEdge: {r: 0.9529412, g: 0.90588236, b: 0.8235294, a: 1}
-  lowerEdge: {r: 0.7607843, g: 0.654902, b: 0.5921569, a: 1}
+  fillA: {r: 0.9882353, g: 0.9607843, b: 0.9411765, a: 1}
+  fillB: {r: 0.9716981, g: 0.91838497, b: 0.8937789, a: 1}
+  ambientEdge: {r: 0.92156863, g: 0.8117647, b: 0.78039217, a: 1}
+  lowerEdge: {r: 0.8784314, g: 0.7019608, b: 0.6627451, a: 1}
   highlight: {r: 1, g: 1, b: 0.98039216, a: 1}
-  shadow: {r: 0.21568628, g: 0.019607844, b: 0.54901963, a: 1}
-  lipTint: {r: 0.7882353, g: 0.63529414, b: 0.84705883, a: 1}
+  shadow: {r: 0.84313726, g: 0.2901961, b: 0.4627451, a: 1}
+  lipTint: {r: 0.8784314, g: 0.7137255, b: 0.68235296, a: 1}
   lipTintStrength: 0.6

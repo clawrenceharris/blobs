@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MAT_Blob_Purple
+  m_Name: MAT_Blob_AllIn1
   m_Shader: {fileID: 4800000, guid: 202ffec9202f22e478034613d6beb49c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -132,7 +132,7 @@ Material:
     - _GlitchAmount: 3
     - _GlitchSize: 1
     - _GlitchSpeed: 20
-    - _Glow: 10
+    - _Glow: 100
     - _GlowAffectLight: 1
     - _GlowGlobal: 1
     - _GradBlend: 1
@@ -149,8 +149,8 @@ Material:
     - _GreyscaleOutline: 0
     - _HandDrawnAmount: 10
     - _HandDrawnSpeed: 5
-    - _HitEffectBlend: 1
-    - _HitEffectGlow: 5
+    - _HitEffectBlend: 0.318
+    - _HitEffectGlow: 64.1
     - _HologramBlend: 1
     - _HologramMaxAlpha: 0.75
     - _HologramMinAlpha: 0.1
@@ -159,7 +159,7 @@ Material:
     - _HologramUnmodAmount: 0
     - _HsvBright: 1
     - _HsvSaturation: 1.06
-    - _HsvShift: 68
+    - _HsvShift: 70
     - _InnerOutlineAlpha: 1
     - _InnerOutlineGlow: 4
     - _InnerOutlineThickness: 1
@@ -207,9 +207,9 @@ Material:
     - _ShadowAlpha: 0.5
     - _ShadowX: 0.1
     - _ShadowY: -0.05
-    - _ShakeUvSpeed: 2.5
-    - _ShakeUvX: 1.5
-    - _ShakeUvY: 1
+    - _ShakeUvSpeed: 1.2
+    - _ShakeUvX: 0.46
+    - _ShakeUvY: 2.2
     - _ShineGlow: 1
     - _ShineLocation: 0.5
     - _ShineRotate: 0
@@ -220,9 +220,9 @@ Material:
     - _TwistUvPosX: 0.5
     - _TwistUvPosY: 0.5
     - _TwistUvRadius: 0.75
-    - _WarpScale: 0.5
-    - _WarpSpeed: 8
-    - _WarpStrength: 0.025
+    - _WarpScale: 0.69
+    - _WarpSpeed: 2.8
+    - _WarpStrength: 0.0321
     - _WaveAmount: 7
     - _WaveSpeed: 10
     - _WaveStrength: 7.5
@@ -247,13 +247,13 @@ Material:
     - _FadeBurnColor: {r: 1, g: 1, b: 0, a: 1}
     - _FadeBurnTex_ScaleAndTiling: {r: 1, g: 1, b: 0, a: 0}
     - _FadeTex_ScaleAndTiling: {r: 1, g: 1, b: 0, a: 0}
-    - _GlowColor: {r: 1, g: 1, b: 1, a: 1}
+    - _GlowColor: {r: 0.5, g: 0, b: 0, a: 1}
     - _GradBotLeftCol: {r: 0, g: 0, b: 1, a: 1}
     - _GradBotRightCol: {r: 0, g: 1, b: 0, a: 1}
     - _GradTopLeftCol: {r: 1, g: 0, b: 0, a: 1}
     - _GradTopRightCol: {r: 1, g: 1, b: 0, a: 1}
     - _GreyscaleTintColor: {r: 1, g: 1, b: 1, a: 1}
-    - _HitEffectColor: {r: 1, g: 1, b: 1, a: 1}
+    - _HitEffectColor: {r: 0.6981132, g: 0, b: 0, a: 1}
     - _HologramStripeColor: {r: 0, g: 1, b: 1, a: 1}
     - _InnerOutlineColor: {r: 1, g: 0, b: 0, a: 1}
     - _MainTex_ScaleAndTiling: {r: 1, g: 1, b: 0, a: 0}

@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: 0a74b12805847f64e9bca94f8f242a87
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225102
+  packageName: Simple Cartoon UI
+  packageVersion: 1.1
+  assetPath: Assets/Cartoon UI/White Icons/White Icons/White Icons 2/White Quiver.png
+  uploadId: 825882
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -128,10 +135,3 @@ TextureImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 225102
-  packageName: Simple Cartoon UI
-  packageVersion: 1.1
-  assetPath: Assets/Cartoon UI/White Icons/White Icons/White Icons 2/White Quiver.png
-  uploadId: 825882

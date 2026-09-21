@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: 2df5e928a134135438f25933f8046ea8
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225102
+  packageName: Simple Cartoon UI
+  packageVersion: 1.1
+  assetPath: Assets/Cartoon UI/White Icons/White Icons/White Icons 2/White Energy.png
+  uploadId: 825882
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -128,10 +135,3 @@ TextureImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 225102
-  packageName: Simple Cartoon UI
-  packageVersion: 1.1
-  assetPath: Assets/Cartoon UI/White Icons/White Icons/White Icons 2/White Energy.png
-  uploadId: 825882

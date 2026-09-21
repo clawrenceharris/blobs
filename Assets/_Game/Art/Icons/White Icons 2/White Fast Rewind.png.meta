@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: 7e92777a87c767b489b37d1090846f31
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225102
+  packageName: Simple Cartoon UI
+  packageVersion: 1.1
+  assetPath: Assets/Cartoon UI/White Icons/White Icons/White Icons 2/White Fast Rewind.png
+  uploadId: 825882
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -128,10 +135,3 @@ TextureImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 225102
-  packageName: Simple Cartoon UI
-  packageVersion: 1.1
-  assetPath: Assets/Cartoon UI/White Icons/White Icons/White Icons 2/White Fast Rewind.png
-  uploadId: 825882

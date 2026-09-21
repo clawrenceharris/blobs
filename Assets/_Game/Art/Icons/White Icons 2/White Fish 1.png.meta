@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: 80da1076f5ab2a548b9bdf1f5fc16964
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225102
+  packageName: Simple Cartoon UI
+  packageVersion: 1.1
+  assetPath: Assets/Cartoon UI/White Icons/White Icons/White Icons 2/White Fish 1.png
+  uploadId: 825882
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -128,10 +135,3 @@ TextureImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 225102
-  packageName: Simple Cartoon UI
-  packageVersion: 1.1
-  assetPath: Assets/Cartoon UI/White Icons/White Icons/White Icons 2/White Fish 1.png
-  uploadId: 825882

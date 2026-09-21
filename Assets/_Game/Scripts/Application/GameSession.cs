@@ -119,10 +119,7 @@ namespace Blobs.Application
             _board = LevelFactory.CreateInitialBoard(level);
             IsComplete = ObjectiveEvaluator.IsComplete(_board, _level.Objective);
         }
-        public static void LogMessage(string message)
-        {
-            MessageLogged?.Invoke(message);
-        }
+
 
         /// <inheritdoc />
         public BlobSelectionResult SelectBlobAt(GridPosition position)

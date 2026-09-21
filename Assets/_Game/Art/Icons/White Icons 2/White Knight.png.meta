@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: 74a6b9b34b88a5d479193d7c2071344b
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225102
+  packageName: Simple Cartoon UI
+  packageVersion: 1.1
+  assetPath: Assets/Cartoon UI/White Icons/White Icons/White Icons 2/White Knight.png
+  uploadId: 825882
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -128,10 +135,3 @@ TextureImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 225102
-  packageName: Simple Cartoon UI
-  packageVersion: 1.1
-  assetPath: Assets/Cartoon UI/White Icons/White Icons/White Icons 2/White Knight.png
-  uploadId: 825882

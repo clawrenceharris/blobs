@@ -53,40 +53,17 @@ namespace Blobs.Presentation
                 return true;
             }
 
-            if (moverSurvives)
-            {
-                timeline.Append(_orchestrator.CreateMergeBeat(
-                    moving, target,
-                    new Vector2Int(effect.To.X - effect.From.X, effect.To.Y - effect.From.Y),
-                    onContact, () => _blobs.DestroyRetiringView(consumed), _mergeSettings, effect.To));
-            }
-            else
-            {
-                // Reverse merges share approach/absorption choreography. Ghost return is a
-                // separate effect; a flag or ghost does not need a separate merge presenter.
-                Sequence capture = DOTween.Sequence();
-                capture.AppendCallback(() =>
-                {
-                    moving.BlobMotionAnimator?.SetMerging();
-                    target.BlobMotionAnimator?.SetMerging();
-                });
-                capture.Append(moving.PlayConsumedInto(effect.To,
-                    _motionSettings.MoveDuration, _motionSettings.DespawnDuration));
-                capture.InsertCallback(_motionSettings.MoveDuration, () =>
-                {
-                    _orchestrator.PlayImpact(target.transform.position, moving.MergeEffectColor, target);
-                    onContact?.Invoke();
-                });
-                Tween acceptance = target.PlaySourceAccepted(
-                    _motionSettings.MoveDuration + _motionSettings.DespawnDuration);
-                if (acceptance != null) capture.Join(acceptance);
-                capture.OnComplete(() =>
-                {
-                    target.BlobMotionAnimator?.SetIdle();
-                    _blobs.DestroyRetiringView(consumed);
-                });
-                timeline.Append(capture);
-            }
+            // Both survivor outcomes share the same approach/contact beat. Ghost return and
+            // other post-merge behavior remain separate Core effects and presentation handlers.
+            timeline.Append(_orchestrator.CreateMergeBeat(
+                moving,
+                target,
+                moverSurvives,
+                new Vector2Int(effect.To.X - effect.From.X, effect.To.Y - effect.From.Y),
+                onContact,
+                () => _blobs.DestroyRetiringView(consumed),
+                _mergeSettings,
+                effect.To));
             return true;
         }
 

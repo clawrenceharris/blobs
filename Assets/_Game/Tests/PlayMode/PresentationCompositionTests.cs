@@ -64,13 +64,19 @@ namespace Blobs.Tests.PlayMode
             surface.AddComponent<BoardSurfaceView>();
 
             BoardPresenter board = root.AddComponent<BoardPresenter>();
-            ConfigureAnimationSettings(root);
+            BlobAnimationSettingsAsset animationSettings = ConfigureAnimationSettings(root);
             GameplayInputAdapter input = root.AddComponent<GameplayInputAdapter>();
             GameplayCommandAdapter commands = root.AddComponent<GameplayCommandAdapter>();
             GameBootstrapper bootstrapper = root.AddComponent<GameBootstrapper>();
             LevelColorPaletteAsset palette = CreatePalette();
-            LevelDefinitionAsset level = CreateEmptyLevel(palette);
+            LevelDefinitionAsset level = CreateStartupLevel(palette);
             ViewCatalogAsset viewCatalog = CreateAsset<ViewCatalogAsset>();
+            BlobView blobPrefab = CreateCatalogBlobPrefab(animationSettings);
+            SetPrivateField(viewCatalog, "blobEntries", new List<BlobViewCatalogEntry>
+            {
+                CatalogEntry(BlobType.Normal, blobPrefab),
+                CatalogEntry(BlobType.Flag, blobPrefab)
+            });
 
             SetPrivateField(board.GetComponent<BlobPresenter>(), "_viewCatalog", viewCatalog);
             SetPrivateField(bootstrapper, "boardPresenter", board);
@@ -87,12 +93,34 @@ namespace Blobs.Tests.PlayMode
             Assert.That(sessionStartedCount, Is.EqualTo(1));
             Assert.That(bootstrapper.CurrentState.CreateSnapshot().LevelId, Is.EqualTo("playmode-startup"));
             Assert.That(board.CurrentSnapshot, Is.Not.Null);
-            Assert.That(board.VisibleBlobCount, Is.Zero);
+            Assert.That(board.VisibleBlobCount, Is.EqualTo(2));
             Assert.That(board.VisibleTileCount, Is.Zero);
-            Assert.That(board.VisibleSurfaceCellCount, Is.Zero);
+            Assert.That(board.VisibleSurfaceCellCount, Is.EqualTo(2));
             Assert.That(
-                input.SelectBlobAt(new GridPosition(0, 0)).HasSelection,
+                input.SelectBlobAt(new GridPosition(2, 0)).HasSelection,
                 Is.False);
+        }
+
+        private BlobView CreateCatalogBlobPrefab(BlobAnimationSettingsAsset animationSettings)
+        {
+            GameObject prefab = CreateGameObject("Catalog Blob Prefab", active: false);
+            var visual = new GameObject("Visual");
+            visual.transform.SetParent(prefab.transform, false);
+            var view = prefab.AddComponent<BlobView>();
+            var sortingGroup = prefab.AddComponent<SortingGroup>();
+            var animator = prefab.AddComponent<BlobMotionAnimator>();
+            SetPrivateField(animator, "_blobAnimationSettings", animationSettings);
+            SetPrivateField(view, "_visualRoot", visual.transform);
+            SetPrivateField(view, "_sortingGroup", sortingGroup);
+            return view;
+        }
+
+        private static BlobViewCatalogEntry CatalogEntry(BlobType type, BlobView prefab)
+        {
+            var entry = new BlobViewCatalogEntry();
+            SetPrivateField(entry, "type", type);
+            SetPrivateField(entry, "prefab", prefab);
+            return entry;
         }
     }
 }

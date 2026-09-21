@@ -1,6 +1,7 @@
 using Blobs.Core;
 using Blobs.Content;
 using System;
+using UnityEngine;
 namespace Blobs.Presentation
 {
     /// <summary>
@@ -9,6 +10,7 @@ namespace Blobs.Presentation
     public interface IBlobSkinResolver
     {
         Skin ResolveSkin(BlobColor color, LevelColorPaletteAsset palette);
+        Material ResolveMaterial(BlobColor color, LevelColorPaletteAsset palette);
     }
 
     /// <summary>
@@ -28,6 +30,13 @@ namespace Blobs.Presentation
                 colors.ShadowColor,
                 colors.HighlightColor);
         }
+        public Material ResolveMaterial(BlobColor color, LevelColorPaletteAsset palette)
+        {
+            if (palette == null)
+                throw new ArgumentNullException(nameof(palette));
+
+            return palette.GetMaterial(color);
+        }
     }
     public sealed class FlagBlobSkinResolver : IBlobSkinResolver
     {
@@ -41,6 +50,13 @@ namespace Blobs.Presentation
                 colors.BaseColor,
                 colors.BaseColor,
                 colors.BaseColor);
+        }
+        public Material ResolveMaterial(BlobColor color, LevelColorPaletteAsset palette)
+        {
+            if (palette == null)
+                throw new ArgumentNullException(nameof(palette));
+
+            return palette.GetMaterial(color);
         }
     }
 }

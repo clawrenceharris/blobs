@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Blobs.Core;
 using UnityEngine;
 
@@ -24,6 +25,15 @@ namespace Blobs.Content
         public Color BaseColor => baseColor;
         public Color ShadowColor => shadowColor;
         public Color HighlightColor => highlightColor;
+    }
+
+    [Serializable]
+    public sealed class BlobMaterial
+    {
+        [SerializeField] private Material material;
+        [SerializeField] private BlobColor color;
+        public Material Material => material;
+        public BlobColor Color => color;
     }
 
     /// <summary>
@@ -68,6 +78,9 @@ namespace Blobs.Content
             Color.clear,
             Color.clear,
             Color.clear);
+
+        [SerializeField]
+        private BlobMaterial[] materials;
         public BlobShaderColors GetRequired(BlobColor color)
         {
             BlobShaderColors colors = color switch
@@ -82,6 +95,13 @@ namespace Blobs.Content
 
             return colors ?? throw new InvalidOperationException(
                 $"Blob color palette '{name}' has no colors configured for {color}.");
+        }
+
+        public Material GetMaterial(BlobColor color)
+        {
+            return materials?
+                .FirstOrDefault(entry => entry != null && entry.Color == color)?
+                .Material;
         }
     }
 }

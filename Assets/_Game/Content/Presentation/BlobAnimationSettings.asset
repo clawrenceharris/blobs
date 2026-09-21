@@ -23,12 +23,14 @@ MonoBehaviour:
   MergeImpactSettings:
     _anticipationDuration: 0.07
     _travelDuration: 0.4
+    _contactDuration: 0.06
     _consumeDuration: 0.2
     _settleDuration: 0.201
     _anticipationBackstep: 0.08
     _anticipationScale: {x: 1.1, y: 0.88}
     _travelScale: {x: 0.9, y: 1.056}
     _targetBraceScale: {x: 0.88, y: 0.99}
+    _contactScale: {x: 1.12, y: 0.86}
     _survivorImpactScale: {x: 1.14, y: 1.28}
     _sourceSortingOffset: 10
     _targetSortingOffset: 20

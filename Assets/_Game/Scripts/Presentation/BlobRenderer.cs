@@ -82,6 +82,45 @@ namespace Blobs.Presentation
                     ref _properties);
         }
 
+        public void ApplySkin(Material material)
+        {
+            if (material == null)
+                return;
+            bool applied = false;
+            if (targets != null)
+            {
+                for (int i = 0; i < targets.Length; i++)
+                {
+                    var binding = targets[i];
+                    if (binding == null ||
+                        binding.ColorBinding != BlobColorBindingMode.Blob ||
+                        binding.Renderers == null)
+                    {
+                        continue;
+                    }
+
+                    for (int j = 0; j < binding.Renderers.Length; j++)
+                    {
+                        if (binding.Renderers[j] == null) continue;
+                        ApplyMaterial(binding.Renderers[j], material);
+                        applied = true;
+                    }
+                }
+            }
+
+            if (!applied && fallbackBaseRenderer != null)
+                ApplyMaterial(fallbackBaseRenderer, material);
+        }
+
+        internal static void ApplyMaterial(
+            SpriteRenderer renderer,
+            Material material)
+        {
+            if (renderer == null)
+                return;
+
+            renderer.SetMaterials(new List<Material> { material });
+        }
         /// <summary>
         /// Applies per-renderer shader values without cloning or replacing the authored material.
         /// </summary>

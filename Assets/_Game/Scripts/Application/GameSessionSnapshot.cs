@@ -8,6 +8,14 @@ namespace Blobs.Application
     /// </summary>
     public sealed class GameSessionSnapshot
     {
+        public GameSessionSnapshot()
+        {
+            LevelId = string.Empty;
+            Board = null;
+            MoveCount = 0;
+            IsComplete = false;
+            CanUndo = false;
+        }
         /// <summary>
         /// Creates a session snapshot from already-copied board state.
         /// </summary>

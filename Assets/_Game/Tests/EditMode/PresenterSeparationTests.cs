@@ -242,15 +242,108 @@ namespace Blobs.Tests.EditMode
             MergeAnimationOrchestrator orchestrator =
                 _root.AddComponent<MergeAnimationOrchestrator>();
             Vector3 impactPosition = new(2f, 3f, 0f);
+            var context = new MergeImpactFeedbackContext(
+                impactPosition,
+                Vector2.right,
+                Color.magenta,
+                Color.cyan,
+                Color.magenta,
+                source: null,
+                target: null);
 
-            orchestrator.PlayImpact(impactPosition, Color.magenta, sortingAnchor: null);
+            orchestrator.PlayImpact(context);
 
             Assert.That(first.PlayCount, Is.EqualTo(1));
             Assert.That(second.PlayCount, Is.EqualTo(1));
             Assert.That(first.LastContext.WorldPosition, Is.EqualTo(impactPosition));
-            Assert.That(first.LastContext.BlobColor, Is.EqualTo(Color.magenta));
+            Assert.That(first.LastContext.DestinationWorldPosition, Is.EqualTo(impactPosition));
+            Assert.That(first.LastContext.ResultColor, Is.EqualTo(Color.magenta));
+            Assert.That(first.LastContext.TargetColor, Is.EqualTo(Color.cyan));
+            Assert.That(first.LastContext.Intensity, Is.EqualTo(1f));
         }
 
+        [Test]
+        public void MergeOrchestratorRoutesAnticipationAndSettledCuesToComposedChannels()
+        {
+            _root = new GameObject("Merge Feedback Cues Test");
+            var channel = _root.AddComponent<RecordingMergeImpactFeedback>();
+            MergeAnimationOrchestrator orchestrator =
+                _root.AddComponent<MergeAnimationOrchestrator>();
+            MergeImpactFeedbackContext context = orchestrator.CreateImpactContext(
+                source: null,
+                target: null,
+                Vector2.up);
+
+            orchestrator.BeginAnticipation(context);
+            orchestrator.PlaySettled(context);
+
+            Assert.That(channel.AnticipationCount, Is.EqualTo(1));
+            Assert.That(channel.SettledCount, Is.EqualTo(1));
+            Assert.That(channel.PlayCount, Is.EqualTo(0));
+            Assert.That(channel.LastContext.Direction, Is.EqualTo(Vector2.up));
+        }
+
+        [Test]
+        public void MergeOrchestratorPlacesImpactAtSourceTargetMidpoint()
+        {
+            _root = new GameObject("Merge Midpoint Test");
+            MergeAnimationOrchestrator orchestrator =
+                _root.AddComponent<MergeAnimationOrchestrator>();
+            var sourceGo = new GameObject("Source");
+            var targetGo = new GameObject("Target");
+            sourceGo.transform.SetParent(_root.transform);
+            targetGo.transform.SetParent(_root.transform);
+            targetGo.transform.position = new Vector3(2f, 0f, 0f);
+            BlobView source = sourceGo.AddComponent<BlobView>();
+            BlobView target = targetGo.AddComponent<BlobView>();
+
+            MergeImpactFeedbackContext context = orchestrator.CreateImpactContext(
+                source,
+                target,
+                Vector2.right);
+
+            Assert.That(context.WorldPosition, Is.EqualTo(new Vector3(1f, 0f, 0f)));
+            Assert.That(context.DestinationWorldPosition, Is.EqualTo(target.transform.position));
+            Assert.That(context.Direction, Is.EqualTo(Vector2.right));
+        }
+
+        [Test]
+        public void MergeOrchestratorHonoursAnExplicitContactPoint()
+        {
+            _root = new GameObject("Merge Contact Point Test");
+            MergeAnimationOrchestrator orchestrator =
+                _root.AddComponent<MergeAnimationOrchestrator>();
+            Vector3 contactPoint = new(0.5f, -1.25f, 0f);
+
+            MergeImpactFeedbackContext context = orchestrator.CreateImpactContext(
+                source: null,
+                target: null,
+                Vector2.up,
+                worldPosition: contactPoint);
+
+            Assert.That(context.WorldPosition, Is.EqualTo(contactPoint));
+            Assert.That(context.DestinationWorldPosition, Is.EqualTo(contactPoint));
+        }
+
+        [Test]
+        public void MergeOrchestratorKeepsContactAndDestinationAnchorsDistinct()
+        {
+            _root = new GameObject("Merge Spatial Anchors Test");
+            MergeAnimationOrchestrator orchestrator =
+                _root.AddComponent<MergeAnimationOrchestrator>();
+            Vector3 contactPoint = new(0.5f, 0f, 0f);
+            Vector3 destinationPoint = new(1.25f, 0f, 0f);
+
+            MergeImpactFeedbackContext context = orchestrator.CreateImpactContext(
+                source: null,
+                target: null,
+                Vector2.right,
+                worldPosition: contactPoint,
+                destinationWorldPosition: destinationPoint);
+
+            Assert.That(context.ContactWorldPosition, Is.EqualTo(contactPoint));
+            Assert.That(context.DestinationWorldPosition, Is.EqualTo(destinationPoint));
+        }
         [Test]
         public void RegisteredEffectHandlerExtendsBoardPresentationWithoutCoordinatorChanges()
         {
@@ -518,11 +611,25 @@ namespace Blobs.Tests.EditMode
             IMergeImpactFeedback
         {
             public int PlayCount { get; private set; }
+            public int AnticipationCount { get; private set; }
+            public int SettledCount { get; private set; }
             public MergeImpactFeedbackContext LastContext { get; private set; }
+
+            public void BeginAnticipation(MergeImpactFeedbackContext context)
+            {
+                AnticipationCount++;
+                LastContext = context;
+            }
 
             public void PlayImpact(MergeImpactFeedbackContext context)
             {
                 PlayCount++;
+                LastContext = context;
+            }
+
+            public void PlaySettled(MergeImpactFeedbackContext context)
+            {
+                SettledCount++;
                 LastContext = context;
             }
         }

@@ -18,15 +18,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1468080444204028906, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_Name
-      value: PF_RockBlob
+      value: PF_Blob_Rock
       objectReference: {fileID: 0}
     - target: {fileID: 1889189986113857665, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.69553
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1889189986113857665, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0983
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1889189986113857665, guid: 5cfa9a751950f47e1998347ac44ff779, type: 3}
       propertyPath: m_LocalPosition.z

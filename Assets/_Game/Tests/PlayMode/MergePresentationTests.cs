@@ -39,6 +39,41 @@ namespace Blobs.Tests.PlayMode
         }
 
         [UnityTest]
+        public IEnumerator MergeImpactFiresAtContactPoseWithSeparateTileAnchor()
+        {
+            var source = Blob("moving", BlobColor.Red, 0, 0);
+            var target = Blob("target", BlobColor.Blue, 1, 0);
+            var initial = Snapshot(2, 1, source, target);
+            BoardPresenter presenter = CreatePresenter(initial);
+            var feedback = presenter.gameObject.AddComponent<RecordingMergeImpactFeedback>();
+            presenter.GetComponent<MergeAnimationOrchestrator>().RefreshImpactFeedbackChannels();
+            presenter.TryGetBlobView(source.Id, out BlobView movingView);
+            presenter.TryGetBlobView(target.Id, out BlobView targetView);
+            var intent = new MoveIntent(source, target);
+            var merge = MergeEffect.NormalMerge(new MoveContext(
+                initial.Board,
+                MovePlan.Default(source, target),
+                source,
+                target,
+                intent));
+            var expected = Snapshot(2, 1, source.WithPosition(target.Position));
+
+            UniTask playback = presenter.ApplyStepsAsync(
+                new[] { new MoveStep(MoveStepKind.Merge, new IBoardEffect[] { merge }) },
+                expected);
+
+            yield return WaitUntil(() => feedback.PlayCount == 1);
+            Assert.That(feedback.SourcePositionAtImpact.x, Is.LessThan(targetView.transform.position.x));
+            Assert.That(feedback.LastContext.ContactWorldPosition.x,
+                Is.LessThan(feedback.LastContext.DestinationWorldPosition.x));
+            Assert.That(feedback.LastContext.DestinationWorldPosition,
+                Is.EqualTo(targetView.transform.position));
+
+            yield return playback.ToCoroutine();
+            Assert.That(movingView.transform.position.x, Is.EqualTo(presenter.CellSize).Within(0.001f));
+        }
+
+        [UnityTest]
         public IEnumerator ExplicitReverseMergePreservesFlagOrGhostInBothInputFormats()
         {
             foreach (var type in new[] { BlobType.Flag, BlobType.Ghost })
@@ -191,8 +226,13 @@ namespace Blobs.Tests.PlayMode
                 })
             }, expected);
             yield return new WaitForSeconds(0.03f);
-            Assert.That(movingView.BlobMotionAnimator.CurrentState, Is.EqualTo(BlobAnimationState.Moving));
+            Assert.That(movingView.BlobMotionAnimator.CurrentState,
+                Is.Not.EqualTo(BlobAnimationState.Merging));
             yield return task.ToCoroutine();
+            Assert.That(presenter.TryGetBlobView(source.Id, out BlobView survivor), Is.True);
+            Assert.That(survivor, Is.SameAs(movingView));
+            Assert.That(presenter.TryGetBlobView(target.Id, out _), Is.False);
+            Assert.That(presenter.IsSynchronizedWith(expected), Is.True);
         }
 
         [UnityTest]
@@ -215,6 +255,22 @@ namespace Blobs.Tests.PlayMode
                 yield return task.ToCoroutine();
                 Assert.That(presenter.TryGetBlobView(merge.SurvivingBlobId, out BlobView survivor), Is.True);
                 Assert.That(survivor, Is.SameAs(expectedView));
+            }
+        }
+
+        private sealed class RecordingMergeImpactFeedback : MonoBehaviour, IMergeImpactFeedback
+        {
+            public int PlayCount { get; private set; }
+            public Vector3 SourcePositionAtImpact { get; private set; }
+            public MergeImpactFeedbackContext LastContext { get; private set; }
+
+            public void PlayImpact(MergeImpactFeedbackContext context)
+            {
+                PlayCount++;
+                LastContext = context;
+                SourcePositionAtImpact = context.Source != null
+                    ? context.Source.transform.position
+                    : Vector3.zero;
             }
         }
     }

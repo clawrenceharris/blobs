@@ -59,7 +59,7 @@ namespace Blobs.Tests.PlayMode
 
         protected BoardPresenter CreatePresenter(
             GameSessionSnapshot initialSnapshot,
-            FakeGameplayState state = null)
+            IGameplayState state = null)
         {
             GameObject root = CreateGameObject("PlayMode Board Presenter", active: false);
             root.AddComponent<MergeAnimationOrchestrator>();
@@ -91,15 +91,31 @@ namespace Blobs.Tests.PlayMode
             return settings;
         }
 
-        protected LevelDefinitionAsset CreateEmptyLevel(LevelColorPaletteAsset palette)
+        protected LevelDefinitionAsset CreateStartupLevel(LevelColorPaletteAsset palette)
         {
             LevelDefinitionAsset level = CreateAsset<LevelDefinitionAsset>();
             SetPrivateField(level, "levelId", "playmode-startup");
             SetPrivateField(level, "schemaVersion", LevelDefinition.CurrentSchemaVersion);
-            SetPrivateField(level, "width", 1);
+            SetPrivateField(level, "width", 3);
             SetPrivateField(level, "height", 1);
-            SetPrivateField(level, "emptyPositions", new List<Vector2Int> { Vector2Int.zero });
-            SetPrivateField(level, "blobs", new List<BlobAssetData>());
+            SetPrivateField(level, "emptyPositions", new List<Vector2Int> { new(2, 0) });
+            SetPrivateField(level, "blobs", new List<BlobAssetData>
+            {
+                new NormalBlobAssetData
+                {
+                    id = "source",
+                    position = Vector2Int.zero,
+                    type = BlobType.Normal,
+                    color = BlobColor.Red
+                },
+                new FlagBlobAssetData
+                {
+                    id = "flag",
+                    position = new Vector2Int(1, 0),
+                    type = BlobType.Flag,
+                    color = BlobColor.Red
+                }
+            });
             SetPrivateField(level, "tiles", new List<TileAssetData>());
             SetPrivateField(level, "palette", palette);
             return level;

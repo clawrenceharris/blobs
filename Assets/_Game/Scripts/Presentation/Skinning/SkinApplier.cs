@@ -26,6 +26,12 @@ namespace Blobs.Presentation
             if (view == null || view.BlobRenderer == null) return;
             view.BlobRenderer.ApplySkin(skin);
         }
+
+        public void Apply(BlobView view, Material material)
+        {
+            if (view == null || view.BlobRenderer == null) return;
+            view.BlobRenderer.ApplySkin(material);
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 # Blobs Technical Architecture
 
-> September 9 rule alignment: [Game design](GAME_DESIGN.md) is authoritative. Application must own an independent move counter, whole-action Undo history, and playback-aware command availability. Presentation reverses recorded outcomes and signals completion; it does not determine legality. Restart cancels playback and pending victory at any point. See [implementation checklist](RULES_IMPLEMENTATION_PLAN.md). Older architectural sketches below describe boundaries, not completed features.
+> September 9 rule alignment: [Game design](GAME_DESIGN.md) is the player-facing authority; [resolution rules](RULE_RESOLUTION.md) and [Undo and Restart behavior](UNDO_AND_RESTART.md) give detailed contracts. Application must own an independent move counter, whole-action Undo history, and playback-aware command availability. Presentation reverses recorded outcomes and signals completion; it does not determine legality. Restart cancels playback and pending victory at any point. See [implementation checklist](RULES_IMPLEMENTATION_PLAN.md). Older architectural sketches below describe boundaries, not completed features.
 
 
 **Status:** Proposed production architecture 0.9 — migration target for the current prototype  
@@ -179,20 +179,14 @@ Blob IDs stay stable within a resolved action so presenters can resolve moves, r
 
 ## Restart and session history
 
-The player-facing recovery action is restart, not undo.
+Application owns an independent count of committed board-changing forward actions and a history of complete resolved actions. Undo restores the board before the latest available action without changing that count. A new action after Undo discards the undone future. Presentation reverses the recorded outcome rather than re-resolving the move. See [Undo and Restart behavior](UNDO_AND_RESTART.md) for the complete contract.
 
-Cascades and multi-step reactions should be allowed to grow without requiring every visual or rule effect to support clean reversal. Ordered effects remain important for deterministic resolution, animation synchronization, debugging, and tests, but production gameplay should not depend on inverse effects for player undo.
-
-- Retain the authored initial level state.
-- Restart discards all commands and reconstructs the authored state.
-- Restart clears selection, move count, transient cascade state, and completion state before reevaluating the initial board.
-- Application may keep move history for analytics, scoring, debugging, or replay tooling, but that history is not a player-facing undo stack.
-- Presentation rebuilds from the restarted snapshot and must not rely on reversing animations.
+Restart is available during playback and after victory. It cancels pending playback and victory callbacks, clears selection and history, restores the authored initial state, and resets the move count.
 
 ## Win and objective evaluation
 
-- Clearing the board of clearable blobs (and satisfying target / flag rules) is evaluated in Core from board state, not from animation completion.
-- Target / flag blobs require matching color and “last clearable” semantics as defined by merge rules.
+- Clearing the board of clearable blobs (under the target / Flag rules) is evaluated in Core from board state, not from animation completion.
+- Flag capture requires a matching Normal source and zero clearable blobs after the action. A non-Flag action can also win by clearing the last clearable blob.
 - Application exposes level-complete as explicit session state and emits a completion event when a forward move crosses from incomplete to complete.
 - Restarting after completion returns the session to the initial incomplete state unless the authored board is already complete.
 - Scoring (moves, stars, gems) is Application/content policy fed by Core outcomes; presentation only displays it.

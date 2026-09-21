@@ -2,7 +2,7 @@
 
 ## September 9, 2026 rules decision
 
-[Game design](../GAME_DESIGN.md) now records the agreed rules. [Implementation checklist](../RULES_IMPLEMENTATION_PLAN.md) tracks pending code and acceptance work. Undo is required and leaves move count unchanged; the current intent history/count coupling must change. Flags accept matching Normal sources only, require explicit successful capture when targeted, and level validation requires exactly one Flag. Reached-path atomicity, stopping Rocks, and Ghost starting-Grave clearing are explicit. This update documents decisions; it does not certify runtime implementation or test results.
+[Game design](../GAME_DESIGN.md) summarizes the agreed player-facing rules; [resolution rules](../RULE_RESOLUTION.md), [Undo and Restart](../UNDO_AND_RESTART.md), and [level authoring](../LEVEL_AUTHORING.md) hold detailed contracts. [Implementation checklist](../RULES_IMPLEMENTATION_PLAN.md) tracks pending code and acceptance work. Undo is required and leaves move count unchanged; the current intent history/count coupling must change. Flags accept matching Normal sources only, require explicit successful capture when targeted, and level validation requires exactly one Flag. Reached-path atomicity, stopping Rocks, and Ghost starting-Grave clearing are explicit. This update documents decisions; it does not certify runtime implementation or test results.
 
 ## September 10, 2026 testing update
 

@@ -95,5 +95,87 @@ namespace Blobs.Tests.PlayMode
             Assert.That(presenter.IsPresenting, Is.False);
             Assert.That(presenter.IsSynchronizedWith(final), Is.True);
         }
+
+        [UnityTest]
+        public IEnumerator PlaybackBlocksSelectionAndQueuesUndoUntilItSettles()
+        {
+            GameSession session = CreateUndoSession();
+            session.ExecuteMove(new MoveIntent(
+                session.CurrentState.GetBlob("source"),
+                session.CurrentState.GetBlob("target")));
+            BoardPresenter presenter = CreatePresenter(session.CreateSnapshot(), session);
+            presenter.RegisterMoveStepHandler(new RecordingStepHandler(new List<string>()));
+            var commands = new QueuedGameplayCommands(session, presenter);
+
+            presenter.ApplySteps(
+                new[]
+                {
+                    new MoveStep(MoveStepKind.Traverse, Array.Empty<IBoardEffect>()),
+                    new MoveStep(MoveStepKind.Traverse, Array.Empty<IBoardEffect>())
+                },
+                session.CreateSnapshot());
+            yield return WaitUntil(() => presenter.IsPresenting);
+
+            BlobSelectionResult blocked = commands.SelectBlobAt(new GridPosition(1, 0));
+            Assert.That(blocked.MoveAttempted, Is.False);
+            Assert.That(session.SelectedBlobId, Is.Null);
+            Assert.That(commands.Undo(), Is.True);
+            Assert.That(session.CanUndo, Is.True, "Undo must wait for forward playback.");
+
+            yield return WaitUntil(() => !session.CanUndo);
+            yield return WaitUntil(() => !presenter.IsPresenting);
+
+            Assert.That(session.CurrentState.GetBlob("source").Position,
+                Is.EqualTo(new GridPosition(0, 0)));
+            Assert.That(session.CurrentState.GetBlob("target"), Is.Not.Null);
+            Assert.That(presenter.IsSynchronizedWith(session.CreateSnapshot()), Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator RestartDuringWinningPlaybackSuppressesStaleCompletion()
+        {
+            GameSession session = CreateUndoSession();
+            session.ExecuteMove(new MoveIntent(
+                session.CurrentState.GetBlob("source"),
+                session.CurrentState.GetBlob("target")));
+            BoardPresenter presenter = CreatePresenter(session.CreateSnapshot(), session);
+            var commands = new QueuedGameplayCommands(session, presenter);
+            var settledSnapshots = new List<GameSessionSnapshot>();
+            presenter.SnapshotChanged += settledSnapshots.Add;
+
+            session.ExecuteMove(new MoveIntent(
+                session.CurrentState.GetBlob("source"),
+                session.CurrentState.GetBlob("flag")));
+            Assert.That(session.IsComplete, Is.True);
+            yield return WaitUntil(() => presenter.IsPresenting);
+
+            commands.Restart();
+            Assert.That(session.IsComplete, Is.False);
+            Assert.That(session.MoveCount, Is.Zero);
+
+            yield return new WaitForSeconds(0.5f);
+
+            Assert.That(presenter.IsPresenting, Is.False);
+            Assert.That(presenter.IsSynchronizedWith(session.CreateSnapshot()), Is.True);
+            Assert.That(settledSnapshots, Is.Not.Empty);
+            Assert.That(settledSnapshots.TrueForAll(snapshot => !snapshot.IsComplete), Is.True,
+                "Canceled winning playback must not publish its stale completion snapshot.");
+        }
+
+        private static GameSession CreateUndoSession()
+        {
+            return new GameSession(new LevelDefinition(
+                "playback-commands",
+                LevelDefinition.CurrentSchemaVersion,
+                3,
+                1,
+                new BlobDefinition[]
+                {
+                    new NormalBlobDefinition("source", new GridPosition(0, 0), BlobColor.Red),
+                    new NormalBlobDefinition("target", new GridPosition(1, 0), BlobColor.Blue),
+                    new FlagBlobDefinition("flag", new GridPosition(2, 0), BlobColor.Red)
+                },
+                Array.Empty<TileDefinition>()));
+        }
     }
 }

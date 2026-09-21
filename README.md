@@ -4,7 +4,7 @@ Blobs is a Unity 6 grid puzzle game about selecting a source blob and merging it
 
 ## Current Production Direction
 
-The authoritative rules are in [Game design](Docs/GAME_DESIGN.md); pending code changes and acceptance scenarios are in [Rules implementation plan](Docs/RULES_IMPLEMENTATION_PLAN.md). These describe the September 9 decisions, some of which are not yet implemented.
+The player-facing rules are in [Game design](Docs/GAME_DESIGN.md); detailed contracts are in [Resolution rules](Docs/RULE_RESOLUTION.md), [Undo and Restart](Docs/UNDO_AND_RESTART.md), and [Level authoring](Docs/LEVEL_AUTHORING.md). Pending code changes and acceptance scenarios are in [Rules implementation plan](Docs/RULES_IMPLEMENTATION_PLAN.md). These describe the September 9 decisions, some of which are not yet implemented.
 
 - Select a source and a blob target on the same row or column.
 - Simulate reached interactions atomically. Normal/Trail merges continue; Rocks stop; Ghosts consume and haunt. Reached color/terrain failures reject the whole action.
@@ -45,7 +45,11 @@ Presentation timing must never decide whether a move is valid. Core and Applicat
 
 ## Useful Docs
 
-- [Game design](Docs/GAME_DESIGN.md): agreed rules and presentation direction.
+- [Game design](Docs/GAME_DESIGN.md): premise and player-facing rules.
+- [Resolution rules](Docs/RULE_RESOLUTION.md): move ordering, atomicity, and edge cases.
+- [Undo and Restart](Docs/UNDO_AND_RESTART.md): recovery behavior and system ownership.
+- [Level authoring](Docs/LEVEL_AUTHORING.md): structural level requirements.
+- [Presentation direction](Docs/PRESENTATION_DIRECTION.md): tutorials, visual style, and game feel.
 - [Rules implementation plan](Docs/RULES_IMPLEMENTATION_PLAN.md): pending changes and acceptance cases.
 - [Technical architecture](Docs/TECHNICAL_ARCHITECTURE.md): layer responsibilities.
 - [Production plan](Docs/PRODUCTION_PLAN.md): current delivery priorities.

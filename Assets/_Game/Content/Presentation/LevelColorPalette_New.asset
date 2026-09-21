@@ -36,3 +36,10 @@ MonoBehaviour:
     baseColor: {r: 0, g: 0, b: 0, a: 0}
     shadowColor: {r: 0, g: 0, b: 0, a: 0}
     highlightColor: {r: 0, g: 0, b: 0, a: 0}
+  materials:
+  - material: {fileID: 2100000, guid: ab0638ea023b34097ba572c65d9f92d7, type: 2}
+    color: 0
+  - material: {fileID: 2100000, guid: 7872f22e4939f43e1aa0fb4854c04b1c, type: 2}
+    color: 1
+  - material: {fileID: 2100000, guid: 031e112b02826406c84ad52b6db364f2, type: 2}
+    color: 4

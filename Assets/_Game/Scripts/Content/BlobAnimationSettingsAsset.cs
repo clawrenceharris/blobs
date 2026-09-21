@@ -74,6 +74,7 @@ namespace Blobs.Content
         [Header("Timing")]
         [SerializeField] private float _anticipationDuration = 0.0f;
         [SerializeField] private float _travelDuration = 0.4f;
+        [SerializeField] private float _contactDuration = 0.06f;
         [SerializeField] private float _consumeDuration = 0.2f;
         [SerializeField] private float _settleDuration = 0.4f;
 
@@ -82,6 +83,7 @@ namespace Blobs.Content
         [SerializeField] private Vector2 _anticipationScale = new(1.10f, 0.88f);
         [SerializeField] private Vector2 _travelScale = new(0.9f, 1.056f);
         [SerializeField] private Vector2 _targetBraceScale = new(0.88f, 0.99f);
+        [SerializeField] private Vector2 _contactScale = new(1.12f, 0.86f);
         [SerializeField] private Vector2 _survivorImpactScale = new(1.14f, 1.28f);
 
         [Header("Merge Sorting")]
@@ -90,6 +92,7 @@ namespace Blobs.Content
 
         public float AnticipationDuration => _anticipationDuration;
         public float TravelDuration => _travelDuration;
+        public float ContactDuration => _contactDuration;
         public float ConsumeDuration => _consumeDuration;
         public float SettleDuration => _settleDuration;
 
@@ -97,6 +100,7 @@ namespace Blobs.Content
         public Vector2 AnticipationScale => _anticipationScale;
         public Vector2 TravelScale => _travelScale;
         public Vector2 TargetBraceScale => _targetBraceScale;
+        public Vector2 ContactScale => _contactScale;
 
         public int SourceSortingOffset => _sourceSortingOffset;
         public int TargetSortingOffset => _targetSortingOffset;
@@ -105,6 +109,7 @@ namespace Blobs.Content
         {
             _anticipationDuration = Mathf.Max(0.01f, _anticipationDuration);
             _travelDuration = Mathf.Max(0.01f, _travelDuration);
+            _contactDuration = Mathf.Max(0.01f, _contactDuration);
             _consumeDuration = Mathf.Max(0.01f, _consumeDuration);
             _settleDuration = Mathf.Max(0.01f, _settleDuration);
             _anticipationBackstep = Mathf.Max(0.01f, _anticipationBackstep);
@@ -113,6 +118,7 @@ namespace Blobs.Content
             _anticipationScale = new Vector2(Mathf.Max(0.01f, _anticipationScale.x), Mathf.Max(0.01f, _anticipationScale.y));
             _travelScale = new Vector2(Mathf.Max(0.01f, _travelScale.x), Mathf.Max(0.01f, _travelScale.y));
             _targetBraceScale = new Vector2(Mathf.Max(0.01f, _targetBraceScale.x), Mathf.Max(0.01f, _targetBraceScale.y));
+            _contactScale = new Vector2(Mathf.Max(0.01f, _contactScale.x), Mathf.Max(0.01f, _contactScale.y));
             _survivorImpactScale = new Vector2(Mathf.Max(0.01f, _survivorImpactScale.x), Mathf.Max(0.01f, _survivorImpactScale.y));
         }
 

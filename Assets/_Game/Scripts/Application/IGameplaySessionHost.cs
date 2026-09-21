@@ -22,5 +22,32 @@ namespace Blobs.Application
         /// Current state surface, or null before a level has started.
         /// </summary>
         IGameplayState CurrentState { get; }
+
+        /// <summary>
+        /// Pauses the game.
+        /// </summary>
+        void PauseGame();
+
+        /// <summary>
+        /// Resumes the game.
+        /// </summary>
+        void ResumeGame();
+    }
+
+    /// <summary>
+    /// Optional timing surface for UI that must wait until board presentation has settled.
+    /// Logical session snapshots remain immediate so command availability is never animation-bound.
+    /// </summary>
+    public interface IGameplayPresentationStatus
+    {
+        /// <summary>
+        /// Raised after the board has finished presenting, or has synchronously rebuilt, a snapshot.
+        /// </summary>
+        event Action<GameSessionSnapshot> PresentationSettled;
+
+        /// <summary>
+        /// Most recent snapshot whose board presentation has settled.
+        /// </summary>
+        GameSessionSnapshot PresentedSnapshot { get; }
     }
 }

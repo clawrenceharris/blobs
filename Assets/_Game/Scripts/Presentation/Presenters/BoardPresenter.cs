@@ -26,6 +26,7 @@ namespace Blobs.Presentation
 
         private PresentationTimeline _effectTimeline;
         private CancellationTokenSource _playbackCancellation;
+        private bool _playbackPaused;
         private UniTaskCompletionSource _playbackCompletion;
         private GameSessionSnapshot _pendingSnapshot;
         public bool IsPresenting => _playbackCancellation != null;
@@ -49,6 +50,8 @@ namespace Blobs.Presentation
         /// Raised after this presenter applies effects from a move.
         /// </summary>
         public event Action<GameSessionSnapshot> SnapshotChanged;
+
+
 
         /// <summary>
         /// Releases gameplay subscriptions and clears presentation views.
@@ -426,6 +429,29 @@ namespace Blobs.Presentation
             return completion != null ? completion.Task : UniTask.CompletedTask;
         }
 
+        public UniTask WaitUntilUnpausedAsync()
+        {
+            return _playbackPaused ? UniTask.Create(async () =>
+            {
+                while (_playbackPaused)
+                {
+                    await UniTask.DelayFrame(1);
+                }
+            }) : UniTask.CompletedTask;
+        }
+
+        public void ResumePlayback()
+        {
+            _playbackPaused = false;
+
+        }
+
+        public async void PausePlayback()
+        {
+            _playbackPaused = true;
+            await WaitUntilUnpausedAsync();
+        }
+
         private void KillEffectTimeline()
         {
             var cancellation = _playbackCancellation;
@@ -502,5 +528,7 @@ namespace Blobs.Presentation
         {
             Dispose();
         }
+
+
     }
 }

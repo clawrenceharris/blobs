@@ -12,7 +12,7 @@ namespace Blobs.Presentation
     /// Scene composition root for production gameplay. It creates the Application session and wires
     /// Presentation/Input collaborators, but it must not apply effects or own gameplay flow.
     /// </summary>
-    public sealed class GameBootstrapper : MonoBehaviour, IGameplaySessionHost
+    public sealed class GameBootstrapper : MonoBehaviour, IGameplaySessionHost, IGameplayPresentationStatus
     {
         [SerializeField] private BoardPresenter boardPresenter;
 
@@ -24,16 +24,23 @@ namespace Blobs.Presentation
         [SerializeField] private GameplayFeedbackPresenter feedbackPresenter;
 
         private GameSession _session;
-        private IGameplayCommands _commands;
+        private QueuedGameplayCommands _commands;
+        private GameSessionSnapshot _presentedSnapshot;
 
         /// <inheritdoc />
         public event Action<IGameplayCommands, IGameplayState> SessionStarted;
 
         /// <inheritdoc />
-        public IGameplayCommands CurrentCommands => _commands ?? _session;
+        public event Action<GameSessionSnapshot> PresentationSettled;
+
+        /// <inheritdoc />
+        public IGameplayCommands CurrentCommands => _commands;
 
         /// <inheritdoc />
         public IGameplayState CurrentState => _session;
+
+        /// <inheritdoc />
+        public GameSessionSnapshot PresentedSnapshot => _presentedSnapshot;
 
         private void Start()
         {
@@ -64,6 +71,8 @@ namespace Blobs.Presentation
             new Debugger(message => Debug.Log(message));
             _session = new GameSession(level, new MoveResolver());
 
+            boardPresenter.SnapshotChanged -= HandlePresentationSettled;
+            boardPresenter.SnapshotChanged += HandlePresentationSettled;
             boardPresenter.Initialize(
                 _session,
                 asset.Palette);
@@ -76,6 +85,32 @@ namespace Blobs.Presentation
                 cameraPresenter.FitCameraToBoard(_session.CurrentState.Width, _session.CurrentState.Height, boardPresenter.CellSize);
 
             SessionStarted?.Invoke(_commands, _session);
+        }
+
+        private void HandlePresentationSettled(GameSessionSnapshot snapshot)
+        {
+            _presentedSnapshot = snapshot;
+            PresentationSettled?.Invoke(snapshot);
+        }
+
+        private void OnDestroy()
+        {
+            if (boardPresenter != null)
+                boardPresenter.SnapshotChanged -= HandlePresentationSettled;
+        }
+
+        public void PauseGame()
+        {
+            if (boardPresenter == null)
+                return;
+            boardPresenter.PausePlayback();
+        }
+
+        public void ResumeGame()
+        {
+            if (boardPresenter == null)
+                return;
+            boardPresenter.ResumePlayback();
         }
 
         /// <summary>

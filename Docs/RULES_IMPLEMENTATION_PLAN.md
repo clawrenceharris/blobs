@@ -1,6 +1,6 @@
 # Agreed rules — implementation and acceptance checklist
 
-September 9, 2026. Authority: [game design](GAME_DESIGN.md). This is a pending implementation plan, not a test-run report. No runtime changes are made by the documentation pass. Paths below are under `Assets/_Game/Production/`.
+September 9, 2026. Authority: [game design](GAME_DESIGN.md), [resolution rules](RULE_RESOLUTION.md), [Undo and Restart](UNDO_AND_RESTART.md), and [level authoring](LEVEL_AUTHORING.md). This is a pending implementation plan, not a test-run report. No runtime changes are made by the documentation pass. Paths below are under `Assets/_Game/Production/`.
 
 ## Current gaps and implementation order
 
@@ -11,7 +11,7 @@ September 9, 2026. Authority: [game design](GAME_DESIGN.md). This is a pending i
 - [x] **5. Authoring validation.** Extend `Scripts/Core/Levels/LevelValidator.cs` with exactly one Flag, positive clearable count, and a selectable source. Reconcile `Scripts/Editor/LevelDefinitionAssetEditor.cs` defaults with `Scripts/Content/LevelAssetMapper.cs`. Migrate real level fixtures deliberately; isolated Core rule tests can construct boards without requiring a full authored level.
 - [x] **6. Session history and accounting.** `Scripts/Application/GameSession.cs` uses an independent committed move count, records only board-changing actions, exposes `CanUndo`, and stores the resolved action plus restoration data needed for whole-action Undo. Undo restores the previous board without decreasing the move count, clears selection, has no Redo branch, and restart resets count/history.
 - [x] **7. Reverse presentation.** The presentation timeline can reverse ordered move steps/effects, restore removed/consumed blobs with stable identities and traits, and play dedicated Undo feedback. Reverse playback consumes the recorded action rather than rerunning forward rules to infer the past.
-- [ ] **8. Input, HUD, victory, cancellation.** Finish the player-facing polish around completed systems: keep Undo visually available whenever `GameSessionSnapshot.CanUndo` is true, queue Undo commands submitted during forward/reverse playback, prevent blob selection during playback, delay victory display until winning playback completes, and verify restart interrupts forward/reverse/winning sequences without stale callbacks. Rejection/no-change feedback must remain nonblocking and must not clear newer user selection through delayed callbacks.
+- [x] **8. Input, HUD, victory, cancellation.** Finish the player-facing polish around completed systems: keep Undo visually available whenever `GameSessionSnapshot.CanUndo` is true, queue Undo commands submitted during forward/reverse playback, prevent blob selection during playback, delay victory display until winning playback completes, and verify restart interrupts forward/reverse/winning sequences without stale callbacks. Rejection/no-change feedback must remain nonblocking and must not clear newer user selection through delayed callbacks.
 - [ ] **9. Integration validation.** Keep the current Unity evidence fresh by running EditMode and PlayMode suites after the input/HUD/victory pass, then test the production player build. Record commands, counts, failures, and target platform here or in a linked validation note.
 
 ## Acceptance scenarios
@@ -78,6 +78,6 @@ Limit optional mechanics to preserve time for level design, playtesting, and del
 
 ## Completion evidence
 
-Latest local README evidence reports 114/114 Edit Mode tests and 20/20 Play Mode tests passing on Unity 6000.3.6f1. Treat that as the current baseline until the remaining input/HUD/victory/cancellation work is completed and rerun.
+Item 8 verification on Unity 6000.3.6f1: 32/32 Play Mode tests passed on September 21, 2026, including queued Undo, selection lockout, delayed victory, restart cancellation, and stale-callback coverage. The broader Edit Mode suite currently reports 88/135 passing; its failures include missing production assets/fixtures and pre-existing Core expectation drift, so integration validation remains open under item 9.
 
 Record actual test commands, results, build target, and remaining failures when new implementation is performed. No acceptance row is satisfied solely by adding its test or documenting its intended outcome.

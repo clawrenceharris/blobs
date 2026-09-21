@@ -40,6 +40,7 @@ namespace Blobs.Presentation
 
         public BlobMotionAnimator BlobMotionAnimator => _blobMotionAnimator;
         public Color MergeEffectColor { get; private set; } = Color.white;
+        public Skin MergeEffectSkin { get; private set; } = new(Color.white, Color.gray, Color.white);
 
         /// <summary>
         /// Initializes the view from immutable Core blob state.
@@ -178,8 +179,18 @@ namespace Blobs.Presentation
             if (blob.Components.Color.HasValue)
             {
                 Skin skin = _skinResolver.ResolveSkin(blob.Components.Color.Value.Color, colorPalette);
-                _skinApplier.Apply(this, skin);
-                MergeEffectColor = colorPalette.GetRequired(blob.Components.Color.Value.Color).BaseColor;
+                Material material = _skinResolver.ResolveMaterial(blob.Components.Color.Value.Color, colorPalette);
+                MergeEffectSkin = skin;
+                if (material != null)
+                {
+                    _skinApplier.Apply(this, material);
+                    MergeEffectColor = material.color;
+                }
+                else
+                {
+                    _skinApplier.Apply(this, skin);
+                    MergeEffectColor = skin.BaseColor;
+                }
             }
 
             BlobColorBinding[] bindings =

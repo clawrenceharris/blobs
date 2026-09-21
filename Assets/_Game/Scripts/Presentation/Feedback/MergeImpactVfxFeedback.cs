@@ -26,16 +26,16 @@ namespace Blobs.Presentation
             }
 
             ResolveSorting(
-                context.SortingAnchor,
+                context.Target,
                 out int sortingLayerId,
                 out int sortingOrder);
             Transform parent = _effectsRoot != null ? _effectsRoot : transform;
             MergeImpactVfx effect = Instantiate(
                 _prefab,
-                context.WorldPosition,
+                context.DestinationWorldPosition,
                 Quaternion.identity,
                 parent);
-            effect.Play(context.BlobColor, sortingLayerId, sortingOrder);
+            effect.Play(context, sortingLayerId, sortingOrder);
         }
 
         private void ResolveSorting(

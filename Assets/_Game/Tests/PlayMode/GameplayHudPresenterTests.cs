@@ -37,7 +37,7 @@ namespace Blobs.Tests.PlayMode
             hud.SetActive(false);
             var presenter = hud.AddComponent<GameplayHudPresenter>();
             var moveText = CreateGameObject("Move Text").AddComponent<TextMeshProUGUI>();
-            var restartButton = CreateGameObject("Restart Button").AddComponent<Button>();
+            HudButtonView restartButton = CreateHudButton("Restart Button");
             var completionRoot = CreateGameObject("Completion Root");
             var commands = new FakeCommands();
             var state = new FakeState();
@@ -63,9 +63,91 @@ namespace Blobs.Tests.PlayMode
             state.RaiseSnapshotChanged();
             Assert.That(completionRoot.activeSelf, Is.True);
 
-            restartButton.onClick.Invoke();
+            restartButton.Button.onClick.Invoke();
 
             Assert.That(commands.RestartCount, Is.EqualTo(1));
+        }
+
+        [UnityTest]
+        public IEnumerator WinningSnapshotWaitsForPresentationBeforeShowingCompletion()
+        {
+            GameObject hud = CreateGameObject("Winning HUD");
+            hud.SetActive(false);
+            var presenter = hud.AddComponent<GameplayHudPresenter>();
+            var statusText = CreateGameObject("Status Text").AddComponent<TextMeshProUGUI>();
+            var completionRoot = CreateGameObject("Completion Root");
+            var state = new FakeState();
+            var host = new FakePresentationSessionHost(new FakeCommands(), state);
+
+            SetPrivateField(presenter, "statusText", statusText);
+            SetPrivateField(presenter, "completionRoot", completionRoot);
+
+            hud.SetActive(true);
+            presenter.Initialize(host);
+            yield return null;
+
+            state.MoveCount = 1;
+            state.IsComplete = true;
+            state.RaiseSnapshotChanged();
+
+            Assert.That(completionRoot.activeSelf, Is.False);
+            Assert.That(statusText.text, Is.Empty);
+
+            host.RaisePresentationSettled(state.CreateSnapshot());
+
+            Assert.That(completionRoot.activeSelf, Is.True);
+            Assert.That(statusText.text, Is.EqualTo("Complete!"));
+        }
+
+        [UnityTest]
+        public IEnumerator RestartHidesVictoryAndIgnoresStaleWinningPresentation()
+        {
+            GameObject hud = CreateGameObject("Restart HUD");
+            hud.SetActive(false);
+            var presenter = hud.AddComponent<GameplayHudPresenter>();
+            var completionRoot = CreateGameObject("Completion Root");
+            var state = new FakeState { MoveCount = 2, IsComplete = true };
+            var host = new FakePresentationSessionHost(new FakeCommands(), state);
+            GameSessionSnapshot winningSnapshot = state.CreateSnapshot();
+
+            SetPrivateField(presenter, "completionRoot", completionRoot);
+
+            hud.SetActive(true);
+            presenter.Initialize(host);
+            host.RaisePresentationSettled(winningSnapshot);
+            Assert.That(completionRoot.activeSelf, Is.True);
+
+            state.MoveCount = 0;
+            state.IsComplete = false;
+            state.RaiseSnapshotChanged();
+            host.RaisePresentationSettled(winningSnapshot);
+            yield return null;
+
+            Assert.That(completionRoot.activeSelf, Is.False);
+        }
+
+        [UnityTest]
+        public IEnumerator UndoAvailabilityUsesImmediateLogicalSnapshotDuringPlayback()
+        {
+            GameObject hud = CreateGameObject("Undo HUD");
+            hud.SetActive(false);
+            var presenter = hud.AddComponent<GameplayHudPresenter>();
+            HudButtonView undoButton = CreateHudButton("Undo Button");
+            var state = new FakeState();
+            var host = new FakePresentationSessionHost(new FakeCommands(), state);
+
+            SetPrivateField(presenter, "undoButton", undoButton);
+
+            hud.SetActive(true);
+            presenter.Initialize(host);
+            yield return null;
+            Assert.That(undoButton.Button.interactable, Is.False);
+
+            state.MoveCount = 1;
+            state.UndoAvailable = true;
+            state.RaiseSnapshotChanged();
+
+            Assert.That(undoButton.Button.interactable, Is.True);
         }
 
         private GameObject CreateGameObject(string name)
@@ -73,6 +155,17 @@ namespace Blobs.Tests.PlayMode
             var gameObject = new GameObject(name);
             _createdObjects.Add(gameObject);
             return gameObject;
+        }
+
+        private HudButtonView CreateHudButton(string name)
+        {
+            GameObject buttonObject = CreateGameObject(name);
+            var button = buttonObject.AddComponent<Button>();
+            var icon = buttonObject.AddComponent<Image>();
+            var view = buttonObject.AddComponent<HudButtonView>();
+            SetPrivateField(view, "button", button);
+            SetPrivateField(view, "icon", icon);
+            return view;
         }
 
         private static void SetPrivateField(object target, string fieldName, object value)
@@ -112,7 +205,8 @@ namespace Blobs.Tests.PlayMode
 
             public int MoveCount { get; set; }
             public bool IsComplete { get; set; }
-            public bool CanUndo => false;
+            public bool UndoAvailable { get; set; }
+            public bool CanUndo => UndoAvailable;
 
             public GameSessionSnapshot CreateSnapshot()
             {
@@ -120,7 +214,8 @@ namespace Blobs.Tests.PlayMode
                     "hud-test",
                     new BoardState(2, 1, new List<BlobState>(), new List<TileState>()),
                     MoveCount,
-                    IsComplete);
+                    IsComplete,
+                    CanUndo);
             }
 
             public void RaiseSnapshotChanged()
@@ -132,6 +227,40 @@ namespace Blobs.Tests.PlayMode
             public void RaiseStateRestored()
             {
                 StateRestored?.Invoke(CreateSnapshot());
+            }
+        }
+
+        private sealed class FakePresentationSessionHost :
+            IGameplaySessionHost,
+            IGameplayPresentationStatus
+        {
+            public FakePresentationSessionHost(
+                IGameplayCommands commands,
+                IGameplayState state)
+            {
+                CurrentCommands = commands;
+                CurrentState = state;
+            }
+
+            public event Action<IGameplayCommands, IGameplayState> SessionStarted;
+            public event Action<GameSessionSnapshot> PresentationSettled;
+
+            public IGameplayCommands CurrentCommands { get; }
+            public IGameplayState CurrentState { get; }
+            public GameSessionSnapshot PresentedSnapshot { get; private set; }
+
+            public void RaisePresentationSettled(GameSessionSnapshot snapshot)
+            {
+                PresentedSnapshot = snapshot;
+                PresentationSettled?.Invoke(snapshot);
+            }
+
+            public void PauseGame()
+            {
+            }
+
+            public void ResumeGame()
+            {
             }
         }
 
@@ -151,6 +280,12 @@ namespace Blobs.Tests.PlayMode
             public void RaiseSessionStarted()
             {
                 SessionStarted?.Invoke(CurrentCommands, CurrentState);
+            }
+            public void PauseGame()
+            {
+            }
+            public void ResumeGame()
+            {
             }
         }
     }

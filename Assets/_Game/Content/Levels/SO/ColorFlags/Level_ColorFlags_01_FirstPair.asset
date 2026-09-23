@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 228f01d3da5254622b9b1236a3d1c0ff, type: 3}
+  m_Name: Level_ColorFlags_01_FirstPair
+  m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
+  levelId: color-flags-01
+  schemaVersion: 1
+  width: 3
+  height: 2
+  emptyPositions: []
+  blobs:
+  - rid: 1001
+  - rid: 1002
+  - rid: 1003
+  - rid: 1004
+  - rid: 1005
+  tiles: []
+  objective: 0
+  palette: {fileID: 11400000, guid: b2d1b71546e534ed6b4d4e263fcfd898, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 1001
+      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: pink-flag
+        position: {x: 2, y: 0}
+        type: 1
+        color: 0
+    - rid: 1002
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: pink-1
+        position: {x: 2, y: 1}
+        type: 0
+        color: 0
+    - rid: 1003
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: pink-2
+        position: {x: 0, y: 1}
+        type: 0
+        color: 0
+    - rid: 1004
+      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blue-flag
+        position: {x: 1, y: 1}
+        type: 1
+        color: 1
+    - rid: 1005
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blue-1
+        position: {x: 0, y: 0}
+        type: 0
+        color: 1

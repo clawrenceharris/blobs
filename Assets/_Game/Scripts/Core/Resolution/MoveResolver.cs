@@ -198,8 +198,7 @@ namespace Blobs.Core
             }
 
             if (intendedTarget.Type == BlobType.Flag &&
-                (target.Id != intendedTarget.Id || simulation.GetBlob(source.Id) != null ||
-                 !ObjectiveEvaluator.IsComplete(simulation, objective)))
+                (target.Id != intendedTarget.Id || simulation.GetBlob(source.Id) != null))
                 return MoveResult.Failed(source.Id, intendedTarget.Id, MoveFailureReason.FlagCaptureRequired);
 
             // Commit atomically: replay the validated timeline onto the real board.

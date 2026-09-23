@@ -184,9 +184,9 @@ namespace Blobs.Core
 
                     // Flag blobs
                     [new MergeKey(BlobType.Normal, BlobType.Flag)] =
-                        new FlagMoveStrategy(),
+                        new NormalMoveStrategy(),
                     [new MergeKey(BlobType.Trail, BlobType.Flag)] =
-                        new FlagMoveStrategy(),
+                        new NormalMoveStrategy(),
 
                     // Rock blobs
                     [new MergeKey(BlobType.Normal, BlobType.Rock)] =

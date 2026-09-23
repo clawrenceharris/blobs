@@ -497,12 +497,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.GameBootstrapper
   boardPresenter: {fileID: 1341500224}
-  levelAsset: {fileID: 11400000, guid: 9b97c6fdf90bc43888f80ff9563e2ea1, type: 2}
+  levelAsset: {fileID: 11400000, guid: 760fe2ebf2ca4180b2846c1bbc345a57, type: 2}
   backgroundView: {fileID: 0}
   cameraPresenter: {fileID: 983718534}
   inputAdapter: {fileID: 1046084939}
   commandAdapter: {fileID: 912528542}
-  feedbackPresenter: {fileID: 0}
+  feedbackPresenter: {fileID: 1102361420}
 --- !u!4 &896816962
 Transform:
   m_ObjectHideFlags: 0

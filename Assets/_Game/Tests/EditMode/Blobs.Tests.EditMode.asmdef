@@ -2,6 +2,7 @@
     "name": "Blobs.Tests.EditMode",
     "rootNamespace": "Blobs.Tests.EditMode",
     "references": [
+        "Unity.InputSystem",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Blobs.Core",

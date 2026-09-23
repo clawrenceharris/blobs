@@ -8,6 +8,58 @@ namespace Blobs.Tests.EditMode
 {
     public sealed class GameSessionTests
     {
+        [Test]
+        public void DragCommitsOnlyOnReleaseAndOnlyOnce()
+        {
+            var session = CreateSession();
+            session.BeginDragAt(new GridPosition(0, 0));
+            Assert.That(session.MoveCount, Is.Zero);
+            var result = session.EndDragAt(new GridPosition(1, 0));
+            Assert.That(result.MoveResult.Succeeded, Is.True);
+            Assert.That(session.MoveCount, Is.EqualTo(1));
+            Assert.That(session.EndDragAt(new GridPosition(2, 0)).MoveAttempted, Is.False);
+            Assert.That(session.MoveCount, Is.EqualTo(1));
+        }
+
+        [TestCase(3, 1)]
+        [TestCase(0, 3)]
+        [TestCase(0, 0)]
+        [TestCase(-1, 1)]
+        public void DragWithMissingEndpointOrSamePieceDoesNotCommit(int startX, int endX)
+        {
+            var session = CreateSession();
+            session.BeginDragAt(new GridPosition(startX, 0));
+            session.EndDragAt(new GridPosition(endX, 0));
+            Assert.That(session.MoveCount, Is.Zero);
+            Assert.That(session.CanUndo, Is.False);
+            Assert.That(session.SelectedBlobId, Is.Null);
+        }
+
+        [Test]
+        public void InvalidDragDoesNotCommitAndNextDragCanStartFresh()
+        {
+            var session = CreateSession(BlobColor.Red);
+            session.BeginDragAt(new GridPosition(0, 0));
+            var result = session.EndDragAt(new GridPosition(1, 0));
+            Assert.That(result.MoveResult.Succeeded, Is.False);
+            Assert.That(session.MoveCount, Is.Zero);
+            Assert.That(session.CurrentState.BlobCount, Is.EqualTo(3));
+            Assert.That(session.SelectedBlobId, Is.Null);
+            Assert.That(session.BeginDragAt(new GridPosition(1, 0)).SourceId, Is.EqualTo("target"));
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void CanceledOrRestartedDragCannotCommitOnRelease(bool restart)
+        {
+            var session = CreateSession();
+            session.BeginDragAt(new GridPosition(0, 0));
+            if (restart) session.Restart();
+            else session.CancelDrag();
+            Assert.That(session.EndDragAt(new GridPosition(1, 0)).MoveAttempted, Is.False);
+            Assert.That(session.MoveCount, Is.Zero);
+        }
+
         [TestCase(0)]
         [TestCase(3)]
         public void SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving(int x)

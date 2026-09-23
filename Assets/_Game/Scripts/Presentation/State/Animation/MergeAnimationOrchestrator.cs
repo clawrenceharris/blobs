@@ -13,7 +13,7 @@ namespace Blobs.Presentation
     /// its supplied settings so queued interactions do not share mutable presenter settings.
     /// </summary>
     [DisallowMultipleComponent]
-    public sealed class MergeAnimationOrchestrator : MonoBehaviour
+    public sealed class MergeAnimationOrchestrator : MergeAnimationOrchestratorBase
     {
         private readonly List<IMergeImpactFeedback> _impactFeedbackChannels = new();
 
@@ -79,7 +79,7 @@ namespace Blobs.Presentation
         /// Creates a self-contained merge beat. State changes are callbacks inside the
         /// sequence, so queued chain merges do not enter Merging before their visual turn.
         /// </summary>
-        public Sequence CreateMergeBeat(
+        public override Sequence CreateMergeBeat(
             BlobView source,
             BlobView target,
             bool sourceSurvives,

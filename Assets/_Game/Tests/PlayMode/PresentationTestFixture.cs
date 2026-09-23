@@ -59,14 +59,18 @@ namespace Blobs.Tests.PlayMode
 
         protected BoardPresenter CreatePresenter(
             GameSessionSnapshot initialSnapshot,
-            IGameplayState state = null)
+            IGameplayState state = null,
+            MergeAnimationOrchestratorBase mergeOrchestrator = null)
         {
             GameObject root = CreateGameObject("PlayMode Board Presenter", active: false);
             root.AddComponent<MergeAnimationOrchestrator>();
+            root.AddComponent<BoardSurfacePresenter>();
             var surface = new GameObject("Board Surface");
             surface.transform.SetParent(root.transform, false);
             surface.AddComponent<BoardSurfaceView>();
             BoardPresenter presenter = root.AddComponent<BoardPresenter>();
+            if (mergeOrchestrator != null)
+                SetPrivateField(root.GetComponent<BlobPresenter>(), "_mergeAnimationOrchestrator", mergeOrchestrator);
             var animationSettings = ConfigureAnimationSettings(root);
             LevelColorPaletteAsset palette = CreatePalette();
             var factory = new RuntimeBlobViewFactory(palette, animationSettings);

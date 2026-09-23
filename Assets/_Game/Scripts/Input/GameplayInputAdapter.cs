@@ -1,13 +1,17 @@
 using Blobs.Application;
 using Blobs.Core;
 using System;
+using System.Collections.Generic;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Blobs.Input
 {
     /// <summary>
-    /// Converts pointer selection into gameplay commands. This adapter maps screen/world input
+    /// Converts pointer drags into source-to-target gameplay commands. This adapter maps screen/world input
     /// to grid positions but does not update board visuals directly.
     /// </summary>
     public sealed class GameplayInputAdapter : MonoBehaviour
@@ -19,6 +23,8 @@ namespace Blobs.Input
         [SerializeField] private Vector2 boardOrigin;
         private InputAction _runtimePointAction;
         private bool _subscribed;
+        private InputControl _dragControl;
+        private readonly List<RaycastResult> _uiHits = new();
         public event Action<BlobSelectionResult> BlobSelectionResolved;
 
         private InputAction SelectBlobAction =>
@@ -92,7 +98,8 @@ namespace Blobs.Input
 
             if (!_subscribed)
             {
-                action.performed += OnSelectBlob;
+                action.performed += OnPointerPress;
+                action.canceled += OnPointerPress;
                 _subscribed = true;
             }
 
@@ -101,10 +108,12 @@ namespace Blobs.Input
 
         private void UnsubscribeInputActions()
         {
+            CancelDrag();
             var action = SelectBlobAction;
             if (action != null && _subscribed)
             {
-                action.performed -= OnSelectBlob;
+                action.performed -= OnPointerPress;
+                action.canceled -= OnPointerPress;
                 action.Disable();
             }
 
@@ -117,42 +126,96 @@ namespace Blobs.Input
             _runtimePointAction = null;
         }
 
-        private void OnSelectBlob(InputAction.CallbackContext context)
+        private void CancelDrag()
         {
-            if (!context.performed || _commands == null)
-                return;
+            _dragControl = null;
+            _commands?.CancelDrag();
+        }
 
-            if (!TryGetPointerScreenPosition(out Vector2 screenPosition))
-                return;
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            if (!hasFocus) CancelDrag();
+        }
 
+        private void OnApplicationPause(bool paused)
+        {
+            if (paused) CancelDrag();
+        }
+
+        private void OnPointerPress(InputAction.CallbackContext context)
+        {
+            if (_commands == null) return;
+            bool pressed = context.ReadValueAsButton();
+            if (pressed && _dragControl != null) return;
+            if (!pressed && _dragControl != context.control) return;
+
+            TouchControl touch = context.control.parent as TouchControl;
+            Vector2 screenPosition;
+            if (touch != null)
+            {
+                if (touch.phase.ReadValue() == UnityEngine.InputSystem.TouchPhase.Canceled)
+                {
+                    CancelDrag();
+                    return;
+                }
+                screenPosition = touch.position.ReadValue();
+            }
+            else if (context.control.device is Pointer pointer)
+                screenPosition = pointer.position.ReadValue();
+            else
+            {
+                CancelDrag();
+                return;
+            }
+
+            if (IsOverUi(screenPosition) || !TryGetGridPosition(screenPosition, out GridPosition position))
+            {
+                CancelDrag();
+                return;
+            }
+
+            if (pressed)
+            {
+                BlobSelectionResult result = _commands.BeginDragAt(position);
+                _dragControl = result.HasSelection ? context.control : null;
+                BlobSelectionResolved?.Invoke(result);
+            }
+            else
+            {
+                _dragControl = null;
+                BlobSelectionResult result = _commands.EndDragAt(position);
+                BlobSelectionResolved?.Invoke(result);
+            }
+        }
+
+        private bool IsOverUi(Vector2 screenPosition)
+        {
+            if (EventSystem.current == null) return false;
+            // Raycast now: the UI module may not have processed this input event yet.
+            var pointerData = new PointerEventData(EventSystem.current) { position = screenPosition };
+            _uiHits.Clear();
+            EventSystem.current.RaycastAll(pointerData, _uiHits);
+            foreach (RaycastResult hit in _uiHits)
+                if (hit.module is GraphicRaycaster) return true;
+            return false;
+        }
+
+        private bool TryGetGridPosition(Vector2 screenPosition, out GridPosition gridPosition)
+        {
+            gridPosition = default;
             Camera cameraToUse = boardCamera != null ? boardCamera : Camera.main;
-            if (cameraToUse == null)
-                return;
+            if (cameraToUse == null || cellSize <= 0f || !cameraToUse.pixelRect.Contains(screenPosition))
+                return false;
 
             Ray ray = cameraToUse.ScreenPointToRay(screenPosition);
             var boardPlane = new Plane(Vector3.forward, Vector3.zero);
-            if (!boardPlane.Raycast(ray, out float distance))
-                return;
+            if (!boardPlane.Raycast(ray, out float distance)) return false;
 
             Vector3 worldPosition = ray.GetPoint(distance);
-            var gridPosition = new GridPosition(
+            gridPosition = new GridPosition(
                 Mathf.RoundToInt((worldPosition.x - boardOrigin.x) / cellSize),
                 Mathf.RoundToInt((worldPosition.y - boardOrigin.y) / cellSize));
-
-            SelectBlobAt(gridPosition);
-
-        }
-
-        private static bool TryGetPointerScreenPosition(out Vector2 screenPosition)
-        {
-            if (Pointer.current != null)
-            {
-                screenPosition = Pointer.current.position.ReadValue();
-                return true;
-            }
-
-            screenPosition = default;
-            return false;
+            return true;
         }
     }
 }

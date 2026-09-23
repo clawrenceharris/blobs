@@ -15,6 +15,16 @@ namespace Blobs.Presentation
         private float _cellSize;
         private Vector2 _origin;
 
+        public bool HasView
+        {
+            get
+            {
+                if (_view == null)
+                    _view = GetComponentInChildren<BoardSurfaceView>(true);
+                return _view != null;
+            }
+        }
+
         public int VisibleCellCount => _view != null ? _view.VisibleCellCount : 0;
 
         public void Initialize(float cellSize, Vector2 origin)

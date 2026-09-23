@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 429713232074978795}
   - component: {fileID: 762601904433120001}
   m_Layer: 3
-  m_Name: PF_Blob_Normal
+  m_Name: PF_Normal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

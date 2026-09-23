@@ -2,6 +2,26 @@
 
 Presentation consumes `MergeEffect` directly. Its moving, target, surviving, and consumed IDs describe the interaction; no neighboring move/removal effects are inspected to discover a merge.
 
+## Choosing merge choreography
+
+On the `BlobPresenter` component, drag a component derived from
+`MergeAnimationOrchestratorBase` into **Merge Animation Orchestrator**:
+
+- `MergeAnimationOrchestrator` retains the full deformation and impact-feedback sequence. `Game.unity` uses this component.
+- `SimpleMergeAnimationOrchestrator` slides behind the target in 0.15 seconds, sets the moving survivor to zero scale at arrival, brings it in front, and grows it to its original scale over 0.12 seconds. The target stays visible underneath until the growth completes. The survivor then overshoots to 115% over 0.06 seconds and settles to 100% over 0.06 seconds. Reverse merges keep the target and hide the mover at arrival. `Graybox.unity` uses this component. Its slide, scale, overshoot, and settle durations and pulse scale are editable in the Inspector, and it does not broadcast the full animation's impact/VFX cues.
+
+The field accepts a component on another GameObject. When unassigned, it falls
+back to an orchestrator on the same GameObject; assign it explicitly when several
+are present. `BlobPresenter` no longer automatically adds the full orchestrator.
+Existing scene references to the full component remain valid.
+
+Both versions preserve the survivor and color chosen by the game rules. In a
+normal merge the moving piece survives at the destination with its existing
+color; in a reverse merge the target survives. The simple animation presents this
+as one piece at the shared center, without changing identity, blending gameplay
+colors, or adding permanent growth. Contact callbacks still run at arrival.
+Undo and ghost follow-up effects retain their existing presentation handlers.
+
 ## Flow
 
 1. `BoardPresenter` receives resolved effects or move steps.

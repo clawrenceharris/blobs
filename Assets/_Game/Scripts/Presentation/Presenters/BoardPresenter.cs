@@ -15,12 +15,18 @@ namespace Blobs.Presentation
     /// </summary>
     [RequireComponent(typeof(BlobPresenter))]
     [RequireComponent(typeof(TilePresenter))]
-    [RequireComponent(typeof(BoardSurfacePresenter))]
     public sealed class BoardPresenter : MonoBehaviour
     {
         [SerializeField] private BlobPresenter _blobPresenter;
         [SerializeField] private TilePresenter _tilePresenter;
         [SerializeField] private BoardSurfacePresenter _boardSurfacePresenter;
+        [SerializeField, Tooltip("Used when no board surface presenter/view is available.")]
+        private Sprite cellSprite;
+        [SerializeField] private Color cellTint = new Color(0.65f, 0.65f, 0.65f, 1f);
+        [SerializeField, Range(0f, 1f)] private float cellOpacity = 0.15f;
+        private GameObject _fallbackSurface;
+        private int _fallbackCellCount;
+        private bool _loggedMissingCellSprite;
         [SerializeField] private float cellSize = 1.25f;
         [SerializeField] private Vector2 origin;
 
@@ -39,7 +45,8 @@ namespace Blobs.Presentation
         public int VisibleBlobCount => _blobPresenter != null ? _blobPresenter.VisibleCount : 0;
         public int VisibleTileCount => _tilePresenter != null ? _tilePresenter.VisibleCount : 0;
         public int VisibleSurfaceCellCount =>
-            _boardSurfacePresenter != null ? _boardSurfacePresenter.VisibleCellCount : 0;
+            _fallbackSurface != null ? _fallbackCellCount :
+            (_boardSurfacePresenter != null ? _boardSurfacePresenter.VisibleCellCount : 0);
 
         /// <summary>
         /// Current session snapshot used by tests and UI. Null until the presenter is initialized.
@@ -108,7 +115,8 @@ namespace Blobs.Presentation
             _state = state;
             _blobPresenter.Initialize(state, palette, cellSize, origin, blobViewFactory);
             _tilePresenter.Initialize(cellSize, origin, tileViewFactory);
-            _boardSurfacePresenter.Initialize(cellSize, origin);
+            if (_boardSurfacePresenter != null && _boardSurfacePresenter.HasView)
+                _boardSurfacePresenter.Initialize(cellSize, origin);
 
             _state.MoveResolved += HandleMoveResolved;
             _state.UndoResolved += HandleUndoResolved;
@@ -199,7 +207,7 @@ namespace Blobs.Presentation
 
             ResolvePresenters();
             KillEffectTimeline();
-            _boardSurfacePresenter.Rebuild(snapshot.Board);
+            RebuildSurface(snapshot.Board);
             _tilePresenter.Rebuild(snapshot.Board);
             _blobPresenter.Rebuild(snapshot.Board.Blobs);
             SnapshotChanged?.Invoke(snapshot);
@@ -324,7 +332,7 @@ namespace Blobs.Presentation
                 if (!applied || !IsSynchronizedWith(snapshot))
                 {
                     timeline.Kill();
-                    _boardSurfacePresenter.Rebuild(snapshot.Board);
+                    RebuildSurface(snapshot.Board);
                     _blobPresenter.Rebuild(snapshot.Board.Blobs);
                     _tilePresenter.Rebuild(snapshot.Board);
                 }
@@ -336,7 +344,7 @@ namespace Blobs.Presentation
                 if (_playbackCancellation == cancellation)
                 {
                     timeline.Kill();
-                    _boardSurfacePresenter.Rebuild(snapshot.Board);
+                    RebuildSurface(snapshot.Board);
                     _blobPresenter.Rebuild(snapshot.Board.Blobs);
                     _tilePresenter.Rebuild(snapshot.Board);
                 }
@@ -347,7 +355,7 @@ namespace Blobs.Presentation
                 if (_playbackCancellation == cancellation)
                 {
                     timeline.Kill();
-                    _boardSurfacePresenter.Rebuild(snapshot.Board);
+                    RebuildSurface(snapshot.Board);
                     _blobPresenter.Rebuild(snapshot.Board.Blobs);
                     _tilePresenter.Rebuild(snapshot.Board);
                 }
@@ -405,6 +413,70 @@ namespace Blobs.Presentation
             _blobPresenter?.Clear();
             _tilePresenter?.Clear();
             _boardSurfacePresenter?.Clear();
+            ClearFallbackSurface();
+        }
+
+        private void RebuildSurface(BoardState board)
+        {
+            ClearFallbackSurface();
+            if (_boardSurfacePresenter != null && _boardSurfacePresenter.HasView)
+            {
+                _boardSurfacePresenter.Initialize(cellSize, origin);
+                _boardSurfacePresenter.Rebuild(board);
+                _loggedMissingCellSprite = false;
+                return;
+            }
+
+            _boardSurfacePresenter?.Clear();
+            if (cellSprite == null)
+            {
+                if (!_loggedMissingCellSprite)
+                    Debug.Log("BoardPresenter: no board surface presenter/view or Cell Sprite assigned; skipping the board surface.", this);
+                _loggedMissingCellSprite = true;
+                return;
+            }
+
+            _loggedMissingCellSprite = false;
+            _fallbackSurface = new GameObject("Fallback Board Surface");
+            _fallbackSurface.transform.SetParent(transform, false);
+            Vector3 spriteSize = cellSprite.bounds.size;
+            Vector3 scale = new Vector3(cellSize / Mathf.Max(spriteSize.x, 0.0001f),
+                cellSize / Mathf.Max(spriteSize.y, 0.0001f), 1f);
+            for (int y = 0; y < board.Height; y++)
+            {
+                for (int x = 0; x < board.Width; x++)
+                {
+                    if (board.EmptyPositions.Contains(new GridPosition(x, y)))
+                        continue;
+
+                    var cell = new GameObject($"Cell ({x}, {y})");
+                    cell.transform.SetParent(_fallbackSurface.transform, false);
+                    cell.transform.localScale = scale;
+                    // Center the artwork even when the assigned sprite has an off-center pivot.
+                    cell.transform.localPosition = new Vector3(origin.x + x * cellSize,
+                        origin.y + y * cellSize, 0f) - Vector3.Scale(cellSprite.bounds.center, scale);
+                    var renderer = cell.AddComponent<SpriteRenderer>();
+                    renderer.sprite = cellSprite;
+                    Color tint = (x + y) % 2 == 0 ? cellTint : Color.Lerp(cellTint, Color.white, 0.5f);
+                    tint.a = cellOpacity;
+                    renderer.color = tint;
+                    renderer.sortingLayerName = "Board";
+                    renderer.sortingOrder = -100;
+                    _fallbackCellCount++;
+                }
+            }
+        }
+
+        private void ClearFallbackSurface()
+        {
+            if (_fallbackSurface != null)
+            {
+                _fallbackSurface.SetActive(false);
+                if (UnityEngine.Application.isPlaying) Destroy(_fallbackSurface);
+                else DestroyImmediate(_fallbackSurface);
+                _fallbackSurface = null;
+            }
+            _fallbackCellCount = 0;
         }
 
         private static Action InvokeOnce(Action callback)
@@ -490,13 +562,10 @@ namespace Blobs.Presentation
             if (_boardSurfacePresenter == null)
                 _boardSurfacePresenter = GetComponent<BoardSurfacePresenter>();
 
-            if (_blobPresenter == null ||
-                _tilePresenter == null ||
-                _boardSurfacePresenter == null)
+            if (_blobPresenter == null || _tilePresenter == null)
             {
                 throw new InvalidOperationException(
-                    "BoardPresenter requires BlobPresenter, TilePresenter, and " +
-                    "BoardSurfacePresenter components on the same GameObject.");
+                    "BoardPresenter requires BlobPresenter and TilePresenter components on the same GameObject.");
             }
 
             if (_effectPipeline != null)
@@ -527,6 +596,7 @@ namespace Blobs.Presentation
         private void OnDestroy()
         {
             Dispose();
+            ClearFallbackSurface();
         }
 
 

@@ -147,7 +147,7 @@ namespace Blobs.Presentation
             renderer.SetPropertyBlock(properties);
 
             Color tint = renderer.color;
-            renderer.color = new Color(1f, 1f, 1f, tint.a);
+            renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, tint.a);
         }
         /// <summary>
         /// Applies per-renderer shader values without cloning or replacing the authored material.

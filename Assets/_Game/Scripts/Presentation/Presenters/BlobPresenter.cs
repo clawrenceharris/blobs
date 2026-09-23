@@ -11,7 +11,6 @@ namespace Blobs.Presentation
     /// Owns creation, identity tracking, retirement, and cleanup of blob views.
     /// Focused collaborators own transition and interaction choreography.
     /// </summary>
-    [RequireComponent(typeof(MergeAnimationOrchestrator))]
     public sealed class BlobPresenter : MonoBehaviour
     {
         private readonly Dictionary<string, BlobView> _views = new();
@@ -20,7 +19,8 @@ namespace Blobs.Presentation
 
         [SerializeField] private ViewCatalogAsset _viewCatalog;
         [SerializeField] private Transform blobRoot;
-        [SerializeField] private MergeAnimationOrchestrator _mergeAnimationOrchestrator;
+        [SerializeField, Tooltip("Assign the full or simple merge orchestration component. If empty, uses one on this GameObject.")]
+        private MergeAnimationOrchestratorBase _mergeAnimationOrchestrator;
 
         private IBlobViewFactory _viewFactory;
         private BlobSelectionPresenter _selectionPresenter;
@@ -53,7 +53,7 @@ namespace Blobs.Presentation
             _origin = origin;
             _viewFactory = viewFactory ?? new BlobViewFactory(_viewCatalog, palette);
 
-            MergeAnimationOrchestrator orchestrator = ResolveMergeAnimationOrchestrator();
+            MergeAnimationOrchestratorBase orchestrator = ResolveMergeAnimationOrchestrator();
             Transitions = new BlobTransitionPresenter(
                 this,
                 blobAnimationSettings.BlobMotionSettings);
@@ -229,17 +229,17 @@ namespace Blobs.Presentation
                 DestroyImmediate(view.gameObject);
         }
 
-        private MergeAnimationOrchestrator ResolveMergeAnimationOrchestrator()
+        private MergeAnimationOrchestratorBase ResolveMergeAnimationOrchestrator()
         {
             if (_mergeAnimationOrchestrator != null)
                 return _mergeAnimationOrchestrator;
 
-            _mergeAnimationOrchestrator = GetComponent<MergeAnimationOrchestrator>();
+            _mergeAnimationOrchestrator = GetComponent<MergeAnimationOrchestratorBase>();
             if (_mergeAnimationOrchestrator == null)
             {
                 throw new System.InvalidOperationException(
-                    "BlobPresenter requires an authored MergeAnimationOrchestrator " +
-                    "on the same GameObject.");
+                    "BlobPresenter requires a merge animation orchestrator assigned in the Inspector " +
+                    "or authored on the same GameObject.");
             }
 
             return _mergeAnimationOrchestrator;

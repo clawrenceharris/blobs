@@ -223,14 +223,22 @@ namespace Blobs.Tests.EditMode
             Assert.That(prefab, Is.Not.Null);
         }
 
-        [Test]
-        public void BlobPresenterDeclaresMergeOrchestratorComposition()
+        [TestCase(typeof(MergeAnimationOrchestrator))]
+        [TestCase(typeof(SimpleMergeAnimationOrchestrator))]
+        public void BlobPresenterAcceptsAuthoredMergeOrchestration(Type orchestrationType)
         {
             _root = new GameObject("Blob Presenter Composition Test");
 
-            _root.AddComponent<BlobPresenter>();
+            var orchestration = _root.AddComponent(orchestrationType);
+            var presenter = _root.AddComponent<BlobPresenter>();
+            var serialized = new SerializedObject(presenter);
+            serialized.FindProperty("_mergeAnimationOrchestrator").objectReferenceValue = orchestration;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
 
-            Assert.That(_root.GetComponent<MergeAnimationOrchestrator>(), Is.Not.Null);
+            Assert.That(serialized.FindProperty("_mergeAnimationOrchestrator").objectReferenceValue,
+                Is.SameAs(orchestration));
+            Assert.That(_root.GetComponents<MergeAnimationOrchestratorBase>().Length, Is.EqualTo(1),
+                "Adding BlobPresenter must not force the full orchestrator alongside the selected strategy.");
         }
 
         [Test]

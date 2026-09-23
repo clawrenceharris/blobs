@@ -14,11 +14,11 @@ namespace Blobs.Presentation
     internal sealed class MergePresenter
     {
         private readonly BlobPresenter _blobs;
-        private readonly MergeAnimationOrchestrator _orchestrator;
+        private readonly MergeAnimationOrchestratorBase _orchestrator;
         private readonly BlobMergeImpactSettings _mergeSettings;
         private readonly BlobMotionSettings _motionSettings;
 
-        public MergePresenter(BlobPresenter blobs, MergeAnimationOrchestrator orchestrator,
+        public MergePresenter(BlobPresenter blobs, MergeAnimationOrchestratorBase orchestrator,
             BlobMergeImpactSettings impactSettings, BlobMotionSettings motionSettings)
         {
             _blobs = blobs ?? throw new ArgumentNullException(nameof(blobs));

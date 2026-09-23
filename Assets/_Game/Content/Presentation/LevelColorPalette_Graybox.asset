@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6cc621308c20452a81ea23de8d7f86b, type: 3}
+  m_Name: LevelColorPalette_Graybox
+  m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelColorPaletteAsset
+  red:
+    baseColor: {r: 1, g: 0.13679248, b: 0.3632073, a: 1}
+    shadowColor: {r: 0.8867924, g: 0.26352793, b: 0.44892928, a: 1}
+    highlightColor: {r: 1, g: 0.24056602, b: 0.6818959, a: 1}
+  blue:
+    baseColor: {r: 0.06132078, g: 0.6799358, b: 1, a: 1}
+    shadowColor: {r: 0.26274508, g: 0.6765421, b: 0.8862745, a: 1}
+    highlightColor: {r: 0.23921567, g: 1, b: 0.9544756, a: 1}
+  green:
+    baseColor: {r: 0.478, g: 0.976, b: 0.694, a: 1}
+    shadowColor: {r: 0.145, g: 0.61, b: 0.365, a: 1}
+    highlightColor: {r: 0.755, g: 1, b: 0.86, a: 1}
+  yellow:
+    baseColor: {r: 1, g: 0.796, b: 0.288, a: 1}
+    shadowColor: {r: 0.765, g: 0.475, b: 0.095, a: 1}
+    highlightColor: {r: 1, g: 0.94, b: 0.62, a: 1}
+  purple:
+    baseColor: {r: 0.45162782, g: 0.3066038, b: 1, a: 1}
+    shadowColor: {r: 0.36538738, g: 0.21048418, b: 0.8113208, a: 1}
+    highlightColor: {r: 0.76, g: 0.68, b: 1, a: 1}
+  clear:
+    baseColor: {r: 0, g: 0, b: 0, a: 0}
+    shadowColor: {r: 0, g: 0, b: 0, a: 0}
+    highlightColor: {r: 0, g: 0, b: 0, a: 0}
+  sharedBlobMaterial: {fileID: 2100000, guid: ab0638ea023b34097ba572c65d9f92d7, type: 2}
+  redRamp:
+    hueShift: 0
+    saturation: 1.06
+    brightness: 1
+  blueRamp:
+    hueShift: 134
+    saturation: 1.02
+    brightness: 1
+  greenRamp:
+    hueShift: 240
+    saturation: 1
+    brightness: 1
+  yellowRamp:
+    hueShift: 300
+    saturation: 1
+    brightness: 1
+  purpleRamp:
+    hueShift: 68
+    saturation: 1.06
+    brightness: 0.8
+  materials: []

@@ -154,6 +154,10 @@ namespace Blobs.Tests.EditMode
                 return _result;
             }
 
+            public BlobSelectionResult BeginDragAt(GridPosition position) => SelectBlobAt(position);
+            public BlobSelectionResult EndDragAt(GridPosition position) => SelectBlobAt(position);
+            public void CancelDrag() { }
+
             public void Restart()
             {
             }

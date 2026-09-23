@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Blobs.Debugging;
 
 namespace Blobs.Core
 {
@@ -43,34 +44,33 @@ namespace Blobs.Core
     }
 
     /// <summary>
-    /// Flag capture: requires matching color and a board containing only the mover and
+    /// Flag capture: requires matching color and a board containing no other blobs of the same color as 
     /// the flag. Consumes the mover; the flag stays in place.
     /// </summary>
     public sealed class FlagCollisionStrategy : ICollisionStrategy
     {
         public CollisionPlan BuildPlan(MoveContext context)
         {
-            if (context.Target.Id != context.Intent.Target.Id)
+            var flag = context.Target;
+            var source = context.Source;
+            var intendedTarget = context.Intent.Target;
+            if (flag.Id != intendedTarget.Id)
             {
                 return CollisionPlan.Failed(MoveFailureReason.FlagCaptureRequired);
             }
-            if (context.Source.Type != BlobType.Normal)
-            {
+            if (source.Type != BlobType.Normal)
                 return CollisionPlan.Failed(MoveFailureReason.FlagRequiresNormalSource);
-
-            }
-            if (context.Source.Components.Color?.Color != context.Target.Components.Color?.Color)
+            if (flag.Components.Color?.Color != source.Components.Color?.Color)
             {
-                return CollisionPlan.Failed(
-                    MoveFailureReason.FlagRequiresMatchingColor);
+                return CollisionPlan.Failed(MoveFailureReason.FlagRequiresMatchingColor);
             }
 
 
-            // The board may contain exactly the mover and the flag at capture time.
-            if (context.Board.Blobs.Where(b => b.Type.IsClearable()).Count() > 1)
+            // Flag requires only one other blob of the same color to be captured.
+            if (context.Board.Blobs.Where(b => b.Type.IsClearable() && b.Components.Color?.Color == flag.Components.Color?.Color).Count() > 1)
             {
                 return CollisionPlan.Failed(
-                    MoveFailureReason.FlagRequiresNoOtherBlobs);
+                    MoveFailureReason.FlagRequiresNoOtherBlobsOfSameColor);
             }
 
             return CollisionPlan.ConsumeMover(MergeEffect.ReverseMerge(context));

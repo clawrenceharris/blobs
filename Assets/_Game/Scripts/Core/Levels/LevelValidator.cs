@@ -56,7 +56,7 @@ namespace Blobs.Core
                     flagIds.Add(blob.Id);
                 }
             }
-            RequireExactlyOneFlag(flagIds);
+            // RequireExactlyOneFlag(flagIds);
             RequireAtLeastOneSelectableSource(level.Blobs);
 
 
@@ -99,13 +99,13 @@ namespace Blobs.Core
 
 
 
-        private static void RequireExactlyOneFlag(HashSet<string> flagIds)
-        {
-            if (flagIds.Count != 1)
-            {
-                throw new InvalidOperationException("Level must have exactly one flag.");
-            }
-        }
+        // private static void RequireExactlyOneFlag(HashSet<string> flagIds)
+        // {
+        //     if (flagIds.Count != 1)
+        //     {
+        //         throw new InvalidOperationException("Level must have exactly one flag.");
+        //     }
+        // }
 
         private static void RequireId(string id, string label, ISet<string> ids)
         {

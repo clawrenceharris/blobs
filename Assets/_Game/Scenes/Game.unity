@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.GameBootstrapper
   boardPresenter: {fileID: 1341500224}
-  levelAsset: {fileID: 11400000, guid: d40a5af1aeff4ee08d7c88b2d4838190, type: 2}
+  levelAsset: {fileID: 11400000, guid: a890abf62e4d4f89a5d6510af869351c, type: 2}
   enableDragPreview: 1
   cameraPresenter: {fileID: 983718534}
   inputAdapter: {fileID: 1046084939}
@@ -741,7 +741,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: be7ec8505b514d99b1c4936bd69c8758, type: 2}
   - {fileID: 11400000, guid: 39014fdc20d24306804e31fce43c0e78, type: 2}
   - {fileID: 11400000, guid: d40a5af1aeff4ee08d7c88b2d4838190, type: 2}
-  initialLevelIndex: 10
+  initialLevelIndex: 4
   initialMode: 2
 --- !u!4 &937687492
 Transform:

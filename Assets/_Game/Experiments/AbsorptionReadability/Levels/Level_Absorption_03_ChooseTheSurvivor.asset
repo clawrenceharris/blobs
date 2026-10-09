@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 228f01d3da5254622b9b1236a3d1c0ff, type: 3}
+  m_Name: Level_Absorption_03_ChooseTheSurvivor
+  m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
+  levelId: absorption-03-choose-the-survivor
+  schemaVersion: 1
+  width: 4
+  height: 3
+  emptyPositions: []
+  blobs:
+  - rid: 301
+  - rid: 302
+  - rid: 303
+  - rid: 304
+  tiles: []
+  objective: 0
+  palette: {fileID: 11400000, guid: b2d1b71546e534ed6b4d4e263fcfd898, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 301
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data: {id: left, position: {x: 0, y: 1}, type: 0, color: 0, size: 2}
+    - rid: 302
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data: {id: center, position: {x: 2, y: 1}, type: 0, color: 1, size: 2}
+    - rid: 303
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data: {id: upper, position: {x: 2, y: 2}, type: 0, color: 2, size: 2}
+    - rid: 304
+      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data: {id: goal, position: {x: 3, y: 2}, type: 1, color: 0}

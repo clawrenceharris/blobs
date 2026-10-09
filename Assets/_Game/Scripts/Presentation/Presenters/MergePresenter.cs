@@ -61,7 +61,10 @@ namespace Blobs.Presentation
                 moverSurvives,
                 new Vector2Int(effect.To.X - effect.From.X, effect.To.Y - effect.From.Y),
                 onContact,
-                () => _blobs.DestroyRetiringView(consumed),
+                () =>
+                {
+                    _blobs.DestroyRetiringView(consumed);
+                },
                 _mergeSettings,
                 effect.To));
             return true;
@@ -101,7 +104,10 @@ namespace Blobs.Presentation
                 if (!_blobs.TryGetView(effect.MovingBlobId, out BlobView mover))
                     return false;
                 undo.Join(mover.AnimateMoveTo(effect.From, _motionSettings.MoveDuration, Ease.OutQuad));
-                undo.OnComplete(() => mover.BlobMotionAnimator?.SetIdle());
+                undo.OnComplete(() =>
+                {
+                    mover.BlobMotionAnimator?.SetIdle();
+                });
             }
 
             timeline.Append(undo);

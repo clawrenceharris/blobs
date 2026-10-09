@@ -27,6 +27,8 @@ namespace Blobs.Core
         CollisionPlan BuildPlan(MoveContext context);
     }
 
+
+
     /// <summary>
     /// Standard color-clash merge: occupant is removed, the mover survives on its tile
     /// and may continue along its path. Requires differing colors.
@@ -39,7 +41,34 @@ namespace Blobs.Core
             if (context.Source.Components.Color?.Color == context.Target.Components.Color?.Color)
                 return CollisionPlan.Failed(MoveFailureReason.NormalMergeRequiresDifferentColors);
 
-            return CollisionPlan.Continue(MergeEffect.NormalMerge(context));
+
+            var sourceSize = context.Source.Components.Size?.Size;
+            var targetSize = context.Target.Components.Size?.Size;
+            if (!targetSize.HasValue || !sourceSize.HasValue)
+            {
+                return CollisionPlan.Failed(MoveFailureReason.NormalMergeRequiresSize);
+            }
+            if (targetSize > sourceSize)
+            {
+                return CollisionPlan.ConsumeMover(
+                    MergeEffect.ReverseMerge(context));
+            }
+
+            var effects = new List<IBoardEffect>
+            {
+                MergeEffect.NormalMerge(context)
+            };
+
+            if (sourceSize.Value == targetSize.Value && sourceSize.Value < BlobSize.Large)
+            {
+                effects.Add(new ChangeBlobSizeEffect(
+                    context.Source.Id,
+                    before: sourceSize.Value,
+                    after: sourceSize.Value.Next()));
+            }
+
+            return CollisionPlan.Continue(effects.ToArray());
+
         }
     }
 
@@ -58,7 +87,7 @@ namespace Blobs.Core
             {
                 return CollisionPlan.Failed(MoveFailureReason.FlagCaptureRequired);
             }
-            if (source.Type != BlobType.Normal)
+            if (source.Type != BlobType.Normal || !source.HasColor)
                 return CollisionPlan.Failed(MoveFailureReason.FlagRequiresNormalSource);
             if (flag.Components.Color?.Color != source.Components.Color?.Color)
             {
@@ -72,8 +101,8 @@ namespace Blobs.Core
                 return CollisionPlan.Failed(
                     MoveFailureReason.FlagRequiresNoOtherBlobsOfSameColor);
             }
-
             return CollisionPlan.ConsumeMover(MergeEffect.ReverseMerge(context));
+
         }
     }
 
@@ -134,5 +163,9 @@ namespace Blobs.Core
                     new MoveStep(MoveStepKind.Traverse, followUp)
                 });
         }
+
+
     }
+
+
 }

@@ -132,6 +132,7 @@ namespace Blobs.Core
                         new BlobTraits(canBeSource: false, isClearable: false),
                     [BlobType.Ghost] =
                         new BlobTraits(canBeSource: false, isClearable: true),
+
                 },
                 new Dictionary<MergeKey, ICollisionStrategy>
                 {
@@ -164,8 +165,6 @@ namespace Blobs.Core
                         new GhostCollisionStrategy(),
                     [new MergeKey(BlobType.Trail, BlobType.Ghost)] =
                         new GhostCollisionStrategy(),
-
-
 
                 },
                 new Dictionary<MergeKey, IMoveStrategy>

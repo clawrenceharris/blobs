@@ -26,6 +26,7 @@ MonoBehaviour:
     _contactDuration: 0.06
     _consumeDuration: 0.2
     _settleDuration: 0.201
+    _growDuration: 0.28
     _anticipationBackstep: 0.08
     _anticipationScale: {x: 1.1, y: 0.88}
     _travelScale: {x: 0.9, y: 1.056}

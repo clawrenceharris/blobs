@@ -65,6 +65,8 @@ namespace Blobs.Presentation
             _selectionPresenter = new BlobSelectionPresenter(this, state);
         }
 
+        internal float SizeChangeDuration => blobAnimationSettings.MergeImpactSettings.GrowDuration;
+
         /// <summary>
         /// Replaces all tracked views with views for the supplied authoritative blob states.
         /// </summary>

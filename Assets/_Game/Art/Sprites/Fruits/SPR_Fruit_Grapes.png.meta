@@ -1,22 +1,28 @@
 fileFormatVersion: 2
-guid: 0fc83fc6c9bcc41e783c9151682ed266
+guid: a8a067140850b4885851ca4dc5e5eb97
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5219351819430236063
-    second: SPR_NormalBlob_Body__0
+      213: -2678374246292047324
+    second: SPR_Fruit_Grapes_0
   - first:
-      213: -2169985653214702898
-    second: SPR_NormalBlob_Body__1
+      213: -8796501604581649769
+    second: SPR_Fruit_Grapes_1
   - first:
-      213: -1694411606446548028
-    second: SPR_NormalBlob_Body__2
+      213: 8613810490847218408
+    second: SPR_Fruit_Grapes_2
   - first:
-      213: 2513150480226504941
-    second: SPR_NormalBlob_Body__3
+      213: 5669393264927488392
+    second: SPR_Fruit_Grapes_3
   - first:
-      213: 2839818274367454497
-    second: SPR_NormalBlob_Body__4
+      213: -3128942994209941474
+    second: SPR_Fruit_Grapes_4
+  - first:
+      213: 3337481353155614986
+    second: SPR_Fruit_Grapes_5
+  - first:
+      213: 7963579668161882037
+    second: SPR_Fruit_Grapes_6
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -108,17 +114,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SPR_NormalBlob_Body__0
+      name: SPR_Fruit_Grapes_0
       rect:
         serializedVersion: 2
-        x: 573
-        y: 1158
-        width: 123
-        height: 48
+        x: 0
+        y: 25
+        width: 1201
+        height: 1143
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -127,20 +146,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f9f8de293dcde6840800000000000000
-      internalID: 5219351819430236063
+      spriteID: 42a353a40d084dad0800000000000000
+      internalID: -2678374246292047324
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_NormalBlob_Body__1
+      name: SPR_Fruit_Grapes_1
       rect:
         serializedVersion: 2
-        x: 97
-        y: 0
-        width: 1064
-        height: 1030
+        x: 1103
+        y: 722
+        width: 120
+        height: 273
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -149,63 +168,85 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ec29174ab89a2e1e0800000000000000
-      internalID: -2169985653214702898
+      spriteID: 792d1c0856c8ce580800000000000000
+      internalID: -8796501604581649769
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_NormalBlob_Body__2
-      rect:
-        serializedVersion: 2
-        x: 502
-        y: 51
-        width: 16
-        height: 21
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4cb547e0f9d3c78e0800000000000000
-      internalID: -1694411606446548028
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_NormalBlob_Body__3
-      rect:
-        serializedVersion: 2
-        x: 547
-        y: 47
-        width: 30
-        height: 11
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: de0d009eb0180e220800000000000000
-      internalID: 2513150480226504941
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_NormalBlob_Body__4
+      name: SPR_Fruit_Grapes_2
       rect:
         serializedVersion: 2
         x: 1131
-        y: 199
-        width: 10
+        y: 248
+        width: 42
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ea4b75e0076a8770800000000000000
+      internalID: 8613810490847218408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Fruit_Grapes_3
+      rect:
+        serializedVersion: 2
+        x: 1172
+        y: 302
+        width: 25
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 889befff22bbdae40800000000000000
+      internalID: 5669393264927488392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Fruit_Grapes_4
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 156
+        width: 39
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e185ba3bce2c394d0800000000000000
+      internalID: -3128942994209941474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Fruit_Grapes_5
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 71
+        width: 12
         height: 9
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -215,8 +256,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 12db55eacaf096720800000000000000
-      internalID: 2839818274367454497
+      spriteID: a099453ab9d115e20800000000000000
+      internalID: 3337481353155614986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Fruit_Grapes_6
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 49
+        width: 164
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b7ef4de381548e60800000000000000
+      internalID: 7963579668161882037
       vertices: []
       indices: 
       edges: []
@@ -235,11 +298,13 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SPR_NormalBlob_Body__0: 5219351819430236063
-      SPR_NormalBlob_Body__1: -2169985653214702898
-      SPR_NormalBlob_Body__2: -1694411606446548028
-      SPR_NormalBlob_Body__3: 2513150480226504941
-      SPR_NormalBlob_Body__4: 2839818274367454497
+      SPR_Fruit_Grapes_0: -2678374246292047324
+      SPR_Fruit_Grapes_1: -8796501604581649769
+      SPR_Fruit_Grapes_2: 8613810490847218408
+      SPR_Fruit_Grapes_3: 5669393264927488392
+      SPR_Fruit_Grapes_4: -3128942994209941474
+      SPR_Fruit_Grapes_5: 3337481353155614986
+      SPR_Fruit_Grapes_6: 7963579668161882037
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

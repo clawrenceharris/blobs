@@ -74,6 +74,26 @@ namespace Blobs.Presentation
             SetState(new BlobMergingState());
         }
 
+        /// <summary>
+        /// Updates the resting scale used by idle, selection, movement, and merge states.
+        /// Size presentation calls this after its one-shot scale tween has settled so later
+        /// state transitions cannot restore a stale pre-growth scale.
+        /// </summary>
+        public void SetBaseScale(Vector3 baseScale)
+        {
+            if (_context == null)
+                return;
+
+            _context.BaseScale = baseScale;
+            if (_currentState == null)
+                return;
+
+            IState<AnimationStateContext> currentState = _currentState;
+            currentState.Exit(_context);
+            _currentState = null;
+            SetState(currentState);
+        }
+
         public void SetState(IState<AnimationStateContext> state)
         {
             if (state == null || _context == null)

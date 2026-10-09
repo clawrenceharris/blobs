@@ -46,9 +46,20 @@ namespace Blobs.Core
 
                 if (!blobPositions.Add(blob.Position))
                     throw new InvalidOperationException($"Multiple blobs occupy {blob.Position}.");
-                if (blob is ColorBlobDefinition colorBlob)
+                if (blob is NormalBlobDefinition normalBlob)
                 {
-                    RequireEnumValue(colorBlob.Color, "blob color");
+                    RequireEnumValue(normalBlob.Color, "blob color");
+                    RequireEnumValue(normalBlob.Size, "blob size");
+                }
+                if (blob is TrailBlobDefinition trailBlob)
+                {
+                    RequireEnumValue(trailBlob.TrailColor, "blob trail color");
+                    RequireEnumValue(trailBlob.Color, "blob color");
+                    RequireEnumValue(trailBlob.Size, "blob size");
+                }
+                if (blob is FlagBlobDefinition flagBlob)
+                {
+                    RequireEnumValue(flagBlob.Color, "blob color");
                 }
                 RequireEnumValue(blob.Type, "blob type");
                 if (blob is FlagBlobDefinition)
@@ -56,7 +67,7 @@ namespace Blobs.Core
                     flagIds.Add(blob.Id);
                 }
             }
-            // RequireExactlyOneFlag(flagIds);
+            RequireAtLeastOneFlag(flagIds);
             RequireAtLeastOneSelectableSource(level.Blobs);
 
 
@@ -99,13 +110,13 @@ namespace Blobs.Core
 
 
 
-        // private static void RequireExactlyOneFlag(HashSet<string> flagIds)
-        // {
-        //     if (flagIds.Count != 1)
-        //     {
-        //         throw new InvalidOperationException("Level must have exactly one flag.");
-        //     }
-        // }
+        private static void RequireAtLeastOneFlag(HashSet<string> flagIds)
+        {
+            if (flagIds.Count == 0)
+            {
+                throw new InvalidOperationException("Level must have at least one flag.");
+            }
+        }
 
         private static void RequireId(string id, string label, ISet<string> ids)
         {

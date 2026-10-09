@@ -709,6 +709,7 @@ GameObject:
   m_Component:
   - component: {fileID: 716738955}
   - component: {fileID: 716738954}
+  - component: {fileID: 716738956}
   m_Layer: 0
   m_Name: GameBootstrapper
   m_TagString: Untagged
@@ -729,8 +730,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.GameBootstrapper
   boardPresenter: {fileID: 1013906144}
-  levelAsset: {fileID: 11400000, guid: c5d4c470030ae4be79f74c696fec05b5, type: 2}
-  backgroundView: {fileID: 0}
+  levelAsset: {fileID: 11400000, guid: a890abf62e4d4f89a5d6510af869351c, type: 2}
+  enableDragPreview: 1
   cameraPresenter: {fileID: 223723866}
   inputAdapter: {fileID: 737068478}
   commandAdapter: {fileID: 1665261839}
@@ -749,6 +750,60 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &716738956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716738953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d017a770f4e4a3faaa0cedf11ffdf28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.MechanicTestSliceController
+  bootstrapper: {fileID: 716738954}
+  boardPresenter: {fileID: 1013906144}
+  levels:
+  - {fileID: 11400000, guid: 2fc43fc52957427ca8910d4ca9ddca85, type: 2}
+  - {fileID: 11400000, guid: 98b4f8b834884eff857e4e30bd976771, type: 2}
+  - {fileID: 11400000, guid: e2c3746580f943ce85bab30a7b21a3f4, type: 2}
+  - {fileID: 11400000, guid: be7ec8505b514d99b1c4936bd69c8758, type: 2}
+  - {fileID: 11400000, guid: 39014fdc20d24306804e31fce43c0e78, type: 2}
+  - {fileID: 11400000, guid: d40a5af1aeff4ee08d7c88b2d4838190, type: 2}
+  initialLevelIndex: 0
+  initialMode: 1
+--- !u!1 &727259989
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 727259990}
+  m_Layer: 3
+  m_Name: Board
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &727259990
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727259989}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1013906146}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &737068477
 GameObject:
@@ -974,11 +1029,11 @@ MonoBehaviour:
   _blobPresenter: {fileID: 1013906148}
   _tilePresenter: {fileID: 1013906147}
   _boardSurfacePresenter: {fileID: 1013906145}
-  cellSprite: {fileID: 7482667652216324306, guid: 3fae37c214126425eb45cbf4b58eddee, type: 3}
-  cellTint: {r: 0.889639, g: 0.6556604, b: 1, a: 1}
+  cellPrefab: {fileID: 7031757596650898305, guid: b7f73d803e4394681ad65fc99947d410, type: 3}
   cellOpacity: 0.738
-  cellSize: 1
+  cellSize: 1.5
   origin: {x: 0, y: 0}
+  surfaceRoot: {fileID: 727259989}
 --- !u!114 &1013906145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1007,6 +1062,7 @@ Transform:
   m_Children:
   - {fileID: 255617744}
   - {fileID: 1346725641}
+  - {fileID: 727259990}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1013906147
@@ -1052,10 +1108,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.SimpleMergeAnimationOrchestrator
   slideDuration: 0.1
-  scaleDuration: 0.08
-  pulseScale: 1.15
-  overshootDuration: 0.04
-  settleDuration: 0.04
 --- !u!114 &1013906150
 MonoBehaviour:
   m_ObjectHideFlags: 0

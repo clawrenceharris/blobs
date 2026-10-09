@@ -98,14 +98,7 @@ namespace Blobs.Presentation
                 Color.white);
 
             float particleLifetime = 0f;
-            particleLifetime = Mathf.Max(
-                particleLifetime,
-                PlayParticles(
-                    _blobColorParticles,
-                    resultSkin,
-                    sortingLayerId,
-                    sortingOrder + _particleOrderOffset,
-                    applySkin: true));
+
             particleLifetime = Mathf.Max(
                 particleLifetime,
                 PlayParticles(
@@ -122,22 +115,8 @@ namespace Blobs.Presentation
                     sortingLayerId,
                     sortingOrder + _particleOrderOffset,
                     applySkin: true));
-            particleLifetime = Mathf.Max(
-                particleLifetime,
-                PlayParticles(
-                    _highlightParticles,
-                    glintSkin,
-                    sortingLayerId,
-                    sortingOrder + _particleOrderOffset + 1,
-                    applySkin: true));
-            particleLifetime = Mathf.Max(
-                particleLifetime,
-                PlayParticles(
-                    _extraParticles,
-                    resultSkin,
-                    sortingLayerId,
-                    sortingOrder + _particleOrderOffset,
-                    applySkin: false));
+
+
 
             _spriteSequence?.Kill(false);
             _spriteSequence = DOTween.Sequence();

@@ -46,6 +46,8 @@ namespace Blobs.Presentation
                 cellSize,
                 origin);
 
+
+
             return instance;
         }
     }

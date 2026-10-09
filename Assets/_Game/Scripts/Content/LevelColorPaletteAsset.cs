@@ -97,27 +97,10 @@ namespace Blobs.Content
             new Color(0.527f, 0.400f, 1.000f),
             new Color(0.305f, 0.175f, 0.680f),
             new Color(0.760f, 0.680f, 1.000f));
-        [SerializeField]
-        private BlobShaderColors clear = new(
-            Color.clear,
-            Color.clear,
-            Color.clear);
 
-        [Header("All In 1 Sprite Shader")]
-        [Tooltip("One shared material with Color Ramp and HSV enabled. Blob colors are applied with MaterialPropertyBlock values.")]
-        [SerializeField] private Material sharedBlobMaterial;
+        [SerializeField] private Color cellColor = Color.white;
 
-        [SerializeField] private BlobRampHsv redRamp = new(0f, 1.06f);
-        [SerializeField] private BlobRampHsv blueRamp = new(134f, 1.02f);
-        [SerializeField] private BlobRampHsv greenRamp = new(240f);
-        [SerializeField] private BlobRampHsv yellowRamp = new(300f);
-        [SerializeField] private BlobRampHsv purpleRamp = new(68f, 1.06f);
-
-        [Tooltip("Legacy per-color materials retained only as a compatibility fallback while older palettes migrate.")]
-        [SerializeField, HideInInspector]
-        private BlobMaterial[] materials;
-
-        public Material SharedBlobMaterial => sharedBlobMaterial;
+        public Color CellColor => cellColor;
 
         public BlobShaderColors GetRequired(BlobColor color)
         {
@@ -133,32 +116,6 @@ namespace Blobs.Content
 
             return colors ?? throw new InvalidOperationException(
                 $"Blob color palette '{name}' has no colors configured for {color}.");
-        }
-
-        public Material GetMaterial(BlobColor color)
-        {
-            if (sharedBlobMaterial != null)
-                return sharedBlobMaterial;
-
-            return materials?
-                .FirstOrDefault(entry => entry != null && entry.Color == color)?
-                .Material;
-        }
-
-        public BlobRampHsv GetRampHsv(BlobColor color)
-        {
-            BlobRampHsv settings = color switch
-            {
-                BlobColor.Red => redRamp,
-                BlobColor.Blue => blueRamp,
-                BlobColor.Green => greenRamp,
-                BlobColor.Yellow => yellowRamp,
-                BlobColor.Purple => purpleRamp,
-                _ => throw new ArgumentOutOfRangeException(nameof(color), color, "Unknown blob color."),
-            };
-
-            return settings ?? throw new InvalidOperationException(
-                $"Blob color palette '{name}' has no ramp HSV configured for {color}.");
         }
     }
 }

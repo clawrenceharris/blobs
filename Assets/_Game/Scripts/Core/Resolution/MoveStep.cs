@@ -12,7 +12,9 @@ namespace Blobs.Core
         Traverse,
 
         /// <summary>The mover collides with an occupant and the collision plan resolves at that tile.</summary>
-        Merge
+        Merge,
+
+
     }
 
     /// <summary>

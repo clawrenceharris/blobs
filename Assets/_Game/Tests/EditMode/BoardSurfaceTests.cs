@@ -7,6 +7,7 @@ using Blobs.Presentation;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.TestTools;
 using Object = UnityEngine.Object;
 
 namespace Blobs.Tests.EditMode
@@ -14,6 +15,66 @@ namespace Blobs.Tests.EditMode
     public sealed class BoardSurfaceTests
     {
         private GameObject _root;
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void MissingSurfaceUsesAlternatingSpritesAndPreservesCutouts(bool hasSurfacePresenter)
+        {
+            _root = new GameObject("Fallback Surface Test");
+            if (hasSurfacePresenter) _root.AddComponent<BoardSurfacePresenter>();
+            var presenter = _root.AddComponent<BoardPresenter>();
+            var texture = new Texture2D(8, 4);
+            var sprite = Sprite.Create(texture, new Rect(0, 0, 8, 4), Vector2.zero, 4f);
+            try
+            {
+                var serialized = new SerializedObject(presenter);
+                serialized.FindProperty("cellSprite").objectReferenceValue = sprite;
+                serialized.FindProperty("origin").vector2Value = new Vector2(3f, 5f);
+                serialized.ApplyModifiedPropertiesWithoutUndo();
+                var snapshot = new GameSessionSnapshot("fallback", new BoardState(2, 2,
+                    Array.Empty<BlobState>(), Array.Empty<TileState>(),
+                    new[] { new GridPosition(1, 1) }), 0, false);
+
+                presenter.Rebuild(snapshot);
+                Assert.That(presenter.VisibleSurfaceCellCount, Is.EqualTo(3));
+                SpriteRenderer[] cells = _root.GetComponentsInChildren<SpriteRenderer>();
+                Assert.That(cells.Length, Is.EqualTo(3));
+                Assert.That(cells[0].bounds.center.x, Is.EqualTo(3f).Within(0.001f));
+                Assert.That(cells[0].bounds.center.y, Is.EqualTo(5f).Within(0.001f));
+                Assert.That(cells[0].bounds.size.x, Is.EqualTo(presenter.CellSize).Within(0.001f));
+                Assert.That(cells[0].bounds.size.y, Is.EqualTo(presenter.CellSize).Within(0.001f));
+                Assert.That(cells[1].color.r, Is.GreaterThan(cells[0].color.r));
+                Assert.That(cells[1].color, Is.EqualTo(cells[2].color));
+                foreach (var cell in cells)
+                    Assert.That(cell.color.a, Is.EqualTo(0.15f).Within(0.001f));
+
+                presenter.Rebuild(snapshot);
+                Assert.That(_root.GetComponentsInChildren<SpriteRenderer>().Length, Is.EqualTo(3));
+                presenter.Clear();
+                Assert.That(presenter.VisibleSurfaceCellCount, Is.Zero);
+                Assert.That(_root.GetComponentsInChildren<SpriteRenderer>(), Is.Empty);
+            }
+            finally
+            {
+                presenter.Clear();
+                Object.DestroyImmediate(sprite);
+                Object.DestroyImmediate(texture);
+            }
+        }
+
+        [Test]
+        public void MissingCellSpriteLogsAndSkipsSurfaceWithoutAddingRequiredSurfacePresenter()
+        {
+            _root = new GameObject("Missing Cell Sprite Test");
+            var presenter = _root.AddComponent<BoardPresenter>();
+            Assert.That(_root.GetComponent<BoardSurfacePresenter>(), Is.Null);
+            LogAssert.Expect(LogType.Log,
+                "BoardPresenter: no board surface presenter/view or Cell Sprite assigned; skipping the board surface.");
+            presenter.Rebuild(EmptySnapshot());
+            presenter.Rebuild(EmptySnapshot());
+            Assert.That(presenter.VisibleSurfaceCellCount, Is.Zero);
+            LogAssert.NoUnexpectedReceived();
+        }
 
         [TearDown]
         public void TearDown()

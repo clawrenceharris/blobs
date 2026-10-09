@@ -13,6 +13,7 @@ namespace Blobs.Tests.EditMode
         public static BoardPresenter AddBoardPresenter(GameObject root)
         {
             root.AddComponent<MergeAnimationOrchestrator>();
+            root.AddComponent<BoardSurfacePresenter>();
 
             var surfaceObject = new GameObject("Board Surface");
             surfaceObject.transform.SetParent(root.transform, false);

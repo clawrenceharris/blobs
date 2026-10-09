@@ -231,5 +231,15 @@ namespace Blobs.Core
 
             return false;
         }
+
+        internal void SetBlobSize(string blobId, BlobSize after)
+        {
+            var blob = GetBlob(blobId);
+            if (blob == null)
+                throw new InvalidOperationException("Blob does not exist: " + blobId);
+            blob = blob.WithSize(after);
+            _blobsById[blobId] = blob;
+        }
     }
+
 }

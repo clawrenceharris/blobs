@@ -108,7 +108,7 @@ namespace Blobs.Tests.EditMode
             Assert.That(result.Succeeded, Is.False);
             Assert.That(
                 result.FailureReason,
-                Is.EqualTo(MoveFailureReason.FlagRequiresNoOtherBlobs));
+                Is.EqualTo(MoveFailureReason.FlagRequiresNoOtherBlobsOfSameColor));
             Assert.That(result.Effects, Is.Empty);
             Assert.That(snapshot.Board.Blobs.Count, Is.EqualTo(3));
             Assert.That(snapshot.MoveCount, Is.Zero);

@@ -28,11 +28,7 @@ namespace Blobs.Presentation
             view.BlobRenderer.ApplySkin(skin);
         }
 
-        public void Apply(BlobView view, Material material, BlobRampHsv rampHsv)
-        {
-            if (view == null || view.BlobRenderer == null) return;
-            view.BlobRenderer.ApplySkin(material, rampHsv);
-        }
+
     }
 
 }

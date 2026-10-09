@@ -36,6 +36,7 @@ namespace Blobs.Core
             from: context.Source.Position,
             at: context.Target.Position,
             consumedBlob: context.Target);
+
         public static MergeEffect ReverseMerge(MoveContext context) => new MergeEffect(
             sourceBlobId: context.Source.Id,
             movingBlobId: context.Source.Id,

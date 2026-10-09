@@ -31,11 +31,12 @@ namespace Blobs.Presentation
         public GridPosition GridPosition { get; private set; }
         private BlobColor? _presentedColor;
         private BlobColor? _presentedTrailColor;
+        private BlobSize? _presentedSize;
         private float _cellSize;
         private Vector2 _origin;
         private Vector3 _baseScale;
+        private Vector3 _baseVisualScale;
         public Vector3 BaseVisualScale { get; private set; } = Vector3.one;
-
         private BlobMotionAnimator _blobMotionAnimator;
 
         public BlobMotionAnimator BlobMotionAnimator => _blobMotionAnimator;
@@ -55,15 +56,18 @@ namespace Blobs.Presentation
             BlobType = blob.Type;
             _presentedColor = blob.Components.Color?.Color;
             _presentedTrailColor = blob.Components.Trail?.TrailColor;
+            _presentedSize = blob.Components.Size?.Size;
             _cellSize = cellSize;
             _origin = origin;
             name = "Blob " + blob.Id;
             SetGridPosition(blob.Position);
             _baseScale = Vector3.one * Mathf.Max(0.1f, cellSize * 0.8f);
             transform.localScale = _baseScale;
-            BaseVisualScale = _visualRoot != null
+            _baseVisualScale = _visualRoot != null
                 ? _visualRoot.localScale
-                : Vector3.one;
+                : _baseScale;
+            BaseVisualScale = _baseVisualScale;
+            ApplySize(blob.Components.Size?.Size);
             if (_sortingGroup == null)
                 _sortingGroup = GetComponent<SortingGroup>();
             _blobMotionAnimator = TryGetComponent(out BlobMotionAnimator animator) ? animator : null;
@@ -85,7 +89,8 @@ namespace Blobs.Presentation
                 BlobType == blob.Type &&
                 GridPosition == blob.Position &&
                 _presentedColor == blob.Components.Color?.Color &&
-                _presentedTrailColor == blob.Components.Trail?.TrailColor;
+                _presentedTrailColor == blob.Components.Trail?.TrailColor &&
+                _presentedSize == blob.Components.Size?.Size;
         }
 
         /// <summary>
@@ -171,27 +176,78 @@ namespace Blobs.Presentation
                 .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
         }
 
+        /// <summary>Immediately applies the scale represented by authoritative Core size state.</summary>
+        public void ApplySize(BlobSize? size)
+        {
+            _presentedSize = size;
+            BaseVisualScale = _baseVisualScale * SizeMultiplier(size);
+            Transform visual = _visualRoot != null ? _visualRoot : transform;
+            visual.DOKill();
+            visual.localScale = BaseVisualScale;
+            _blobMotionAnimator?.SetBaseScale(BaseVisualScale);
+        }
+
+        /// <summary>
+        /// Grow/shrink beat that runs after merge contact. Resting size is applied when the
+        /// tween starts so merge recovery still settles to the pre-growth scale.
+        /// </summary>
+        public Tween AnimateSize(BlobSize size, float duration)
+        {
+            Transform visual = _visualRoot != null ? _visualRoot : transform;
+            Vector3 targetScale = _baseVisualScale * SizeMultiplier(size);
+            float growDuration = Mathf.Max(0.05f, duration);
+            float settleDuration = Mathf.Max(0.05f, duration * 0.55f);
+            Vector3 peakScale = targetScale * 1.14f;
+
+            Sequence beat = DOTween.Sequence()
+                .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+            beat.AppendCallback(() =>
+            {
+                _presentedSize = size;
+                BaseVisualScale = targetScale;
+                // Stop idle/selection pulses so they cannot fight this one-shot scale.
+                _blobMotionAnimator?.SetMerging();
+            });
+            beat.Append(visual
+                .DOScale(peakScale, growDuration)
+                .SetEase(Ease.OutCubic));
+            beat.Append(visual
+                .DOScale(targetScale, settleDuration)
+                .SetEase(Ease.OutBack));
+            beat.OnComplete(() =>
+            {
+                visual.localScale = targetScale;
+                BaseVisualScale = targetScale;
+                _presentedSize = size;
+                _blobMotionAnimator?.SetBaseScale(targetScale);
+                _blobMotionAnimator?.SetIdle();
+            });
+            return beat;
+        }
+
+        private static float SizeMultiplier(BlobSize? size)
+        {
+            return size switch
+            {
+                BlobSize.Small => 0.72f,
+                BlobSize.Large => 1.28f,
+                _ => 1f,
+            };
+        }
+
         /// <summary>
         /// Applies visual skinning for the supplied blob state and color palette.
         /// </summary>
         public void ApplySkin(BlobState blob, LevelColorPaletteAsset colorPalette)
         {
+            _presentedColor = blob.Components.Color?.Color;
+            _presentedTrailColor = blob.Components.Trail?.TrailColor;
             if (blob.Components.Color.HasValue)
             {
                 Skin skin = _skinResolver.ResolveSkin(blob.Components.Color.Value.Color, colorPalette);
-                Material material = _skinResolver.ResolveMaterial(blob.Components.Color.Value.Color, colorPalette);
                 MergeEffectSkin = skin;
-                if (material != null)
-                {
-                    BlobRampHsv rampHsv = colorPalette.GetRampHsv(blob.Components.Color.Value.Color);
-                    _skinApplier.Apply(this, material, rampHsv);
-                    MergeEffectColor = skin.BaseColor;
-                }
-                else
-                {
-                    _skinApplier.Apply(this, skin);
-                    MergeEffectColor = skin.BaseColor;
-                }
+                _skinApplier.Apply(this, skin);
+                MergeEffectColor = skin.BaseColor;
             }
 
             BlobColorBinding[] bindings =

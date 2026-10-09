@@ -26,3 +26,12 @@ MonoBehaviour:
     prefab: {fileID: 5756213027239601024, guid: 5630c370513a743398555bd0a6f8744f, type: 3}
   - type: 4
     prefab: {fileID: 1944641561756212985, guid: d70901e4d4fa14f46a4241547a1d0aaa, type: 3}
+  - type: 5
+    prefab: {fileID: 1992024889690071892, guid: 40ef24ca5a2d246598e442b69820c2c9, type: 3}
+  fruitEntries:
+  - Sprite: {fileID: 21300000, guid: 1c1f1093990654e87b42eb852bb24b05, type: 3}
+    BlobColor: 0
+  - Sprite: {fileID: 21300000, guid: c981bdd442ffb4aefa449df5655703d9, type: 3}
+    BlobColor: 1
+  - Sprite: {fileID: 21300000, guid: a8a067140850b4885851ca4dc5e5eb97, type: 3}
+    BlobColor: 4

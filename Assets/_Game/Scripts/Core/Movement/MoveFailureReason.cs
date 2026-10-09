@@ -15,6 +15,8 @@ namespace Blobs.Core
         FlagRequiresMatchingColor,
         FlagRequiresNoOtherBlobsOfSameColor,
         FlagRequiresNormalSource,
-        FlagCaptureRequired
+        FlagCaptureRequired,
+        NormalMergeRequiresSize,
+
     }
 }

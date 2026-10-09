@@ -17,7 +17,7 @@ namespace Blobs.Presentation
         [SerializeField] private BoardPresenter boardPresenter;
 
         [SerializeField] private LevelDefinitionAsset levelAsset;
-        [SerializeField] private BackgroundView backgroundView;
+        [SerializeField] private bool enableDragPreview = true;
         [SerializeField] private CameraPresenter cameraPresenter;
         [SerializeField] private GameplayInputAdapter inputAdapter;
         [SerializeField] private GameplayCommandAdapter commandAdapter;
@@ -47,6 +47,15 @@ namespace Blobs.Presentation
             StartLevel(levelAsset);
         }
 
+        /// <summary>
+        /// Replaces the level used by <see cref="Start"/>. This exists for isolated test-scene
+        /// composition; normal gameplay should continue authoring <c>levelAsset</c> directly.
+        /// </summary>
+        public void ConfigureStartingLevel(LevelDefinitionAsset asset)
+        {
+            levelAsset = asset;
+        }
+
 
         /// <summary>
         /// Starts a level from authored content by converting it to Core data and wiring scene collaborators.
@@ -63,11 +72,7 @@ namespace Blobs.Presentation
                 return;
 
             LevelDefinition level = LevelAssetMapper.ToCore(asset);
-            // if (backgroundView != null)
-            // {
-            //     backgroundView.gameObject.SetActive(true);
-            //     backgroundView.Apply(asset.Palette);
-            // }
+
             new Debugger(message => Debug.Log(message));
             _session = new GameSession(level, new MoveResolver());
 
@@ -77,7 +82,8 @@ namespace Blobs.Presentation
                 _session,
                 asset.Palette);
             _commands = new QueuedGameplayCommands(_session, boardPresenter);
-            inputAdapter.Initialize(_commands, boardPresenter.CellSize);
+
+            inputAdapter.Initialize(_commands, boardPresenter.CellSize, boardPresenter.Origin);
             commandAdapter.Initialize(_commands);
             if (feedbackPresenter != null)
                 feedbackPresenter.Initialize(inputAdapter, _session);

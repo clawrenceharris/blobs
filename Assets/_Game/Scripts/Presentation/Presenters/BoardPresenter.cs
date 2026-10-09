@@ -6,6 +6,7 @@ using Blobs.Application;
 using Blobs.Content;
 using Blobs.Core;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Blobs.Presentation
 {
@@ -21,15 +22,15 @@ namespace Blobs.Presentation
         [SerializeField] private TilePresenter _tilePresenter;
         [SerializeField] private BoardSurfacePresenter _boardSurfacePresenter;
         [SerializeField, Tooltip("Used when no board surface presenter/view is available.")]
-        private Sprite cellSprite;
-        [SerializeField] private Color cellTint = new Color(0.65f, 0.65f, 0.65f, 1f);
+        private GameObject cellPrefab;
         [SerializeField, Range(0f, 1f)] private float cellOpacity = 0.15f;
         private GameObject _fallbackSurface;
         private int _fallbackCellCount;
+        private LevelColorPaletteAsset _colorPalette;
         private bool _loggedMissingCellSprite;
         [SerializeField] private float cellSize = 1.25f;
         [SerializeField] private Vector2 origin;
-
+        [SerializeField] private GameObject surfaceRoot;
         private PresentationTimeline _effectTimeline;
         private CancellationTokenSource _playbackCancellation;
         private bool _playbackPaused;
@@ -40,8 +41,18 @@ namespace Blobs.Presentation
         private readonly List<IBoardEffectPresentationHandler> _additionalEffectHandlers = new();
         private readonly List<IMoveStepPresentationHandler> _additionalMoveStepHandlers = new();
         private IGameplayState _state;
+        private bool _effectsAnimated = true;
 
         public float CellSize => cellSize;
+        public Vector2 Origin => origin;
+        private string _dragCommitSource;
+
+        public BlobSelectionResult CommitDragPreview(string sourceId, Func<BlobSelectionResult> commit)
+        {
+            _dragCommitSource = sourceId;
+            try { return commit(); }
+            finally { _dragCommitSource = null; }
+        }
         public int VisibleBlobCount => _blobPresenter != null ? _blobPresenter.VisibleCount : 0;
         public int VisibleTileCount => _tilePresenter != null ? _tilePresenter.VisibleCount : 0;
         public int VisibleSurfaceCellCount =>
@@ -57,6 +68,12 @@ namespace Blobs.Presentation
         /// Raised after this presenter applies effects from a move.
         /// </summary>
         public event Action<GameSessionSnapshot> SnapshotChanged;
+
+        /// <summary>Enables or disables effect choreography for mechanic comparison slices.</summary>
+        public void SetEffectsAnimated(bool animated)
+        {
+            _effectsAnimated = animated;
+        }
 
 
 
@@ -117,7 +134,7 @@ namespace Blobs.Presentation
             _tilePresenter.Initialize(cellSize, origin, tileViewFactory);
             if (_boardSurfacePresenter != null && _boardSurfacePresenter.HasView)
                 _boardSurfacePresenter.Initialize(cellSize, origin);
-
+            _colorPalette = palette;
             _state.MoveResolved += HandleMoveResolved;
             _state.UndoResolved += HandleUndoResolved;
             _state.StateRestored += Rebuild;
@@ -171,6 +188,19 @@ namespace Blobs.Presentation
         {
             if (!result.Succeeded)
                 return;
+
+            if (_dragCommitSource == result.SourceBlobId)
+            {
+                Rebuild(_state.CreateSnapshot());
+                if (TryGetBlobView(result.SourceBlobId, out var survivor))
+                {
+                    var scale = survivor.transform.localScale;
+                    survivor.transform.localScale = scale * 1.12f;
+                    survivor.transform.DOScale(scale, .16f).SetEase(Ease.OutQuad)
+                        .SetLink(survivor.gameObject, LinkBehaviour.KillOnDestroy);
+                }
+                return;
+            }
 
             if (_pendingSnapshot != null)
                 Rebuild(_pendingSnapshot);
@@ -428,20 +458,13 @@ namespace Blobs.Presentation
             }
 
             _boardSurfacePresenter?.Clear();
-            if (cellSprite == null)
+            if (cellPrefab == null)
             {
                 if (!_loggedMissingCellSprite)
                     Debug.Log("BoardPresenter: no board surface presenter/view or Cell Sprite assigned; skipping the board surface.", this);
                 _loggedMissingCellSprite = true;
                 return;
             }
-
-            _loggedMissingCellSprite = false;
-            _fallbackSurface = new GameObject("Fallback Board Surface");
-            _fallbackSurface.transform.SetParent(transform, false);
-            Vector3 spriteSize = cellSprite.bounds.size;
-            Vector3 scale = new Vector3(cellSize / Mathf.Max(spriteSize.x, 0.0001f),
-                cellSize / Mathf.Max(spriteSize.y, 0.0001f), 1f);
             for (int y = 0; y < board.Height; y++)
             {
                 for (int x = 0; x < board.Width; x++)
@@ -449,22 +472,18 @@ namespace Blobs.Presentation
                     if (board.EmptyPositions.Contains(new GridPosition(x, y)))
                         continue;
 
-                    var cell = new GameObject($"Cell ({x}, {y})");
-                    cell.transform.SetParent(_fallbackSurface.transform, false);
-                    cell.transform.localScale = scale;
-                    // Center the artwork even when the assigned sprite has an off-center pivot.
-                    cell.transform.localPosition = new Vector3(origin.x + x * cellSize,
-                        origin.y + y * cellSize, 0f) - Vector3.Scale(cellSprite.bounds.center, scale);
-                    var renderer = cell.AddComponent<SpriteRenderer>();
-                    renderer.sprite = cellSprite;
-                    Color tint = (x + y) % 2 == 0 ? cellTint : Color.Lerp(cellTint, Color.white, 0.5f);
-                    tint.a = cellOpacity;
-                    renderer.color = tint;
-                    renderer.sortingLayerName = "Board";
-                    renderer.sortingOrder = -100;
-                    _fallbackCellCount++;
+                    var cell = Instantiate(cellPrefab, new Vector3(origin.x + x, origin.y + y, 0f) * cellSize, Quaternion.identity, surfaceRoot.transform);
+                    var renderer = cell.GetComponent<SpriteRenderer>();
+                    renderer.color = _colorPalette.CellColor;
+
+
                 }
             }
+
+            _loggedMissingCellSprite = false;
+            _fallbackSurface = new GameObject("Fallback Board Surface");
+            _fallbackSurface.transform.SetParent(transform, false);
+
         }
 
         private void ClearFallbackSurface()
@@ -544,7 +563,7 @@ namespace Blobs.Presentation
 
         private bool ShouldAnimateEffects()
         {
-            return UnityEngine.Application.isPlaying && isActiveAndEnabled;
+            return _effectsAnimated && UnityEngine.Application.isPlaying && isActiveAndEnabled;
         }
 
         /// <summary>

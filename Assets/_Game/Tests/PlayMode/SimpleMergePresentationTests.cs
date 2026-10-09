@@ -13,7 +13,7 @@ namespace Blobs.Tests.PlayMode
     {
         [TestCase(true)]
         [TestCase(false)]
-        public void SimpleMergeSlidesBehindThenGrowsOverTarget(bool sourceSurvives)
+        public void SimpleMergeSlidesDirectlyAndRemovesConsumedAtContact(bool sourceSurvives)
         {
             var initial = Snapshot(2, 1, Blob("source", BlobColor.Red, 0, 0), Blob("target", BlobColor.Blue, 1, 0));
             var presenter = CreatePresenter(initial);
@@ -31,44 +31,24 @@ namespace Blobs.Tests.PlayMode
             try
             {
                 Assert.That(source.BlobMotionAnimator.CurrentState, Is.Not.EqualTo(BlobAnimationState.Merging));
-                Assert.That(beat.Duration(), Is.EqualTo(sourceSurvives ? 0.39f : 0.27f).Within(0.001f));
+                Assert.That(beat.Duration(), Is.EqualTo(0.15f).Within(0.001f));
                 beat.Goto(0.075f);
                 Assert.That(source.transform.localPosition.x, Is.EqualTo(0.5f).Within(0.001f));
                 Assert.That(source.gameObject.activeSelf && target.gameObject.activeSelf, Is.True);
                 Assert.That(source.VisualRoot.localScale, Is.EqualTo(source.BaseVisualScale));
                 Assert.That(target.VisualRoot.localScale, Is.EqualTo(target.BaseVisualScale));
-                Assert.That(source.SortingGroup.sortingOrder, Is.LessThan(target.SortingGroup.sortingOrder));
+                Assert.That(source.SortingGroup.sortingOrder, Is.GreaterThan(target.SortingGroup.sortingOrder));
                 Assert.That(contacts, Is.Zero);
 
                 beat.Goto(0.1501f);
                 Assert.That(source.transform.position, Is.EqualTo(target.transform.position));
-                Assert.That(consumed.gameObject.activeSelf, Is.EqualTo(sourceSurvives));
+                Assert.That(consumed.gameObject.activeSelf, Is.False);
                 Assert.That(survivor.gameObject.activeSelf, Is.True);
                 Assert.That(survivor.MergeEffectColor, Is.EqualTo(resultColor));
                 Assert.That(contacts, Is.EqualTo(1));
-                Assert.That(completions, Is.Zero);
-
-                if (sourceSurvives)
-                {
-                    Assert.That(source.VisualRoot.localScale.x, Is.LessThan(0.001f));
-                    Assert.That(source.SortingGroup.sortingOrder, Is.GreaterThan(target.SortingGroup.sortingOrder));
-                    beat.Goto(0.21f);
-                    Assert.That(target.gameObject.activeSelf, Is.True);
-                    Assert.That(source.VisualRoot.localScale.x,
-                        Is.EqualTo(source.BaseVisualScale.x * 0.5f).Within(0.001f));
-                }
-                float pulseStart = sourceSurvives ? 0.27f : 0.15f;
-                beat.Goto(pulseStart + 0.06f);
-                Assert.That(consumed.gameObject.activeSelf, Is.False);
-                Assert.That(survivor.VisualRoot.localScale.x,
-                    Is.EqualTo(survivor.BaseVisualScale.x * 1.15f).Within(0.001f));
-                Assert.That(completions, Is.Zero);
-                beat.Goto(beat.Duration());
-                Assert.That(consumed.gameObject.activeSelf, Is.False);
+                Assert.That(completions, Is.EqualTo(1));
                 Assert.That(survivor.VisualRoot.localScale, Is.EqualTo(survivor.BaseVisualScale));
                 Assert.That(source.SortingGroup.sortingOrder, Is.EqualTo(originalOrder));
-                Assert.That(contacts, Is.EqualTo(1));
-                Assert.That(completions, Is.EqualTo(1));
             }
             finally { beat.Kill(); }
         }
@@ -108,20 +88,21 @@ namespace Blobs.Tests.PlayMode
         }
 
         [UnityTest]
-        public IEnumerator RebuildDuringSimpleGrowthCancelsPlaybackAndRestoresBoard()
+        public IEnumerator RebuildDuringSimpleSlideCancelsPlaybackAndRestoresBoard()
         {
             var source = Blob("source", BlobColor.Red, 0, 0);
             var target = Blob("target", BlobColor.Blue, 1, 0);
             var initial = Snapshot(2, 1, source, target);
             var orchestrator = CreateGameObject("Interruptible Simple Merge").AddComponent<SimpleMergeAnimationOrchestrator>();
-            SetPrivateField(orchestrator, "scaleDuration", 0.5f);
+            SetPrivateField(orchestrator, "slideDuration", 0.5f);
             var presenter = CreatePresenter(initial, mergeOrchestrator: orchestrator);
             presenter.TryGetBlobView(source.Id, out BlobView sourceView);
             var merge = new MergeEffect(source.Id, source.Id, target.Id, MergeSurvivor.MovingBlob,
                 source.Position, target.Position, target);
             presenter.ApplySteps(new[] { new MoveStep(MoveStepKind.Merge, new IBoardEffect[] { merge }) },
                 Snapshot(2, 1, source.WithPosition(target.Position)));
-            yield return WaitUntil(() => sourceView.VisualRoot.localScale.x < sourceView.BaseVisualScale.x * 0.8f);
+            yield return WaitUntil(() => sourceView.transform.localPosition.x > 0.1f &&
+                sourceView.transform.localPosition.x < 0.9f);
             presenter.Rebuild(initial);
             yield return new WaitForSeconds(0.6f);
             Assert.That(presenter.IsPresenting, Is.False);

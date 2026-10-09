@@ -4,20 +4,27 @@ namespace Blobs.Core
     {
         public ColorComponent? Color { get; }
         public TrailComponent? Trail { get; }
+        public SizeComponent? Size { get; }
 
-        public BlobComponents(ColorComponent? color = null, TrailComponent? trail = null)
+        public BlobComponents(ColorComponent? color = null, TrailComponent? trail = null, SizeComponent? size = null)
         {
             Color = color;
             Trail = trail;
+            Size = size;
         }
 
         public BlobComponents WithColor(BlobColor color)
         {
-            return new BlobComponents(color: new ColorComponent(color), trail: Trail);
+            return new BlobComponents(color: new ColorComponent(color), trail: Trail, size: Size);
         }
         public BlobComponents WithTrail(BlobColor trailColor)
         {
-            return new BlobComponents(trail: new TrailComponent(trailColor), color: Color);
+            return new BlobComponents(color: Color, trail: new TrailComponent(trailColor), size: Size);
+        }
+
+        public BlobComponents WithSize(BlobSize size)
+        {
+            return new BlobComponents(color: Color, trail: Trail, size: new SizeComponent(size));
         }
 
     }
@@ -45,5 +52,15 @@ namespace Blobs.Core
         /// Color of the normal blobs a Trail blob leaves behind
         /// </summary>
         public BlobColor TrailColor { get; }
+    }
+
+    public readonly struct SizeComponent
+    {
+        public SizeComponent(BlobSize size)
+        {
+            Size = size;
+        }
+
+        public BlobSize Size { get; }
     }
 }

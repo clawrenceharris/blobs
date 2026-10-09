@@ -32,10 +32,7 @@ MonoBehaviour:
     baseColor: {r: 0.45162782, g: 0.3066038, b: 1, a: 1}
     shadowColor: {r: 0.36538738, g: 0.21048418, b: 0.8113208, a: 1}
     highlightColor: {r: 0.76, g: 0.68, b: 1, a: 1}
-  clear:
-    baseColor: {r: 0, g: 0, b: 0, a: 0}
-    shadowColor: {r: 0, g: 0, b: 0, a: 0}
-    highlightColor: {r: 0, g: 0, b: 0, a: 0}
+  cellColor: {r: 1, g: 1, b: 1, a: 1}
   sharedBlobMaterial: {fileID: 2100000, guid: ab0638ea023b34097ba572c65d9f92d7, type: 2}
   redRamp:
     hueShift: 0
@@ -57,4 +54,8 @@ MonoBehaviour:
     hueShift: 68
     saturation: 1.06
     brightness: 0.8
+  cellRamp:
+    hueShift: 68
+    saturation: 0.4
+    brightness: 0.2
   materials: []

@@ -10,65 +10,70 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 228f01d3da5254622b9b1236a3d1c0ff, type: 3}
-  m_Name: Level_ColorFlags_02_KeepBothColors
+  m_Name: Level_Size_01_GrowThenYield
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
-  levelId: color-flags-02
+  levelId: size-01-grow-then-yield
   schemaVersion: 1
   width: 4
   height: 3
   emptyPositions: []
   blobs:
-  - rid: 1001
-  - rid: 1002
-  - rid: 1003
-  - rid: 1004
-  - rid: 1005
-  - rid: 1006
+  - rid: 601
+  - rid: 602
+  - rid: 603
+  - rid: 604
+  - rid: 7368861088154386535
+  - rid: 7368861088154386536
   tiles: []
   objective: 0
   palette: {fileID: 11400000, guid: b2d1b71546e534ed6b4d4e263fcfd898, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: 1001
-      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+    - rid: 601
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: pink-flag
+        id: small-source
         position: {x: 0, y: 0}
-        type: 1
-        color: 0
-    - rid: 1002
-      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: pink-1
-        position: {x: 3, y: 2}
         type: 0
         color: 0
-    - rid: 1003
+        size: 1
+    - rid: 602
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: pink-2
-        position: {x: 1, y: 2}
-        type: 0
-        color: 0
-    - rid: 1004
-      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: blue-flag
-        position: {x: 0, y: 2}
-        type: 1
-        color: 1
-    - rid: 1005
-      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: blue-1
-        position: {x: 3, y: 1}
-        type: 0
-        color: 1
-    - rid: 1006
-      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: blue-2
+        id: small-meal
         position: {x: 1, y: 0}
         type: 0
         color: 1
+        size: 1
+    - rid: 603
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: large-survivor
+        position: {x: 3, y: 0}
+        type: 0
+        color: 2
+        size: 3
+    - rid: 604
+      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: goal
+        position: {x: 3, y: 2}
+        type: 1
+        color: 2
+    - rid: 7368861088154386535
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blob-4
+        position: {x: 1, y: 1}
+        type: 0
+        color: 0
+        size: 1
+    - rid: 7368861088154386536
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blob-5
+        position: {x: 1, y: 2}
+        type: 0
+        color: 2
+        size: 1

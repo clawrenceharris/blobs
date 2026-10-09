@@ -6,7 +6,7 @@ namespace Blobs.Core
         Flag,
         Trail,
         Rock,
-        Ghost
+        Ghost,
     }
     public static class BlobTypeExtensions
     {

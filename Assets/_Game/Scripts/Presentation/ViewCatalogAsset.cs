@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Blobs.Core;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Blobs.Presentation
     {
         [SerializeField] private List<TileViewCatalogEntry> tileEntries = new();
         [SerializeField] private List<BlobViewCatalogEntry> blobEntries = new();
+
         private Dictionary<TileType, TileView> _tileLookup;
         private Dictionary<BlobType, BlobView> _blobLookup;
 
@@ -47,6 +49,8 @@ namespace Blobs.Presentation
             }
             return prefab;
         }
+
+
 
         public void EnsureBlobLookup()
         {

@@ -6,6 +6,7 @@ using Blobs.Application;
 using Blobs.Content;
 using Blobs.Core;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Blobs.Presentation
 {
@@ -15,15 +16,21 @@ namespace Blobs.Presentation
     /// </summary>
     [RequireComponent(typeof(BlobPresenter))]
     [RequireComponent(typeof(TilePresenter))]
-    [RequireComponent(typeof(BoardSurfacePresenter))]
     public sealed class BoardPresenter : MonoBehaviour
     {
         [SerializeField] private BlobPresenter _blobPresenter;
         [SerializeField] private TilePresenter _tilePresenter;
         [SerializeField] private BoardSurfacePresenter _boardSurfacePresenter;
+        [SerializeField, Tooltip("Used when no board surface presenter/view is available.")]
+        private GameObject cellPrefab;
+        [SerializeField, Range(0f, 1f)] private float cellOpacity = 0.15f;
+        private GameObject _fallbackSurface;
+        private int _fallbackCellCount;
+        private LevelColorPaletteAsset _colorPalette;
+        private bool _loggedMissingCellSprite;
         [SerializeField] private float cellSize = 1.25f;
         [SerializeField] private Vector2 origin;
-
+        [SerializeField] private GameObject surfaceRoot;
         private PresentationTimeline _effectTimeline;
         private CancellationTokenSource _playbackCancellation;
         private bool _playbackPaused;
@@ -34,12 +41,23 @@ namespace Blobs.Presentation
         private readonly List<IBoardEffectPresentationHandler> _additionalEffectHandlers = new();
         private readonly List<IMoveStepPresentationHandler> _additionalMoveStepHandlers = new();
         private IGameplayState _state;
+        private bool _effectsAnimated = true;
 
         public float CellSize => cellSize;
+        public Vector2 Origin => origin;
+        private string _dragCommitSource;
+
+        public BlobSelectionResult CommitDragPreview(string sourceId, Func<BlobSelectionResult> commit)
+        {
+            _dragCommitSource = sourceId;
+            try { return commit(); }
+            finally { _dragCommitSource = null; }
+        }
         public int VisibleBlobCount => _blobPresenter != null ? _blobPresenter.VisibleCount : 0;
         public int VisibleTileCount => _tilePresenter != null ? _tilePresenter.VisibleCount : 0;
         public int VisibleSurfaceCellCount =>
-            _boardSurfacePresenter != null ? _boardSurfacePresenter.VisibleCellCount : 0;
+            _fallbackSurface != null ? _fallbackCellCount :
+            (_boardSurfacePresenter != null ? _boardSurfacePresenter.VisibleCellCount : 0);
 
         /// <summary>
         /// Current session snapshot used by tests and UI. Null until the presenter is initialized.
@@ -50,6 +68,12 @@ namespace Blobs.Presentation
         /// Raised after this presenter applies effects from a move.
         /// </summary>
         public event Action<GameSessionSnapshot> SnapshotChanged;
+
+        /// <summary>Enables or disables effect choreography for mechanic comparison slices.</summary>
+        public void SetEffectsAnimated(bool animated)
+        {
+            _effectsAnimated = animated;
+        }
 
 
 
@@ -108,8 +132,9 @@ namespace Blobs.Presentation
             _state = state;
             _blobPresenter.Initialize(state, palette, cellSize, origin, blobViewFactory);
             _tilePresenter.Initialize(cellSize, origin, tileViewFactory);
-            _boardSurfacePresenter.Initialize(cellSize, origin);
-
+            if (_boardSurfacePresenter != null && _boardSurfacePresenter.HasView)
+                _boardSurfacePresenter.Initialize(cellSize, origin);
+            _colorPalette = palette;
             _state.MoveResolved += HandleMoveResolved;
             _state.UndoResolved += HandleUndoResolved;
             _state.StateRestored += Rebuild;
@@ -164,6 +189,19 @@ namespace Blobs.Presentation
             if (!result.Succeeded)
                 return;
 
+            if (_dragCommitSource == result.SourceBlobId)
+            {
+                Rebuild(_state.CreateSnapshot());
+                if (TryGetBlobView(result.SourceBlobId, out var survivor))
+                {
+                    var scale = survivor.transform.localScale;
+                    survivor.transform.localScale = scale * 1.12f;
+                    survivor.transform.DOScale(scale, .16f).SetEase(Ease.OutQuad)
+                        .SetLink(survivor.gameObject, LinkBehaviour.KillOnDestroy);
+                }
+                return;
+            }
+
             if (_pendingSnapshot != null)
                 Rebuild(_pendingSnapshot);
 
@@ -199,7 +237,7 @@ namespace Blobs.Presentation
 
             ResolvePresenters();
             KillEffectTimeline();
-            _boardSurfacePresenter.Rebuild(snapshot.Board);
+            RebuildSurface(snapshot.Board);
             _tilePresenter.Rebuild(snapshot.Board);
             _blobPresenter.Rebuild(snapshot.Board.Blobs);
             SnapshotChanged?.Invoke(snapshot);
@@ -324,7 +362,7 @@ namespace Blobs.Presentation
                 if (!applied || !IsSynchronizedWith(snapshot))
                 {
                     timeline.Kill();
-                    _boardSurfacePresenter.Rebuild(snapshot.Board);
+                    RebuildSurface(snapshot.Board);
                     _blobPresenter.Rebuild(snapshot.Board.Blobs);
                     _tilePresenter.Rebuild(snapshot.Board);
                 }
@@ -336,7 +374,7 @@ namespace Blobs.Presentation
                 if (_playbackCancellation == cancellation)
                 {
                     timeline.Kill();
-                    _boardSurfacePresenter.Rebuild(snapshot.Board);
+                    RebuildSurface(snapshot.Board);
                     _blobPresenter.Rebuild(snapshot.Board.Blobs);
                     _tilePresenter.Rebuild(snapshot.Board);
                 }
@@ -347,7 +385,7 @@ namespace Blobs.Presentation
                 if (_playbackCancellation == cancellation)
                 {
                     timeline.Kill();
-                    _boardSurfacePresenter.Rebuild(snapshot.Board);
+                    RebuildSurface(snapshot.Board);
                     _blobPresenter.Rebuild(snapshot.Board.Blobs);
                     _tilePresenter.Rebuild(snapshot.Board);
                 }
@@ -405,6 +443,59 @@ namespace Blobs.Presentation
             _blobPresenter?.Clear();
             _tilePresenter?.Clear();
             _boardSurfacePresenter?.Clear();
+            ClearFallbackSurface();
+        }
+
+        private void RebuildSurface(BoardState board)
+        {
+            ClearFallbackSurface();
+            if (_boardSurfacePresenter != null && _boardSurfacePresenter.HasView)
+            {
+                _boardSurfacePresenter.Initialize(cellSize, origin);
+                _boardSurfacePresenter.Rebuild(board);
+                _loggedMissingCellSprite = false;
+                return;
+            }
+
+            _boardSurfacePresenter?.Clear();
+            if (cellPrefab == null)
+            {
+                if (!_loggedMissingCellSprite)
+                    Debug.Log("BoardPresenter: no board surface presenter/view or Cell Sprite assigned; skipping the board surface.", this);
+                _loggedMissingCellSprite = true;
+                return;
+            }
+            for (int y = 0; y < board.Height; y++)
+            {
+                for (int x = 0; x < board.Width; x++)
+                {
+                    if (board.EmptyPositions.Contains(new GridPosition(x, y)))
+                        continue;
+
+                    var cell = Instantiate(cellPrefab, new Vector3(origin.x + x, origin.y + y, 0f) * cellSize, Quaternion.identity, surfaceRoot.transform);
+                    var renderer = cell.GetComponent<SpriteRenderer>();
+                    renderer.color = _colorPalette.CellColor;
+
+
+                }
+            }
+
+            _loggedMissingCellSprite = false;
+            _fallbackSurface = new GameObject("Fallback Board Surface");
+            _fallbackSurface.transform.SetParent(transform, false);
+
+        }
+
+        private void ClearFallbackSurface()
+        {
+            if (_fallbackSurface != null)
+            {
+                _fallbackSurface.SetActive(false);
+                if (UnityEngine.Application.isPlaying) Destroy(_fallbackSurface);
+                else DestroyImmediate(_fallbackSurface);
+                _fallbackSurface = null;
+            }
+            _fallbackCellCount = 0;
         }
 
         private static Action InvokeOnce(Action callback)
@@ -472,7 +563,7 @@ namespace Blobs.Presentation
 
         private bool ShouldAnimateEffects()
         {
-            return UnityEngine.Application.isPlaying && isActiveAndEnabled;
+            return _effectsAnimated && UnityEngine.Application.isPlaying && isActiveAndEnabled;
         }
 
         /// <summary>
@@ -490,13 +581,10 @@ namespace Blobs.Presentation
             if (_boardSurfacePresenter == null)
                 _boardSurfacePresenter = GetComponent<BoardSurfacePresenter>();
 
-            if (_blobPresenter == null ||
-                _tilePresenter == null ||
-                _boardSurfacePresenter == null)
+            if (_blobPresenter == null || _tilePresenter == null)
             {
                 throw new InvalidOperationException(
-                    "BoardPresenter requires BlobPresenter, TilePresenter, and " +
-                    "BoardSurfacePresenter components on the same GameObject.");
+                    "BoardPresenter requires BlobPresenter and TilePresenter components on the same GameObject.");
             }
 
             if (_effectPipeline != null)
@@ -527,6 +615,7 @@ namespace Blobs.Presentation
         private void OnDestroy()
         {
             Dispose();
+            ClearFallbackSurface();
         }
 
 

@@ -54,28 +54,31 @@ namespace Blobs.Content
 
     }
 
+
+
     [Serializable]
-    public abstract class ColorBlobAssetData : BlobAssetData
+    public sealed class NormalBlobAssetData : BlobAssetData
     {
         public BlobColor color;
+        public BlobSize size = BlobSize.Normal;
+
     }
 
     [Serializable]
-    public sealed class NormalBlobAssetData : ColorBlobAssetData
+    public sealed class FlagBlobAssetData : BlobAssetData
     {
-    }
-
-    [Serializable]
-    public sealed class FlagBlobAssetData : ColorBlobAssetData
-    {
+        public BlobColor color;
 
     }
 
     [Serializable]
-    public sealed class TrailBlobAssetData : ColorBlobAssetData
+    public sealed class TrailBlobAssetData : BlobAssetData
     {
         [Tooltip("Color of the normal blobs left behind on tiles this blob departs.")]
         public BlobColor trailColor;
+        public BlobColor color;
+        public BlobSize size = BlobSize.Normal;
+
 
     }
     [Serializable]
@@ -87,6 +90,7 @@ namespace Blobs.Content
     public sealed class GhostBlobAssetData : BlobAssetData
     {
     }
+
 
 
 

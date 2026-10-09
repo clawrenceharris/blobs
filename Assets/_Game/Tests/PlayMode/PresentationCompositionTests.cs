@@ -59,6 +59,7 @@ namespace Blobs.Tests.PlayMode
         {
             GameObject root = CreateGameObject("Runtime Scene Composition", active: false);
             root.AddComponent<MergeAnimationOrchestrator>();
+            root.AddComponent<BoardSurfacePresenter>();
             var surface = new GameObject("Board Surface");
             surface.transform.SetParent(root.transform, false);
             surface.AddComponent<BoardSurfaceView>();

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Blobs.Debugging;
 
 namespace Blobs.Core
 {
@@ -26,6 +27,8 @@ namespace Blobs.Core
         CollisionPlan BuildPlan(MoveContext context);
     }
 
+
+
     /// <summary>
     /// Standard color-clash merge: occupant is removed, the mover survives on its tile
     /// and may continue along its path. Requires differing colors.
@@ -38,42 +41,68 @@ namespace Blobs.Core
             if (context.Source.Components.Color?.Color == context.Target.Components.Color?.Color)
                 return CollisionPlan.Failed(MoveFailureReason.NormalMergeRequiresDifferentColors);
 
-            return CollisionPlan.Continue(MergeEffect.NormalMerge(context));
+
+            var sourceSize = context.Source.Components.Size?.Size;
+            var targetSize = context.Target.Components.Size?.Size;
+            if (!targetSize.HasValue || !sourceSize.HasValue)
+            {
+                return CollisionPlan.Failed(MoveFailureReason.NormalMergeRequiresSize);
+            }
+            if (targetSize > sourceSize)
+            {
+                return CollisionPlan.ConsumeMover(
+                    MergeEffect.ReverseMerge(context));
+            }
+
+            var effects = new List<IBoardEffect>
+            {
+                MergeEffect.NormalMerge(context)
+            };
+
+            if (sourceSize.Value == targetSize.Value && sourceSize.Value < BlobSize.Large)
+            {
+                effects.Add(new ChangeBlobSizeEffect(
+                    context.Source.Id,
+                    before: sourceSize.Value,
+                    after: sourceSize.Value.Next()));
+            }
+
+            return CollisionPlan.Continue(effects.ToArray());
+
         }
     }
 
     /// <summary>
-    /// Flag capture: requires matching color and a board containing only the mover and
+    /// Flag capture: requires matching color and a board containing no other blobs of the same color as 
     /// the flag. Consumes the mover; the flag stays in place.
     /// </summary>
     public sealed class FlagCollisionStrategy : ICollisionStrategy
     {
         public CollisionPlan BuildPlan(MoveContext context)
         {
-            if (context.Target.Id != context.Intent.Target.Id)
+            var flag = context.Target;
+            var source = context.Source;
+            var intendedTarget = context.Intent.Target;
+            if (flag.Id != intendedTarget.Id)
             {
                 return CollisionPlan.Failed(MoveFailureReason.FlagCaptureRequired);
             }
-            if (context.Source.Type != BlobType.Normal)
-            {
+            if (source.Type != BlobType.Normal || !source.HasColor)
                 return CollisionPlan.Failed(MoveFailureReason.FlagRequiresNormalSource);
-
+            if (flag.Components.Color?.Color != source.Components.Color?.Color)
+            {
+                return CollisionPlan.Failed(MoveFailureReason.FlagRequiresMatchingColor);
             }
-            if (context.Source.Components.Color?.Color != context.Target.Components.Color?.Color)
+
+
+            // Flag requires only one other blob of the same color to be captured.
+            if (context.Board.Blobs.Where(b => b.Type.IsClearable() && b.Components.Color?.Color == flag.Components.Color?.Color).Count() > 1)
             {
                 return CollisionPlan.Failed(
-                    MoveFailureReason.FlagRequiresMatchingColor);
+                    MoveFailureReason.FlagRequiresNoOtherBlobsOfSameColor);
             }
-
-
-            // The board may contain exactly the mover and the flag at capture time.
-            if (context.Board.Blobs.Where(b => b.Type.IsClearable()).Count() > 1)
-            {
-                return CollisionPlan.Failed(
-                    MoveFailureReason.FlagRequiresNoOtherBlobs);
-            }
-
             return CollisionPlan.ConsumeMover(MergeEffect.ReverseMerge(context));
+
         }
     }
 
@@ -134,5 +163,9 @@ namespace Blobs.Core
                     new MoveStep(MoveStepKind.Traverse, followUp)
                 });
         }
+
+
     }
+
+
 }

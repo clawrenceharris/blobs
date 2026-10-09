@@ -15,6 +15,13 @@ namespace Blobs.Application
         /// </summary>
         BlobSelectionResult SelectBlobAt(GridPosition position);
 
+        /// <summary>Starts a fresh drag without completing a previous selection.</summary>
+        BlobSelectionResult BeginDragAt(GridPosition position);
+        /// <summary>Attempts a move from the captured source to the release cell.</summary>
+        BlobSelectionResult EndDragAt(GridPosition position);
+        /// <summary>Abandons the drag and clears its selection without moving.</summary>
+        void CancelDrag();
+
         /// <summary>
         /// Restores the complete state before the latest board-changing action.
         /// </summary>
@@ -80,6 +87,7 @@ namespace Blobs.Application
         private readonly LevelDefinition _level;
         private BoardState _board;
         private string _selectedBlobId;
+        private string _dragSourceId;
         private int _committedMoveCount;
         public BoardState CurrentState => _board;
         /// <summary>
@@ -169,6 +177,34 @@ namespace Blobs.Application
             return move;
         }
 
+        public BlobSelectionResult BeginDragAt(GridPosition position)
+        {
+            CancelDrag();
+            BlobSelectionResult result = SelectBlobAt(position);
+            _dragSourceId = result.HasSelection ? result.SourceId : null;
+            return result;
+        }
+
+        public BlobSelectionResult EndDragAt(GridPosition position)
+        {
+            string sourceId = _dragSourceId;
+            _dragSourceId = null;
+            if (sourceId == null || _selectedBlobId != sourceId || _board.GetBlob(sourceId) == null)
+            {
+                CancelDrag();
+                return BlobSelectionResult.Cleared();
+            }
+
+            return SelectBlobAt(position);
+        }
+
+        public void CancelDrag()
+        {
+            _dragSourceId = null;
+            _selectedBlobId = null;
+            BlobSelected?.Invoke(BlobSelectionResult.Cleared());
+        }
+
         /// <summary>
         /// Executes an explicit move intent. This bypasses the selection state and is primarily used by tests
         /// or future input modes that already know source and target ids.
@@ -204,6 +240,7 @@ namespace Blobs.Application
             _history.RemoveAt(_history.Count - 1);
             _board = record.PreviousBoard.Clone();
             _selectedBlobId = null;
+            _dragSourceId = null;
             IsComplete = ObjectiveEvaluator.IsComplete(_board, _level.Objective);
             var snapshot = CreateSnapshot();
             UndoResolved?.Invoke(new UndoResult(
@@ -222,6 +259,7 @@ namespace Blobs.Application
             _committedMoveCount = 0;
             _board = LevelFactory.CreateInitialBoard(_level);
             _selectedBlobId = null;
+            _dragSourceId = null;
             IsComplete = ObjectiveEvaluator.IsComplete(_board, _level.Objective);
             var snapshot = CreateSnapshot();
             StateRestored?.Invoke(snapshot);

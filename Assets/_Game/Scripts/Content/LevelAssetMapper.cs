@@ -58,7 +58,8 @@ namespace Blobs.Content
                     return new NormalBlobDefinition(
                         normal.id,
                         ToCore(normal.position),
-                        normal.color);
+                        normal.color,
+                        normal.size);
                 case NormalBlobAssetData normal:
                     throw new InvalidOperationException(
                         $"Normal blob '{normal.id}' declares unsupported type {normal.type}.");
@@ -75,7 +76,8 @@ namespace Blobs.Content
                         trail.id,
                         ToCore(trail.position),
                         trail.color,
-                        trail.trailColor);
+                        trail.trailColor,
+                        trail.size);
                 case TrailBlobAssetData trail:
                     throw new InvalidOperationException(
                         $"Trail blob '{trail.id}' declares unsupported type {trail.type}.");
@@ -94,6 +96,8 @@ namespace Blobs.Content
                 case GhostBlobAssetData ghost:
                     throw new InvalidOperationException(
                         $"Ghost blob '{ghost.id}' declares unsupported type {ghost.type}.");
+
+
                 default:
                     throw new InvalidOperationException(
                         $"Unsupported blob asset data type: {blob.GetType().Name}.");

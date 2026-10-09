@@ -53,6 +53,9 @@ TagManager:
   - name: Blob VFX
     uniqueID: 1217160663
     locked: 0
+  - name: Fruits
+    uniqueID: 1494433577
+    locked: 0
   - name: Blobs
     uniqueID: 1381305635
     locked: 0

@@ -28,4 +28,5 @@ namespace Blobs.Presentation
         public TileType Type => type;
         public TileView Prefab => prefab;
     }
+
 }

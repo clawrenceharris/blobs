@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Blobs.Core;
 
 namespace Blobs.Core
 {
@@ -10,9 +11,6 @@ namespace Blobs.Core
     /// </summary>
     public abstract class BlobDefinition
     {
-        public string Id { get; }
-        public GridPosition Position { get; }
-        public BlobType Type { get; }
 
         public BlobDefinition(
             string id,
@@ -23,47 +21,47 @@ namespace Blobs.Core
             Position = position;
             Type = type;
         }
-    }
-
-    public abstract class ColorBlobDefinition : BlobDefinition
-    {
-        public BlobColor Color { get; }
-
-        public ColorBlobDefinition(string id, GridPosition position, BlobColor color, BlobType type) : base(id, position, type)
-        {
-            Color = color;
-        }
-
-
+        public string Id { get; }
+        public GridPosition Position { get; }
+        public BlobType Type { get; }
 
     }
+
+
+
+
     /// <summary>
     /// Basic blob definition used by the current source-to-target merge rules.
     /// </summary>
-    public sealed class NormalBlobDefinition : ColorBlobDefinition
+    public sealed class NormalBlobDefinition : BlobDefinition
     {
+
         public NormalBlobDefinition(
             string id,
             GridPosition position,
-            BlobColor color
+            BlobColor color,
+            BlobSize size = BlobSize.Normal
             )
-            : base(id, position, color, BlobType.Normal)
+            : base(id, position, BlobType.Normal)
         {
+            Size = size;
+            Color = color;
         }
+        public BlobSize Size { get; }
+        public BlobColor Color { get; }
     }
-    public sealed class FlagBlobDefinition : ColorBlobDefinition
+    public sealed class FlagBlobDefinition : BlobDefinition
     {
         public FlagBlobDefinition(
             string id,
             GridPosition position,
             BlobColor color)
-            : base(
-                id,
-                position,
-                color,
-                BlobType.Flag)
+            : base(id, position, BlobType.Flag)
         {
+            Color = color;
         }
+        public BlobColor Color { get; }
+
     }
 
     public sealed class RockBlobDefinition : BlobDefinition
@@ -80,23 +78,28 @@ namespace Blobs.Core
     /// Trail blob definition. Moves like a normal blob but leaves normal blobs of
     /// <see cref="TrailColor"/> on the empty tiles it departs during a move.
     /// </summary>
-    public sealed class TrailBlobDefinition : ColorBlobDefinition
+    public sealed class TrailBlobDefinition : BlobDefinition
     {
         public TrailBlobDefinition(
-            string id,
-            GridPosition position,
-            BlobColor color,
-            BlobColor trailColor)
-            : base(
-                id,
-                position,
-                color,
-                BlobType.Trail)
+     string id,
+     GridPosition position,
+     BlobColor color,
+     BlobColor trailColor,
+     BlobSize size = BlobSize.Normal)
+     : base(
+         id,
+         position,
+         BlobType.Trail)
         {
             TrailColor = trailColor;
+            Color = color;
+            Size = size;
         }
-
+        public BlobSize Size { get; }
         public BlobColor TrailColor { get; }
+        public BlobColor Color { get; }
+
+
     }
 
     public sealed class GhostBlobDefinition : BlobDefinition
@@ -109,5 +112,7 @@ namespace Blobs.Core
         }
 
     }
+
+
 
 }

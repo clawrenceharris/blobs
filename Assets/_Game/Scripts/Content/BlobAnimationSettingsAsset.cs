@@ -77,6 +77,7 @@ namespace Blobs.Content
         [SerializeField] private float _contactDuration = 0.06f;
         [SerializeField] private float _consumeDuration = 0.2f;
         [SerializeField] private float _settleDuration = 0.4f;
+        [SerializeField] private float _growDuration = 0.28f;
 
         [Header("Deformation")]
         [SerializeField, Min(0f)] private float _anticipationBackstep = 0.08f;
@@ -95,7 +96,7 @@ namespace Blobs.Content
         public float ContactDuration => _contactDuration;
         public float ConsumeDuration => _consumeDuration;
         public float SettleDuration => _settleDuration;
-
+        public float GrowDuration => _growDuration;
         public float AnticipationBackstep => _anticipationBackstep;
         public Vector2 AnticipationScale => _anticipationScale;
         public Vector2 TravelScale => _travelScale;
@@ -112,6 +113,7 @@ namespace Blobs.Content
             _contactDuration = Mathf.Max(0.01f, _contactDuration);
             _consumeDuration = Mathf.Max(0.01f, _consumeDuration);
             _settleDuration = Mathf.Max(0.01f, _settleDuration);
+            _growDuration = Mathf.Max(0.01f, _growDuration);
             _anticipationBackstep = Mathf.Max(0.01f, _anticipationBackstep);
             _sourceSortingOffset = Mathf.Max(1, _sourceSortingOffset);
             _targetSortingOffset = Mathf.Max(1, _targetSortingOffset);

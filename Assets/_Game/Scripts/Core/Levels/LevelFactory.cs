@@ -26,16 +26,20 @@ namespace Blobs.Core
                     b.Position);
                 switch (b)
                 {
-                    case NormalBlobDefinition colorBlob:
-                        blob = blob.WithColor(colorBlob.Color);
+                    case NormalBlobDefinition normalBlob:
+                        blob = blob
+                        .WithColor(normalBlob.Color)
+                        .WithSize(normalBlob.Size);
                         break;
                     case TrailBlobDefinition trailBlob:
-                        blob = blob.WithTrail(trailBlob.TrailColor).WithColor(trailBlob.Color);
+                        blob = blob
+                        .WithTrail(trailBlob.TrailColor)
+                        .WithColor(trailBlob.Color)
+                        .WithSize(trailBlob.Size);
                         break;
                     case FlagBlobDefinition flagBlob:
                         blob = blob.WithColor(flagBlob.Color);
                         break;
-
 
                 }
                 blobs.Add(blob);

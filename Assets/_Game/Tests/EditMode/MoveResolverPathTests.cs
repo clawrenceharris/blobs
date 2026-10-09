@@ -9,7 +9,10 @@ namespace Blobs.Tests.EditMode
     public sealed class MoveResolverPathTests
     {
         private static BlobState Blob(string id, BlobType type, int x, BlobColor color = BlobColor.Red) =>
-            new BlobState(id, type, new GridPosition(x, 0)).WithColor(color).WithTrail(BlobColor.Blue);
+            new BlobState(id, type, new GridPosition(x, 0))
+                .WithColor(color)
+                .WithTrail(BlobColor.Blue)
+                .WithSize(BlobSize.Normal);
 
         private static BoardState Board(BlobState[] blobs, params int[] holes) =>
             new BoardState(8, 1, blobs, Array.Empty<TileState>(),
@@ -43,6 +46,21 @@ namespace Blobs.Tests.EditMode
             Assert.That(board.GetBlob("source").Type, Is.EqualTo(sourceType));
             Assert.That(board.GetBlob("source").Position.X, Is.EqualTo(1));
             Assert.That(board.GetBlob("target"), Is.Null);
+        }
+
+        [TestCase(BlobType.Normal)]
+        [TestCase(BlobType.Trail)]
+        public void MergeKeepsSourceColorAndIdentity(BlobType sourceType)
+        {
+            var board = Board(new[] { Blob("source", sourceType, 0),
+                Blob("target", BlobType.Normal, 1, BlobColor.Green) });
+
+            Assert.That(Resolve(board).Succeeded, Is.True);
+
+            BlobState survivor = board.GetBlob("source");
+            Assert.That(survivor.Components.Color?.Color, Is.EqualTo(BlobColor.Red));
+            Assert.That(survivor.Type, Is.EqualTo(sourceType));
+            Assert.That(survivor.Components.Trail?.TrailColor, Is.EqualTo(BlobColor.Blue));
         }
 
         [Test]

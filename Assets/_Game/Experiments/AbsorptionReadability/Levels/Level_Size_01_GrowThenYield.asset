@@ -22,8 +22,6 @@ MonoBehaviour:
   - rid: 602
   - rid: 603
   - rid: 604
-  - rid: 7368861088154386535
-  - rid: 7368861088154386536
   tiles: []
   objective: 0
   palette: {fileID: 11400000, guid: b2d1b71546e534ed6b4d4e263fcfd898, type: 2}
@@ -61,19 +59,3 @@ MonoBehaviour:
         position: {x: 3, y: 2}
         type: 1
         color: 2
-    - rid: 7368861088154386535
-      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: blob-4
-        position: {x: 1, y: 1}
-        type: 0
-        color: 0
-        size: 1
-    - rid: 7368861088154386536
-      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: blob-5
-        position: {x: 1, y: 2}
-        type: 0
-        color: 2
-        size: 1

@@ -186,6 +186,7 @@ namespace Blobs.Tests.PlayMode
 
             public BlobSelectionResult BeginDragAt(GridPosition position) => SelectBlobAt(position);
             public BlobSelectionResult EndDragAt(GridPosition position) => SelectBlobAt(position);
+            public BlobSelectionResult EndSwipe(Direction direction) => BlobSelectionResult.Cleared();
             public void CancelDrag() { }
 
             public void Restart()

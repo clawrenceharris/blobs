@@ -83,7 +83,7 @@ namespace Blobs.Core
             var flag = context.Target;
             var source = context.Source;
             var intendedTarget = context.Intent.Target;
-            if (flag.Id != intendedTarget.Id)
+            if (!context.Intent.IsDirectional && flag.Id != intendedTarget.Id)
             {
                 return CollisionPlan.Failed(MoveFailureReason.FlagCaptureRequired);
             }

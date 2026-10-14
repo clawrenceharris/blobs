@@ -21,6 +21,32 @@ namespace Blobs.Tests.EditMode
             Assert.That(session.MoveCount, Is.EqualTo(1));
         }
 
+        [Test]
+        public void SwipeUsesCapturedSourceAndCommitsDirectionalSlideOnce()
+        {
+            var session = new GameSession(new LevelDefinition(
+                "swipe-session",
+                LevelDefinition.CurrentSchemaVersion,
+                4,
+                2,
+                new BlobDefinition[]
+                {
+                    new NormalBlobDefinition("source", new GridPosition(0, 0), BlobColor.Red),
+                    new FlagBlobDefinition("flag", new GridPosition(0, 1), BlobColor.Red)
+                },
+                Array.Empty<TileDefinition>()));
+            session.BeginDragAt(new GridPosition(0, 0));
+
+            BlobSelectionResult result = session.EndSwipe(Direction.East);
+
+            Assert.That(result.MoveAttempted, Is.True);
+            Assert.That(result.MoveResult.Succeeded, Is.True);
+            Assert.That(session.CurrentState.GetBlob("source").Position,
+                Is.EqualTo(new GridPosition(3, 0)));
+            Assert.That(session.MoveCount, Is.EqualTo(1));
+            Assert.That(session.EndSwipe(Direction.East).MoveAttempted, Is.False);
+        }
+
         [TestCase(3, 1)]
         [TestCase(0, 3)]
         [TestCase(0, 0)]

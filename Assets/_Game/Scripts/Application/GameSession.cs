@@ -19,6 +19,8 @@ namespace Blobs.Application
         BlobSelectionResult BeginDragAt(GridPosition position);
         /// <summary>Attempts a move from the captured source to the release cell.</summary>
         BlobSelectionResult EndDragAt(GridPosition position);
+        /// <summary>Slides the captured source in a cardinal direction until resolution stops it.</summary>
+        BlobSelectionResult EndSwipe(Direction direction);
         /// <summary>Abandons the drag and clears its selection without moving.</summary>
         void CancelDrag();
 
@@ -196,6 +198,24 @@ namespace Blobs.Application
             }
 
             return SelectBlobAt(position);
+        }
+
+        public BlobSelectionResult EndSwipe(Direction direction)
+        {
+            string sourceId = _dragSourceId;
+            _dragSourceId = null;
+            BlobState source = _board.GetBlob(sourceId);
+            if (sourceId == null || _selectedBlobId != sourceId || source == null)
+            {
+                CancelDrag();
+                return BlobSelectionResult.Cleared();
+            }
+
+            MoveResult result = ExecuteMove(new MoveIntent(source, direction));
+            _selectedBlobId = null;
+            var move = BlobSelectionResult.Move(result);
+            BlobSelected?.Invoke(move);
+            return move;
         }
 
         public void CancelDrag()

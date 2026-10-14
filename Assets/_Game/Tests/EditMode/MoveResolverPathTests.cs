@@ -21,6 +21,10 @@ namespace Blobs.Tests.EditMode
         private static MoveResult Resolve(BoardState board) => new MoveResolver().Resolve(board,
             new MoveIntent(board.GetBlob("source"), board.GetBlob("target")));
 
+        private static MoveResult Slide(BoardState board, Direction direction) =>
+            new MoveResolver().Resolve(board,
+                new MoveIntent(board.GetBlob("source"), direction));
+
         private static string Snapshot(BoardState board) => string.Join(";", board.Blobs.OrderBy(b => b.Id)
             .Select(b => $"{b.Id}:{b.Type}:{b.Position}:{b.Components.Color?.Color}:{b.Components.Trail?.TrailColor}"));
 
@@ -188,6 +192,85 @@ namespace Blobs.Tests.EditMode
         {
             RejectUnchanged(Board(new[] { Blob("source", BlobType.Normal, 0),
                 Blob("flag", BlobType.Flag, 2), Blob("target", BlobType.Rock, 5) }));
+        }
+
+        [TestCase(Direction.North, 1, 2)]
+        [TestCase(Direction.East, 2, 1)]
+        [TestCase(Direction.South, 1, 0)]
+        [TestCase(Direction.West, 0, 1)]
+        public void DirectionalSlideMovesThroughEmptyCellsToBoardEdge(
+            Direction direction,
+            int expectedX,
+            int expectedY)
+        {
+            var board = new BoardState(
+                3,
+                3,
+                new[]
+                {
+                    new BlobState("source", BlobType.Normal, new GridPosition(1, 1))
+                        .WithColor(BlobColor.Red)
+                        .WithSize(BlobSize.Normal)
+                },
+                Array.Empty<TileState>());
+
+            MoveResult result = Slide(board, direction);
+
+            Assert.That(result.Succeeded, Is.True);
+            Assert.That(board.GetBlob("source").Position,
+                Is.EqualTo(new GridPosition(expectedX, expectedY)));
+            Assert.That(result.Steps.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void DirectionalSlideMergesAlongRouteThenStopsBeforeRock()
+        {
+            var board = Board(new[]
+            {
+                Blob("source", BlobType.Normal, 0),
+                Blob("middle", BlobType.Normal, 2, BlobColor.Blue),
+                Blob("rock", BlobType.Rock, 5)
+            });
+
+            MoveResult result = Slide(board, Direction.East);
+
+            Assert.That(result.Succeeded, Is.True);
+            Assert.That(result.TargetBlobId, Is.EqualTo("rock"));
+            Assert.That(board.GetBlob("middle"), Is.Null);
+            Assert.That(board.GetBlob("source").Position, Is.EqualTo(new GridPosition(4, 0)));
+        }
+
+        [Test]
+        public void DirectionalSlideStopsWhenGhostConsumesMover()
+        {
+            var board = Board(new[]
+            {
+                Blob("source", BlobType.Normal, 1),
+                Blob("ghost", BlobType.Ghost, 4)
+            });
+
+            MoveResult result = Slide(board, Direction.East);
+
+            Assert.That(result.Succeeded, Is.True);
+            Assert.That(board.GetBlob("source"), Is.Null);
+            Assert.That(board.GetBlob("ghost").Position, Is.EqualTo(new GridPosition(1, 0)));
+        }
+
+        [Test]
+        public void DirectionalSlideTreatsReachedFlagAsCaptureAttempt()
+        {
+            var board = Board(new[]
+            {
+                Blob("source", BlobType.Normal, 0),
+                Blob("middle", BlobType.Normal, 1, BlobColor.Blue),
+                Blob("flag", BlobType.Flag, 3)
+            });
+
+            MoveResult result = Slide(board, Direction.East);
+
+            Assert.That(result.Succeeded, Is.True);
+            Assert.That(result.IsComplete, Is.True);
+            Assert.That(board.Blobs.Select(blob => blob.Id), Is.EqualTo(new[] { "flag" }));
         }
     }
 }

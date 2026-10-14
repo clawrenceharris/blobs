@@ -136,6 +136,21 @@ namespace Blobs.Core
         }
 
         /// <summary>
+        /// Creates a route toward a positional endpoint without an explicitly selected target blob.
+        /// </summary>
+        public static MovePlan Directional(BlobState source, GridPosition end)
+        {
+            return new MovePlan(
+                succeeded: true,
+                start: source.Position,
+                end: end,
+                failureReason: MoveFailureReason.None,
+                steps: Array.Empty<MoveStep>(),
+                source: source,
+                target: null);
+        }
+
+        /// <summary>
         /// Marks the move intent as valid with an explicit start and end position.
         /// </summary>
         public MovePlan Success(GridPosition start, GridPosition end)

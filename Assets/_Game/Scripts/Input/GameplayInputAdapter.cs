@@ -11,8 +11,8 @@ using UnityEngine.InputSystem;
 namespace Blobs.Input
 {
     /// <summary>
-    /// Converts pointer drags into source-to-target gameplay commands. This adapter maps screen/world input
-    /// to grid positions but does not update board visuals directly.
+    /// Converts pointer gestures into source-to-target drags or directional slides. This adapter maps
+    /// screen/world input to gameplay commands but does not update board visuals directly.
     /// </summary>
     public sealed class GameplayInputAdapter : MonoBehaviour
     {
@@ -21,12 +21,19 @@ namespace Blobs.Input
         [SerializeField] private Camera boardCamera;
         [SerializeField, Min(0.01f)] private float cellSize = 1f;
         [SerializeField] private Vector2 boardOrigin;
+        [Header("Experimental Input")]
+        [SerializeField] private bool directionalSwipeEnabled;
+        [SerializeField, Min(1f)] private float minimumSwipeDistanceInPixels = 24f;
         private InputAction _runtimePointAction;
         private bool _subscribed;
         private InputControl _dragControl;
         private bool _previewActive;
+        private Vector2 _gestureStartScreenPosition;
         private readonly List<RaycastResult> _uiHits = new();
         public event Action<BlobSelectionResult> BlobSelectionResolved;
+
+        /// <summary>True when pointer gestures resolve as cardinal slides.</summary>
+        public bool DirectionalSwipeEnabled => directionalSwipeEnabled;
 
         private InputAction SelectBlobAction =>
             selectBlobAction != null ? selectBlobAction.action : _runtimePointAction;
@@ -56,6 +63,19 @@ namespace Blobs.Input
             BlobSelectionResult result = _commands.SelectBlobAt(gridPosition);
             BlobSelectionResolved?.Invoke(result);
             return result;
+        }
+
+        /// <summary>
+        /// Changes the experimental input mode and clears any gesture already in progress.
+        /// This public method can be wired directly to a runtime UI toggle.
+        /// </summary>
+        public void SetDirectionalSwipeEnabled(bool enabled)
+        {
+            if (directionalSwipeEnabled == enabled)
+                return;
+
+            CancelDrag();
+            directionalSwipeEnabled = enabled;
         }
 
         private void OnEnable()
@@ -191,11 +211,28 @@ namespace Blobs.Input
                 GridPosition position = new(Mathf.RoundToInt(point.x), Mathf.RoundToInt(point.y));
                 BlobSelectionResult result = _commands.BeginDragAt(position);
                 _dragControl = result.HasSelection ? context.control : null;
+                _gestureStartScreenPosition = screenPosition;
                 BlobSelectionResolved?.Invoke(result);
             }
             else
             {
                 _dragControl = null;
+
+                if (directionalSwipeEnabled)
+                {
+                    Vector2 delta = screenPosition - _gestureStartScreenPosition;
+                    if (delta.magnitude < minimumSwipeDistanceInPixels)
+                    {
+                        CancelDrag();
+                        return;
+                    }
+
+                    Direction direction = Mathf.Abs(delta.x) >= Mathf.Abs(delta.y)
+                        ? (delta.x >= 0f ? Direction.East : Direction.West)
+                        : (delta.y >= 0f ? Direction.North : Direction.South);
+                    BlobSelectionResolved?.Invoke(_commands.EndSwipe(direction));
+                    return;
+                }
 
                 if (!hasPoint)
                 {

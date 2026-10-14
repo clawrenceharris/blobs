@@ -57,6 +57,16 @@ namespace Blobs.Presentation
             return _session.EndDragAt(position);
         }
 
+        public BlobSelectionResult EndSwipe(Direction direction)
+        {
+            if (_boardPresenter.IsPresenting)
+            {
+                _session.CancelDrag();
+                return BlobSelectionResult.Cleared();
+            }
+            return _session.EndSwipe(direction);
+        }
+
         public void CancelDrag() => _session.CancelDrag();
 
         public void Restart()

@@ -232,6 +232,15 @@ namespace Blobs.Core
             return false;
         }
 
+        internal void SetBlobColor(string blobId, BlobColor after)
+        {
+            var blob = GetBlob(blobId);
+            if (blob == null)
+                throw new InvalidOperationException("Blob does not exist: " + blobId);
+            blob = blob.WithColor(after);
+            _blobsById[blobId] = blob;
+        }
+
         internal void SetBlobSize(string blobId, BlobSize after)
         {
             var blob = GetBlob(blobId);

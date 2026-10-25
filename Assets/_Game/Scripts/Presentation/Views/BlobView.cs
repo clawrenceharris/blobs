@@ -38,6 +38,7 @@ namespace Blobs.Presentation
         private Vector3 _baseVisualScale;
         public Vector3 BaseVisualScale { get; private set; } = Vector3.one;
         private BlobMotionAnimator _blobMotionAnimator;
+        private LevelColorPaletteAsset _colorPalette;
 
         public BlobMotionAnimator BlobMotionAnimator => _blobMotionAnimator;
         public Color MergeEffectColor { get; private set; } = Color.white;
@@ -59,6 +60,8 @@ namespace Blobs.Presentation
             _presentedSize = blob.Components.Size?.Size;
             _cellSize = cellSize;
             _origin = origin;
+            _colorPalette = colorPalette;
+
             name = "Blob " + blob.Id;
             SetGridPosition(blob.Position);
             _baseScale = Vector3.one * Mathf.Max(0.1f, cellSize * 0.8f);
@@ -75,7 +78,7 @@ namespace Blobs.Presentation
             BlobRenderer = GetComponent<BlobRenderer>();
 
             CacheOptionalBehaviors();
-            ApplySkin(blob, colorPalette);
+            ApplySkin(blob);
         }
 
         /// <summary>
@@ -238,13 +241,13 @@ namespace Blobs.Presentation
         /// <summary>
         /// Applies visual skinning for the supplied blob state and color palette.
         /// </summary>
-        public void ApplySkin(BlobState blob, LevelColorPaletteAsset colorPalette)
+        public void ApplySkin(BlobState blob)
         {
             _presentedColor = blob.Components.Color?.Color;
             _presentedTrailColor = blob.Components.Trail?.TrailColor;
             if (blob.Components.Color.HasValue)
             {
-                Skin skin = _skinResolver.ResolveSkin(blob.Components.Color.Value.Color, colorPalette);
+                Skin skin = _skinResolver.ResolveSkin(blob.Components.Color.Value.Color, _colorPalette);
                 MergeEffectSkin = skin;
                 _skinApplier.Apply(this, skin);
                 MergeEffectColor = skin.BaseColor;
@@ -257,7 +260,7 @@ namespace Blobs.Presentation
             {
                 binding.Apply(
                     blob,
-                    colorPalette
+                    _colorPalette
                 );
             }
         }

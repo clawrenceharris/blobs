@@ -4,6 +4,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Blobs.Core;
 using DG.Tweening;
+using Blobs.Application;
 
 namespace Blobs.Presentation
 {
@@ -27,16 +28,17 @@ namespace Blobs.Presentation
         private readonly List<IMoveStepPresentationHandler> _moveStepHandlers = new();
         private readonly BlobPresenter _blobs;
         private readonly TilePresenter _tiles;
-
-        public BoardEffectPresentationPipeline(BlobPresenter blobs, TilePresenter tiles)
+        private readonly BoardState _board;
+        public BoardEffectPresentationPipeline(BlobPresenter blobs, TilePresenter tiles, BoardState board)
         {
             _blobs = blobs ?? throw new ArgumentNullException(nameof(blobs));
             _tiles = tiles ?? throw new ArgumentNullException(nameof(tiles));
-
+            _board = board ?? throw new ArgumentNullException(nameof(board));
             Register(new MoveBlobPresentationHandler());
             Register(new SpawnBlobPresentationHandler());
             Register(new RemoveBlobPresentationHandler());
             Register(new MergePresentationHandler());
+            Register(new ChangeBlobColorPresentationHandler());
             Register(new ChangeBlobSizePresentationHandler());
             Register(new GhostHauntPresentationHandler());
             Register(new GhostRestPresentationHandler());
@@ -516,6 +518,7 @@ namespace Blobs.Presentation
             return new BoardEffectPresentationContext(
                 _blobs,
                 _tiles,
+                _board,
                 timeline,
                 movementEase,
                 contactFeedback,

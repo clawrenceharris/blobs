@@ -126,9 +126,10 @@ namespace Blobs.Presentation
         {
             if (state == null)
                 throw new ArgumentNullException(nameof(state));
+            var snapshot = state.CreateSnapshot();
 
             Unsubscribe();
-            ResolvePresenters();
+            ResolvePresenters(snapshot.Board);
             _state = state;
             _blobPresenter.Initialize(state, palette, cellSize, origin, blobViewFactory);
             _tilePresenter.Initialize(cellSize, origin, tileViewFactory);
@@ -138,7 +139,7 @@ namespace Blobs.Presentation
             _state.MoveResolved += HandleMoveResolved;
             _state.UndoResolved += HandleUndoResolved;
             _state.StateRestored += Rebuild;
-            Rebuild(_state.CreateSnapshot());
+            Rebuild(snapshot);
         }
 
         private void HandleUndoResolved(UndoResult undo)
@@ -235,7 +236,7 @@ namespace Blobs.Presentation
             if (snapshot == null)
                 throw new ArgumentNullException(nameof(snapshot));
 
-            ResolvePresenters();
+            ResolvePresenters(snapshot.Board);
             KillEffectTimeline();
             RebuildSurface(snapshot.Board);
             _tilePresenter.Rebuild(snapshot.Board);
@@ -570,7 +571,7 @@ namespace Blobs.Presentation
         /// Resolves the explicitly required sibling presenters and fails immediately if scene
         /// composition is invalid. Runtime creation would leave their authored assets unwired.
         /// </summary>
-        private void ResolvePresenters()
+        private void ResolvePresenters(BoardState board)
         {
             if (_blobPresenter == null)
                 _blobPresenter = GetComponent<BlobPresenter>();
@@ -592,7 +593,8 @@ namespace Blobs.Presentation
 
             _effectPipeline = new BoardEffectPresentationPipeline(
                 _blobPresenter,
-                _tilePresenter);
+                _tilePresenter,
+                board);
             foreach (IBoardEffectPresentationHandler handler in _additionalEffectHandlers)
                 _effectPipeline.Register(handler);
             foreach (IMoveStepPresentationHandler handler in _additionalMoveStepHandlers)

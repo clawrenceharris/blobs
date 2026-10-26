@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Blobs.Application;
 using Blobs.Core;
 using DG.Tweening;
 
@@ -32,6 +33,7 @@ namespace Blobs.Presentation
         internal BoardEffectPresentationContext(
             BlobPresenter blobs,
             TilePresenter tiles,
+            BoardState board,
             PresentationTimeline timeline,
             Ease movementEase,
             Action contactFeedback,
@@ -40,6 +42,7 @@ namespace Blobs.Presentation
         {
             Blobs = blobs;
             Tiles = tiles;
+            Board = board;
             Timeline = timeline;
             MovementEase = movementEase;
             ContactFeedback = isUndo ? null : contactFeedback;
@@ -54,6 +57,7 @@ namespace Blobs.Presentation
         public Action ContactFeedback { get; }
         public bool IsAnimated => Timeline.IsAnimated;
         public bool IsUndo { get; }
+        public BoardState Board { get; }
         public IReadOnlyDictionary<string, BlobState> RestorationBlobs { get; }
 
         public BlobState ResolveRestoredBlob(string blobId, BlobState preferred = null)

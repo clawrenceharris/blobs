@@ -132,12 +132,15 @@ namespace Blobs.Presentation
                     sourceSorting.sortingOrder = mergeBaseOrder + settings.SourceSortingOffset;
                 if (targetSorting != null)
                     targetSorting.sortingOrder = mergeBaseOrder + settings.TargetSortingOffset;
+
+                beatContext.Survivor.Face?.ShowEating(sourceSurvives ? direction : -direction);
             });
 
             AppendAnticipation(beat, beatContext);
             AppendApproach(beat, beatContext);
             AppendContact(beat, beatContext, onContact);
             AppendAbsorption(beat, beatContext, destination);
+            beat.AppendCallback(() => beatContext.Survivor.Face?.ShowIdle());
             AppendRecovery(beat, beatContext);
 
             beat.OnComplete(() =>
@@ -154,13 +157,18 @@ namespace Blobs.Presentation
                 beatContext.Survivor.BlobMotionAnimator?.SetIdle();
                 onTargetConsumed?.Invoke();
             });
-            beat.OnKill(() => RestoreSorting(
-                sourceSorting,
-                sourceOriginalLayer,
-                sourceOriginalOrder,
-                targetSorting,
-                targetOriginalLayer,
-                targetOriginalOrder));
+            beat.OnKill(() =>
+            {
+                RestoreSorting(
+                    sourceSorting,
+                    sourceOriginalLayer,
+                    sourceOriginalOrder,
+                    targetSorting,
+                    targetOriginalLayer,
+                    targetOriginalOrder);
+                if (beatContext.Survivor != null)
+                    beatContext.Survivor.Face?.ShowIdle();
+            });
             return beat;
         }
 

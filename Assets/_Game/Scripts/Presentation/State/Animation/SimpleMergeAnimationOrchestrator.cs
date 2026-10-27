@@ -66,6 +66,8 @@ namespace Blobs.Presentation
                     sourceSorting.sortingLayerID = targetSorting.sortingLayerID;
                     sourceSorting.sortingOrder = targetSorting.sortingOrder + 1;
                 }
+                Vector2 towardPrey = sourceSurvives ? gridDirection : -gridDirection;
+                survivor.Face?.ShowEating(towardPrey);
             });
             beat.Append(source.AnimateMoveTo(destination ?? target.GridPosition,
                 Mathf.Max(0.01f, slideDuration), Ease.Linear));
@@ -73,6 +75,7 @@ namespace Blobs.Presentation
             {
                 onContact?.Invoke();
                 consumed.gameObject.SetActive(false);
+                survivor.Face?.ShowIdle();
             });
             beat.OnComplete(() =>
             {
@@ -86,7 +89,11 @@ namespace Blobs.Presentation
                 if (!started || completed) return;
                 RestoreVisuals();
                 if (consumed != null) consumed.gameObject.SetActive(consumedWasActive);
-                if (survivor != null) survivor.BlobMotionAnimator?.SetIdle();
+                if (survivor != null)
+                {
+                    survivor.BlobMotionAnimator?.SetIdle();
+                    survivor.Face?.ShowIdle();
+                }
             });
             return beat;
         }

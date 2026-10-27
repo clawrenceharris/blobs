@@ -22,6 +22,18 @@ as one piece at the shared center, without changing identity, blending gameplay
 colors, or adding permanent growth. Contact callbacks still run at arrival.
 Undo and ghost follow-up effects retain their existing presentation handlers.
 
+## Eating faces (monster remodel)
+
+Merges are presented as the survivor eating the consumed monster; see [presentation direction](PRESENTATION_DIRECTION.md#monster-eating-presentation). Face swapping is presentation-only and reads no Core state beyond the survivor role already carried by `MergeEffect`.
+
+- `MonsterFaceView` (on the monster prefab root) references authored face objects: **Idle**, **Eating Front**, **Eating Left**, **Eating Right**, and an optional **Eating Up** that falls back to Eating Front. Exactly one is active; Idle is restored on spawn.
+- `BlobView.Face` exposes the component, or null for prefabs without it (Ghost, Rock, Flag, graybox blobs). Those pieces simply keep their face.
+- Both orchestrators call `survivor.Face.ShowEating(towardPrey)` when the beat starts. `towardPrey` is the merge direction when the mover survives and its inverse when the target survives. The dominant axis picks the variant.
+- `MergeAnimationOrchestrator` restores Idle after absorption, before recovery. `SimpleMergeAnimationOrchestrator` restores it at arrival, when the consumed view is hidden. A killed beat also restores Idle.
+- `PF_Monster_Normal` places the face prefabs (`PF_Monster_Face_Idle_A`, `PF_Monster_Face_Eating_Front`, and `PF_Monster_Face_Eating_Side` twice, with the left instance mirrored) under `VisualRoot`, and wires them into `MonsterFaceView`. Every face prefab includes the horns, so each variant swaps the whole head.
+
+New monster prefabs need their own `MonsterFaceView` and face objects. `BlobEatingFace` and `MonsterFacePairs` were an earlier sprite-swap approach and are not used by this flow.
+
 ## Flow
 
 1. `BoardPresenter` receives resolved effects or move steps.

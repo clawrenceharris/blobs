@@ -41,6 +41,7 @@ namespace Blobs.Presentation
         private LevelColorPaletteAsset _colorPalette;
 
         public BlobMotionAnimator BlobMotionAnimator => _blobMotionAnimator;
+        public MonsterFaceView Face { get; private set; }
         public Color MergeEffectColor { get; private set; } = Color.white;
         public Skin MergeEffectSkin { get; private set; } = new(Color.white, Color.gray, Color.white);
 
@@ -281,6 +282,8 @@ namespace Blobs.Presentation
         {
             _mergeTargetFeedback = null;
             _contactFeedback.Clear();
+            Face = TryGetComponent(out MonsterFaceView face) ? face : null;
+            Face?.ShowIdle();
 
             MonoBehaviour[] components =
                 GetComponents<MonoBehaviour>();

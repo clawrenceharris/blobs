@@ -33,8 +33,8 @@ MonoBehaviour:
     _targetBraceScale: {x: 0.88, y: 0.99}
     _contactScale: {x: 1.12, y: 0.86}
     _survivorImpactScale: {x: 1.14, y: 1.28}
-    _sourceSortingOffset: 10
-    _targetSortingOffset: 20
+    _sourceSortingOffset: 1
+    _targetSortingOffset: 99
   BlobMotionSettings:
     spawnDuration: 0.14
     despawnDuration: 0.12

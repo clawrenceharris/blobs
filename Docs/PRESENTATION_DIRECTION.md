@@ -34,6 +34,8 @@ The target aesthetic is:
 
 The goal is not realism. The blobs should feel like soft, tactile puzzle pieces.
 
+**Monster remodel (October 26, 2026).** The dome bodies stay, but each piece now wears a monster head: horns, an eye, and a mouth. A monster's identity comes from its idle face, not its body color, because body color is a gameplay rule. See [game design](GAME_DESIGN.md#monster-remodel) for terminology.
+
 
 ## Animation and game feel
 
@@ -57,5 +59,15 @@ Movement and gameplay resolution remain separate:
 > The animation layer decides **how that result is presented**.
 
 This allows effects such as Trail spawns, Ghost movement, ice movement, and tile reactions to occur at the correct point along an otherwise continuous animation.
+
+## Monster eating presentation
+
+Under the monster remodel, a merge must read as one monster eating another, not two blobs fusing.
+
+- **Only the eater changes face.** The surviving monster swaps its idle face for an eating face. The eaten monster keeps its idle face and shrinks into the eater.
+- **The mouth opens for the bite, not for movement.** It opens as the merge beat starts and closes as soon as the prey has vanished, before the eater settles. Sliding across empty cells, gaps between chain contacts, Rock bumps, and a Ghost's return travel all keep the idle face.
+- **The mouth faces the prey.** Eating faces are authored as whole head variants: front (prey below), right, and left (the right face mirrored). Faces are never rotated, because the eye and horns establish which way is up.
+- **Upward bites** fake the head tipping back: the front eating face placed higher on the body and squashed slightly, together with the existing upward body stretch. A dedicated top-of-head mouth can replace it later. Until it is authored, upward bites use the front eating face.
+- **Rocks, Flags, and Ghosts** have no eating faces yet, so their faces never change. A Ghost eating face is the natural next addition.
 
 ---

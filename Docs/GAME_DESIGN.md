@@ -2,6 +2,24 @@
 
 **Decision date: September 9, 2026.** Authority for intended player-facing rules, not a claim that every rule is implemented. Detailed [resolution rules](RULE_RESOLUTION.md), [Undo and Restart behavior](UNDO_AND_RESTART.md), [level authoring requirements](LEVEL_AUTHORING.md), and [presentation direction](PRESENTATION_DIRECTION.md) extend this overview. Track delivery in the [implementation checklist](RULES_IMPLEMENTATION_PLAN.md).
 
+## Monster remodel
+
+**Revised October 26, 2026.** The pieces are now presented as **monsters**, and a merge is presented as one monster **eating** another. The rules below are unchanged; only how they are presented changes.
+
+- **The survivor is the eater.** Whichever piece the rules keep eats the piece they remove. Usually the source eats the target; when the target survives instead (a Ghost consuming an arriving source, or a Flag capture), the target eats.
+- **A Ghost eats the source.** The source keeps its idle face and disappears into the Ghost. The Ghost's haunt or rest afterward is travel, not a second bite, unless it consumes a landing occupant.
+- **A Rock is not food.** Rock contact is a bump: nobody opens a mouth and nobody is removed.
+- **A Flag** remains the capture goal. Whether it reads as a monster eating the source is a presentation choice, not a rule.
+
+Terminology:
+
+| Context | Piece | Interaction |
+| --- | --- | --- |
+| Player-facing text, tutorials, art | monster | eat; "gobble" for the animation beat |
+| Code, Core rules, effects, and these docs' rule sections | blob | merge (`MergeEffect`, `NormalMerge`, `ReverseMerge`) |
+
+Code keeps *blob* and *merge* because those terms cover Rocks, Flags, Ghosts, and capture, which are not all monsters or bites. See [presentation direction](PRESENTATION_DIRECTION.md#monster-eating-presentation) for the eating animation.
+
 ## Premise and objective
 
 Blobs is a grid puzzle game. Select a blob and send it along a row or column toward another blob. Encounters can merge blobs, leave a Trail, stop movement, or trigger a Ghost's return. The puzzle is complete when **zero clearable blobs remain**. Normal, Trail, and Ghost blobs are clearable; Rocks and Flags are not.

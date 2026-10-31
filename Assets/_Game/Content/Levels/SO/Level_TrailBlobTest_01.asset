@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 228f01d3da5254622b9b1236a3d1c0ff, type: 3}
   m_Name: Level_TrailBlobTest_01
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
-  levelId: level-new
+  levelId: level-trail-test-01
   schemaVersion: 1
   width: 3
   height: 3
@@ -37,8 +37,9 @@ MonoBehaviour:
         id: trail
         position: {x: 0, y: 0}
         type: 2
-        color: 1
         trailColor: 2
+        color: 1
+        size: 2
     - rid: 3341776741192433725
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
@@ -46,6 +47,7 @@ MonoBehaviour:
         position: {x: 2, y: 0}
         type: 0
         color: 0
+        size: 2
     - rid: 3341776741192433726
       type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:

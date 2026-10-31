@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 228f01d3da5254622b9b1236a3d1c0ff, type: 3}
   m_Name: Level_GhostTest_01
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
-  levelId: level-new
+  levelId: level-ghost-test-01
   schemaVersion: 1
   width: 6
   height: 3
@@ -52,14 +52,16 @@ MonoBehaviour:
         position: {x: 1, y: 0}
         type: 0
         color: 0
+        size: 2
     - rid: 3341776741192433810
       type: {class: TrailBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
         id: blob-1
         position: {x: 2, y: 0}
         type: 2
-        color: 0
         trailColor: 1
+        color: 0
+        size: 2
     - rid: 3341776741192433811
       type: {class: GhostBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
@@ -80,6 +82,7 @@ MonoBehaviour:
         position: {x: 1, y: 2}
         type: 0
         color: 1
+        size: 2
     - rid: 3341776741192433824
       type: {class: RockBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
@@ -93,3 +96,4 @@ MonoBehaviour:
         position: {x: 0, y: 1}
         type: 0
         color: 0
+        size: 2

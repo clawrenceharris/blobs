@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 228f01d3da5254622b9b1236a3d1c0ff, type: 3}
   m_Name: Level_ValidationTest_01
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
-  levelId: level-new
+  levelId: level-validation-test
   schemaVersion: 1
   width: 3
   height: 1
@@ -33,6 +33,7 @@ MonoBehaviour:
         position: {x: 0, y: 0}
         type: 0
         color: 0
+        size: 2
     - rid: 3341776741192433800
       type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:

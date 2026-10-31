@@ -1,0 +1,1118 @@
+fileFormatVersion: 2
+guid: 42b02af6633c948d7b0ffefc6a1a06d6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3862208036756227197
+    second: SPR_Icon_Redo_0
+  - first:
+      213: -5119209758745885829
+    second: SPR_Icon_Redo_1
+  - first:
+      213: 4111328200526560538
+    second: SPR_Icon_Redo_2
+  - first:
+      213: 4390327817616131371
+    second: SPR_Icon_Redo_3
+  - first:
+      213: -5698520525622293284
+    second: SPR_Icon_Redo_4
+  - first:
+      213: 2399128970087291511
+    second: SPR_Icon_Redo_5
+  - first:
+      213: -8689773173890066638
+    second: SPR_Icon_Redo_6
+  - first:
+      213: -3340214959551383925
+    second: SPR_Icon_Redo_7
+  - first:
+      213: -8060594145374326693
+    second: SPR_Icon_Redo_8
+  - first:
+      213: 8008287034462727089
+    second: SPR_Icon_Redo_9
+  - first:
+      213: 2481167390004110077
+    second: SPR_Icon_Redo_10
+  - first:
+      213: 609993577123966069
+    second: SPR_Icon_Redo_11
+  - first:
+      213: 5646517253036833761
+    second: SPR_Icon_Redo_12
+  - first:
+      213: 6841877048117119604
+    second: SPR_Icon_Redo_13
+  - first:
+      213: 2139731849340748725
+    second: SPR_Icon_Redo_14
+  - first:
+      213: 8453066892786804857
+    second: SPR_Icon_Redo_15
+  - first:
+      213: -5260285710164024743
+    second: SPR_Icon_Redo_16
+  - first:
+      213: -3770756304024067904
+    second: SPR_Icon_Redo_17
+  - first:
+      213: 2821209454892689034
+    second: SPR_Icon_Redo_18
+  - first:
+      213: -4916295440857268587
+    second: SPR_Icon_Redo_19
+  - first:
+      213: -4939847323760114120
+    second: SPR_Icon_Redo_20
+  - first:
+      213: -1327671091704789716
+    second: SPR_Icon_Redo_21
+  - first:
+      213: -7393238951680261430
+    second: SPR_Icon_Redo_22
+  - first:
+      213: 8674569176871129510
+    second: SPR_Icon_Redo_23
+  - first:
+      213: -8567154480845216452
+    second: SPR_Icon_Redo_24
+  - first:
+      213: 4079702568143508404
+    second: SPR_Icon_Redo_25
+  - first:
+      213: -291307444807794696
+    second: SPR_Icon_Redo_26
+  - first:
+      213: 1600591540868339839
+    second: SPR_Icon_Redo_27
+  - first:
+      213: -7056561103445986728
+    second: SPR_Icon_Redo_28
+  - first:
+      213: 6242661966038030840
+    second: SPR_Icon_Redo_29
+  - first:
+      213: -8630376798118371146
+    second: SPR_Icon_Redo_30
+  - first:
+      213: 7961694661221332400
+    second: SPR_Icon_Redo_31
+  - first:
+      213: 7097917734019082030
+    second: SPR_Icon_Redo_32
+  - first:
+      213: 3144328941891032070
+    second: SPR_Icon_Redo_33
+  - first:
+      213: 7135480954073637543
+    second: SPR_Icon_Redo_34
+  - first:
+      213: -5219282868978544113
+    second: SPR_Icon_Redo_35
+  - first:
+      213: 1603608661274540291
+    second: SPR_Icon_Redo_36
+  - first:
+      213: -6068743061547565815
+    second: SPR_Icon_Redo_37
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 1254
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1177
+        height: 1194
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38b7c70e04ea66ac0800000000000000
+      internalID: -3862208036756227197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_1
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 1000
+        width: 367
+        height: 221
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b730d3fd8d9e4f8b0800000000000000
+      internalID: -5119209758745885829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_2
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 988
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1d7e63373f5e0930800000000000000
+      internalID: 4111328200526560538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_3
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 987
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b258680a3e39dec30800000000000000
+      internalID: 4390327817616131371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_4
+      rect:
+        serializedVersion: 2
+        x: 635
+        y: 955
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cdcc20526c9cae0b0800000000000000
+      internalID: -5698520525622293284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_5
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 859
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77ad660561b6b4120800000000000000
+      internalID: 2399128970087291511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_6
+      rect:
+        serializedVersion: 2
+        x: 1013
+        y: 822
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2375097b659b76780800000000000000
+      internalID: -8689773173890066638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_7
+      rect:
+        serializedVersion: 2
+        x: 1027
+        y: 817
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b867e76013c25a1d0800000000000000
+      internalID: -3340214959551383925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_8
+      rect:
+        serializedVersion: 2
+        x: 1044
+        y: 806
+        width: 12
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b50be56e454032090800000000000000
+      internalID: -8060594145374326693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_9
+      rect:
+        serializedVersion: 2
+        x: 1029
+        y: 813
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bb648cc0a6232f60800000000000000
+      internalID: 8008287034462727089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_10
+      rect:
+        serializedVersion: 2
+        x: 281
+        y: 766
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df26a7d6890ee6220800000000000000
+      internalID: 2481167390004110077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_11
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 728
+        width: 13
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57c6ebf2de1277800800000000000000
+      internalID: 609993577123966069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_12
+      rect:
+        serializedVersion: 2
+        x: 946
+        y: 722
+        width: 6
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ebff5d66857c5e40800000000000000
+      internalID: 5646517253036833761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_13
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 722
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47a4be9ecea33fe50800000000000000
+      internalID: 6841877048117119604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_14
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 698
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b38b8ab7cad1bd10800000000000000
+      internalID: 2139731849340748725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_15
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 676
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9782c2f7d835f4570800000000000000
+      internalID: 8453066892786804857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_16
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 633
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9522c9c4406bff6b0800000000000000
+      internalID: -5260285710164024743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_17
+      rect:
+        serializedVersion: 2
+        x: 954
+        y: 618
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c0a41cae159babc0800000000000000
+      internalID: -3770756304024067904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_18
+      rect:
+        serializedVersion: 2
+        x: 281
+        y: 601
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a862ad34d03f62720800000000000000
+      internalID: 2821209454892689034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_19
+      rect:
+        serializedVersion: 2
+        x: 1069
+        y: 594
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59e74dc185fc5cbb0800000000000000
+      internalID: -4916295440857268587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_20
+      rect:
+        serializedVersion: 2
+        x: 1085
+        y: 586
+        width: 7
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8364d9e0803227bb0800000000000000
+      internalID: -4939847323760114120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_21
+      rect:
+        serializedVersion: 2
+        x: 1069
+        y: 590
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2581682d2a239de0800000000000000
+      internalID: -1327671091704789716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_22
+      rect:
+        serializedVersion: 2
+        x: 954
+        y: 537
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac244813850f56990800000000000000
+      internalID: -7393238951680261430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_23
+      rect:
+        serializedVersion: 2
+        x: 946
+        y: 433
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a1d4fed4b2426870800000000000000
+      internalID: 8674569176871129510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_24
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 435
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c352351f36a5b1980800000000000000
+      internalID: -8567154480845216452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_25
+      rect:
+        serializedVersion: 2
+        x: 1011
+        y: 374
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b3517bded30e9830800000000000000
+      internalID: 4079702568143508404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_26
+      rect:
+        serializedVersion: 2
+        x: 989
+        y: 356
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fffdcf1c6115fbf0800000000000000
+      internalID: -291307444807794696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_27
+      rect:
+        serializedVersion: 2
+        x: 971
+        y: 320
+        width: 9
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f78d3ffa681763610800000000000000
+      internalID: 1600591540868339839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_28
+      rect:
+        serializedVersion: 2
+        x: 1003
+        y: 323
+        width: 13
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 852734d401f021e90800000000000000
+      internalID: -7056561103445986728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_29
+      rect:
+        serializedVersion: 2
+        x: 954
+        y: 304
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f9d98aabf362a650800000000000000
+      internalID: 6242661966038030840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_30
+      rect:
+        serializedVersion: 2
+        x: 991
+        y: 299
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b0a16e170eba3880800000000000000
+      internalID: -8630376798118371146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_31
+      rect:
+        serializedVersion: 2
+        x: 1141
+        y: 296
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b5b83c8c1f9d7e60800000000000000
+      internalID: 7961694661221332400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_32
+      rect:
+        serializedVersion: 2
+        x: 946
+        y: 246
+        width: 8
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e27272d929ed08260800000000000000
+      internalID: 7097917734019082030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_33
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 218
+        width: 17
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60415666386e2ab20800000000000000
+      internalID: 3144328941891032070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_34
+      rect:
+        serializedVersion: 2
+        x: 922
+        y: 226
+        width: 10
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a2ef115f12560360800000000000000
+      internalID: 7135480954073637543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_35
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 216
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f02904432e16197b0800000000000000
+      internalID: -5219282868978544113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_36
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 213
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3093206c499214610800000000000000
+      internalID: 1603608661274540291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_Icon_Redo_37
+      rect:
+        serializedVersion: 2
+        x: 884
+        y: 152
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90d375fc65e77cba0800000000000000
+      internalID: -6068743061547565815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      SPR_Icon_Redo_0: -3862208036756227197
+      SPR_Icon_Redo_1: -5119209758745885829
+      SPR_Icon_Redo_10: 2481167390004110077
+      SPR_Icon_Redo_11: 609993577123966069
+      SPR_Icon_Redo_12: 5646517253036833761
+      SPR_Icon_Redo_13: 6841877048117119604
+      SPR_Icon_Redo_14: 2139731849340748725
+      SPR_Icon_Redo_15: 8453066892786804857
+      SPR_Icon_Redo_16: -5260285710164024743
+      SPR_Icon_Redo_17: -3770756304024067904
+      SPR_Icon_Redo_18: 2821209454892689034
+      SPR_Icon_Redo_19: -4916295440857268587
+      SPR_Icon_Redo_2: 4111328200526560538
+      SPR_Icon_Redo_20: -4939847323760114120
+      SPR_Icon_Redo_21: -1327671091704789716
+      SPR_Icon_Redo_22: -7393238951680261430
+      SPR_Icon_Redo_23: 8674569176871129510
+      SPR_Icon_Redo_24: -8567154480845216452
+      SPR_Icon_Redo_25: 4079702568143508404
+      SPR_Icon_Redo_26: -291307444807794696
+      SPR_Icon_Redo_27: 1600591540868339839
+      SPR_Icon_Redo_28: -7056561103445986728
+      SPR_Icon_Redo_29: 6242661966038030840
+      SPR_Icon_Redo_3: 4390327817616131371
+      SPR_Icon_Redo_30: -8630376798118371146
+      SPR_Icon_Redo_31: 7961694661221332400
+      SPR_Icon_Redo_32: 7097917734019082030
+      SPR_Icon_Redo_33: 3144328941891032070
+      SPR_Icon_Redo_34: 7135480954073637543
+      SPR_Icon_Redo_35: -5219282868978544113
+      SPR_Icon_Redo_36: 1603608661274540291
+      SPR_Icon_Redo_37: -6068743061547565815
+      SPR_Icon_Redo_4: -5698520525622293284
+      SPR_Icon_Redo_5: 2399128970087291511
+      SPR_Icon_Redo_6: -8689773173890066638
+      SPR_Icon_Redo_7: -3340214959551383925
+      SPR_Icon_Redo_8: -8060594145374326693
+      SPR_Icon_Redo_9: 8008287034462727089
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

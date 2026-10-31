@@ -40,7 +40,8 @@ New monster prefabs need their own `MonsterFaceView` and face objects. `BlobEati
 2. `BoardEffectPresentationPipeline` dispatches each effect by its registered type.
 3. `MergePresentationHandler` sends `MergeEffect` to `BlobPresenter.Merges`.
 4. `MergePresenter` retires the explicit consumed view and animates the explicit mover. A surviving mover uses normal merge deformation; a surviving target uses absorption choreography. This decision depends on the effect's roles, not a blob-type check.
-5. The owning `PresentationTimeline` awaits playback and handles cancellation through `BoardPresenter`.
+5. When the surviving target has a `NestBlobView` (nest home presentation), `MergePresenter` appends `NestVictorySequence` after the merge beat: eggs hide, the consumed monster reparents into the nest behind the bowl, shows `MonsterFaceView.ShowVictory()`, and rises into a seated pose. The monster view is abandoned (kept as nest occupation art) instead of destroyed. Undo clears occupation via `NestBlobView.ClearOccupation`.
+6. The owning `PresentationTimeline` awaits playback and handles cancellation through `BoardPresenter`.
 
 Ghost return and Grave clear remain separate handlers. A ghost merge is the same reverse merge interaction used for flag capture, followed by ghost-specific effects.
 

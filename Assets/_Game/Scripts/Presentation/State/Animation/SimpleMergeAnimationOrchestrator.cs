@@ -67,7 +67,8 @@ namespace Blobs.Presentation
                     sourceSorting.sortingOrder = targetSorting.sortingOrder + 1;
                 }
                 Vector2 towardPrey = sourceSurvives ? gridDirection : -gridDirection;
-                survivor.Face?.ShowEating(towardPrey);
+                if (UsesMergeEatingFace(survivor))
+                    survivor.Face.ShowEating(towardPrey);
             });
             beat.Append(source.AnimateMoveTo(destination ?? target.GridPosition,
                 Mathf.Max(0.01f, slideDuration), Ease.Linear));
@@ -75,7 +76,8 @@ namespace Blobs.Presentation
             {
                 onContact?.Invoke();
                 consumed.gameObject.SetActive(false);
-                survivor.Face?.ShowIdle();
+                if (UsesMergeEatingFace(survivor))
+                    survivor.Face.ShowIdle();
             });
             beat.OnComplete(() =>
             {
@@ -92,10 +94,18 @@ namespace Blobs.Presentation
                 if (survivor != null)
                 {
                     survivor.BlobMotionAnimator?.SetIdle();
-                    survivor.Face?.ShowIdle();
+                    if (UsesMergeEatingFace(survivor))
+                        survivor.Face.ShowIdle();
                 }
             });
             return beat;
+        }
+
+        private static bool UsesMergeEatingFace(BlobView survivor)
+        {
+            return survivor != null &&
+                survivor.Face != null &&
+                !survivor.TryGetComponent<NestBlobView>(out _);
         }
     }
 }

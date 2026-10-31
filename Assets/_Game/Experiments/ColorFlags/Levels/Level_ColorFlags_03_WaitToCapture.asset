@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
   levelId: color-flags-03
   schemaVersion: 1
-  width: 4
+  width: 3
   height: 3
   emptyPositions: []
   blobs:
@@ -34,7 +34,7 @@ MonoBehaviour:
       type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
         id: pink-flag
-        position: {x: 3, y: 0}
+        position: {x: 2, y: 0}
         type: 1
         color: 0
     - rid: 1002
@@ -44,6 +44,7 @@ MonoBehaviour:
         position: {x: 1, y: 0}
         type: 0
         color: 0
+        size: 2
     - rid: 1003
       type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
@@ -55,9 +56,10 @@ MonoBehaviour:
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
         id: blue-1
-        position: {x: 3, y: 1}
+        position: {x: 2, y: 1}
         type: 0
         color: 1
+        size: 2
     - rid: 1005
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
@@ -65,6 +67,7 @@ MonoBehaviour:
         position: {x: 0, y: 2}
         type: 0
         color: 1
+        size: 2
     - rid: 1006
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
@@ -72,3 +75,4 @@ MonoBehaviour:
         position: {x: 1, y: 1}
         type: 0
         color: 1
+        size: 2

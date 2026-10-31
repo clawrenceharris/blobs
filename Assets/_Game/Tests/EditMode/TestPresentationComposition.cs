@@ -13,11 +13,7 @@ namespace Blobs.Tests.EditMode
         public static BoardPresenter AddBoardPresenter(GameObject root)
         {
             root.AddComponent<MergeAnimationOrchestrator>();
-            root.AddComponent<BoardSurfacePresenter>();
 
-            var surfaceObject = new GameObject("Board Surface");
-            surfaceObject.transform.SetParent(root.transform, false);
-            ConfigureSurface(surfaceObject.AddComponent<BoardSurfaceView>());
 
             var presenter = root.AddComponent<BoardPresenter>();
             var serialized = new SerializedObject(root.GetComponent<BlobPresenter>());
@@ -26,14 +22,6 @@ namespace Blobs.Tests.EditMode
                     "Assets/_Game/Production/Content/Presentation/BlobAnimationSettings.asset");
             serialized.ApplyModifiedPropertiesWithoutUndo();
             return presenter;
-        }
-        public static void ConfigureSurface(BoardSurfaceView view)
-        {
-            var serialized = new SerializedObject(view);
-            serialized.FindProperty("palette").objectReferenceValue =
-                AssetDatabase.LoadAssetAtPath<BoardSurfacePaletteAsset>(
-                    "Assets/_Game/Production/Content/Presentation/BoardSurfacePalette_Default.asset");
-            serialized.ApplyModifiedPropertiesWithoutUndo();
         }
     }
 }

@@ -290,9 +290,6 @@ namespace Blobs.Presentation
 
             foreach (MonoBehaviour component in components)
             {
-                if (component is IMergeTargetFeedback feedback)
-                    _mergeTargetFeedback = feedback;
-
                 if (component is IBlobContactFeedback contactFeedback)
                     _contactFeedback.Add(contactFeedback);
             }
@@ -308,9 +305,11 @@ namespace Blobs.Presentation
                 feedback.PlayContactFeedback(context);
         }
 
-        public Tween PlaySourceAccepted(float duration)
+        public void PlayUndoContactFeedback(BlobView source)
         {
-            return _mergeTargetFeedback?.PlaySourceAccepted(duration);
+            var context = new BlobContactFeedbackContext(source, this);
+            foreach (IBlobContactFeedback feedback in _contactFeedback)
+                feedback.PlayUndoFeedback(context);
         }
 
     }

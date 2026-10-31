@@ -53,12 +53,9 @@ namespace Blobs.Tests.EditMode
 
             BlobPresenter blobPresenter = _root.GetComponent<BlobPresenter>();
             TilePresenter tilePresenter = _root.GetComponent<TilePresenter>();
-            BoardSurfacePresenter surfacePresenter =
-                _root.GetComponent<BoardSurfacePresenter>();
 
             Assert.That(blobPresenter, Is.Not.Null);
             Assert.That(tilePresenter, Is.Not.Null);
-            Assert.That(surfacePresenter, Is.Not.Null);
             Assert.That(blobPresenter.VisibleCount, Is.EqualTo(1));
             Assert.That(tilePresenter.VisibleCount, Is.EqualTo(1));
 
@@ -152,19 +149,6 @@ namespace Blobs.Tests.EditMode
             Assert.That(view.TileType, Is.EqualTo(TileType.Grave));
         }
 
-
-        [Test]
-        public void BoardSurfacePresenterWithoutAuthoredViewFailsClearly()
-        {
-            _root = new GameObject("Missing Board Surface View Test");
-            BoardSurfacePresenter presenter = _root.AddComponent<BoardSurfacePresenter>();
-
-            InvalidOperationException error = Assert.Throws<InvalidOperationException>(
-                () => presenter.Initialize(1f, Vector2.zero));
-
-            StringAssert.Contains("requires an authored BoardSurfaceView", error.Message);
-            Assert.That(_root.transform.childCount, Is.Zero);
-        }
 
         [Test]
         public void BoardSynchronizationRejectsChangedBlobPresentationTraits()
@@ -596,6 +580,12 @@ namespace Blobs.Tests.EditMode
             public BlobContactFeedbackContext LastContext { get; private set; }
 
             public void PlayContactFeedback(BlobContactFeedbackContext context)
+            {
+                PlayCount++;
+                LastContext = context;
+            }
+
+            public void PlayUndoFeedback(BlobContactFeedbackContext context)
             {
                 PlayCount++;
                 LastContext = context;

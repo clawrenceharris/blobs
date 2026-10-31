@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2479425629889148637}
   m_Layer: 3
-  m_Name: Visual Root
+  m_Name: VisualRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

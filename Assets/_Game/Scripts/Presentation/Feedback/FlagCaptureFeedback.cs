@@ -5,27 +5,30 @@ namespace Blobs.Presentation
 {
     public sealed class FlagCaptureFeedback :
         MonoBehaviour,
-        IMergeTargetFeedback
+        IBlobContactFeedback
     {
         [SerializeField] private Transform visualRoot;
         [SerializeField] private float punchScale = 0.15f;
-        public Tween PlaySourceAccepted(float duration)
+        [SerializeField] private Animator animator;
+        public void PlayContactFeedback(BlobContactFeedbackContext context)
         {
             Transform target = visualRoot != null ? visualRoot : transform;
             Vector3 punch = target.localScale * punchScale;
-            return target.DOPunchScale(
-                punch,
-                Mathf.Max(0.01f, duration),
-                vibrato: 5,
-                elasticity: 0.5f);
+
+            target.DOPunchScale(
+                   punch,
+                   0.5f,
+                   vibrato: 5,
+                   elasticity: 0.5f)
+                .OnComplete(() => animator.SetBool(Animator.StringToHash("IsVictory"), true));
+
+
         }
 
-        private void OnDestroy()
+        public void PlayUndoFeedback(BlobContactFeedbackContext context)
         {
-            if (visualRoot != null)
-                visualRoot.DOKill();
-
-            transform.DOKill();
+            if (animator == null) return;
+            animator.SetBool(Animator.StringToHash("IsVictory"), false);
         }
     }
 }

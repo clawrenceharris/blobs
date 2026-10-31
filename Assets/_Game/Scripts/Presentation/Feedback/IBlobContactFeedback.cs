@@ -7,6 +7,8 @@ namespace Blobs.Presentation
     public interface IBlobContactFeedback
     {
         void PlayContactFeedback(BlobContactFeedbackContext context);
+
+        void PlayUndoFeedback(BlobContactFeedbackContext context);
     }
 
     /// <summary>

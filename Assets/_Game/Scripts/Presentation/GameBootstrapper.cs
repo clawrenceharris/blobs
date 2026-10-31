@@ -17,7 +17,6 @@ namespace Blobs.Presentation
         [SerializeField] private BoardPresenter boardPresenter;
 
         [SerializeField] private LevelDefinitionAsset levelAsset;
-        [SerializeField] private bool enableDragPreview = true;
         [SerializeField] private CameraPresenter cameraPresenter;
         [SerializeField] private GameplayInputAdapter inputAdapter;
         [SerializeField] private GameplayCommandAdapter commandAdapter;

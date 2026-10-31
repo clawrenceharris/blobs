@@ -9,6 +9,7 @@ namespace Blobs.Presentation
     public sealed class BlobContactAudioFeedback : MonoBehaviour, IBlobContactFeedback
     {
         [SerializeField] private AudioClip clip;
+        [SerializeField] private AudioClip undoClip;
         [SerializeField, Range(0f, 1f)] private float volume = 0.8f;
         [SerializeField, Range(0.1f, 3f)] private float pitch = 1f;
         [SerializeField] private AudioSource audioSource;
@@ -29,6 +30,12 @@ namespace Blobs.Presentation
 
             audioSource.pitch = pitch;
             audioSource.PlayOneShot(clip, volume);
+        }
+
+        public void PlayUndoFeedback(BlobContactFeedbackContext context)
+        {
+            if (audioSource == null) return;
+            audioSource.PlayOneShot(undoClip, volume);
         }
 
         private bool TryResolveAudioSource()

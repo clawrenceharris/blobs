@@ -59,11 +59,6 @@ namespace Blobs.Tests.PlayMode
         {
             GameObject root = CreateGameObject("Runtime Scene Composition", active: false);
             root.AddComponent<MergeAnimationOrchestrator>();
-            root.AddComponent<BoardSurfacePresenter>();
-            var surface = new GameObject("Board Surface");
-            surface.transform.SetParent(root.transform, false);
-            surface.AddComponent<BoardSurfaceView>();
-
             BoardPresenter board = root.AddComponent<BoardPresenter>();
             BlobAnimationSettingsAsset animationSettings = ConfigureAnimationSettings(root);
             GameplayInputAdapter input = root.AddComponent<GameplayInputAdapter>();
@@ -96,7 +91,6 @@ namespace Blobs.Tests.PlayMode
             Assert.That(board.CurrentSnapshot, Is.Not.Null);
             Assert.That(board.VisibleBlobCount, Is.EqualTo(2));
             Assert.That(board.VisibleTileCount, Is.Zero);
-            Assert.That(board.VisibleSurfaceCellCount, Is.EqualTo(2));
             Assert.That(
                 input.SelectBlobAt(new GridPosition(2, 0)).HasSelection,
                 Is.False);

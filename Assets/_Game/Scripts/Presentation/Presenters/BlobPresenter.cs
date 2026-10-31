@@ -103,6 +103,17 @@ namespace Blobs.Presentation
         }
 
         /// <summary>
+        /// Creates an action that plays undo feedback for the specified blob.
+        /// </summary>
+        public System.Action CreateUndoFeedback()
+        {
+            return () =>
+            {
+                foreach (BlobView sourceView in _views.Values)
+                    sourceView.PlayUndoContactFeedback(sourceView);
+            };
+        }
+        /// <summary>
         /// Checks all render-relevant blob state without relying on tween completion.
         /// </summary>
         public bool IsSynchronizedWith(IEnumerable<BlobState> blobs, int expectedCount)

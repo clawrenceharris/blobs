@@ -73,7 +73,7 @@ The current focused suites verify:
   completion, and snapshot isolation around the deterministic core.
 - `LevelValidatorTests`, `LevelAssetMapperTests`, and `GameBootstrapperTests`
   for authored content, scene composition, and production startup wiring.
-- `BoardPresenterTests`, `BoardSurfaceTests`, `PresenterSeparationTests`,
+- `BoardPresenterTests`, `PresenterSeparationTests`,
   `BlobColorPresentationTests`, `GhostPrefabTests`, and
   `GameplayFeedbackPresenterTests` for Edit Mode presentation composition and
   asset contracts.

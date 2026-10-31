@@ -4,7 +4,7 @@ namespace Blobs.Presentation
 {
     /// <summary>
     /// Owns which authored face variant is visible on a monster. Exactly one variant is active
-    /// at a time; the idle face is restored whenever no eating beat is playing.
+    /// at a time; idle is restored whenever no eating or victory beat is playing.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class MonsterFaceView : MonoBehaviour
@@ -15,6 +15,8 @@ namespace Blobs.Presentation
         [SerializeField] private GameObject eatingRight;
         [Tooltip("Optional. Falls back to the front eating face when empty.")]
         [SerializeField] private GameObject eatingUp;
+        [Tooltip("Optional contented face (closed eyes + smile) used after nest capture. Falls back to idle.")]
+        [SerializeField] private GameObject victory;
 
         private GameObject _active;
 
@@ -24,6 +26,21 @@ namespace Blobs.Presentation
 
         /// <summary>Shows the eating face that opens toward the prey, in world/grid space.</summary>
         public void ShowEating(Vector2 towardPrey) => Show(ResolveEating(towardPrey));
+
+        /// <summary>Shows the nest-home victory face. Falls back to idle when unauthored.</summary>
+        public void ShowVictory() => Show(victory != null ? victory : idle);
+
+        /// <summary>Hides every face variant. Used by nest hosts that should not wear a face.</summary>
+        public void Hide()
+        {
+            SetActive(idle, false);
+            SetActive(eatingFront, false);
+            SetActive(eatingLeft, false);
+            SetActive(eatingRight, false);
+            SetActive(eatingUp, false);
+            SetActive(victory, false);
+            _active = null;
+        }
 
         private GameObject ResolveEating(Vector2 towardPrey)
         {
@@ -47,6 +64,7 @@ namespace Blobs.Presentation
             SetActive(eatingLeft, face == eatingLeft);
             SetActive(eatingRight, face == eatingRight);
             SetActive(eatingUp, face == eatingUp);
+            SetActive(victory, face == victory);
             _active = face;
         }
 

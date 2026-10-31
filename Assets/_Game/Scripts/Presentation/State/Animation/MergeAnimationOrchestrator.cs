@@ -133,14 +133,19 @@ namespace Blobs.Presentation
                 if (targetSorting != null)
                     targetSorting.sortingOrder = mergeBaseOrder + settings.TargetSortingOffset;
 
-                beatContext.Survivor.Face?.ShowEating(sourceSurvives ? direction : -direction);
+                if (UsesMergeEatingFace(beatContext.Survivor))
+                    beatContext.Survivor.Face.ShowEating(sourceSurvives ? direction : -direction);
             });
 
             AppendAnticipation(beat, beatContext);
             AppendApproach(beat, beatContext);
             AppendContact(beat, beatContext, onContact);
             AppendAbsorption(beat, beatContext, destination);
-            beat.AppendCallback(() => beatContext.Survivor.Face?.ShowIdle());
+            beat.AppendCallback(() =>
+            {
+                if (UsesMergeEatingFace(beatContext.Survivor))
+                    beatContext.Survivor.Face.ShowIdle();
+            });
             AppendRecovery(beat, beatContext);
 
             beat.OnComplete(() =>
@@ -166,10 +171,17 @@ namespace Blobs.Presentation
                     targetSorting,
                     targetOriginalLayer,
                     targetOriginalOrder);
-                if (beatContext.Survivor != null)
-                    beatContext.Survivor.Face?.ShowIdle();
+                if (beatContext.Survivor != null && UsesMergeEatingFace(beatContext.Survivor))
+                    beatContext.Survivor.Face.ShowIdle();
             });
             return beat;
+        }
+
+        private static bool UsesMergeEatingFace(BlobView survivor)
+        {
+            return survivor != null &&
+                survivor.Face != null &&
+                !survivor.TryGetComponent<NestBlobView>(out _);
         }
 
         /// <summary>Source winds up while the target braces for the incoming blob.</summary>

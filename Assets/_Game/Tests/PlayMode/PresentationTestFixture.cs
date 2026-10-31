@@ -64,10 +64,6 @@ namespace Blobs.Tests.PlayMode
         {
             GameObject root = CreateGameObject("PlayMode Board Presenter", active: false);
             root.AddComponent<MergeAnimationOrchestrator>();
-            root.AddComponent<BoardSurfacePresenter>();
-            var surface = new GameObject("Board Surface");
-            surface.transform.SetParent(root.transform, false);
-            surface.AddComponent<BoardSurfaceView>();
             BoardPresenter presenter = root.AddComponent<BoardPresenter>();
             if (mergeOrchestrator != null)
                 SetPrivateField(root.GetComponent<BlobPresenter>(), "_mergeAnimationOrchestrator", mergeOrchestrator);
@@ -305,6 +301,12 @@ namespace Blobs.Tests.PlayMode
             public BlobContactFeedbackContext LastContext { get; private set; }
 
             public void PlayContactFeedback(BlobContactFeedbackContext context)
+            {
+                InvocationCount++;
+                LastContext = context;
+            }
+
+            public void PlayUndoFeedback(BlobContactFeedbackContext context)
             {
                 InvocationCount++;
                 LastContext = context;

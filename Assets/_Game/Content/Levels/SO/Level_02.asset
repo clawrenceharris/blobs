@@ -12,40 +12,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 228f01d3da5254622b9b1236a3d1c0ff, type: 3}
   m_Name: Level_02
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
-  levelId: level-03-corners
+  levelId: level-02
   schemaVersion: 1
   width: 4
-  height: 4
+  height: 2
   emptyPositions: []
   blobs:
-  - rid: 7441116775194820813
-  - rid: 7441116843275452499
-  - rid: 3341776588519506007
+  - rid: 7368861676701745344
+  - rid: 7368861676701745345
+  - rid: 7368861676701745346
+  - rid: 7368861676701745347
   tiles: []
   objective: 0
   palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: 3341776588519506007
-      type: {class: TrailBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: blob-trail
-        position: {x: 3, y: 0}
-        type: 2
-        color: 2
-        trailColor: 5
-    - rid: 7441116775194820813
-      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: flag
-        position: {x: 3, y: 3}
-        type: 1
-        color: 1
-    - rid: 7441116843275452499
+    - rid: 7368861676701745344
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: blue
+        id: blob-0
+        position: {x: 0, y: 1}
+        type: 0
+        color: 0
+        size: 2
+    - rid: 7368861676701745345
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blob-1
         position: {x: 0, y: 0}
         type: 0
         color: 1
+        size: 2
+    - rid: 7368861676701745346
+      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blob-2
+        position: {x: 3, y: 0}
+        type: 1
+        color: 1
+    - rid: 7368861676701745347
+      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blob-3
+        position: {x: 3, y: 1}
+        type: 1
+        color: 0

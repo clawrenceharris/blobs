@@ -12,38 +12,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 228f01d3da5254622b9b1236a3d1c0ff, type: 3}
   m_Name: Level_01
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
-  levelId: level-02-columns
+  levelId: level-01
   schemaVersion: 1
   width: 3
   height: 3
   emptyPositions: []
   blobs:
-  - rid: 820000000000000001
-  - rid: 820000000000000002
-  tiles:
-  - rid: 3341776717243744605
+  - rid: 7368861676701745344
+  - rid: 7368861676701745345
+  - rid: 7368861676701745346
+  tiles: []
   objective: 0
   palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: 820000000000000001
+    - rid: 7368861676701745344
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: level02-red
-        position: {x: 1, y: 0}
+        id: blob-0
+        position: {x: 0, y: 2}
         type: 0
         color: 0
-    - rid: 820000000000000002
+        size: 2
+    - rid: 7368861676701745345
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: level02-yellow
-        position: {x: 1, y: 2}
-        type: 0
-        color: 3
-    - rid: 3341776717243744605
-      type: {class: GraveTileAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: grave
+        id: blob-1
         position: {x: 0, y: 0}
         type: 0
+        color: 1
+        size: 2
+    - rid: 7368861676701745346
+      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blob-2
+        position: {x: 2, y: 0}
+        type: 1
+        color: 0

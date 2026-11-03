@@ -107,5 +107,7 @@ namespace Blobs.Presentation
                 survivor.Face != null &&
                 !survivor.TryGetComponent<NestBlobView>(out _);
         }
+
+
     }
 }

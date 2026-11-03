@@ -8,6 +8,7 @@ namespace Blobs.Presentation
         public BlobAnimationSettingsAsset BlobAnimationSettings { get; set; }
         public BlobMotionAnimator BlobAnimator { get; set; }
         public Vector3 BaseScale { get; set; }
+        public Vector3 BaseLocalPosition { get; set; }
 
     }
 

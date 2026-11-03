@@ -26,7 +26,12 @@ MonoBehaviour:
   - rid: 1006
   tiles: []
   objective: 0
-  palette: {fileID: 11400000, guid: b2d1b71546e534ed6b4d4e263fcfd898, type: 2}
+  parMoves: 4
+  palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
+  showSwipeCoach: 0
+  coachFrom: {x: 0, y: 0}
+  coachTo: {x: 0, y: 0}
+  coachCaption: 
   references:
     version: 2
     RefIds:
@@ -36,6 +41,7 @@ MonoBehaviour:
         id: pink-flag
         position: {x: 2, y: 0}
         type: 1
+        facing: 2
         color: 0
     - rid: 1002
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
@@ -43,6 +49,7 @@ MonoBehaviour:
         id: pink-1
         position: {x: 1, y: 0}
         type: 0
+        facing: 2
         color: 0
         size: 2
     - rid: 1003
@@ -51,6 +58,7 @@ MonoBehaviour:
         id: blue-flag
         position: {x: 1, y: 2}
         type: 1
+        facing: 2
         color: 1
     - rid: 1004
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
@@ -58,6 +66,7 @@ MonoBehaviour:
         id: blue-1
         position: {x: 2, y: 1}
         type: 0
+        facing: 2
         color: 1
         size: 2
     - rid: 1005
@@ -66,6 +75,7 @@ MonoBehaviour:
         id: blue-2
         position: {x: 0, y: 2}
         type: 0
+        facing: 2
         color: 1
         size: 2
     - rid: 1006
@@ -74,5 +84,6 @@ MonoBehaviour:
         id: blue-3
         position: {x: 1, y: 1}
         type: 0
+        facing: 2
         color: 1
         size: 2

@@ -32,6 +32,7 @@ namespace Blobs.Presentation
         private BlobColor? _presentedColor;
         private BlobColor? _presentedTrailColor;
         private BlobSize? _presentedSize;
+        private Direction? _presentedFacing;
         private float _cellSize;
         private Vector2 _origin;
         private Vector3 _baseScale;
@@ -59,6 +60,7 @@ namespace Blobs.Presentation
             _presentedColor = blob.Components.Color?.Color;
             _presentedTrailColor = blob.Components.Trail?.TrailColor;
             _presentedSize = blob.Components.Size?.Size;
+            _presentedFacing = blob.Components.Facing?.Direction;
             _cellSize = cellSize;
             _origin = origin;
             _colorPalette = colorPalette;
@@ -80,6 +82,7 @@ namespace Blobs.Presentation
 
             CacheOptionalBehaviors();
             ApplySkin(blob);
+            ApplyFacing(_presentedFacing);
         }
 
         /// <summary>
@@ -94,7 +97,21 @@ namespace Blobs.Presentation
                 GridPosition == blob.Position &&
                 _presentedColor == blob.Components.Color?.Color &&
                 _presentedTrailColor == blob.Components.Trail?.TrailColor &&
-                _presentedSize == blob.Components.Size?.Size;
+                _presentedSize == blob.Components.Size?.Size &&
+                _presentedFacing == blob.Components.Facing?.Direction;
+        }
+
+        /// <summary>
+        /// Applies the authored resting look. Faces are discrete GameObjects, so this selects the
+        /// matching face rather than rotating the billboard sprite.
+        /// </summary>
+        public void ApplyFacing(Direction? facing)
+        {
+            _presentedFacing = facing;
+            if (Face == null)
+                return;
+
+            Face.SetFacing(facing ?? Direction.South);
         }
 
         /// <summary>
@@ -283,7 +300,6 @@ namespace Blobs.Presentation
             _mergeTargetFeedback = null;
             _contactFeedback.Clear();
             Face = TryGetComponent(out MonsterFaceView face) ? face : null;
-            Face?.ShowIdle();
 
             MonoBehaviour[] components =
                 GetComponents<MonoBehaviour>();

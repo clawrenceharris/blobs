@@ -44,6 +44,11 @@ namespace Blobs.Core
         public LevelObjectiveDefinition Objective { get; }
         public IReadOnlyList<GridPosition> EmptyPositions { get; }
 
+        /// <summary>
+        /// Soft efficiency target for HUD display (current/par). Zero means unset; not a fail budget.
+        /// </summary>
+        public int ParMoves { get; }
+
         public LevelDefinition(
             string id,
             int schemaVersion,
@@ -52,9 +57,8 @@ namespace Blobs.Core
             IReadOnlyList<BlobDefinition> blobs,
             IReadOnlyList<TileDefinition> tiles,
             IReadOnlyList<GridPosition> emptyPositions = null,
-            LevelObjectiveDefinition objective = null
-
-           )
+            LevelObjectiveDefinition objective = null,
+            int parMoves = 0)
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
             SchemaVersion = schemaVersion;
@@ -64,7 +68,9 @@ namespace Blobs.Core
             Tiles = tiles ?? throw new ArgumentNullException(nameof(tiles));
             EmptyPositions = emptyPositions ?? new List<GridPosition>();
             Objective = objective ?? LevelObjectiveDefinition.ClearAllClearableBlobs;
-
+            if (parMoves < 0)
+                throw new ArgumentOutOfRangeException(nameof(parMoves), parMoves, "Par moves cannot be negative.");
+            ParMoves = parMoves;
         }
     }
 }

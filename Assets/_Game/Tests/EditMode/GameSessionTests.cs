@@ -60,6 +60,203 @@ namespace Blobs.Tests.EditMode
             Assert.That(session.MoveCount, Is.Zero);
         }
 
+        [Test]
+        public void DragPreviewExtendsToClampedTailOnlyWhenTheTailChanges()
+        {
+            var session = CreateSession();
+            var previews = new System.Collections.Generic.List<DragPreview>();
+            BlobSelectionResult lastSelection = null;
+            session.DragPreviewChanged += previews.Add;
+            session.BlobSelected += result => lastSelection = result;
+
+            session.BeginDragAt(new GridPosition(0, 0));
+            Assert.That(previews.Last().IsActive, Is.True);
+            Assert.That(previews.Last().Tail, Is.EqualTo(new GridPosition(0, 0)));
+
+            Assert.That(previews.Last().Verdict, Is.EqualTo(DragVerdict.Neutral));
+
+            session.UpdateDragAt(new GridPosition(1, 0));
+            Assert.That(previews.Last().Tail, Is.EqualTo(new GridPosition(1, 0)));
+            Assert.That(previews.Last().TargetId, Is.EqualTo("target"));
+            Assert.That(previews.Last().Verdict, Is.EqualTo(DragVerdict.Valid));
+            Assert.That(lastSelection.TargetId, Is.EqualTo("target"));
+            Assert.That(lastSelection.TargetSelected, Is.True);
+
+            int published = previews.Count;
+            session.UpdateDragAt(new GridPosition(1, 0));
+            Assert.That(previews.Count, Is.EqualTo(published));
+
+            session.UpdateDragAt(new GridPosition(9, 0));
+            Assert.That(previews.Last().Tail, Is.EqualTo(new GridPosition(3, 0)));
+            Assert.That(previews.Last().TargetId, Is.Null);
+            Assert.That(previews.Last().Verdict, Is.EqualTo(DragVerdict.Neutral));
+            Assert.That(session.MoveCount, Is.Zero);
+        }
+
+        [Test]
+        public void DragOntoMismatchedFlagIsInvalidWithoutCommitting()
+        {
+            var session = CreateLineSession(
+                new NormalBlobDefinition("source", new GridPosition(0, 0), BlobColor.Red),
+                new FlagBlobDefinition("flag", new GridPosition(1, 0), BlobColor.Blue));
+            DragPreview last = null;
+            session.DragPreviewChanged += preview => last = preview;
+
+            session.BeginDragAt(new GridPosition(0, 0));
+            session.UpdateDragAt(new GridPosition(1, 0));
+
+            Assert.That(last.Verdict, Is.EqualTo(DragVerdict.Invalid));
+            Assert.That(last.FailureReason, Is.EqualTo(MoveFailureReason.FlagRequiresMatchingColor));
+            Assert.That(session.MoveCount, Is.Zero);
+            Assert.That(session.CurrentState.GetBlob("source").Position, Is.EqualTo(new GridPosition(0, 0)));
+        }
+
+        [Test]
+        public void DragOntoSameColorBlobIsInvalid()
+        {
+            var session = CreateSession(BlobColor.Red);
+            DragPreview last = null;
+            BlobSelectionResult lastSelection = null;
+            session.DragPreviewChanged += preview => last = preview;
+            session.BlobSelected += result => lastSelection = result;
+
+            session.BeginDragAt(new GridPosition(0, 0));
+            session.UpdateDragAt(new GridPosition(1, 0));
+
+            Assert.That(last.Verdict, Is.EqualTo(DragVerdict.Invalid));
+            Assert.That(last.FailureReason, Is.EqualTo(MoveFailureReason.NormalMergeRequiresDifferentColors));
+            Assert.That(lastSelection.SourceId, Is.EqualTo("source"));
+            Assert.That(lastSelection.TargetId, Is.EqualTo("target"));
+            Assert.That(lastSelection.TargetSelected, Is.False);
+            Assert.That(lastSelection.IsSelected("target"), Is.False);
+        }
+
+        [Test]
+        public void DragPastRockStopsTailOnTheRockAndCommitsContact()
+        {
+            var session = CreateLineSession(
+                new NormalBlobDefinition("source", new GridPosition(0, 0), BlobColor.Red),
+                new RockBlobDefinition("rock", new GridPosition(1, 0)),
+                new NormalBlobDefinition("beyond", new GridPosition(2, 0), BlobColor.Blue),
+                new FlagBlobDefinition("flag", new GridPosition(3, 0), BlobColor.Red));
+            DragPreview last = null;
+            session.DragPreviewChanged += preview => last = preview;
+
+            session.BeginDragAt(new GridPosition(0, 0));
+            session.UpdateDragAt(new GridPosition(2, 0));
+            Assert.That(last.Tail, Is.EqualTo(new GridPosition(1, 0)));
+            Assert.That(last.TargetId, Is.EqualTo("rock"));
+            Assert.That(last.Verdict, Is.EqualTo(DragVerdict.Valid));
+
+            var result = session.EndDragAt(new GridPosition(3, 0));
+            Assert.That(result.TargetId, Is.EqualTo("rock"));
+            Assert.That(session.CurrentState.GetBlob("beyond"), Is.Not.Null);
+        }
+
+        [Test]
+        public void DragAcrossGapStopsTailOnTheLastReachableCell()
+        {
+            var session = new GameSession(new LevelDefinition("drag-gap", LevelDefinition.CurrentSchemaVersion, 4, 1,
+                new BlobDefinition[]
+                {
+                    new NormalBlobDefinition("source", new GridPosition(0, 0), BlobColor.Red),
+                    new NormalBlobDefinition("near", new GridPosition(1, 0), BlobColor.Blue),
+                    new FlagBlobDefinition("flag", new GridPosition(3, 0), BlobColor.Red)
+                }, Array.Empty<TileDefinition>(), new[] { new GridPosition(2, 0) }));
+            DragPreview last = null;
+            session.DragPreviewChanged += preview => last = preview;
+
+            session.BeginDragAt(new GridPosition(0, 0));
+            session.UpdateDragAt(new GridPosition(3, 0));
+
+            Assert.That(last.Tail, Is.EqualTo(new GridPosition(1, 0)));
+            Assert.That(last.TargetId, Is.EqualTo("near"));
+            Assert.That(last.Verdict, Is.EqualTo(DragVerdict.Valid));
+        }
+
+        [Test]
+        public void DragThroughFlagTowardBlobBeyondIsInvalid()
+        {
+            var session = CreateLineSession(
+                new NormalBlobDefinition("source", new GridPosition(0, 0), BlobColor.Red),
+                new FlagBlobDefinition("flag", new GridPosition(1, 0), BlobColor.Red),
+                new NormalBlobDefinition("beyond", new GridPosition(2, 0), BlobColor.Blue));
+            DragPreview last = null;
+            session.DragPreviewChanged += preview => last = preview;
+
+            session.BeginDragAt(new GridPosition(0, 0));
+            session.UpdateDragAt(new GridPosition(2, 0));
+
+            Assert.That(last.Tail, Is.EqualTo(new GridPosition(2, 0)));
+            Assert.That(last.Verdict, Is.EqualTo(DragVerdict.Invalid));
+            Assert.That(last.FailureReason, Is.EqualTo(MoveFailureReason.FlagCaptureRequired));
+        }
+
+        [Test]
+        public void DragPreviewsDoNotShiftIdsSpawnedByTheCommittedMove()
+        {
+            BlobDefinition[] blobs =
+            {
+                new TrailBlobDefinition("source", new GridPosition(0, 0), BlobColor.Red, BlobColor.Blue),
+                new NormalBlobDefinition("target", new GridPosition(3, 0), BlobColor.Green),
+                new FlagBlobDefinition("flag", new GridPosition(4, 0), BlobColor.Red)
+            };
+            var previewed = CreateLineSession(blobs);
+            previewed.BeginDragAt(new GridPosition(0, 0));
+            previewed.UpdateDragAt(new GridPosition(3, 0));
+            previewed.UpdateDragAt(new GridPosition(2, 0));
+            previewed.UpdateDragAt(new GridPosition(3, 0));
+            Assert.That(previewed.EndDragAt(new GridPosition(3, 0)).MoveResult.Succeeded, Is.True);
+
+            var direct = CreateLineSession(blobs);
+            Assert.That(direct.ExecuteMove(Intent(direct, "source", "target")).Succeeded, Is.True);
+
+            Assert.That(previewed.CurrentState.Blobs.Select(b => b.Id),
+                Is.EquivalentTo(direct.CurrentState.Blobs.Select(b => b.Id)));
+            Assert.That(previewed.CurrentState.Blobs.Count, Is.GreaterThan(3));
+        }
+
+        [Test]
+        public void DiagonalDragProjectsOntoDominantAxisAndReleaseCommitsToThatTail()
+        {
+            var session = new GameSession(new LevelDefinition("drag-axis", LevelDefinition.CurrentSchemaVersion, 3, 3,
+                new BlobDefinition[]
+                {
+                    new NormalBlobDefinition("source", new GridPosition(1, 1), BlobColor.Red),
+                    new NormalBlobDefinition("target", new GridPosition(2, 1), BlobColor.Blue),
+                    new FlagBlobDefinition("flag", new GridPosition(0, 0), BlobColor.Red)
+                }, Array.Empty<TileDefinition>()));
+            DragPreview last = null;
+            session.DragPreviewChanged += preview => last = preview;
+
+            session.BeginDragAt(new GridPosition(1, 1));
+            session.UpdateDragAt(new GridPosition(2, 2));
+            Assert.That(last.Tail, Is.EqualTo(new GridPosition(2, 1)));
+
+            var result = session.EndDragAt(new GridPosition(2, 2));
+            Assert.That(result.MoveResult.Succeeded, Is.True);
+            Assert.That(result.TargetId, Is.EqualTo("target"));
+            Assert.That(last.IsActive, Is.False);
+        }
+
+        [Test]
+        public void DragPreviewEndsOnceBeforeTheMoveResolves()
+        {
+            var session = CreateSession();
+            int inactive = 0;
+            bool previewEndedBeforeMove = false;
+            session.DragPreviewChanged += preview => { if (!preview.IsActive) inactive++; };
+            session.MoveResolved += _ => previewEndedBeforeMove = inactive == 1;
+
+            session.BeginDragAt(new GridPosition(0, 0));
+            session.UpdateDragAt(new GridPosition(1, 0));
+            session.EndDragAt(new GridPosition(1, 0));
+            session.CancelDrag();
+
+            Assert.That(previewEndedBeforeMove, Is.True);
+            Assert.That(inactive, Is.EqualTo(1));
+        }
+
         [TestCase(0)]
         [TestCase(3)]
         public void SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving(int x)
@@ -325,6 +522,12 @@ namespace Blobs.Tests.EditMode
         private static MoveIntent Intent(GameSession session, string sourceId, string targetId)
         {
             return new MoveIntent(session.CurrentState.GetBlob(sourceId), session.CurrentState.GetBlob(targetId));
+        }
+
+        private static GameSession CreateLineSession(params BlobDefinition[] blobs)
+        {
+            return new GameSession(new LevelDefinition("drag-line", LevelDefinition.CurrentSchemaVersion, 5, 1,
+                blobs, Array.Empty<TileDefinition>()));
         }
 
         private static GameSession CreateChainSession()

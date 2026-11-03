@@ -59,6 +59,11 @@ namespace Blobs.Tests.PlayMode
 
             Assert.That(moveText.text, Is.EqualTo("2"));
 
+            state.ParMoves = 10;
+            state.RaiseSnapshotChanged();
+
+            Assert.That(moveText.text, Is.EqualTo("2/10"));
+
             state.IsComplete = true;
             state.RaiseSnapshotChanged();
             Assert.That(completionRoot.activeSelf, Is.True);
@@ -185,6 +190,7 @@ namespace Blobs.Tests.PlayMode
             }
 
             public BlobSelectionResult BeginDragAt(GridPosition position) => SelectBlobAt(position);
+            public BlobSelectionResult UpdateDragAt(GridPosition position) => SelectBlobAt(position);
             public BlobSelectionResult EndDragAt(GridPosition position) => SelectBlobAt(position);
             public void CancelDrag() { }
 
@@ -206,8 +212,10 @@ namespace Blobs.Tests.PlayMode
             public event Action<GameSessionSnapshot> SnapshotChanged;
             public event Action<GameSessionSnapshot> StateRestored;
             public event Action<BlobSelectionResult> BlobSelected;
+            public event Action<DragPreview> DragPreviewChanged;
 
             public int MoveCount { get; set; }
+            public int ParMoves { get; set; }
             public bool IsComplete { get; set; }
             public bool UndoAvailable { get; set; }
             public bool CanUndo => UndoAvailable;
@@ -219,7 +227,8 @@ namespace Blobs.Tests.PlayMode
                     new BoardState(2, 1, new List<BlobState>(), new List<TileState>()),
                     MoveCount,
                     IsComplete,
-                    CanUndo);
+                    CanUndo,
+                    ParMoves);
             }
 
             public void RaiseSnapshotChanged()
@@ -245,7 +254,7 @@ namespace Blobs.Tests.PlayMode
                 CurrentCommands = commands;
                 CurrentState = state;
             }
-
+            public int CurrentLevelIndex { get; }
             public event Action<IGameplayCommands, IGameplayState> SessionStarted;
             public event Action<GameSessionSnapshot> PresentationSettled;
 
@@ -259,13 +268,16 @@ namespace Blobs.Tests.PlayMode
                 PresentationSettled?.Invoke(snapshot);
             }
 
-            public void PauseGame()
+            public void PreviousLevel()
+            {
+            }
+            public void NextLevel()
+            {
+            }
+            public void ExitGame()
             {
             }
 
-            public void ResumeGame()
-            {
-            }
         }
 
         private sealed class FakeSessionHost : IGameplaySessionHost
@@ -280,15 +292,18 @@ namespace Blobs.Tests.PlayMode
 
             public IGameplayCommands CurrentCommands { get; }
             public IGameplayState CurrentState { get; }
-
+            public int CurrentLevelIndex { get; }
             public void RaiseSessionStarted()
             {
                 SessionStarted?.Invoke(CurrentCommands, CurrentState);
             }
-            public void PauseGame()
+            public void PreviousLevel()
             {
             }
-            public void ResumeGame()
+            public void ExitGame()
+            {
+            }
+            public void NextLevel()
             {
             }
         }

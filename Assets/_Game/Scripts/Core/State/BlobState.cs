@@ -46,9 +46,11 @@ namespace Blobs.Core
         public BlobState WithTrail(BlobColor trailColor) => WithComponents(Components.WithTrail(trailColor));
 
         public BlobState WithSize(BlobSize size) => WithComponents(Components.WithSize(size));
+        public BlobState WithFacing(Direction direction) => WithComponents(Components.WithFacing(direction));
         public bool HasSize => Components.Size.HasValue;
         public bool HasColor => Components.Color.HasValue;
         public bool HasTrail => Components.Trail.HasValue;
+        public bool HasFacing => Components.Facing.HasValue;
         public override string ToString() => $"{Id}_{Type}_{Position}";
     }
 

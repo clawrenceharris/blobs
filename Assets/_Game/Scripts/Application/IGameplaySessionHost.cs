@@ -9,6 +9,10 @@ namespace Blobs.Application
     public interface IGameplaySessionHost
     {
         /// <summary>
+        /// Current level index.
+        /// </summary>
+        int CurrentLevelIndex { get; }
+        /// <summary>
         /// Raised whenever a new session is started and ready for input, presentation, and UI binding.
         /// </summary>
         event Action<IGameplayCommands, IGameplayState> SessionStarted;
@@ -24,14 +28,19 @@ namespace Blobs.Application
         IGameplayState CurrentState { get; }
 
         /// <summary>
-        /// Pauses the game.
+        /// Exits the game.
         /// </summary>
-        void PauseGame();
+        void ExitGame();
 
         /// <summary>
-        /// Resumes the game.
+        /// Loads the previous level.
         /// </summary>
-        void ResumeGame();
+        void PreviousLevel();
+
+        /// <summary>
+        /// Loads the next level.
+        /// </summary>
+        void NextLevel();
     }
 
     /// <summary>

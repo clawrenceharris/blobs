@@ -27,59 +27,7 @@ namespace Blobs.Presentation
         public int CurrentLevelIndex { get; private set; }
         public TestMode CurrentMode { get; private set; }
 
-        private void Awake()
-        {
-            CurrentLevelIndex = ClampLevelIndex(initialLevelIndex);
-            ApplyMode(initialMode);
 
-            if (bootstrapper != null && levels != null && levels.Length > 0)
-                bootstrapper.ConfigureStartingLevel(levels[CurrentLevelIndex]);
-        }
 
-        public void SetMode(int mode)
-        {
-            ApplyMode((TestMode)Mathf.Clamp(mode, 0, 2));
-            if (bootstrapper != null && bootstrapper.CurrentState != null)
-                LoadLevel(CurrentLevelIndex);
-        }
-
-        public void LoadLevel(int index)
-        {
-            if (bootstrapper == null || levels == null || levels.Length == 0)
-                return;
-
-            CurrentLevelIndex = ClampLevelIndex(index);
-            bootstrapper.StartLevel(levels[CurrentLevelIndex]);
-        }
-
-        public void NextLevel()
-        {
-            if (levels == null || levels.Length == 0)
-                return;
-
-            LoadLevel((CurrentLevelIndex + 1) % levels.Length);
-        }
-
-        public void PreviousLevel()
-        {
-            if (levels == null || levels.Length == 0)
-                return;
-
-            LoadLevel((CurrentLevelIndex - 1 + levels.Length) % levels.Length);
-        }
-
-        private void ApplyMode(TestMode mode)
-        {
-            CurrentMode = mode;
-
-            boardPresenter?.SetEffectsAnimated(mode != TestMode.Baseline);
-        }
-
-        private int ClampLevelIndex(int index)
-        {
-            return levels == null || levels.Length == 0
-                ? 0
-                : Mathf.Clamp(index, 0, levels.Length - 1);
-        }
     }
 }

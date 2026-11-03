@@ -17,7 +17,9 @@ namespace Blobs.Application
 
         /// <summary>Starts a fresh drag without completing a previous selection.</summary>
         BlobSelectionResult BeginDragAt(GridPosition position);
-        /// <summary>Attempts a move from the captured source to the release cell.</summary>
+        /// <summary>Extends the active drag toward a pointer cell without committing a move.</summary>
+        BlobSelectionResult UpdateDragAt(GridPosition position);
+        /// <summary>Attempts a move from the captured source to the drag tail resolved from the release cell.</summary>
         BlobSelectionResult EndDragAt(GridPosition position);
         /// <summary>Abandons the drag and clears its selection without moving.</summary>
         void CancelDrag();
@@ -74,6 +76,11 @@ namespace Blobs.Application
         /// Raised after a blob is selected.
         /// </summary>
         event Action<BlobSelectionResult> BlobSelected;
+
+        /// <summary>
+        /// Raised when a drag begins, its tail cell changes, or it ends for any reason.
+        /// </summary>
+        event Action<DragPreview> DragPreviewChanged;
     }
 
     /// <summary>
@@ -88,6 +95,8 @@ namespace Blobs.Application
         private BoardState _board;
         private string _selectedBlobId;
         private string _dragSourceId;
+        private GridPosition _dragOrigin;
+        private GridPosition _dragTail;
         private int _committedMoveCount;
         public BoardState CurrentState => _board;
         /// <summary>
@@ -109,6 +118,9 @@ namespace Blobs.Application
         public event Action<GameSessionSnapshot> StateRestored;
 
         public event Action<BlobSelectionResult> BlobSelected;
+
+        /// <inheritdoc />
+        public event Action<DragPreview> DragPreviewChanged;
 
         public string LevelId => _level.Id;
         public int MoveCount => _committedMoveCount;
@@ -181,28 +193,127 @@ namespace Blobs.Application
         {
             CancelDrag();
             BlobSelectionResult result = SelectBlobAt(position);
-            _dragSourceId = result.HasSelection ? result.SourceId : null;
+            if (!result.HasSelection)
+                return result;
+
+            _dragSourceId = result.SourceId;
+            _dragOrigin = position;
+            _dragTail = position;
+            PublishDragPreview(null);
             return result;
+        }
+
+        public BlobSelectionResult UpdateDragAt(GridPosition position)
+        {
+            if (!IsDragActive())
+            {
+                if (_dragSourceId != null)
+                    CancelDrag();
+                return BlobSelectionResult.Cleared();
+            }
+
+            GridPosition tail = ResolveDragTail(position);
+            string targetId = GetDragTargetId(tail);
+            DragPreview preview = BuildDragPreview(targetId, tail);
+            // Selection highlight stays on the Application result so presenters never need to
+            // subscribe to drag-preview verdicts. Aim geometry/tint still uses DragPreview.
+            var selected = BlobSelectionResult.Selected(
+                _dragSourceId,
+                targetId,
+                targetSelected: preview.Verdict == DragVerdict.Valid);
+            if (tail == _dragTail)
+                return selected;
+
+            _dragTail = tail;
+            BlobSelected?.Invoke(selected);
+            DragPreviewChanged?.Invoke(preview);
+            return selected;
         }
 
         public BlobSelectionResult EndDragAt(GridPosition position)
         {
-            string sourceId = _dragSourceId;
-            _dragSourceId = null;
-            if (sourceId == null || _selectedBlobId != sourceId || _board.GetBlob(sourceId) == null)
+            if (!IsDragActive())
             {
                 CancelDrag();
                 return BlobSelectionResult.Cleared();
             }
 
-            return SelectBlobAt(position);
+            GridPosition tail = ResolveDragTail(position);
+            EndDragPreview();
+            return SelectBlobAt(tail);
         }
 
         public void CancelDrag()
         {
-            _dragSourceId = null;
+            EndDragPreview();
             _selectedBlobId = null;
             BlobSelected?.Invoke(BlobSelectionResult.Cleared());
+        }
+
+        private bool IsDragActive()
+        {
+            return _dragSourceId != null &&
+                _selectedBlobId == _dragSourceId &&
+                _board.GetBlob(_dragSourceId) != null;
+        }
+
+        private void EndDragPreview()
+        {
+            if (_dragSourceId == null)
+                return;
+
+            _dragSourceId = null;
+            DragPreviewChanged?.Invoke(DragPreview.Inactive);
+        }
+
+        /// <summary>
+        /// Dry-runs the move the drag would commit on release so presentation can warn before the
+        /// player lets go. Only player-facing rule failures become <see cref="DragVerdict.Invalid"/>.
+        /// </summary>
+        private void PublishDragPreview(string targetId)
+        {
+            DragPreviewChanged?.Invoke(BuildDragPreview(targetId, _dragTail));
+        }
+
+        private DragPreview BuildDragPreview(string targetId, GridPosition tail)
+        {
+            DragVerdict verdict = DragVerdict.Neutral;
+            MoveFailureReason failure = MoveFailureReason.None;
+            if (targetId != null)
+            {
+                MoveResult result = _resolver.Preview(
+                    _board,
+                    new MoveIntent(_board.GetBlob(_dragSourceId), _board.GetBlob(targetId)),
+                    _level.Objective);
+                failure = result.FailureReason;
+                verdict = result.Succeeded
+                    ? DragVerdict.Valid
+                    : failure.IsPlayerFacing() ? DragVerdict.Invalid : DragVerdict.Neutral;
+            }
+
+            return DragPreview.Active(
+                _dragSourceId, _dragOrigin, tail, targetId, verdict, failure);
+        }
+
+        /// <summary>
+        /// Moves only travel along a row or column, so the pointer cell is projected onto the
+        /// dominant drag axis, then clamped to what the source can reach: the board edge, the last
+        /// cell before a gap, or a blocking blob such as a rock. Exact diagonals keep the current axis.
+        /// </summary>
+        private GridPosition ResolveDragTail(GridPosition pointer)
+        {
+            int dx = Math.Abs(pointer.X - _dragOrigin.X);
+            int dy = Math.Abs(pointer.Y - _dragOrigin.Y);
+            bool horizontal = dx != dy ? dx > dy : _dragTail.Y == _dragOrigin.Y;
+            GridPosition aligned = horizontal
+                ? new GridPosition(pointer.X, _dragOrigin.Y)
+                : new GridPosition(_dragOrigin.X, pointer.Y);
+            return _resolver.ClampToReach(_board, _dragOrigin, aligned);
+        }
+
+        private string GetDragTargetId(GridPosition tail)
+        {
+            return tail == _dragOrigin ? null : _board.GetBlobAt(tail)?.Id;
         }
 
         /// <summary>
@@ -236,11 +347,11 @@ namespace Blobs.Application
             if (!CanUndo)
                 return false;
 
+            EndDragPreview();
             UndoActionRecord record = _history[_history.Count - 1];
             _history.RemoveAt(_history.Count - 1);
             _board = record.PreviousBoard.Clone();
             _selectedBlobId = null;
-            _dragSourceId = null;
             IsComplete = ObjectiveEvaluator.IsComplete(_board, _level.Objective);
             var snapshot = CreateSnapshot();
             UndoResolved?.Invoke(new UndoResult(
@@ -255,11 +366,11 @@ namespace Blobs.Application
         /// <inheritdoc />
         public void Restart()
         {
+            EndDragPreview();
             _history.Clear();
             _committedMoveCount = 0;
             _board = LevelFactory.CreateInitialBoard(_level);
             _selectedBlobId = null;
-            _dragSourceId = null;
             IsComplete = ObjectiveEvaluator.IsComplete(_board, _level.Objective);
             var snapshot = CreateSnapshot();
             StateRestored?.Invoke(snapshot);
@@ -274,7 +385,8 @@ namespace Blobs.Application
                 _board.Clone(),
                 MoveCount,
                 IsComplete,
-                CanUndo);
+                CanUndo,
+                _level.ParMoves);
         }
 
         private static IReadOnlyDictionary<string, BlobState> BuildRestorationBlobs(

@@ -38,8 +38,8 @@ namespace Blobs.Content
                 blobs,
                 tiles,
                 emptyPositions: emptyPositions,
-                new LevelObjectiveDefinition(asset.Objective)
-                );
+                new LevelObjectiveDefinition(asset.Objective),
+                asset.ParMoves);
 
             LevelValidator.ValidateOrThrow(definition);
             return definition;
@@ -59,7 +59,8 @@ namespace Blobs.Content
                         normal.id,
                         ToCore(normal.position),
                         normal.color,
-                        normal.size);
+                        normal.size,
+                        normal.facing);
                 case NormalBlobAssetData normal:
                     throw new InvalidOperationException(
                         $"Normal blob '{normal.id}' declares unsupported type {normal.type}.");
@@ -67,7 +68,8 @@ namespace Blobs.Content
                     return new FlagBlobDefinition(
                         flag.id,
                         ToCore(flag.position),
-                        flag.color);
+                        flag.color,
+                        flag.facing);
                 case FlagBlobAssetData flag:
                     throw new InvalidOperationException(
                         $"Flag blob '{flag.id}' declares unsupported type {flag.type}.");
@@ -77,14 +79,16 @@ namespace Blobs.Content
                         ToCore(trail.position),
                         trail.color,
                         trail.trailColor,
-                        trail.size);
+                        trail.size,
+                        trail.facing);
                 case TrailBlobAssetData trail:
                     throw new InvalidOperationException(
                         $"Trail blob '{trail.id}' declares unsupported type {trail.type}.");
                 case RockBlobAssetData rock when rock.type == BlobType.Rock:
                     return new RockBlobDefinition(
                         rock.id,
-                        ToCore(rock.position));
+                        ToCore(rock.position),
+                        rock.facing);
                 case RockBlobAssetData rock:
                     throw new InvalidOperationException(
                         $"Rock blob '{rock.id}' declares unsupported type {rock.type}.");
@@ -92,7 +96,8 @@ namespace Blobs.Content
                 case GhostBlobAssetData ghost when ghost.type == BlobType.Ghost:
                     return new GhostBlobDefinition(
                         ghost.id,
-                        ToCore(ghost.position));
+                        ToCore(ghost.position),
+                        ghost.facing);
                 case GhostBlobAssetData ghost:
                     throw new InvalidOperationException(
                         $"Ghost blob '{ghost.id}' declares unsupported type {ghost.type}.");

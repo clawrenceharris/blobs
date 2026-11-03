@@ -25,13 +25,17 @@ namespace Blobs.Presentation
             string nextSourceId = result != null && !result.MoveAttempted
                 ? result.SourceId
                 : null;
-            string nextTargetId = result != null && !result.MoveAttempted
+            // Only TargetSelected aims pulse. Aimed-but-illegal targets stay idle; Application
+            // already decided that on the selection result so this presenter stays verdict-free.
+            string nextTargetId = result != null &&
+                !result.MoveAttempted &&
+                result.TargetSelected
                 ? result.TargetId
                 : null;
 
             SetIdleIfNoLongerSelected(_selectedSourceId, nextSourceId, nextTargetId);
             SetIdleIfNoLongerSelected(_selectedTargetId, nextSourceId, nextTargetId);
-            SetSelected(nextSourceId);
+            SetPickedUp(nextSourceId);
             if (nextTargetId != nextSourceId)
                 SetSelected(nextTargetId);
 
@@ -78,6 +82,16 @@ namespace Blobs.Presentation
                 view.BlobMotionAnimator.CurrentState != BlobAnimationState.Idle)
             {
                 view.BlobMotionAnimator.SetIdle();
+            }
+        }
+
+        private void SetPickedUp(string blobId)
+        {
+            if (_blobs.TryGetView(blobId, out BlobView view) &&
+                view.BlobMotionAnimator != null &&
+                view.BlobMotionAnimator.CurrentState != BlobAnimationState.PickedUp)
+            {
+                view.BlobMotionAnimator.SetPickedUp();
             }
         }
 

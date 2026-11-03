@@ -129,7 +129,7 @@ namespace Blobs.Core
                         new BlobTraits(canBeSource: true, isClearable: true),
 
                     [BlobType.Rock] =
-                        new BlobTraits(canBeSource: false, isClearable: false),
+                        new BlobTraits(canBeSource: false, isClearable: false, blocksMovement: true),
                     [BlobType.Ghost] =
                         new BlobTraits(canBeSource: false, isClearable: true),
 

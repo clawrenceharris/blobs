@@ -38,7 +38,7 @@ namespace Blobs.Presentation
         public override void Enter(AnimationStateContext context)
         {
             _context = context;
-            StartSelectionLoop();
+            StartSelectionLoop(context.BaseScale);
         }
         public override void Exit(AnimationStateContext context)
         {
@@ -48,49 +48,34 @@ namespace Blobs.Presentation
         {
             yield return null;
         }
-        private Sequence StartSelectionLoop()
+        private Sequence StartSelectionLoop(Vector3 pulseBaseScale)
         {
-            BlobSelectionSettings settings = AnimationSettings(_context).BlobSelectionSettings;
+            BlobSelectionSettings settings = AnimationSettings(_context)?.BlobSelectionSettings;
             if (settings == null)
-            {
                 return null;
-            }
-            float squishDuration = settings.SelectionSquishDuration;
-            float squishAmount = settings.SelectionSquishAmount;
-            float stretchAmount = settings.SelectionStretchAmount;
 
-
-            // Kill any existing loop
             StopSelectionLoop();
 
-            // Create squish in/out loop: squash down (Y smaller, X larger) then return to base
+            Transform visual = VisualTransform(_context);
+            Vector3 squishScale = new Vector3(
+                pulseBaseScale.x * settings.SelectionStretchAmount,
+                pulseBaseScale.y * settings.SelectionSquishAmount,
+                pulseBaseScale.z);
+
             _selectionSequence = DOTween.Sequence()
                 .SetLink(_context.BlobView.gameObject, LinkBehaviour.KillOnDestroy);
-            Vector3 squishScale = new Vector3(
-               _context.BaseScale.x * stretchAmount,
-                _context.BaseScale.y * squishAmount,
-                _context.BaseScale.z
-           );
-
-            // Squish in
-            Transform visual = VisualTransform(_context);
-            _selectionSequence.Append(visual.DOScale(squishScale, squishDuration)
+            _selectionSequence.Append(visual.DOScale(squishScale, settings.SelectionSquishDuration)
                 .SetEase(Ease.OutQuad)
                 .SetLink(_context.BlobView.gameObject, LinkBehaviour.KillOnDestroy));
-
-            // Squish out (back to base)
-            _selectionSequence.Append(visual.DOScale(_context.BaseScale, squishDuration)
+            _selectionSequence.Append(visual.DOScale(pulseBaseScale, settings.SelectionSquishDuration)
                 .SetEase(Ease.InQuad)
                 .SetLink(_context.BlobView.gameObject, LinkBehaviour.KillOnDestroy));
-
-            // Loop indefinitely
             return _selectionSequence.SetLoops(-1, LoopType.Restart);
         }
         private void StopSelectionLoop()
         {
             if (_selectionSequence != null)
             {
-                // Kill the loop and smoothly blend back to base scale
                 _selectionSequence.Kill();
                 VisualTransform(_context).localScale = _context.BaseScale;
             }
@@ -98,6 +83,97 @@ namespace Blobs.Presentation
             _selectionSequence = null;
         }
 
+    }
+
+    /// <summary>
+    /// Source-blob hold pose: lifts and scales the visual so a finger press does not fully cover it,
+    /// then keeps the normal selection pulse around that elevated resting scale.
+    /// </summary>
+    public class BlobPickedUpState : AnimationState
+    {
+        public override BlobAnimationState State => BlobAnimationState.PickedUp;
+
+        private Sequence _pickUpSequence;
+        private AnimationStateContext _context;
+        private Vector3 _heldScale;
+
+        public override void Enter(AnimationStateContext context)
+        {
+            _context = context;
+            BlobSelectionSettings settings = AnimationSettings(context)?.BlobSelectionSettings;
+            if (settings == null)
+            {
+                RestoreRestPose();
+                return;
+            }
+
+            Transform visual = VisualTransform(context);
+            _heldScale = context.BaseScale * settings.PickUpScale;
+            Vector3 heldPosition = context.BaseLocalPosition + Vector3.up * settings.PickUpLift;
+
+            _pickUpSequence?.Kill();
+            _pickUpSequence = DOTween.Sequence()
+                .SetLink(context.BlobView.gameObject, LinkBehaviour.KillOnDestroy)
+                .Append(visual.DOScale(_heldScale, settings.PickUpDuration)
+                    .SetEase(Ease.OutBack)
+                    .SetLink(context.BlobView.gameObject, LinkBehaviour.KillOnDestroy))
+                .Join(visual.DOLocalMove(heldPosition, settings.PickUpDuration)
+                    .SetEase(Ease.OutCubic)
+                    .SetLink(context.BlobView.gameObject, LinkBehaviour.KillOnDestroy))
+                .OnComplete(StartHeldPulse);
+        }
+
+        public override void Exit(AnimationStateContext context)
+        {
+            _context = context;
+            StopHeldAnimation();
+            RestoreRestPose();
+        }
+
+        public override IEnumerator Update(AnimationStateContext context)
+        {
+            yield return null;
+        }
+
+        private void StartHeldPulse()
+        {
+            BlobSelectionSettings settings = AnimationSettings(_context)?.BlobSelectionSettings;
+            if (settings == null || _context == null)
+                return;
+
+            Transform visual = VisualTransform(_context);
+            Vector3 squishScale = new Vector3(
+                _heldScale.x * settings.SelectionStretchAmount,
+                _heldScale.y * settings.SelectionSquishAmount,
+                _heldScale.z);
+
+            _pickUpSequence = DOTween.Sequence()
+                .SetLink(_context.BlobView.gameObject, LinkBehaviour.KillOnDestroy)
+                .Append(visual.DOScale(squishScale, settings.SelectionSquishDuration)
+                    .SetEase(Ease.OutQuad)
+                    .SetLink(_context.BlobView.gameObject, LinkBehaviour.KillOnDestroy))
+                .Append(visual.DOScale(_heldScale, settings.SelectionSquishDuration)
+                    .SetEase(Ease.InQuad)
+                    .SetLink(_context.BlobView.gameObject, LinkBehaviour.KillOnDestroy))
+                .SetLoops(-1, LoopType.Restart);
+        }
+
+        private void StopHeldAnimation()
+        {
+            _pickUpSequence?.Kill();
+            _pickUpSequence = null;
+        }
+
+        private void RestoreRestPose()
+        {
+            if (_context == null)
+                return;
+
+            Transform visual = VisualTransform(_context);
+            visual.DOKill();
+            visual.localScale = _context.BaseScale;
+            visual.localPosition = _context.BaseLocalPosition;
+        }
     }
 
     public class BlobMovingState : AnimationState

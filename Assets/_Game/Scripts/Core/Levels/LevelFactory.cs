@@ -23,7 +23,8 @@ namespace Blobs.Core
                 var blob = new BlobState(
                     b.Id,
                     b.Type,
-                    b.Position);
+                    b.Position)
+                    .WithFacing(b.Facing);
                 switch (b)
                 {
                     case NormalBlobDefinition normalBlob:

@@ -12,20 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 228f01d3da5254622b9b1236a3d1c0ff, type: 3}
   m_Name: Level_03
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
-  levelId: level-03
+  levelId: level-01
   schemaVersion: 1
   width: 3
-  height: 2
+  height: 3
   emptyPositions: []
   blobs:
   - rid: 7368861676701745344
   - rid: 7368861676701745345
   - rid: 7368861676701745346
-  - rid: 7368861676701745347
-  - rid: 7368861676701745348
   tiles: []
   objective: 0
+  parMoves: 2
   palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
+  showSwipeCoach: 1
+  coachFrom: {x: 0, y: 2}
+  coachTo: {x: 0, y: 0}
+  coachCaption: 
   references:
     version: 2
     RefIds:
@@ -33,8 +36,9 @@ MonoBehaviour:
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
         id: blob-0
-        position: {x: 0, y: 1}
+        position: {x: 0, y: 2}
         type: 0
+        facing: 2
         color: 0
         size: 2
     - rid: 7368861676701745345
@@ -43,27 +47,14 @@ MonoBehaviour:
         id: blob-1
         position: {x: 0, y: 0}
         type: 0
+        facing: 2
         color: 1
         size: 2
     - rid: 7368861676701745346
       type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
         id: blob-2
-        position: {x: 2, y: 1}
-        type: 1
-        color: 1
-    - rid: 7368861676701745347
-      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: blob-3
         position: {x: 2, y: 0}
         type: 1
+        facing: 2
         color: 0
-    - rid: 7368861676701745348
-      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: blob-4
-        position: {x: 1, y: 1}
-        type: 0
-        color: 1
-        size: 2

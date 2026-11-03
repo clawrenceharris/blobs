@@ -15,15 +15,20 @@ namespace Blobs.Core
         public BlobDefinition(
             string id,
             GridPosition position,
-            BlobType type)
+            BlobType type,
+            Direction facing = Direction.South)
         {
             Id = id;
             Position = position;
             Type = type;
+            Facing = facing;
         }
         public string Id { get; }
         public GridPosition Position { get; }
         public BlobType Type { get; }
+
+        /// <summary>Resting look direction for presentation. Defaults to facing the camera (South).</summary>
+        public Direction Facing { get; }
 
     }
 
@@ -40,9 +45,9 @@ namespace Blobs.Core
             string id,
             GridPosition position,
             BlobColor color,
-            BlobSize size = BlobSize.Normal
-            )
-            : base(id, position, BlobType.Normal)
+            BlobSize size = BlobSize.Normal,
+            Direction facing = Direction.South)
+            : base(id, position, BlobType.Normal, facing)
         {
             Size = size;
             Color = color;
@@ -55,8 +60,9 @@ namespace Blobs.Core
         public FlagBlobDefinition(
             string id,
             GridPosition position,
-            BlobColor color)
-            : base(id, position, BlobType.Flag)
+            BlobColor color,
+            Direction facing = Direction.South)
+            : base(id, position, BlobType.Flag, facing)
         {
             Color = color;
         }
@@ -68,8 +74,9 @@ namespace Blobs.Core
     {
         public RockBlobDefinition(
             string id,
-            GridPosition position)
-            : base(id, position, BlobType.Rock)
+            GridPosition position,
+            Direction facing = Direction.South)
+            : base(id, position, BlobType.Rock, facing)
         {
         }
     }
@@ -85,11 +92,13 @@ namespace Blobs.Core
      GridPosition position,
      BlobColor color,
      BlobColor trailColor,
-     BlobSize size = BlobSize.Normal)
+     BlobSize size = BlobSize.Normal,
+     Direction facing = Direction.South)
      : base(
          id,
          position,
-         BlobType.Trail)
+         BlobType.Trail,
+         facing)
         {
             TrailColor = trailColor;
             Color = color;
@@ -106,8 +115,9 @@ namespace Blobs.Core
     {
         public GhostBlobDefinition(
             string id,
-            GridPosition position)
-            : base(id, position, BlobType.Ghost)
+            GridPosition position,
+            Direction facing = Direction.South)
+            : base(id, position, BlobType.Ghost, facing)
         {
         }
 

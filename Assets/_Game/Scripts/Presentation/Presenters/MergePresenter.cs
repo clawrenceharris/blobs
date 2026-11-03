@@ -44,29 +44,50 @@ namespace Blobs.Presentation
             }
 
             BlobView survivor = moverSurvives ? moving : target;
+            NestBlobView nest = null;
+            bool nestCapture = targetSurvives && NestBlobView.TryResolve(target, out nest);
+
             if (!timeline.IsAnimated)
             {
                 moving.SetGridPosition(effect.To);
                 survivor.BlobMotionAnimator?.SetIdle();
                 onContact?.Invoke();
-                _blobs.DestroyRetiringView(consumed);
+                if (nestCapture)
+                {
+                    NestVictorySequence.ApplyInstant(nest, consumed);
+                    _blobs.AbandonRetiringView(consumed);
+                }
+                else
+                {
+                    _blobs.DestroyRetiringView(consumed);
+                }
+
                 return true;
             }
 
             // Both survivor outcomes share the same approach/contact beat. Ghost return and
             // other post-merge behavior remain separate Core effects and presentation handlers.
+            // Nest captures keep the consumed monster for the appended homecoming beat.
             timeline.Append(_orchestrator.CreateMergeBeat(
                 moving,
                 target,
                 moverSurvives,
                 new Vector2Int(effect.To.X - effect.From.X, effect.To.Y - effect.From.Y),
                 onContact,
-                () =>
-                {
-                    _blobs.DestroyRetiringView(consumed);
-                },
+                nestCapture
+                    ? null
+                    : () => _blobs.DestroyRetiringView(consumed),
                 _mergeSettings,
                 effect.To));
+
+            if (nestCapture)
+            {
+                timeline.Append(NestVictorySequence.Create(
+                    nest,
+                    consumed,
+                    () => _blobs.AbandonRetiringView(consumed)));
+            }
+
             return true;
         }
 
@@ -79,6 +100,12 @@ namespace Blobs.Presentation
             BlobState consumed = context.ResolveRestoredBlob(effect.ConsumedBlobId, effect.ConsumedBlob);
             if ((!moverSurvives && !targetSurvives) || consumed == null)
                 return false;
+            if (targetSurvives &&
+                _blobs.TryGetView(effect.TargetBlobId, out BlobView nestTarget) &&
+                NestBlobView.TryResolve(nestTarget, out NestBlobView nest))
+            {
+                nest.ClearOccupation(destroyOccupant: true);
+            }
 
             GridPosition restoreAt = moverSurvives ? effect.At : effect.From;
             BlobState restoredState = consumed.WithPosition(restoreAt);

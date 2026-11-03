@@ -15,8 +15,10 @@ namespace Blobs.UI
         [SerializeField] private TMP_Text statusText;
         [SerializeField] private HudButtonView restartButton;
         [SerializeField] private HudButtonView undoButton;
-        [SerializeField] private HudButtonView pauseButton;
-        [SerializeField] private HudButtonView resumeButton;
+        [SerializeField] private HudButtonView exitButton;
+        [SerializeField] private HudButtonView nextLevelButton;
+        [SerializeField] private HudButtonView previousLevelButton;
+
         [SerializeField] private GameObject completionRoot;
         [SerializeField] private string playingStatus = "";
         [SerializeField] private string completeStatus = "Complete!";
@@ -28,7 +30,7 @@ namespace Blobs.UI
         private IGameplayState _state;
         private bool _completionPresentationReady;
 
-        private void Awake()
+        private void Start()
         {
             if (restartButton != null)
                 restartButton.Button.onClick.AddListener(Restart);
@@ -36,11 +38,14 @@ namespace Blobs.UI
             if (undoButton != null)
                 undoButton.Button.onClick.AddListener(Undo);
 
-            if (pauseButton != null)
-                pauseButton.Button.onClick.AddListener(PauseGame);
+            if (exitButton != null)
+                exitButton.Button.onClick.AddListener(ExitGame);
 
-            if (resumeButton != null)
-                resumeButton.Button.onClick.AddListener(ResumeGame);
+            if (nextLevelButton != null)
+                nextLevelButton.Button.onClick.AddListener(NextLevel);
+
+            if (previousLevelButton != null)
+                previousLevelButton.Button.onClick.AddListener(PreviousLevel);
 
             BindToHost();
         }
@@ -58,11 +63,14 @@ namespace Blobs.UI
             if (undoButton != null)
                 undoButton.Button.onClick.RemoveListener(Undo);
 
-            if (pauseButton != null)
-                pauseButton.Button.onClick.RemoveListener(PauseGame);
+            if (exitButton != null)
+                exitButton.Button.onClick.RemoveListener(ExitGame);
 
-            if (resumeButton != null)
-                resumeButton.Button.onClick.RemoveListener(ResumeGame);
+            if (nextLevelButton != null)
+                nextLevelButton.Button.onClick.RemoveListener(NextLevel);
+
+            if (previousLevelButton != null)
+                previousLevelButton.Button.onClick.RemoveListener(PreviousLevel);
 
             UnbindState();
 
@@ -148,20 +156,26 @@ namespace Blobs.UI
             _commands?.Undo();
         }
 
-        private void PauseGame()
+        private void ExitGame()
         {
-            _sessionHost?.PauseGame();
+            _sessionHost?.ExitGame();
         }
 
-        private void ResumeGame()
+        public void NextLevel()
         {
-            _sessionHost?.ResumeGame();
+            _sessionHost?.NextLevel();
         }
+
+        private void PreviousLevel()
+        {
+            _sessionHost?.PreviousLevel();
+        }
+
 
         private void Render(GameSessionSnapshot snapshot)
         {
             if (moveCountText != null)
-                moveCountText.text = snapshot == null ? "0" : snapshot.MoveCount.ToString();
+                moveCountText.text = FormatMoveCount(snapshot);
 
             bool isComplete = snapshot != null && snapshot.IsComplete;
             if (!isComplete)
@@ -177,16 +191,25 @@ namespace Blobs.UI
                 completionRoot.SetActive(showCompletion);
 
 
-            if (undoButton == null)
-                return;
 
             if (snapshot == null || isComplete || !snapshot.CanUndo)
             {
-                undoButton.Disable();
-                return;
+                undoButton?.Disable();
+
+            }
+            else
+            {
+                undoButton?.Enable();
+            }
+            if (_sessionHost.CurrentLevelIndex == 0)
+            {
+                previousLevelButton?.Disable();
+            }
+            else
+            {
+                previousLevelButton?.Enable();
             }
 
-            undoButton.Enable();
         }
 
         private void HandlePresentationSettled(GameSessionSnapshot presentedSnapshot)
@@ -221,6 +244,16 @@ namespace Blobs.UI
                 presented.IsComplete &&
                 current.LevelId == presented.LevelId &&
                 current.MoveCount == presented.MoveCount;
+        }
+
+        private static string FormatMoveCount(GameSessionSnapshot snapshot)
+        {
+            if (snapshot == null)
+                return "0";
+
+            return snapshot.ParMoves > 0
+                ? $"{snapshot.MoveCount}/{snapshot.ParMoves}"
+                : snapshot.MoveCount.ToString();
         }
 
         private void UnbindPresentationStatus()

@@ -24,6 +24,7 @@ namespace Blobs.Presentation
 
         private IBlobViewFactory _viewFactory;
         private BlobSelectionPresenter _selectionPresenter;
+        private DragPreviewFeedbackPresenter _dragPreviewFeedbackPresenter;
         private float _cellSize;
         private Vector2 _origin;
 
@@ -63,6 +64,7 @@ namespace Blobs.Presentation
             Merges = new MergePresenter(this, orchestrator,
                 blobAnimationSettings.MergeImpactSettings, blobAnimationSettings.BlobMotionSettings);
             _selectionPresenter = new BlobSelectionPresenter(this, state);
+            _dragPreviewFeedbackPresenter = new DragPreviewFeedbackPresenter(this, state);
         }
 
         internal float SizeChangeDuration => blobAnimationSettings.MergeImpactSettings.GrowDuration;
@@ -105,12 +107,16 @@ namespace Blobs.Presentation
         /// <summary>
         /// Creates an action that plays undo feedback for the specified blob.
         /// </summary>
-        public System.Action CreateUndoFeedback()
+        public System.Action CreateUndoFeedback(string sourceBlobId, string targetBlobId)
         {
+            if (!TryGetView(sourceBlobId, out BlobView sourceView))
+                return null;
+
+            TryGetView(targetBlobId, out BlobView targetView);
             return () =>
             {
-                foreach (BlobView sourceView in _views.Values)
-                    sourceView.PlayUndoContactFeedback(sourceView);
+                if (sourceView != null)
+                    sourceView.PlayUndoContactFeedback(targetView);
             };
         }
         /// <summary>
@@ -176,6 +182,16 @@ namespace Blobs.Presentation
         }
 
         /// <summary>
+        /// Drops a retiring view from presenter ownership without destroying it. Used when nest
+        /// capture reparents the consumed monster into lasting nest occupation visuals.
+        /// </summary>
+        internal void AbandonRetiringView(BlobView view)
+        {
+            _retiringViews.Remove(view);
+        }
+
+
+        /// <summary>
         /// Resolves views left between states when their owning DOTween sequence is interrupted.
         /// </summary>
         public void CompleteInterruptedAnimations()
@@ -213,6 +229,8 @@ namespace Blobs.Presentation
         /// <summary>Releases the gameplay-state subscription owned for the active session.</summary>
         internal void DisconnectFromState()
         {
+            _dragPreviewFeedbackPresenter?.Dispose();
+            _dragPreviewFeedbackPresenter = null;
             _selectionPresenter?.Dispose();
             _selectionPresenter = null;
         }

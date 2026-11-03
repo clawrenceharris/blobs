@@ -20,9 +20,13 @@ namespace Blobs.Presentation
     {
         [SerializeField] private BlobPresenter _blobPresenter;
         [SerializeField] private TilePresenter _tilePresenter;
+        [SerializeField, Tooltip("Optional. Must share the blob root's board space; sort it between tiles and blobs.")]
+        private SwipeIndicatorView _swipeIndicatorView;
+        [SerializeField, Tooltip("Optional. Board-space coach pointer for level-authored swipe demos.")]
+        private CoachPointerView _coachPointerView;
         [SerializeField, Range(0f, 1f)] private float cellOpacity = 0.15f;
-        private LevelColorPaletteAsset _colorPalette;
         [SerializeField] private float cellSize = 1.25f;
+
         [SerializeField] private Vector2 origin;
         private PresentationTimeline _effectTimeline;
         private CancellationTokenSource _playbackCancellation;
@@ -34,6 +38,8 @@ namespace Blobs.Presentation
         private readonly List<IBoardEffectPresentationHandler> _additionalEffectHandlers = new();
         private readonly List<IMoveStepPresentationHandler> _additionalMoveStepHandlers = new();
         private IGameplayState _state;
+        private SwipeIndicatorPresenter _swipeIndicatorPresenter;
+        private CoachPresenter _coachPresenter;
         private bool _effectsAnimated = true;
 
         public float CellSize => cellSize;
@@ -112,7 +118,8 @@ namespace Blobs.Presentation
             IGameplayState state,
             LevelColorPaletteAsset palette,
             IBlobViewFactory blobViewFactory = null,
-            ITileViewFactory tileViewFactory = null)
+            ITileViewFactory tileViewFactory = null,
+            LevelDefinitionAsset level = null)
         {
             if (state == null)
                 throw new ArgumentNullException(nameof(state));
@@ -123,6 +130,16 @@ namespace Blobs.Presentation
             _state = state;
             _blobPresenter.Initialize(state, palette, cellSize, origin, blobViewFactory);
             _tilePresenter.Initialize(cellSize, origin, tileViewFactory);
+            if (_swipeIndicatorView != null)
+            {
+                _swipeIndicatorPresenter = new SwipeIndicatorPresenter(
+                    _swipeIndicatorView, state, palette, cellSize, origin);
+            }
+            if (_coachPointerView != null && level != null)
+            {
+                _coachPresenter = new CoachPresenter(
+                    _coachPointerView, state, level, cellSize, origin);
+            }
             _state.MoveResolved += HandleMoveResolved;
             _state.UndoResolved += HandleUndoResolved;
             _state.StateRestored += Rebuild;
@@ -139,7 +156,12 @@ namespace Blobs.Presentation
             if (interrupted != null)
                 Rebuild(interrupted);
 
-            PlayUndoFeedback();
+            Action undoFeedback = InvokeOnce(
+               _blobPresenter.CreateUndoFeedback(
+                   undo.ForwardAction.SourceBlobId,
+                   undo.ForwardAction.TargetBlobId));
+            undoFeedback?.Invoke();
+
 
             IReadOnlyList<MoveStep> steps = undo.ForwardAction?.Steps;
             if (steps != null && steps.Count > 0)
@@ -165,15 +187,7 @@ namespace Blobs.Presentation
                 undo.RestorationBlobs).Forget(Debug.LogException);
         }
 
-        private void PlayUndoFeedback()
-        {
-            IUndoPlaybackFeedback[] channels = GetComponents<IUndoPlaybackFeedback>();
-            for (int i = 0; i < channels.Length; i++)
-                channels[i].PlayUndo();
-            Action undoFeedback = InvokeOnce(
-               _blobPresenter.CreateUndoFeedback());
-            undoFeedback?.Invoke();
-        }
+
 
         private void HandleMoveResolved(MoveResult result)
         {
@@ -540,6 +554,10 @@ namespace Blobs.Presentation
             _state.MoveResolved -= HandleMoveResolved;
             _state.UndoResolved -= HandleUndoResolved;
             _state.StateRestored -= Rebuild;
+            _swipeIndicatorPresenter?.Dispose();
+            _swipeIndicatorPresenter = null;
+            _coachPresenter?.Dispose();
+            _coachPresenter = null;
             _state = null;
             _blobPresenter?.DisconnectFromState();
             Clear();

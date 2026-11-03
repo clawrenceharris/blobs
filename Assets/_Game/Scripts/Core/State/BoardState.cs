@@ -99,6 +99,18 @@ namespace Blobs.Core
         }
 
         /// <summary>
+        /// Returns true when a mover may enter the cell: inside the board, not a gap, and not a non-traversable tile.
+        /// </summary>
+        public bool CanTraverse(GridPosition position)
+        {
+            if (!IsInside(position) || _emptyPositions.Contains(position))
+                return false;
+
+            TileState tile = GetTileAt(position);
+            return tile == null || tile.Type.IsTraversable();
+        }
+
+        /// <summary>
         /// Looks up a blob by stable id.
         /// </summary>
         public BlobState GetBlob(string id)

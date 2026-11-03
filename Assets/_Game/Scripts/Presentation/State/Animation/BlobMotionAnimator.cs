@@ -8,6 +8,7 @@ namespace Blobs.Presentation
     {
         Idle,
         Selected,
+        PickedUp,
         Moving,
         Merging
     }
@@ -38,6 +39,7 @@ namespace Blobs.Presentation
                 BlobAnimationSettings = _blobAnimationSettings,
                 BlobAnimator = this,
                 BaseScale = visualRoot.localScale,
+                BaseLocalPosition = visualRoot.localPosition,
             };
             _currentState = null;
             SetIdle();
@@ -62,6 +64,14 @@ namespace Blobs.Presentation
         public virtual void SetSelected()
         {
             SetState(new BlobSelectedState());
+        }
+
+        /// <summary>
+        /// Holds the source blob slightly above its cell and larger so a finger press does not fully cover it.
+        /// </summary>
+        public virtual void SetPickedUp()
+        {
+            SetState(new BlobPickedUpState());
         }
 
         public virtual void SetMoving()

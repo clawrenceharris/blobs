@@ -100,7 +100,14 @@ namespace Blobs.Content
 
         [SerializeField] private Color cellColor = Color.white;
 
+        [Header("Drag Indicator")]
+        [SerializeField] private Color validMoveColor = Color.white;
+        [SerializeField, Tooltip("Tint for a drag whose release would fail a player-facing rule.")]
+        private Color invalidMoveColor = new(0.996f, 0.278f, 0.467f);
+
         public Color CellColor => cellColor;
+        public Color ValidMoveColor => validMoveColor;
+        public Color InvalidMoveColor => invalidMoveColor;
 
         public BlobShaderColors GetRequired(BlobColor color)
         {

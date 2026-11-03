@@ -467,8 +467,17 @@ namespace Blobs.Tests.EditMode
 
             Assert.That(state.BlobSelectionSubscriberCount, Is.EqualTo(1));
             Assert.That(firstView.BlobMotionAnimator.CurrentState, Is.EqualTo(BlobAnimationState.Idle));
-            Assert.That(secondView.BlobMotionAnimator.CurrentState, Is.EqualTo(BlobAnimationState.Selected));
+            Assert.That(secondView.BlobMotionAnimator.CurrentState, Is.EqualTo(BlobAnimationState.PickedUp));
             Assert.That(unrelatedView.BlobMotionAnimator.CurrentState, Is.EqualTo(BlobAnimationState.Moving));
+
+            state.PublishSelection(BlobSelectionResult.Selected(second.Id, first.Id));
+            Assert.That(secondView.BlobMotionAnimator.CurrentState, Is.EqualTo(BlobAnimationState.PickedUp));
+            Assert.That(firstView.BlobMotionAnimator.CurrentState, Is.EqualTo(BlobAnimationState.Selected));
+
+            state.PublishSelection(
+                BlobSelectionResult.Selected(second.Id, first.Id, targetSelected: false));
+            Assert.That(secondView.BlobMotionAnimator.CurrentState, Is.EqualTo(BlobAnimationState.PickedUp));
+            Assert.That(firstView.BlobMotionAnimator.CurrentState, Is.EqualTo(BlobAnimationState.Idle));
 
             presenter.Dispose();
             Assert.That(state.BlobSelectionSubscriberCount, Is.Zero);
@@ -553,6 +562,7 @@ namespace Blobs.Tests.EditMode
             public event Action<MoveResult> MoveResolved;
             public event Action<UndoResult> UndoResolved;
             public event Action<GameSessionSnapshot> StateRestored;
+            public event Action<DragPreview> DragPreviewChanged;
 #pragma warning restore CS0067
 
             public event Action<BlobSelectionResult> BlobSelected

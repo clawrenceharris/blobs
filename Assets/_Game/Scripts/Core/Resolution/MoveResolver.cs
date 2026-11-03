@@ -40,6 +40,55 @@ namespace Blobs.Core
             MoveIntent intent,
             LevelObjectiveDefinition objective = null)
         {
+            return Resolve(board, intent, objective, _idFactory);
+        }
+
+        /// <summary>
+        /// Resolves an intent against a copy of the board with a throwaway id factory, so previews
+        /// neither mutate the board nor shift the ids a later committed move will spawn.
+        /// </summary>
+        public MoveResult Preview(
+            BoardState board,
+            MoveIntent intent,
+            LevelObjectiveDefinition objective = null)
+        {
+            return Resolve(board.Clone(), intent, objective, new SequentialBlobIdFactory());
+        }
+
+        /// <summary>
+        /// Walks from <paramref name="origin"/> toward an aligned <paramref name="tail"/> and returns the
+        /// farthest cell a mover can reach. Stops before cells that cannot be entered and on the first
+        /// occupant whose traits block movement, since contact with that occupant is still a valid move.
+        /// </summary>
+        public GridPosition ClampToReach(BoardState board, GridPosition origin, GridPosition tail)
+        {
+            if (origin == tail || !origin.IsAlignedWith(tail))
+                return origin;
+
+            GridPosition direction = (tail - origin).Normalized();
+            GridPosition current = origin;
+            while (current != tail)
+            {
+                GridPosition next = current + direction;
+                if (!board.CanTraverse(next))
+                    return current;
+
+                BlobState occupant = board.GetBlobAt(next);
+                if (occupant != null && _rules.GetTraits(occupant.Type).BlocksMovement)
+                    return next;
+
+                current = next;
+            }
+
+            return current;
+        }
+
+        private MoveResult Resolve(
+            BoardState board,
+            MoveIntent intent,
+            LevelObjectiveDefinition objective,
+            IBlobIdFactory idFactory)
+        {
             BlobState source = intent.Source;
             BlobState intendedTarget = intent.Target;
 
@@ -101,9 +150,7 @@ namespace Blobs.Core
                 }
                 stepCount++;
                 var next = current + direction;
-                var tile = simulation.GetTileAt(next);
-                if (!simulation.IsInside(next) || simulation.EmptyPositions.Contains(next) ||
-                    (tile != null && !tile.Type.IsTraversable()))
+                if (!simulation.CanTraverse(next))
                     return MoveResult.Failed(source.Id, intendedTarget.Id, MoveFailureReason.PathBlocked);
 
                 BlobState occupant = simulation.GetBlobAt(next);
@@ -170,7 +217,7 @@ namespace Blobs.Core
                         mover,
                         current,
                         mergeSites.Contains(current),
-                        _idFactory),
+                        idFactory),
                     stepEffects);
 
                 ApplyEffects(simulation, stepEffects);

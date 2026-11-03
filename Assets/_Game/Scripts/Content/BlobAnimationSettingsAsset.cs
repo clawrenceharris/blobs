@@ -7,18 +7,31 @@ namespace Blobs.Content
     [Serializable]
     public sealed class BlobSelectionSettings
     {
+        [Header("Pick Up")]
+        [SerializeField, Min(0.01f), Tooltip("Uniform scale applied while the source blob is held under the finger.")]
+        private float pickUpScale = 1.18f;
+        [SerializeField, Min(0f), Tooltip("Local Y lift applied while the source blob is held, so the finger does not fully cover it.")]
+        private float pickUpLift = 0.22f;
+        [SerializeField, Min(0.01f)] private float pickUpDuration = 0.12f;
+
+        [Header("Pulse")]
         [SerializeField] private float selectionSquishDuration = 0.16f;
         [SerializeField] private float selectionSquishAmount = 1.065f;
         [SerializeField] private float selectionStretchAmount = 1.02f;
 
+        public float PickUpScale => pickUpScale;
+        public float PickUpLift => pickUpLift;
+        public float PickUpDuration => pickUpDuration;
         public float SelectionSquishDuration => selectionSquishDuration;
         public float SelectionSquishAmount => selectionSquishAmount;
         public float SelectionStretchAmount => selectionStretchAmount;
 
         public void OnValidate()
         {
+            pickUpScale = Mathf.Max(0.01f, pickUpScale);
+            pickUpLift = Mathf.Max(0f, pickUpLift);
+            pickUpDuration = Mathf.Max(0.01f, pickUpDuration);
             selectionSquishDuration = Mathf.Max(0.01f, selectionSquishDuration);
-
             selectionSquishAmount = Mathf.Max(0.01f, selectionSquishAmount);
             selectionStretchAmount = Mathf.Max(0.01f, selectionStretchAmount);
         }

@@ -17,14 +17,19 @@ namespace Blobs.Presentation
         [SerializeField] private BoardPresenter boardPresenter;
 
         [SerializeField] private LevelDefinitionAsset levelAsset;
+        [SerializeField] private LevelDefinitionAsset[] levels;
+
         [SerializeField] private CameraPresenter cameraPresenter;
         [SerializeField] private GameplayInputAdapter inputAdapter;
         [SerializeField] private GameplayCommandAdapter commandAdapter;
         [SerializeField] private GameplayFeedbackPresenter feedbackPresenter;
+        [SerializeField, Min(0)] private int initialLevelIndex;
 
         private GameSession _session;
         private QueuedGameplayCommands _commands;
         private GameSessionSnapshot _presentedSnapshot;
+
+        public int CurrentLevelIndex { get; private set; }
 
         /// <inheritdoc />
         public event Action<IGameplayCommands, IGameplayState> SessionStarted;
@@ -43,18 +48,52 @@ namespace Blobs.Presentation
 
         private void Start()
         {
-            StartLevel(levelAsset);
+
+            CurrentLevelIndex = ClampLevelIndex(initialLevelIndex);
+
+            if (levels != null && levels.Length > 0)
+                LoadLevel(CurrentLevelIndex);
         }
 
-        /// <summary>
-        /// Replaces the level used by <see cref="Start"/>. This exists for isolated test-scene
-        /// composition; normal gameplay should continue authoring <c>levelAsset</c> directly.
-        /// </summary>
-        public void ConfigureStartingLevel(LevelDefinitionAsset asset)
+
+
+
+        public void LoadLevel(int index)
         {
-            levelAsset = asset;
+            if (levels == null || levels.Length == 0)
+                return;
+
+            CurrentLevelIndex = ClampLevelIndex(index);
+            StartLevel(levels[CurrentLevelIndex]);
         }
 
+        public void PreviousLevel()
+        {
+            if (levels == null || levels.Length == 0)
+                return;
+
+            LoadLevel((CurrentLevelIndex - 1 + levels.Length) % levels.Length);
+        }
+
+        private int ClampLevelIndex(int index)
+        {
+            return levels == null || levels.Length == 0
+                ? 0
+                : Mathf.Clamp(index, 0, levels.Length - 1);
+        }
+
+        public void ExitGame()
+        {
+            UnityEngine.Application.Quit();
+        }
+
+        public void NextLevel()
+        {
+            if (levels == null || levels.Length == 0)
+                return;
+
+            LoadLevel((CurrentLevelIndex + 1) % levels.Length);
+        }
 
         /// <summary>
         /// Starts a level from authored content by converting it to Core data and wiring scene collaborators.
@@ -79,7 +118,8 @@ namespace Blobs.Presentation
             boardPresenter.SnapshotChanged += HandlePresentationSettled;
             boardPresenter.Initialize(
                 _session,
-                asset.Palette);
+                asset.Palette,
+                level: asset);
             _commands = new QueuedGameplayCommands(_session, boardPresenter);
 
             inputAdapter.Initialize(_commands, boardPresenter.CellSize, boardPresenter.Origin);
@@ -102,20 +142,6 @@ namespace Blobs.Presentation
         {
             if (boardPresenter != null)
                 boardPresenter.SnapshotChanged -= HandlePresentationSettled;
-        }
-
-        public void PauseGame()
-        {
-            if (boardPresenter == null)
-                return;
-            boardPresenter.PausePlayback();
-        }
-
-        public void ResumeGame()
-        {
-            if (boardPresenter == null)
-                return;
-            boardPresenter.ResumePlayback();
         }
 
         /// <summary>

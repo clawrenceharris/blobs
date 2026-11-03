@@ -24,7 +24,12 @@ MonoBehaviour:
   - rid: 7368861676701745347
   tiles: []
   objective: 0
+  parMoves: 2
   palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
+  showSwipeCoach: 0
+  coachFrom: {x: 0, y: 0}
+  coachTo: {x: 0, y: 0}
+  coachCaption: 
   references:
     version: 2
     RefIds:
@@ -34,6 +39,7 @@ MonoBehaviour:
         id: blob-0
         position: {x: 0, y: 1}
         type: 0
+        facing: 2
         color: 0
         size: 2
     - rid: 7368861676701745345
@@ -42,6 +48,7 @@ MonoBehaviour:
         id: blob-1
         position: {x: 0, y: 0}
         type: 0
+        facing: 2
         color: 1
         size: 2
     - rid: 7368861676701745346
@@ -50,6 +57,7 @@ MonoBehaviour:
         id: blob-2
         position: {x: 3, y: 0}
         type: 1
+        facing: 2
         color: 1
     - rid: 7368861676701745347
       type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
@@ -57,4 +65,5 @@ MonoBehaviour:
         id: blob-3
         position: {x: 3, y: 1}
         type: 1
+        facing: 2
         color: 0

@@ -34,12 +34,16 @@ namespace Blobs.Presentation
         private static readonly int HsvShiftId = Shader.PropertyToID("_HsvShift");
         private static readonly int HsvSaturationId = Shader.PropertyToID("_HsvSaturation");
         private static readonly int HsvBrightnessId = Shader.PropertyToID("_HsvBright");
-
+        [SerializeField] private SpriteRenderer shadowRenderer;
         [SerializeField] private FadeableVisual fadeableVisual;
+        [SerializeField] private MaskableVisual maskableVisual;
         public Target[] Targets => targets;
 
         public FadeableVisual FadeableVisual => fadeableVisual;
         public SpriteRenderer BaseRenderer => fallbackBaseRenderer;
+        public MaskableVisual MaskableVisual => maskableVisual;
+
+        public SpriteRenderer ShadowRenderer => shadowRenderer;
 
 
         private void Awake()

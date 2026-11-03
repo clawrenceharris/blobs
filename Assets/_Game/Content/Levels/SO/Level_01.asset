@@ -15,38 +15,36 @@ MonoBehaviour:
   levelId: level-01
   schemaVersion: 1
   width: 3
-  height: 3
+  height: 1
   emptyPositions: []
   blobs:
-  - rid: 7368861676701745344
   - rid: 7368861676701745345
   - rid: 7368861676701745346
   tiles: []
   objective: 0
+  parMoves: 1
   palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
+  showSwipeCoach: 1
+  coachFrom: {x: 0, y: 2}
+  coachTo: {x: 0, y: 0}
+  coachCaption: 
   references:
     version: 2
     RefIds:
-    - rid: 7368861676701745344
-      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: blob-0
-        position: {x: 0, y: 2}
-        type: 0
-        color: 0
-        size: 2
     - rid: 7368861676701745345
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: blob-1
+        id: blob-0
         position: {x: 0, y: 0}
         type: 0
+        facing: 2
         color: 1
         size: 2
     - rid: 7368861676701745346
       type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
-        id: blob-2
+        id: blob-1
         position: {x: 2, y: 0}
         type: 1
-        color: 0
+        facing: 2
+        color: 1

@@ -14,6 +14,8 @@ namespace Blobs.Presentation
     [RequireComponent(typeof(TextMeshProUGUI))]
     public sealed class GameplayFeedbackPresenter : MonoBehaviour
     {
+        [Header("Settings")]
+        [SerializeField] private bool feedbackEnabled = true;
         [Header("View")]
         [SerializeField] private TMP_Text feedbackText;
         [SerializeField] private FailureFeedbackCatalogAsset feedbackCatalog;
@@ -30,7 +32,6 @@ namespace Blobs.Presentation
         [SerializeField, Range(0f, 180f)] private float shakeRandomness = 45f;
         [SerializeField, Min(0f)] private float moveUpAmount = 30f;
         [SerializeField, Min(1f)] private float popScale = 1.1f;
-
         private GameplayInputAdapter _inputAdapter;
         private IGameplayState _state;
         private Sequence _feedbackSequence;
@@ -61,11 +62,7 @@ namespace Blobs.Presentation
             KillAnimation();
         }
 
-        private void OnValidate()
-        {
-            if (feedbackText == null)
-                feedbackText = GetComponent<TMP_Text>();
-        }
+
 
         /// <summary>
         /// Connects this view to the input boundary that publishes selection and move outcomes.
@@ -129,9 +126,15 @@ namespace Blobs.Presentation
             ShowUndoCue();
         }
 
-        private void ShowUndoCue()
+        private void OnValidate()
         {
             if (feedbackText == null)
+                feedbackText = GetComponent<TMP_Text>();
+        }
+
+        private void ShowUndoCue()
+        {
+            if (!feedbackEnabled)
                 return;
 
             KillAnimation();
@@ -159,7 +162,7 @@ namespace Blobs.Presentation
 
         private void ShowFailure(string message)
         {
-            if (feedbackText == null)
+            if (!feedbackEnabled)
                 return;
 
             KillAnimation();

@@ -155,6 +155,7 @@ namespace Blobs.Tests.EditMode
             }
 
             public BlobSelectionResult BeginDragAt(GridPosition position) => SelectBlobAt(position);
+            public BlobSelectionResult UpdateDragAt(GridPosition position) => SelectBlobAt(position);
             public BlobSelectionResult EndDragAt(GridPosition position) => SelectBlobAt(position);
             public void CancelDrag() { }
 

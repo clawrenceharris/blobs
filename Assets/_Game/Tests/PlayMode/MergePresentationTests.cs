@@ -102,6 +102,48 @@ namespace Blobs.Tests.PlayMode
         }
 
         [UnityTest]
+        public IEnumerator NestCaptureAppendsVictorySequenceAndSeatsMonster()
+        {
+            var source = Blob("moving", BlobColor.Red, 0, 0);
+            var target = new BlobState("nest", BlobType.Flag, new GridPosition(1, 0));
+            var initial = Snapshot(2, 1, source, target);
+            var presenter = CreatePresenter(initial);
+            presenter.TryGetBlobView(source.Id, out BlobView movingView);
+            presenter.TryGetBlobView(target.Id, out BlobView nestView);
+            DressAsNest(nestView);
+            var intent = new MoveIntent(source, target);
+            var merge = MergeEffect.ReverseMerge(new MoveContext(
+                initial.Board,
+                MovePlan.Default(source, target),
+                source,
+                target,
+                intent));
+            var expected = Snapshot(2, 1, target);
+            yield return presenter.ApplyEffectsAsync(new IBoardEffect[] { merge }, expected).ToCoroutine();
+            yield return null;
+            Assert.That(presenter.IsSynchronizedWith(expected), Is.True);
+            Assert.That(NestBlobView.TryResolve(nestView, out NestBlobView nest), Is.True);
+            Assert.That(nest.HasOccupant, Is.True);
+            Assert.That(nest.Occupant, Is.SameAs(movingView));
+            Assert.That(movingView.transform.parent, Is.SameAs(nestView.VisualRoot));
+            Assert.That(nestView.VisualRoot.Find("Eggs").gameObject.activeSelf, Is.False);
+            Assert.That(
+                movingView.VisualRoot.localPosition.y,
+                Is.EqualTo(nest.SettledLocalOffset.y).Within(0.001f));
+        }
+        private static void DressAsNest(BlobView flag)
+        {
+            Transform visual = flag.VisualRoot;
+            var nest = new GameObject("Nest");
+            nest.transform.SetParent(visual, false);
+            var eggs = new GameObject("Eggs");
+            eggs.transform.SetParent(visual, false);
+            flag.gameObject.AddComponent<NestBlobView>();
+        }
+
+
+
+        [UnityTest]
         public IEnumerator ExplicitMergeDoesNotDependOnNeighboringEffectOrder()
         {
             foreach (bool spawnFirst in new[] { false, true })

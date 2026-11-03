@@ -47,6 +47,16 @@ namespace Blobs.Presentation
             return _session.BeginDragAt(position);
         }
 
+        public BlobSelectionResult UpdateDragAt(GridPosition position)
+        {
+            if (_boardPresenter.IsPresenting)
+            {
+                _session.CancelDrag();
+                return BlobSelectionResult.Cleared();
+            }
+            return _session.UpdateDragAt(position);
+        }
+
         public BlobSelectionResult EndDragAt(GridPosition position)
         {
             if (_boardPresenter.IsPresenting)

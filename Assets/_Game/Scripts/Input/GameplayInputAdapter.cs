@@ -21,10 +21,13 @@ namespace Blobs.Input
         [SerializeField] private Camera boardCamera;
         [SerializeField, Min(0.01f)] private float cellSize = 1f;
         [SerializeField] private Vector2 boardOrigin;
+        [SerializeField, Range(0f, 0.4f), Tooltip("Extra distance, in cells, the pointer must travel past a cell edge before the drag tail changes cell.")]
+        private float cellHysteresis = 0.15f;
         private InputAction _runtimePointAction;
         private bool _subscribed;
         private InputControl _dragControl;
         private bool _previewActive;
+        private GridPosition _dragCell;
         private readonly List<RaycastResult> _uiHits = new();
         public event Action<BlobSelectionResult> BlobSelectionResolved;
 
@@ -191,11 +194,14 @@ namespace Blobs.Input
                 GridPosition position = new(Mathf.RoundToInt(point.x), Mathf.RoundToInt(point.y));
                 BlobSelectionResult result = _commands.BeginDragAt(position);
                 _dragControl = result.HasSelection ? context.control : null;
+                _previewActive = result.HasSelection;
+                _dragCell = position;
                 BlobSelectionResolved?.Invoke(result);
             }
             else
             {
                 _dragControl = null;
+                _previewActive = false;
 
                 if (!hasPoint)
                 {
@@ -203,8 +209,7 @@ namespace Blobs.Input
                     return;
                 }
 
-                GridPosition position = new(Mathf.RoundToInt(point.x), Mathf.RoundToInt(point.y));
-                BlobSelectionResolved?.Invoke(_commands.EndDragAt(position));
+                BlobSelectionResolved?.Invoke(_commands.EndDragAt(ResolveDragCell(point)));
             }
         }
 
@@ -224,7 +229,28 @@ namespace Blobs.Input
             else { CancelDrag(); return; }
             if (IsOverUi(screen))
             { CancelDrag(); return; }
+            if (!TryGetGridPoint(screen, out Vector2 point)) return;
 
+            GridPosition cell = ResolveDragCell(point);
+            if (cell == _dragCell) return;
+
+            _dragCell = cell;
+            if (!_commands.UpdateDragAt(cell).HasSelection)
+                CancelDrag();
+        }
+
+        /// <summary>
+        /// Holds the current drag cell until the pointer is clearly inside another cell, so jitter
+        /// along a cell edge cannot flicker the drag tail back and forth.
+        /// </summary>
+        private GridPosition ResolveDragCell(Vector2 gridPoint)
+        {
+            float reach = 0.5f + cellHysteresis;
+            if (Mathf.Abs(gridPoint.x - _dragCell.X) <= reach &&
+                Mathf.Abs(gridPoint.y - _dragCell.Y) <= reach)
+                return _dragCell;
+
+            return new GridPosition(Mathf.RoundToInt(gridPoint.x), Mathf.RoundToInt(gridPoint.y));
         }
 
         private bool IsOverUi(Vector2 screenPosition)

@@ -29,10 +29,25 @@ namespace Blobs.Content
         [SerializeField]
         private LevelObjectiveType objective = LevelObjectiveType.ClearAllClearableBlobs;
 
+        [SerializeField, Min(0), Tooltip("Soft efficiency target shown as current/par in the HUD. Zero hides the denominator.")]
+        private int parMoves;
+
         [Header("Presentation")]
         [SerializeField] private LevelColorPaletteAsset palette;
 
+        [Header("Coach")]
+        [SerializeField, Tooltip("When enabled, plays a looping ghost swipe from coachFrom to coachTo until the player starts a drag.")]
+        private bool showSwipeCoach;
+        [SerializeField] private Vector2Int coachFrom;
+        [SerializeField] private Vector2Int coachTo;
+        [SerializeField, TextArea(1, 3), Tooltip("Optional. Leave empty to teach with the pointer alone.")]
+        private string coachCaption;
+
         public LevelColorPaletteAsset Palette => palette;
+        public bool ShowSwipeCoach => showSwipeCoach;
+        public Vector2Int CoachFrom => coachFrom;
+        public Vector2Int CoachTo => coachTo;
+        public string CoachCaption => coachCaption;
         public string LevelId => levelId;
         public int SchemaVersion => schemaVersion;
         public int Width => width;
@@ -41,6 +56,7 @@ namespace Blobs.Content
 
         public IReadOnlyList<TileAssetData> Tiles => tiles;
         public LevelObjectiveType Objective => objective;
+        public int ParMoves => parMoves;
         public IReadOnlyList<Vector2Int> EmptyPositions => emptyPositions;
     }
 
@@ -51,6 +67,8 @@ namespace Blobs.Content
         public string id;
         public Vector2Int position;
         public BlobType type;
+        [Tooltip("Resting look direction. South faces the camera; East/West/North aim the face that way.")]
+        public Direction facing = Direction.South;
 
     }
 

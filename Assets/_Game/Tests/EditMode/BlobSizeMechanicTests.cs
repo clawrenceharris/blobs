@@ -34,7 +34,7 @@ namespace Blobs.Tests.EditMode
                 new MoveIntent(
                     board.GetBlob("small-source"),
                     board.GetBlob("large-survivor")),
-                level.Objective);
+                ObjectiveProgress.Start(level.Objective));
             Assert.That(first.Succeeded, Is.True);
             Assert.That(board.GetBlob("small-source"), Is.Null);
             Assert.That(board.GetBlob("small-meal"), Is.Null);
@@ -46,7 +46,7 @@ namespace Blobs.Tests.EditMode
                 new MoveIntent(
                     board.GetBlob("large-survivor"),
                     board.GetBlob("goal")),
-                level.Objective);
+                first.Objectives);
             Assert.That(second.Succeeded, Is.True);
             Assert.That(second.IsComplete, Is.True);
         }

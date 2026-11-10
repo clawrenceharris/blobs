@@ -91,13 +91,66 @@ namespace Blobs.Tests.EditMode
         [Test]
         public void ValidatorRejectsUnsupportedObjectiveValues()
         {
-            LevelDefinition level = Level(
-                objective: new LevelObjectiveDefinition((LevelObjectiveType)999));
+            LevelDefinition level = Level(blobs: PlayableBlobs(), objective: Objective(
+                new BlobObjectiveTarget((BlobType)999), 1));
 
             InvalidOperationException error = Assert.Throws<InvalidOperationException>(
                 () => LevelValidator.ValidateOrThrow(level));
 
             Assert.That(error.Message, Does.Contain("level objective"));
+        }
+
+        [TestCase(0)]
+        [TestCase(-1)]
+        public void ValidatorRejectsNonPositiveObjectiveAmounts(int amount)
+        {
+            LevelDefinition level = Level(blobs: PlayableBlobs(), objective: Objective(
+                new BlobObjectiveTarget(BlobType.Normal, BlobColor.Red), amount));
+
+            InvalidOperationException error = Assert.Throws<InvalidOperationException>(
+                () => LevelValidator.ValidateOrThrow(level));
+
+            Assert.That(error.Message, Does.Contain("amount must be positive"));
+        }
+
+        [Test]
+        public void ValidatorRejectsObjectivesThatCanNeverBeCollected()
+        {
+            LevelDefinition level = Level(blobs: PlayableBlobs(), objective: Objective(
+                new BlobObjectiveTarget(BlobType.Rock), 1));
+
+            InvalidOperationException error = Assert.Throws<InvalidOperationException>(
+                () => LevelValidator.ValidateOrThrow(level));
+
+            Assert.That(error.Message, Does.Contain("can never be collected"));
+        }
+
+        [Test]
+        public void ValidatorRejectsObjectiveItemsWithoutTarget()
+        {
+            LevelDefinition level = Level(blobs: PlayableBlobs(), objective: Objective(null, 1));
+
+            InvalidOperationException error = Assert.Throws<InvalidOperationException>(
+                () => LevelValidator.ValidateOrThrow(level));
+
+            Assert.That(error.Message, Does.Contain("requires a target"));
+        }
+
+        private static BlobDefinition[] PlayableBlobs()
+        {
+            return new BlobDefinition[]
+            {
+                Blob("source", 0, 0),
+                new NestBlobDefinition("nest", new GridPosition(2, 0), BlobColor.Red)
+            };
+        }
+
+        private static LevelObjectiveDefinition Objective(ObjectiveTarget target, int amount)
+        {
+            return new LevelObjectiveDefinition(new List<LevelObjectiveItemDefinition>
+            {
+                new LevelObjectiveItemDefinition(target, amount)
+            });
         }
 
         [Test]

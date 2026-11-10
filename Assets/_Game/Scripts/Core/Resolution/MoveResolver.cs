@@ -35,12 +35,16 @@ namespace Blobs.Core
                 : MoveFailureReason.SourceCannotMove;
         }
 
+        /// <summary>
+        /// Resolves and commits an intent. When <paramref name="objectives"/> is supplied, the
+        /// result carries the progress after this move and completion is judged against it.
+        /// </summary>
         public MoveResult Resolve(
             BoardState board,
             MoveIntent intent,
-            LevelObjectiveDefinition objective = null)
+            ObjectiveProgress objectives = null)
         {
-            return Resolve(board, intent, objective, _idFactory);
+            return Resolve(board, intent, objectives, _idFactory);
         }
 
         /// <summary>
@@ -50,9 +54,9 @@ namespace Blobs.Core
         public MoveResult Preview(
             BoardState board,
             MoveIntent intent,
-            LevelObjectiveDefinition objective = null)
+            ObjectiveProgress objectives = null)
         {
-            return Resolve(board.Clone(), intent, objective, new SequentialBlobIdFactory());
+            return Resolve(board.Clone(), intent, objectives, new SequentialBlobIdFactory());
         }
 
         /// <summary>
@@ -86,7 +90,7 @@ namespace Blobs.Core
         private MoveResult Resolve(
             BoardState board,
             MoveIntent intent,
-            LevelObjectiveDefinition objective,
+            ObjectiveProgress objectives,
             IBlobIdFactory idFactory)
         {
             BlobState source = intent.Source;
@@ -244,9 +248,9 @@ namespace Blobs.Core
                 steps.Add(new MoveStep(followUp.Kind, resolved));
             }
 
-            if (intendedTarget.Type == BlobType.Flag &&
+            if (intendedTarget.Type == BlobType.Nest &&
                 (target.Id != intendedTarget.Id || simulation.GetBlob(source.Id) != null))
-                return MoveResult.Failed(source.Id, intendedTarget.Id, MoveFailureReason.FlagCaptureRequired);
+                return MoveResult.Failed(source.Id, intendedTarget.Id, MoveFailureReason.NestingRequired);
 
             // Commit atomically: replay the validated timeline onto the real board.
             var flattened = new List<IBoardEffect>();
@@ -255,14 +259,18 @@ namespace Blobs.Core
 
             ApplyEffects(board, flattened);
 
+            ObjectiveProgress objectivesAfter =
+                objectives?.Apply(ObjectiveEvaluator.CollectEvents(board, flattened));
+
             return new MoveResult(
                 source.Id,
                 target.Id,
                 true,
                 MoveFailureReason.None,
                 flattened,
-                ObjectiveEvaluator.IsComplete(board, objective),
-                steps
+                ObjectiveEvaluator.IsComplete(board, objectivesAfter),
+                steps,
+                objectivesAfter
             );
         }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Blobs.Core;
 using UnityEngine;
 
@@ -30,6 +31,13 @@ namespace Blobs.Content
                 emptyPositions.Add(ToCore(position));
             }
 
+            var objectiveItems = new List<LevelObjectiveItemDefinition>();
+            if (asset.Objective?.items != null)
+            {
+                foreach (LevelObjectiveItemAssetData item in asset.Objective.items)
+                    objectiveItems.Add(ToCore(item));
+            }
+
             var definition = new LevelDefinition(
                 asset.LevelId,
                 asset.SchemaVersion,
@@ -38,11 +46,52 @@ namespace Blobs.Content
                 blobs,
                 tiles,
                 emptyPositions: emptyPositions,
-                new LevelObjectiveDefinition(asset.Objective),
-                asset.ParMoves);
+                objective: new LevelObjectiveDefinition(objectiveItems));
 
             LevelValidator.ValidateOrThrow(definition);
             return definition;
+        }
+
+        /// <summary>
+        /// Maps only the blobs of an asset, without level validation. Used for tutorial staging assets
+        /// that hold pieces revealed later and are not playable boards themselves.
+        /// </summary>
+        public static IReadOnlyList<BlobDefinition> ToCoreBlobs(LevelDefinitionAsset asset)
+        {
+            if (asset == null)
+                throw new ArgumentNullException(nameof(asset));
+
+            var blobs = new List<BlobDefinition>(asset.Blobs.Count);
+            foreach (BlobAssetData blob in asset.Blobs)
+                blobs.Add(ToCore(blob));
+            return blobs;
+        }
+
+        private static LevelObjectiveItemDefinition ToCore(LevelObjectiveItemAssetData item)
+        {
+            if (item == null)
+                throw new InvalidOperationException("Level contains an empty objective entry.");
+
+            return new LevelObjectiveItemDefinition(ToCore(item.target), item.amount);
+        }
+
+        private static ObjectiveTarget ToCore(ObjectiveTargetAssetData target)
+        {
+            switch (target)
+            {
+                case BlobObjectiveTargetAssetData blob:
+                    return new BlobObjectiveTarget(
+                        blob.type,
+                        blob.matchColor ? blob.color : null,
+                        blob.matchSize ? blob.size : null);
+                case TileObjectiveTargetAssetData tile:
+                    return new TileObjectiveTarget(tile.type);
+                case null:
+                    throw new InvalidOperationException("Level objective entry has no target.");
+                default:
+                    throw new InvalidOperationException(
+                        $"Unsupported objective target asset data type: {target.GetType().Name}.");
+            }
         }
 
         private static GridPosition ToCore(Vector2Int position) => new(position.x, position.y);
@@ -64,15 +113,15 @@ namespace Blobs.Content
                 case NormalBlobAssetData normal:
                     throw new InvalidOperationException(
                         $"Normal blob '{normal.id}' declares unsupported type {normal.type}.");
-                case FlagBlobAssetData flag when flag.type == BlobType.Flag:
-                    return new FlagBlobDefinition(
-                        flag.id,
-                        ToCore(flag.position),
-                        flag.color,
-                        flag.facing);
-                case FlagBlobAssetData flag:
+                case NestBlobAssetData nest when nest.type == BlobType.Nest:
+                    return new NestBlobDefinition(
+                        nest.id,
+                        ToCore(nest.position),
+                        nest.color,
+                        nest.facing);
+                case NestBlobAssetData nest:
                     throw new InvalidOperationException(
-                        $"Flag blob '{flag.id}' declares unsupported type {flag.type}.");
+                        $"Nest blob '{nest.id}' declares unsupported type {nest.type}.");
                 case TrailBlobAssetData trail when trail.type == BlobType.Trail:
                     return new TrailBlobDefinition(
                         trail.id,

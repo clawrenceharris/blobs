@@ -15,8 +15,8 @@ namespace Blobs.Content
         [SerializeField, Min(1)] private int schemaVersion = 1;
 
         [Header("Board")]
-        [SerializeField, Min(1)] private int width = 6;
-        [SerializeField, Min(1)] private int height = 6;
+        [SerializeField, Min(1)] private int width;
+        [SerializeField, Min(1)] private int height;
         [SerializeReference] private List<Vector2Int> emptyPositions = new();
 
 
@@ -25,12 +25,8 @@ namespace Blobs.Content
         [SerializeReference] private List<TileAssetData> tiles = new();
 
 
-        [Header("Objective")]
-        [SerializeField]
-        private LevelObjectiveType objective = LevelObjectiveType.ClearAllClearableBlobs;
-
-        [SerializeField, Min(0), Tooltip("Soft efficiency target shown as current/par in the HUD. Zero hides the denominator.")]
-        private int parMoves;
+        [SerializeField, Tooltip("Counters shown in the HUD. Leave empty to require clearing every clearable blob.")]
+        private LevelObjectiveAssetData objective = new();
 
         [Header("Presentation")]
         [SerializeField] private LevelColorPaletteAsset palette;
@@ -38,6 +34,9 @@ namespace Blobs.Content
         [Header("Coach")]
         [SerializeField, Tooltip("When enabled, plays a looping ghost swipe from coachFrom to coachTo until the player starts a drag.")]
         private bool showSwipeCoach;
+
+        [SerializeField, Tooltip("When enabled, shows a pointer from coachFrom to coachTo.")]
+        private bool showPointer;
         [SerializeField] private Vector2Int coachFrom;
         [SerializeField] private Vector2Int coachTo;
         [SerializeField, TextArea(1, 3), Tooltip("Optional. Leave empty to teach with the pointer alone.")]
@@ -55,9 +54,46 @@ namespace Blobs.Content
         public IReadOnlyList<BlobAssetData> Blobs => blobs;
 
         public IReadOnlyList<TileAssetData> Tiles => tiles;
-        public LevelObjectiveType Objective => objective;
-        public int ParMoves => parMoves;
+        public LevelObjectiveAssetData Objective => objective;
         public IReadOnlyList<Vector2Int> EmptyPositions => emptyPositions;
+        public bool ShowPointer => showPointer;
+    }
+
+
+    [Serializable]
+    public sealed class LevelObjectiveAssetData
+    {
+        public List<LevelObjectiveItemAssetData> items = new();
+    }
+
+    [Serializable]
+    public sealed class LevelObjectiveItemAssetData
+    {
+        [SerializeReference] public ObjectiveTargetAssetData target;
+        [Min(1)] public int amount = 1;
+    }
+
+    [Serializable]
+    public abstract class ObjectiveTargetAssetData
+    {
+    }
+
+    [Serializable]
+    public sealed class BlobObjectiveTargetAssetData : ObjectiveTargetAssetData
+    {
+        [Tooltip("Nests count when a monster is nested in them; other types count when cleared.")]
+        public BlobType type;
+        public bool matchColor = true;
+        public BlobColor color;
+        public bool matchSize;
+        public BlobSize size = BlobSize.Normal;
+    }
+
+    [Serializable]
+    public sealed class TileObjectiveTargetAssetData : ObjectiveTargetAssetData
+    {
+        [Tooltip("Graves count each time a ghost rests on one.")]
+        public TileType type;
     }
 
 
@@ -83,7 +119,7 @@ namespace Blobs.Content
     }
 
     [Serializable]
-    public sealed class FlagBlobAssetData : BlobAssetData
+    public sealed class NestBlobAssetData : BlobAssetData
     {
         public BlobColor color;
 

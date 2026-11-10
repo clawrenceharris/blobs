@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cf3c0b5b442d4e5e9ca0a2b096bf5b9, type: 3}
+  m_Name: Tutorial_01
+  m_EditorClassIdentifier: Blobs.Content::Blobs.Content.TutorialSequenceAsset
+  board: {fileID: 11400000, guid: 40a948f5118bc4bb0b5aa3cd78cd8ead, type: 2}
+  stagedPieces: []
+  defaultTiming:
+    holdBeforeTransition: 0.35
+    captionFadeOutDuration: 0.2
+    gapAfterFadeOut: 0.1
+    entranceOrder: 0
+    entranceGap: 0.1
+    removeDuration: 0.25
+    revealStyle: 1
+    revealDuration: 0.45
+    revealStagger: 0.12
+    cellRevealDuration: 0.25
+    revealDistance: 1.5
+    captionOrder: 0
+    captionFadeInDuration: 0.3
+    captionStagger: 0.35
+    pointerDelay: 0.6
+    reactionBoard: 0
+    reactionDimAlpha: 0.2
+    boardFadeDuration: 0.3
+    reactionMinDisplay: 0.6
+    reactionAutoAdvance: 0
+    lockInputUntilEntranceEnds: 1
+  steps:
+  - kind: 0
+    captionTop: Get the Blobster to its home
+    captionBottom: 
+    captionCenter: 
+    advanceWhen: 2
+    failureFilter: 8
+    removeBlobIds: []
+    revealBlobIds:
+    - blue
+    - nest
+    revealCells: []
+    showPointer: 1
+    coachFrom: {x: 0, y: 0}
+    coachTo: {x: 2, y: 0}
+    overrideTiming: 0
+    timing:
+      holdBeforeTransition: 0.35
+      captionFadeOutDuration: 0.2
+      gapAfterFadeOut: 0.1
+      entranceOrder: 0
+      entranceGap: 0.1
+      removeDuration: 0.25
+      revealStyle: 1
+      revealDuration: 0.45
+      revealStagger: 0.12
+      cellRevealDuration: 0.25
+      revealDistance: 1.5
+      captionOrder: 0
+      captionFadeInDuration: 0.3
+      captionStagger: 0.35
+      pointerDelay: 0.6
+      reactionBoard: 0
+      reactionDimAlpha: 0.2
+      boardFadeDuration: 0.3
+      reactionMinDisplay: 0.6
+      reactionAutoAdvance: 0
+      lockInputUntilEntranceEnds: 1

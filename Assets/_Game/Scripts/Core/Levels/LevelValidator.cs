@@ -34,7 +34,7 @@ namespace Blobs.Core
             var tileIds = new HashSet<string>(StringComparer.Ordinal);
             var blobPositions = new HashSet<GridPosition>();
             var tilePositions = new HashSet<GridPosition>();
-            var flagIds = new HashSet<string>(StringComparer.Ordinal);
+            var nestIds = new HashSet<string>(StringComparer.Ordinal);
 
             foreach (BlobDefinition blob in level.Blobs)
             {
@@ -57,17 +57,16 @@ namespace Blobs.Core
                     RequireEnumValue(trailBlob.Color, "blob color");
                     RequireEnumValue(trailBlob.Size, "blob size");
                 }
-                if (blob is FlagBlobDefinition flagBlob)
+                if (blob is NestBlobDefinition nest)
                 {
-                    RequireEnumValue(flagBlob.Color, "blob color");
+                    RequireEnumValue(nest.Color, "blob color");
                 }
                 RequireEnumValue(blob.Type, "blob type");
-                if (blob is FlagBlobDefinition)
+                if (blob is NestBlobDefinition)
                 {
-                    flagIds.Add(blob.Id);
+                    nestIds.Add(blob.Id);
                 }
             }
-            RequireAtLeastOneFlag(flagIds);
             RequireAtLeastOneSelectableSource(level.Blobs);
 
 
@@ -89,9 +88,44 @@ namespace Blobs.Core
             if (level.Objective == null)
                 throw new InvalidOperationException("Level objective is required.");
 
-            RequireEnumValue(level.Objective.Type, "level objective");
+            foreach (LevelObjectiveItemDefinition item in level.Objective.Items)
+                ValidateObjectiveItem(item);
+        }
 
+        private static void ValidateObjectiveItem(LevelObjectiveItemDefinition item)
+        {
+            if (item == null)
+                throw new InvalidOperationException("Level objective contains an empty item.");
 
+            if (item.AmountNeeded <= 0)
+            {
+                throw new InvalidOperationException(
+                    $"Level objective amount must be positive, got {item.AmountNeeded}.");
+            }
+
+            switch (item.Target)
+            {
+                case BlobObjectiveTarget blob:
+                    RequireEnumValue(blob.Type, "level objective blob type");
+                    if (blob.Color.HasValue)
+                        RequireEnumValue(blob.Color.Value, "level objective blob color");
+                    if (blob.Size.HasValue)
+                        RequireEnumValue(blob.Size.Value, "level objective blob size");
+                    if (blob.Type != BlobType.Nest && !blob.Type.IsClearable())
+                    {
+                        throw new InvalidOperationException(
+                            $"Level objective blob type {blob.Type} can never be collected.");
+                    }
+                    break;
+                case TileObjectiveTarget tile:
+                    RequireEnumValue(tile.Type, "level objective tile type");
+                    break;
+                case null:
+                    throw new InvalidOperationException("Level objective item requires a target.");
+                default:
+                    throw new InvalidOperationException(
+                        $"Unsupported level objective target: {item.Target.GetType().Name}.");
+            }
         }
 
 
@@ -108,15 +142,6 @@ namespace Blobs.Core
             throw new InvalidOperationException("Level must have at least one selectable source blob.");
         }
 
-
-
-        private static void RequireAtLeastOneFlag(HashSet<string> flagIds)
-        {
-            if (flagIds.Count == 0)
-            {
-                throw new InvalidOperationException("Level must have at least one flag.");
-            }
-        }
 
         private static void RequireId(string id, string label, ISet<string> ids)
         {

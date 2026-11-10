@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3844553af076c456dbcb6680188a3f1b, type: 3}
+  m_Name: ObjectiveViewCatalog
+  m_EditorClassIdentifier: Blobs.UI::Blobs.UI.ObjectiveViewCatalogAsset
+  objectiveEntries:
+  - type: 0
+    prefab: {fileID: 633774690181565961, guid: 212552fa753484994b68d690b8fa4e90, type: 3}
+  - type: 1
+    prefab: {fileID: 633774690181565961, guid: bcbbdc646d0f2471cacf14c66c7c0786, type: 3}
+  tileObjectiveEntries: []

@@ -15,7 +15,6 @@ namespace Blobs.Application
             MoveCount = 0;
             IsComplete = false;
             CanUndo = false;
-            ParMoves = 0;
         }
         /// <summary>
         /// Creates a session snapshot from already-copied board state.
@@ -26,14 +25,14 @@ namespace Blobs.Application
             int moveCount,
             bool isComplete,
             bool canUndo = false,
-            int parMoves = 0)
+            ObjectiveProgress objectives = null)
         {
             LevelId = levelId;
             Board = board;
             MoveCount = moveCount;
             IsComplete = isComplete;
             CanUndo = canUndo;
-            ParMoves = parMoves;
+            Objectives = objectives;
         }
         public BoardState Board { get; }
         public string LevelId { get; }
@@ -42,8 +41,8 @@ namespace Blobs.Application
         public bool CanUndo { get; }
 
         /// <summary>
-        /// Soft efficiency target for HUD display. Zero means unset.
+        /// Per-item objective counts for this state. Null for snapshots built without a session.
         /// </summary>
-        public int ParMoves { get; }
+        public ObjectiveProgress Objectives { get; }
     }
 }

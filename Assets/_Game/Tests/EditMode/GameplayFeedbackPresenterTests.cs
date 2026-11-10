@@ -36,8 +36,8 @@ namespace Blobs.Tests.EditMode
         [TestCase(
             MoveFailureReason.NormalMergeRequiresDifferentColors,
             "Normal blobs need different colors.")]
-        [TestCase(MoveFailureReason.FlagRequiresMatchingColor, "Match the flag's color.")]
-        [TestCase(MoveFailureReason.FlagRequiresNoOtherBlobsOfSameColor, "Clear the other blobs first.")]
+        [TestCase(MoveFailureReason.NestRequiresMatchingColor, "Match the nest's color.")]
+        [TestCase(MoveFailureReason.NestRequiresNoOtherBlobsOfSameColor, "Clear the other blobs first.")]
         [TestCase(MoveFailureReason.MoveTimeout, "That move took too long.")]
         public void CatalogMapsVisibleFailureToPlayerFriendlyCopy(
             MoveFailureReason reason,
@@ -91,7 +91,7 @@ namespace Blobs.Tests.EditMode
             GameplayInputAdapter input = Create("Input").AddComponent<GameplayInputAdapter>();
             input.Initialize(
                 new FakeCommands(
-                    BlobSelectionResult.Move(MoveResult.Failed("source", "flag", MoveFailureReason.FlagRequiresNoOtherBlobsOfSameColor))),
+                    BlobSelectionResult.Move(MoveResult.Failed("source", "nest", MoveFailureReason.NestRequiresNoOtherBlobsOfSameColor))),
                 1f);
 
             feedbackObject.SetActive(true);

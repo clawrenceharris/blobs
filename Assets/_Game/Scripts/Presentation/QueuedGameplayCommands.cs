@@ -19,9 +19,11 @@ namespace Blobs.Presentation
             _boardPresenter = boardPresenter ?? throw new System.ArgumentNullException(nameof(boardPresenter));
         }
 
+        private bool IsBlocked => _boardPresenter.IsPresenting || _boardPresenter.IsInteractionLocked;
+
         public bool Undo()
         {
-            if (_state != null && !_state.CanUndo)
+            if (_boardPresenter.IsInteractionLocked || (_state != null && !_state.CanUndo))
                 return false;
 
             _pendingUndoCount++;
@@ -31,7 +33,7 @@ namespace Blobs.Presentation
 
         public BlobSelectionResult SelectBlobAt(GridPosition position)
         {
-            if (_boardPresenter.IsPresenting)
+            if (IsBlocked)
                 return BlobSelectionResult.Cleared();
 
             return _session.SelectBlobAt(position);
@@ -39,7 +41,7 @@ namespace Blobs.Presentation
 
         public BlobSelectionResult BeginDragAt(GridPosition position)
         {
-            if (_boardPresenter.IsPresenting)
+            if (IsBlocked)
             {
                 _session.CancelDrag();
                 return BlobSelectionResult.Cleared();
@@ -49,7 +51,7 @@ namespace Blobs.Presentation
 
         public BlobSelectionResult UpdateDragAt(GridPosition position)
         {
-            if (_boardPresenter.IsPresenting)
+            if (IsBlocked)
             {
                 _session.CancelDrag();
                 return BlobSelectionResult.Cleared();
@@ -59,7 +61,7 @@ namespace Blobs.Presentation
 
         public BlobSelectionResult EndDragAt(GridPosition position)
         {
-            if (_boardPresenter.IsPresenting)
+            if (IsBlocked)
             {
                 _session.CancelDrag();
                 return BlobSelectionResult.Cleared();

@@ -4,27 +4,35 @@ using System.Collections.Generic;
 namespace Blobs.Core
 {
     /// <summary>
-    /// Objectives supported by the current production content schema.
+    /// One counter in a level objective: collect <see cref="AmountNeeded"/> of <see cref="Target"/>.
     /// </summary>
-    public enum LevelObjectiveType
+    public sealed class LevelObjectiveItemDefinition
     {
-        ClearAllClearableBlobs
+        public LevelObjectiveItemDefinition(ObjectiveTarget target, int amountNeeded)
+        {
+            Target = target;
+            AmountNeeded = amountNeeded;
+        }
+
+        public ObjectiveTarget Target { get; }
+        public int AmountNeeded { get; }
     }
 
     /// <summary>
-    /// Immutable objective data authored for a level.
+    /// Immutable objective data authored for a level. An objective with no items keeps the
+    /// original rule: clear every clearable blob.
     /// </summary>
     public sealed class LevelObjectiveDefinition
     {
-        public LevelObjectiveDefinition(LevelObjectiveType type)
+        public LevelObjectiveDefinition(IReadOnlyList<LevelObjectiveItemDefinition> items)
         {
-            Type = type;
+            Items = items ?? throw new ArgumentNullException(nameof(items));
         }
 
-        public LevelObjectiveType Type { get; }
+        public IReadOnlyList<LevelObjectiveItemDefinition> Items { get; }
 
         public static LevelObjectiveDefinition ClearAllClearableBlobs { get; } =
-            new LevelObjectiveDefinition(LevelObjectiveType.ClearAllClearableBlobs);
+            new LevelObjectiveDefinition(Array.Empty<LevelObjectiveItemDefinition>());
     }
 
 
@@ -44,11 +52,6 @@ namespace Blobs.Core
         public LevelObjectiveDefinition Objective { get; }
         public IReadOnlyList<GridPosition> EmptyPositions { get; }
 
-        /// <summary>
-        /// Soft efficiency target for HUD display (current/par). Zero means unset; not a fail budget.
-        /// </summary>
-        public int ParMoves { get; }
-
         public LevelDefinition(
             string id,
             int schemaVersion,
@@ -57,8 +60,7 @@ namespace Blobs.Core
             IReadOnlyList<BlobDefinition> blobs,
             IReadOnlyList<TileDefinition> tiles,
             IReadOnlyList<GridPosition> emptyPositions = null,
-            LevelObjectiveDefinition objective = null,
-            int parMoves = 0)
+            LevelObjectiveDefinition objective = null)
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
             SchemaVersion = schemaVersion;
@@ -68,9 +70,6 @@ namespace Blobs.Core
             Tiles = tiles ?? throw new ArgumentNullException(nameof(tiles));
             EmptyPositions = emptyPositions ?? new List<GridPosition>();
             Objective = objective ?? LevelObjectiveDefinition.ClearAllClearableBlobs;
-            if (parMoves < 0)
-                throw new ArgumentOutOfRangeException(nameof(parMoves), parMoves, "Par moves cannot be negative.");
-            ParMoves = parMoves;
         }
     }
 }

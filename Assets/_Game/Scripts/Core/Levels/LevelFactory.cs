@@ -19,33 +19,7 @@ namespace Blobs.Core
             var blobs = new List<BlobState>(level.Blobs.Count);
 
             foreach (BlobDefinition b in level.Blobs)
-            {
-                var blob = new BlobState(
-                    b.Id,
-                    b.Type,
-                    b.Position)
-                    .WithFacing(b.Facing);
-                switch (b)
-                {
-                    case NormalBlobDefinition normalBlob:
-                        blob = blob
-                        .WithColor(normalBlob.Color)
-                        .WithSize(normalBlob.Size);
-                        break;
-                    case TrailBlobDefinition trailBlob:
-                        blob = blob
-                        .WithTrail(trailBlob.TrailColor)
-                        .WithColor(trailBlob.Color)
-                        .WithSize(trailBlob.Size);
-                        break;
-                    case FlagBlobDefinition flagBlob:
-                        blob = blob.WithColor(flagBlob.Color);
-                        break;
-
-                }
-                blobs.Add(blob);
-
-            }
+                blobs.Add(CreateBlob(b));
 
             var tiles = new List<TileState>(level.Tiles.Count);
             foreach (TileDefinition tile in level.Tiles)
@@ -64,6 +38,40 @@ namespace Blobs.Core
                 tiles,
                 emptyPositions: level.EmptyPositions
                 );
+        }
+
+        /// <summary>
+        /// Creates the initial state for one authored blob.
+        /// </summary>
+        public static BlobState CreateBlob(BlobDefinition definition)
+        {
+            if (definition == null)
+                throw new ArgumentNullException(nameof(definition));
+
+            var blob = new BlobState(
+                definition.Id,
+                definition.Type,
+                definition.Position)
+                .WithFacing(definition.Facing);
+            switch (definition)
+            {
+                case NormalBlobDefinition normal:
+                    blob = blob
+                    .WithColor(normal.Color)
+                    .WithSize(normal.Size);
+                    break;
+                case TrailBlobDefinition trail:
+                    blob = blob
+                    .WithTrail(trail.TrailColor)
+                    .WithColor(trail.Color)
+                    .WithSize(trail.Size);
+                    break;
+                case NestBlobDefinition nest:
+                    blob = blob.WithColor(nest.Color);
+                    break;
+            }
+
+            return blob;
         }
 
     }

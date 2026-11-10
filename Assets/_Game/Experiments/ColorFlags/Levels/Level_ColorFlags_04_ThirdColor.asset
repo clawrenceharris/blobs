@@ -38,7 +38,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 1001
-      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      type: {class: NestBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
         id: pink-flag
         position: {x: 3, y: 2}
@@ -55,7 +55,7 @@ MonoBehaviour:
         color: 0
         size: 2
     - rid: 1003
-      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      type: {class: NestBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
         id: blue-flag
         position: {x: 2, y: 1}
@@ -81,7 +81,7 @@ MonoBehaviour:
         color: 1
         size: 2
     - rid: 1006
-      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      type: {class: NestBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
         id: yellow-flag
         position: {x: 1, y: 2}

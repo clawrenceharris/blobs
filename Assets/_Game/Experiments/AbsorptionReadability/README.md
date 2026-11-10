@@ -3,7 +3,7 @@
 These six small levels isolate the normal Blob interaction. They contain no Ghost,
 Trail, Grave, Rock, or other special mechanic.
 
-Use the `MechanicTestSliceController` on `Graybox.unity` to run every level in the
+Use the `Gamebootstrapper` on `Graybox.unity` to run every level in the
 same scene and compare:
 
 1. **Baseline** — resolved moves snap to their result with no merge choreography.

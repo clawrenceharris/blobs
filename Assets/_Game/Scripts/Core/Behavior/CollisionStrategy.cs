@@ -13,7 +13,7 @@ namespace Blobs.Core
     /// <remarks>
     /// Use collision strategies for rules that depend on the actual occupant reached
     /// during path simulation. This is the correct home for blocking rocks, normal
-    /// merges, flag captures, and other contact behavior. Use <see cref="IMoveStrategy"/>
+    /// merges, nesting, and other contact behavior. Use <see cref="IMoveStrategy"/>
     /// only for source/target intent validation or route shaping that must happen before
     /// the path is walked.
     /// </remarks>
@@ -73,36 +73,31 @@ namespace Blobs.Core
     }
 
     /// <summary>
-    /// Flag capture: requires matching color and a board containing no other blobs of the same color as 
-    /// the flag. Consumes the mover; the flag stays in place.
+    /// Nesting: requires matching color. 
+    /// Consumes the mover; the nest stays in place.
     /// </summary>
-    public sealed class FlagCollisionStrategy : ICollisionStrategy
+    public sealed class NestCollisionStrategy : ICollisionStrategy
     {
         public CollisionPlan BuildPlan(MoveContext context)
         {
-            var flag = context.Target;
+            var nest = context.Target;
             var source = context.Source;
             var intendedTarget = context.Intent.Target;
-            if (flag.Id != intendedTarget.Id)
+            if (nest.Id != intendedTarget.Id)
             {
-                return CollisionPlan.Failed(MoveFailureReason.FlagCaptureRequired);
+                return CollisionPlan.Failed(MoveFailureReason.NestingRequired);
             }
-            if (source.Type != BlobType.Normal || !source.HasColor)
-                return CollisionPlan.Failed(MoveFailureReason.FlagRequiresNormalSource);
-            if (flag.Components.Color?.Color != source.Components.Color?.Color)
+            if (source.Type != BlobType.Normal)
+                return CollisionPlan.Failed(MoveFailureReason.NestRequiresNormalSource);
+            if (nest.Components.Color?.Color != source.Components.Color?.Color)
             {
-                return CollisionPlan.Failed(MoveFailureReason.FlagRequiresMatchingColor);
+                return CollisionPlan.Failed(MoveFailureReason.NestRequiresMatchingColor);
             }
 
+            if (nest.HasOccupant)
+                return CollisionPlan.Failed(MoveFailureReason.NestAlreadyOccupied);
 
-            // Flag requires only one other blob of the same color to be captured.
-            if (context.Board.Blobs.Where(b => b.Type.IsClearable() && b.Components.Color?.Color == flag.Components.Color?.Color).Count() > 1)
-            {
-                return CollisionPlan.Failed(
-                    MoveFailureReason.FlagRequiresNoOtherBlobsOfSameColor);
-            }
-            return CollisionPlan.ConsumeMover(MergeEffect.ReverseMerge(context));
-
+            return CollisionPlan.ConsumeMover(new MergeIntoNestEffect(source, nest));
         }
     }
 

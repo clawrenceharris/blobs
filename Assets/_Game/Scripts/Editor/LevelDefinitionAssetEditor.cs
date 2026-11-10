@@ -10,19 +10,21 @@ namespace Blobs.Editor
     {
         private SerializedProperty _tiles;
         private SerializedProperty _blobs;
+        private SerializedProperty _objectiveItems;
 
         private void OnEnable()
         {
             _tiles = serializedObject.FindProperty("tiles");
             _blobs = serializedObject.FindProperty("blobs");
+            _objectiveItems = serializedObject.FindProperty("objective").FindPropertyRelative("items");
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
 
-            // Draw all properties except m_Script, blobs, and tiles
-            DrawPropertiesExcluding(serializedObject, "m_Script", "tiles", "blobs");
+            // Draw all properties except m_Script, blobs, tiles, and objective
+            DrawPropertiesExcluding(serializedObject, "m_Script", "tiles", "blobs", "objective");
 
             EditorGUILayout.Space();
 
@@ -58,11 +60,11 @@ namespace Blobs.Editor
                         type = BlobType.Normal,
                     });
 
-                if (GUILayout.Button("Add Flag Blob"))
-                    AddBlob(new FlagBlobAssetData()
+                if (GUILayout.Button("Add Nest"))
+                    AddBlob(new NestBlobAssetData()
                     {
                         id = $"blob-{_blobs.arraySize}",
-                        type = BlobType.Flag,
+                        type = BlobType.Nest,
                     });
                 if (GUILayout.Button("Add Trail Blob"))
                     AddBlob(new TrailBlobAssetData()
@@ -84,6 +86,24 @@ namespace Blobs.Editor
                     });
             }
 
+            EditorGUILayout.Space();
+
+            // --- Objective Section ---
+            EditorGUILayout.LabelField("Objective", EditorStyles.boldLabel);
+            if (_objectiveItems.arraySize == 0)
+                EditorGUILayout.HelpBox("No items: the level is won by clearing every clearable blob.", MessageType.Info);
+            EditorGUILayout.PropertyField(_objectiveItems, new GUIContent("Items"), includeChildren: true);
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                if (GUILayout.Button("Add Blob Objective"))
+                    AddObjective(new BlobObjectiveTargetAssetData { type = BlobType.Normal });
+                if (GUILayout.Button("Add Nest Objective"))
+                    AddObjective(new BlobObjectiveTargetAssetData { type = BlobType.Nest });
+                if (GUILayout.Button("Add Tile Objective"))
+                    AddObjective(new TileObjectiveTargetAssetData { type = TileType.Grave });
+            }
+
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -99,6 +119,15 @@ namespace Blobs.Editor
             _blobs.InsertArrayElementAtIndex(_blobs.arraySize);
             SerializedProperty element = _blobs.GetArrayElementAtIndex(_blobs.arraySize - 1);
             element.managedReferenceValue = blob;
+        }
+
+        private void AddObjective(ObjectiveTargetAssetData target)
+        {
+            _objectiveItems.InsertArrayElementAtIndex(_objectiveItems.arraySize);
+            SerializedProperty element = _objectiveItems.GetArrayElementAtIndex(_objectiveItems.arraySize - 1);
+            // The inserted element copies the previous one, including its managed reference.
+            element.FindPropertyRelative("target").managedReferenceValue = target;
+            element.FindPropertyRelative("amount").intValue = 1;
         }
     }
 }

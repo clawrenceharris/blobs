@@ -261,6 +261,15 @@ namespace Blobs.Core
             blob = blob.WithSize(after);
             _blobsById[blobId] = blob;
         }
+
+        internal void SetOccupant(string blobId, string occupantId)
+        {
+            var blob = GetBlob(blobId);
+            if (blob == null)
+                throw new InvalidOperationException("Blob does not exist: " + blobId);
+            blob = blob.WithOccupant(occupantId);
+            _blobsById[blobId] = blob;
+        }
     }
 
 }

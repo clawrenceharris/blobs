@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Blobs.Core;
 
 namespace Blobs.Application
@@ -87,17 +88,20 @@ namespace Blobs.Application
     /// Application-level gameplay session. Owns source/target selection, move execution, restart,
     /// move count, and completion state while delegating rules to Core.
     /// </summary>
-    public class GameSession : IGameplayCommands, IGameplayState
+    public class GameSession : IGameplayCommands, IGameplayState, ITutorialSession
     {
         private readonly MoveResolver _resolver;
         private readonly List<UndoActionRecord> _history;
         private readonly LevelDefinition _level;
         private BoardState _board;
+        private ObjectiveProgress _objectives;
         private string _selectedBlobId;
         private string _dragSourceId;
         private GridPosition _dragOrigin;
         private GridPosition _dragTail;
         private int _committedMoveCount;
+        private BoardState _restartBoard;
+        private ObjectiveProgress _restartObjectives;
         public BoardState CurrentState => _board;
         /// <summary>
         /// Raised after a successful move or restart changes the session snapshot.
@@ -122,11 +126,15 @@ namespace Blobs.Application
         /// <inheritdoc />
         public event Action<DragPreview> DragPreviewChanged;
 
+        /// <inheritdoc />
+        public event Action<MoveResult> MoveRejected;
+
         public string LevelId => _level.Id;
         public int MoveCount => _committedMoveCount;
         public bool CanUndo => _history.Count > 0 && !IsComplete;
         public bool IsComplete { get; private set; }
         public string SelectedBlobId => _selectedBlobId;
+        public ObjectiveProgress Objectives => _objectives;
 
         /// <summary>
         /// Creates a gameplay session from validated level data.
@@ -137,16 +145,27 @@ namespace Blobs.Application
             _resolver = resolver ?? new MoveResolver();
             _history = new List<UndoActionRecord>();
             _board = LevelFactory.CreateInitialBoard(level);
-            IsComplete = ObjectiveEvaluator.IsComplete(_board, _level.Objective);
+            _objectives = ObjectiveProgress.Start(level.Objective);
+            IsComplete = ObjectiveEvaluator.IsComplete(_board, _objectives);
         }
 
 
         /// <inheritdoc />
         public BlobSelectionResult SelectBlobAt(GridPosition position)
         {
+            return SelectAt(position, keepSourceOnFailure: true);
+        }
+
+        /// <summary>
+        /// Tap targeting keeps the source raised after a player-facing rejection so the next tap can
+        /// still aim from it; swipe release clears because the gesture already committed.
+        /// </summary>
+        private BlobSelectionResult SelectAt(GridPosition position, bool keepSourceOnFailure)
+        {
             var blob = _board.GetBlobAt(position);
             if (blob == null)
             {
+                EndDragPreview();
                 _selectedBlobId = null;
                 var cleared = BlobSelectionResult.Cleared();
                 BlobSelected?.Invoke(cleared);
@@ -172,6 +191,7 @@ namespace Blobs.Application
             }
             if (_selectedBlobId == blob.Id)
             {
+                EndDragPreview();
                 _selectedBlobId = null;
                 var cleared = BlobSelectionResult.Cleared();
                 BlobSelected?.Invoke(cleared);
@@ -180,13 +200,37 @@ namespace Blobs.Application
 
             var selectedBlob = _board.GetBlob(_selectedBlobId);
             var targetBlob = _board.GetBlob(blob.Id);
+            var intent = new MoveIntent(selectedBlob, targetBlob);
 
+            if (keepSourceOnFailure)
+            {
+                MoveResult preview = _resolver.Preview(_board, intent, _objectives);
+                if (!preview.Succeeded)
+                {
+                    BlobSelected?.Invoke(BlobSelectionResult.Selected(selectedBlob.Id, null));
+                    var rejected = BlobSelectionResult.Move(preview);
+                    MoveRejected?.Invoke(preview);
+                    return rejected;
+                }
 
-            var result = ExecuteMove(new MoveIntent(selectedBlob, targetBlob));
+                ShowTapAim(selectedBlob.Id, selectedBlob.Position, targetBlob);
+            }
+
+            EndDragPreview();
+            var result = ExecuteMove(intent);
             _selectedBlobId = null;
             var move = BlobSelectionResult.Move(result);
             BlobSelected?.Invoke(move);
             return move;
+        }
+
+        private void ShowTapAim(string sourceId, GridPosition origin, BlobState target)
+        {
+            _dragSourceId = sourceId;
+            _dragOrigin = origin;
+            _dragTail = target.Position;
+            DragPreviewChanged?.Invoke(DragPreview.Active(
+                sourceId, origin, target.Position, target.Id, DragVerdict.Valid, MoveFailureReason.None));
         }
 
         public BlobSelectionResult BeginDragAt(GridPosition position)
@@ -239,8 +283,16 @@ namespace Blobs.Application
             }
 
             GridPosition tail = ResolveDragTail(position);
+            if (tail == _dragOrigin)
+            {
+                // Releasing where the press began is a tap: hold the source and its indicator for a second tap.
+                var held = BlobSelectionResult.Selected(_dragSourceId, null);
+                BlobSelected?.Invoke(held);
+                return held;
+            }
+
             EndDragPreview();
-            return SelectBlobAt(tail);
+            return SelectAt(tail, keepSourceOnFailure: false);
         }
 
         public void CancelDrag()
@@ -284,7 +336,7 @@ namespace Blobs.Application
                 MoveResult result = _resolver.Preview(
                     _board,
                     new MoveIntent(_board.GetBlob(_dragSourceId), _board.GetBlob(targetId)),
-                    _level.Objective);
+                    _objectives);
                 failure = result.FailureReason;
                 verdict = result.Succeeded
                     ? DragVerdict.Valid
@@ -323,9 +375,14 @@ namespace Blobs.Application
         public MoveResult ExecuteMove(MoveIntent intent)
         {
             BoardState previous = _board.Clone();
-            var result = _resolver.Resolve(_board, intent, _level.Objective);
+            ObjectiveProgress previousObjectives = _objectives;
+            var result = _resolver.Resolve(_board, intent, _objectives);
             if (!result.Succeeded)
+            {
+                MoveRejected?.Invoke(result);
                 return result;
+            }
+            _objectives = result.Objectives ?? _objectives;
             IsComplete = result.IsComplete;
             // Valid contact can produce feedback without changing the board.
             if (result.Effects.Count > 0)
@@ -333,6 +390,7 @@ namespace Blobs.Application
                 _committedMoveCount++;
                 _history.Add(new UndoActionRecord(
                     previous,
+                    previousObjectives,
                     result,
                     BuildRestorationBlobs(previous, result)));
             }
@@ -350,9 +408,11 @@ namespace Blobs.Application
             EndDragPreview();
             UndoActionRecord record = _history[_history.Count - 1];
             _history.RemoveAt(_history.Count - 1);
+            _committedMoveCount--;
             _board = record.PreviousBoard.Clone();
+            _objectives = record.PreviousObjectives;
             _selectedBlobId = null;
-            IsComplete = ObjectiveEvaluator.IsComplete(_board, _level.Objective);
+            IsComplete = ObjectiveEvaluator.IsComplete(_board, _objectives);
             var snapshot = CreateSnapshot();
             UndoResolved?.Invoke(new UndoResult(
                 record.ForwardResult,
@@ -366,12 +426,84 @@ namespace Blobs.Application
         /// <inheritdoc />
         public void Restart()
         {
+            RestoreInitialState();
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyList<string> ApplyStage(
+            IReadOnlyList<BlobDefinition> blobs,
+            IReadOnlyList<GridPosition> cells,
+            IReadOnlyList<string> removeBlobIds = null)
+        {
+            EndDragPreview();
+            _selectedBlobId = null;
+
+            if (removeBlobIds != null)
+            {
+                foreach (string id in removeBlobIds)
+                {
+                    if (_board.GetBlob(id) != null)
+                        _board.RemoveBlob(id);
+                }
+            }
+
+            if (cells != null)
+            {
+                foreach (GridPosition cell in cells)
+                    _board.EmptyPositions.Remove(cell);
+            }
+
+            var added = new List<string>();
+            if (blobs != null)
+            {
+                foreach (BlobDefinition definition in blobs)
+                {
+                    if (_board.GetBlob(definition.Id) != null || _board.GetBlobAt(definition.Position) != null)
+                    {
+                        MessageLogged?.Invoke(
+                            $"Tutorial reveal skipped '{definition.Id}': {definition.Position} is occupied.");
+                        continue;
+                    }
+
+                    _board.AddBlob(LevelFactory.CreateBlob(definition));
+                    added.Add(definition.Id);
+                }
+            }
+
+            // A stage boundary is a fresh starting point: Undo cannot cross it and Restart returns here.
+            _history.Clear();
+            _committedMoveCount = 0;
+            IsComplete = ObjectiveEvaluator.IsComplete(_board, _objectives);
+            _restartBoard = _board.Clone();
+            _restartObjectives = _objectives;
+
+            BlobSelected?.Invoke(BlobSelectionResult.Cleared());
+            SnapshotChanged?.Invoke(CreateSnapshot());
+            return added;
+        }
+
+        /// <summary>
+        /// Rebuilds board, objectives, history, and selection from the restart baseline (the latest
+        /// tutorial stage, else the authored level) and announces the result through the same path
+        /// Presentation already rebuilds from.
+        /// </summary>
+        private void RestoreInitialState()
+        {
             EndDragPreview();
             _history.Clear();
             _committedMoveCount = 0;
-            _board = LevelFactory.CreateInitialBoard(_level);
+            if (_restartBoard != null)
+            {
+                _board = _restartBoard.Clone();
+                _objectives = _restartObjectives;
+            }
+            else
+            {
+                _board = LevelFactory.CreateInitialBoard(_level);
+                _objectives = ObjectiveProgress.Start(_level.Objective);
+            }
             _selectedBlobId = null;
-            IsComplete = ObjectiveEvaluator.IsComplete(_board, _level.Objective);
+            IsComplete = ObjectiveEvaluator.IsComplete(_board, _objectives);
             var snapshot = CreateSnapshot();
             StateRestored?.Invoke(snapshot);
             SnapshotChanged?.Invoke(snapshot);
@@ -386,7 +518,7 @@ namespace Blobs.Application
                 MoveCount,
                 IsComplete,
                 CanUndo,
-                _level.ParMoves);
+                _objectives);
         }
 
         private static IReadOnlyDictionary<string, BlobState> BuildRestorationBlobs(
@@ -406,6 +538,9 @@ namespace Blobs.Application
                         break;
                     case MergeEffect merge when merge.ConsumedBlob != null:
                         catalog[merge.ConsumedBlob.Id] = merge.ConsumedBlob;
+                        break;
+                    case MergeIntoNestEffect nest when nest.SourceBlob != null:
+                        catalog[nest.SourceBlob.Id] = nest.SourceBlob;
                         break;
                     case RemoveBlobEffect remove when remove.Blob != null:
                         catalog[remove.Blob.Id] = remove.Blob;
@@ -429,15 +564,18 @@ namespace Blobs.Application
         {
             public UndoActionRecord(
                 BoardState previousBoard,
+                ObjectiveProgress previousObjectives,
                 MoveResult forwardResult,
                 IReadOnlyDictionary<string, BlobState> restorationBlobs)
             {
                 PreviousBoard = previousBoard;
+                PreviousObjectives = previousObjectives;
                 ForwardResult = forwardResult;
                 RestorationBlobs = restorationBlobs;
             }
 
             public BoardState PreviousBoard { get; }
+            public ObjectiveProgress PreviousObjectives { get; }
             public MoveResult ForwardResult { get; }
             public IReadOnlyDictionary<string, BlobState> RestorationBlobs { get; }
         }

@@ -108,11 +108,11 @@ namespace Blobs.Tests.PlayMode
                     type = BlobType.Normal,
                     color = BlobColor.Red
                 },
-                new FlagBlobAssetData
+                new NestBlobAssetData
                 {
-                    id = "flag",
+                    id = "nest",
                     position = new Vector2Int(1, 0),
-                    type = BlobType.Flag,
+                    type = BlobType.Nest,
                     color = BlobColor.Red
                 }
             });

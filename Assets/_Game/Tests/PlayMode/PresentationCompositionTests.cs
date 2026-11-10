@@ -71,7 +71,7 @@ namespace Blobs.Tests.PlayMode
             SetPrivateField(viewCatalog, "blobEntries", new List<BlobViewCatalogEntry>
             {
                 CatalogEntry(BlobType.Normal, blobPrefab),
-                CatalogEntry(BlobType.Flag, blobPrefab)
+                CatalogEntry(BlobType.Nest, blobPrefab)
             });
 
             SetPrivateField(board.GetComponent<BlobPresenter>(), "_viewCatalog", viewCatalog);

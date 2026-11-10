@@ -29,9 +29,12 @@ namespace Blobs.Presentation
         private Vector2 _origin;
 
         public int VisibleCount => _views.Count;
+
+        /// <summary>Parent of every blob view.</summary>
+        public Transform Root => blobRoot != null ? blobRoot : transform;
         internal BlobTransitionPresenter Transitions { get; private set; }
         internal MergePresenter Merges { get; private set; }
-
+        internal MergeIntoNestPresenter Nests { get; private set; }
         internal GhostHauntPresenter GhostHaunts { get; private set; }
         internal GhostRestPresenter GhostRests { get; private set; }
 
@@ -61,6 +64,7 @@ namespace Blobs.Presentation
             GhostHaunts = new GhostHauntPresenter(this, blobAnimationSettings.GhostReturnSettings);
 
             GhostRests = new GhostRestPresenter(this, blobAnimationSettings.GhostReturnSettings);
+            Nests = new MergeIntoNestPresenter(this, orchestrator, blobAnimationSettings.MergeImpactSettings, blobAnimationSettings.BlobMotionSettings);
             Merges = new MergePresenter(this, orchestrator,
                 blobAnimationSettings.MergeImpactSettings, blobAnimationSettings.BlobMotionSettings);
             _selectionPresenter = new BlobSelectionPresenter(this, state);

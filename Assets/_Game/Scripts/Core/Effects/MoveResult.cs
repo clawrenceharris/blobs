@@ -33,7 +33,8 @@ namespace Blobs.Core
             MoveFailureReason failureReason,
             IReadOnlyList<IBoardEffect> effects,
             bool isComplete,
-            IReadOnlyList<MoveStep> steps = null)
+            IReadOnlyList<MoveStep> steps = null,
+            ObjectiveProgress objectives = null)
         {
             SourceBlobId = sourceBlobId;
             TargetBlobId = targetBlobId;
@@ -42,6 +43,7 @@ namespace Blobs.Core
             Effects = effects ?? new List<IBoardEffect>();
             IsComplete = isComplete;
             Steps = steps ?? new List<MoveStep>();
+            Objectives = objectives;
         }
 
         /// <summary>
@@ -87,6 +89,11 @@ namespace Blobs.Core
         /// for results produced by callers that only supply flat effects.
         /// </summary>
         public IReadOnlyList<MoveStep> Steps { get; }
+
+        /// <summary>
+        /// Objective progress after this move, or null when the caller did not track objectives.
+        /// </summary>
+        public ObjectiveProgress Objectives { get; }
 
 
         /// <summary>

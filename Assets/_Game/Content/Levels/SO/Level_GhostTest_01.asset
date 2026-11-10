@@ -28,17 +28,31 @@ MonoBehaviour:
   - rid: 3341776717243744614
   - rid: 3341776741192433810
   - rid: 3341776741192433811
-  - rid: 3341776741192433813
   - rid: 3341776741192433819
   - rid: 3341776741192433824
   - rid: 3341776741192433828
+  - rid: 2084607085137101075
   tiles:
   - rid: 3341776717243744612
-  objective: 0
+  objective:
+    items: []
+  parMoves: 0
   palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
+  showSwipeCoach: 0
+  coachFrom: {x: 0, y: 0}
+  coachTo: {x: 0, y: 0}
+  coachCaption: 
   references:
     version: 2
     RefIds:
+    - rid: 2084607085137101075
+      type: {class: NestBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blob-7
+        position: {x: 5, y: 0}
+        type: 1
+        facing: 2
+        color: 0
     - rid: 3341776717243744612
       type: {class: GraveTileAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
@@ -51,6 +65,7 @@ MonoBehaviour:
         id: blob-0
         position: {x: 1, y: 0}
         type: 0
+        facing: 2
         color: 0
         size: 2
     - rid: 3341776741192433810
@@ -59,6 +74,7 @@ MonoBehaviour:
         id: blob-1
         position: {x: 2, y: 0}
         type: 2
+        facing: 2
         trailColor: 1
         color: 0
         size: 2
@@ -68,19 +84,14 @@ MonoBehaviour:
         id: blob-2
         position: {x: 4, y: 0}
         type: 4
-    - rid: 3341776741192433813
-      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: blob-3
-        position: {x: 5, y: 0}
-        type: 1
-        color: 0
+        facing: 2
     - rid: 3341776741192433819
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
         id: blob-4
         position: {x: 1, y: 2}
         type: 0
+        facing: 2
         color: 1
         size: 2
     - rid: 3341776741192433824
@@ -89,11 +100,13 @@ MonoBehaviour:
         id: blob-5
         position: {x: 4, y: 1}
         type: 3
+        facing: 2
     - rid: 3341776741192433828
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
         id: blob-6
         position: {x: 0, y: 1}
         type: 0
+        facing: 2
         color: 0
         size: 2

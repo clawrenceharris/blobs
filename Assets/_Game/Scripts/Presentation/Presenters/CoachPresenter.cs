@@ -7,8 +7,9 @@ using UnityEngine;
 namespace Blobs.Presentation
 {
     /// <summary>
-    /// Level-opt-in swipe coach. Plays a looping ghost path until the player begins a drag, then
-    /// dismisses itself. Reusable for later mechanic intros by authoring different from/to cells.
+    /// Level-opt-in swipe coach. Keeps the looping ghost path visible through selection and
+    /// aiming so the player can re-read the hint before committing. Dismisses after the first
+    /// successful move.
     /// </summary>
     internal sealed class CoachPresenter : IDisposable
     {
@@ -35,12 +36,17 @@ namespace Blobs.Presentation
                 return;
 
             _active = true;
-            _view.Play(
-                GridToLocal(new GridPosition(level.CoachFrom.x, level.CoachFrom.y)),
-                GridToLocal(new GridPosition(level.CoachTo.x, level.CoachTo.y)),
-                level.CoachCaption);
-            _state.DragPreviewChanged += HandleDragPreview;
-            _state.MoveResolved += HandleMoveResolved;
+            if (level.ShowPointer)
+            {
+                // Play kills caption tweens, so the caption must start after the pointer loop.
+                _view.Play(
+                    GridToLocal(new GridPosition(level.CoachFrom.x, level.CoachFrom.y)),
+                    GridToLocal(new GridPosition(level.CoachTo.x, level.CoachTo.y)),
+                    level.CoachCaption);
+                _state.MoveResolved += HandleMoveResolved;
+            }
+
+            _view.ShowCaption(level.CoachCaption);
         }
 
         public void Dispose()
@@ -51,21 +57,15 @@ namespace Blobs.Presentation
                 return;
             }
 
-            _state.DragPreviewChanged -= HandleDragPreview;
             _state.MoveResolved -= HandleMoveResolved;
             _active = false;
             _view.Hide();
         }
 
-        private void HandleDragPreview(DragPreview preview)
+        private void HandleMoveResolved(MoveResult result)
         {
-            if (preview != null && preview.IsActive)
+            if (result != null && result.Succeeded)
                 Dismiss();
-        }
-
-        private void HandleMoveResolved(MoveResult _)
-        {
-            Dismiss();
         }
 
         private void Dismiss()
@@ -73,7 +73,6 @@ namespace Blobs.Presentation
             if (!_active)
                 return;
 
-            _state.DragPreviewChanged -= HandleDragPreview;
             _state.MoveResolved -= HandleMoveResolved;
             _active = false;
             _view.Hide();

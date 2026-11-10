@@ -32,6 +32,6 @@ MonoBehaviour:
     baseColor: {r: 0.45162782, g: 0.3066038, b: 1, a: 1}
     shadowColor: {r: 0.36538738, g: 0.21048418, b: 0.8113208, a: 1}
     highlightColor: {r: 0.76, g: 0.68, b: 1, a: 1}
-  cellColor: {r: 1, g: 1, b: 1, a: 1}
+  cellColor: {r: 0.9607843, g: 0.84705883, b: 0.7764706, a: 0.6666667}
   validMoveColor: {r: 1, g: 1, b: 1, a: 0.70980394}
   invalidMoveColor: {r: 0.9811321, g: 0.23602703, b: 0.43409267, a: 0.43137255}

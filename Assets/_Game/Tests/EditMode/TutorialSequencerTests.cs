@@ -217,6 +217,38 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
+        public void AllowedSourceFilterBlocksSelectingOtherBlobsAsSources()
+        {
+            GameSession session = CreateSession(TwinsLevel());
+            var swap = new NormalBlobDefinition("swap", new GridPosition(1, 0), BlobColor.Blue);
+            var steps = new[]
+            {
+                Step(TutorialAdvanceGate.FailedMoveAttempt),
+                TutorialStep.Playable(
+                    "Try the red one!",
+                    TutorialAdvanceGate.SuccessfulMove,
+                    revealBlobs: new[] { swap },
+                    removeBlobIds: new[] { "twin" },
+                    allowedSourceBlobIds: new[] { "source" })
+            };
+            using var sequencer = new TutorialSequencer(steps, session);
+            sequencer.Start();
+
+            session.SelectBlobAt(new GridPosition(0, 0));
+            session.SelectBlobAt(new GridPosition(1, 0));
+            Assert.That(sequencer.StepIndex, Is.EqualTo(1));
+
+            BlobSelectionResult blocked = session.SelectBlobAt(new GridPosition(1, 0));
+            Assert.That(blocked.HasSelection, Is.False);
+            Assert.That(blocked.MoveResult.FailureReason, Is.EqualTo(MoveFailureReason.SourceCannotMove));
+            Assert.That(session.SelectedBlobId, Is.Null);
+            Assert.That(session.CurrentState.GetBlob("source"), Is.Not.Null);
+
+            session.SelectBlobAt(new GridPosition(0, 0));
+            Assert.That(session.SelectBlobAt(new GridPosition(1, 0)).MoveResult.Succeeded, Is.True);
+        }
+
+        [Test]
         public void StepCanSwapABlobOutForARevealOnTheSameCell()
         {
             GameSession session = CreateSession(TwinsLevel());
@@ -266,7 +298,7 @@ namespace Blobs.Tests.EditMode
             var steps = new[]
             {
                 Step(TutorialAdvanceGate.SuccessfulMove),
-                TutorialStep.Reaction("Yum! You got the idea."),
+                TutorialStep.Reaction(captionCenter: "Yum! You got the idea."),
                 Step(TutorialAdvanceGate.LevelComplete, Nest)
             };
             using var sequencer = new TutorialSequencer(steps, session);
@@ -312,11 +344,25 @@ namespace Blobs.Tests.EditMode
             TutorialStep step = TutorialStep.Playable(
                 "Blobsters never eat their own kind.",
                 TutorialAdvanceGate.SuccessfulMove,
-                captionBottom: "Try red instead!");
+                captionBottom: "Try red instead!",
+                captionCenter: "Optional center");
             Assert.That(step.CaptionTop, Is.EqualTo("Blobsters never eat their own kind."));
             Assert.That(step.CaptionBottom, Is.EqualTo("Try red instead!"));
-            Assert.That(step.CaptionCenter, Is.Empty);
+            Assert.That(step.CaptionCenter, Is.EqualTo("Optional center"));
             Assert.That(step.HasReveals, Is.False);
+        }
+
+        [Test]
+        public void ReactionStepAcceptsAnyCaptionSlotAndBoardMode()
+        {
+            TutorialStep step = TutorialStep.Reaction(
+                captionTop: "Nice!",
+                reactionBoard: TutorialReactionBoard.Hide);
+            Assert.That(step.IsReaction, Is.True);
+            Assert.That(step.CaptionTop, Is.EqualTo("Nice!"));
+            Assert.That(step.CaptionCenter, Is.Empty);
+            Assert.That(step.ReactionBoard, Is.EqualTo(TutorialReactionBoard.Hide));
+            Assert.That(step.AdvanceWhen, Is.EqualTo(TutorialAdvanceGate.TapContinue));
         }
 
         private static GameSession CreateSession(LevelDefinition level) => new GameSession(level);

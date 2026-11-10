@@ -1,4 +1,5 @@
 using System;
+using Blobs.Application;
 using UnityEngine;
 
 namespace Blobs.Content
@@ -39,17 +40,6 @@ namespace Blobs.Content
         Together
     }
 
-    /// <summary>What happens to the board behind a reaction slide.</summary>
-    public enum TutorialReactionBoard
-    {
-        /// <summary>Fades to <see cref="TutorialTimingAssetData.reactionDimAlpha"/> so the result stays readable.</summary>
-        Dim,
-        /// <summary>Fades out completely.</summary>
-        Hide,
-        /// <summary>Stays fully visible.</summary>
-        Keep
-    }
-
     /// <summary>
     /// Choreography for one tutorial transition. The sequence asset holds defaults; any step can
     /// override them. All times are in seconds.
@@ -69,10 +59,14 @@ namespace Blobs.Content
 
         [Header("Entrance (playable steps)")]
         [Tooltip("Whether new pieces land before, after, or together with the captions.")]
-        public TutorialEntranceOrder entranceOrder = TutorialEntranceOrder.RevealThenCaptions;
+        public TutorialEntranceOrder entranceOrder = TutorialEntranceOrder.CaptionsThenReveal;
 
-        [Min(0f), Tooltip("Delay between the reveal and caption groups. Ignored when Together.")]
-        public float entranceGap = 0.1f;
+        [Min(0f), Tooltip("After captions finish and before board pieces enter (Captions Then Reveal). " +
+            "Give the player time to read.")]
+        public float captionReadPause = 1.25f;
+
+        [Min(0f), Tooltip("Extra delay between the caption group and the reveal group. Ignored when Together.")]
+        public float entranceGap = 0.15f;
 
         [Header("Board changes")]
         [Min(0f), Tooltip("Time for removed blobs to shrink away. Removals play during the exit, before reveals.")]
@@ -95,19 +89,17 @@ namespace Blobs.Content
         [Header("Captions")]
         public TutorialCaptionOrder captionOrder = TutorialCaptionOrder.TopFirst;
 
-        [Min(0f)] public float captionFadeInDuration = 0.3f;
+        [Min(0f)] public float captionFadeInDuration = 0.4f;
 
-        [Min(0f), Tooltip("Delay between the first and second caption slot. Ignored when Together.")]
-        public float captionStagger = 0.35f;
+        [Min(0f), Tooltip("Delay between caption slots (top/bottom/center). Ignored when Together. " +
+            "Use 1+ seconds when lines should read as separate beats.")]
+        public float captionStagger = 1f;
 
         [Header("Pointer")]
         [Min(0f), Tooltip("Delay after the entrance finishes before the ghost swipe starts.")]
         public float pointerDelay = 0.6f;
 
         [Header("Board fade")]
-        [Tooltip("What the board does behind a reaction slide.")]
-        public TutorialReactionBoard reactionBoard = TutorialReactionBoard.Dim;
-
         [Range(0f, 1f), Tooltip("Board opacity behind a Dim reaction slide.")]
         public float reactionDimAlpha = 0.2f;
 
@@ -116,10 +108,10 @@ namespace Blobs.Content
 
         [Header("Reaction slides")]
         [Min(0f), Tooltip("Minimum time a reaction stays up before a tap can dismiss it.")]
-        public float reactionMinDisplay = 0.6f;
+        public float reactionMinDisplay = 0.85f;
 
-        [Min(0f), Tooltip("Advance automatically after this many seconds. 0 waits for a tap.")]
-        public float reactionAutoAdvance = 0f;
+        [Min(0f), Tooltip("Advance automatically after this many seconds. Leave at 0 to wait for a tap.")]
+        public float reactionAutoAdvance = 2.5f;
 
         [Header("Input")]
         [Tooltip("Ignore board input until the entrance finishes so early taps cannot skip a beat.")]

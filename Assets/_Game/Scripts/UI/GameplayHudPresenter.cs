@@ -20,6 +20,7 @@ namespace Blobs.UI
         [SerializeField] private HudButtonView previousLevelButton;
         [SerializeField] private GameObject completionRoot;
         [SerializeField] private GameObject topHudRoot;
+        [SerializeField] private GameObject bottomHudRoot;
 
         [SerializeField] private GameObject movesRoot;
         private IGameplaySessionHost _sessionHost;
@@ -189,6 +190,10 @@ namespace Blobs.UI
 
             if (topHudRoot != null)
                 topHudRoot.SetActive(!_sessionHost.IsTutorial);
+
+            if (bottomHudRoot != null)
+                bottomHudRoot.SetActive(!_sessionHost.IsTutorial);
+
             if (restartButton != null)
                 restartButton.gameObject.SetActive(!_sessionHost.IsTutorial);
 

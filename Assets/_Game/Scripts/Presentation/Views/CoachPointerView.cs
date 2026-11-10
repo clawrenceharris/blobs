@@ -252,13 +252,13 @@ namespace Blobs.Presentation
         {
             _onContinue = onContinue ?? throw new ArgumentNullException(nameof(onContinue));
             _continueArmed = false;
+            EnsureContinueBlocker();
             if (continueBlocker == null)
             {
-                Debug.LogWarning(
-                    "CoachPointerView needs a continueBlocker Graphic to capture reaction taps.",
+                Debug.LogError(
+                    "CoachPointerView could not create a continue blocker; reaction taps will not work. " +
+                    "Assign continueBlocker or parent captions under a Canvas.",
                     this);
-                // Still allow Continue via a late arm so tests without UI can call through.
-                _continueArmed = true;
                 return;
             }
 
@@ -305,6 +305,50 @@ namespace Blobs.Presentation
                 continueBlocker.raycastTarget = false;
                 continueBlocker.gameObject.SetActive(false);
             }
+        }
+
+        /// <summary>
+        /// Builds a fullscreen transparent Image on the caption canvas when none is authored, so
+        /// reaction slides can wait for a tap without a forced auto-advance.
+        /// </summary>
+        private void EnsureContinueBlocker()
+        {
+            if (continueBlocker != null)
+                return;
+
+            Transform captionRoot =
+                topCaptionText != null ? topCaptionText.transform :
+                bottomCaptionText != null ? bottomCaptionText.transform :
+                centerCaptionText != null ? centerCaptionText.transform :
+                null;
+            Canvas canvas = captionRoot != null ? captionRoot.GetComponentInParent<Canvas>() : null;
+            if (canvas == null)
+                return;
+
+            var go = new GameObject(
+                "TutorialContinueBlocker",
+                typeof(RectTransform),
+                typeof(CanvasRenderer),
+                typeof(Image),
+                typeof(Button));
+            go.transform.SetParent(canvas.transform, false);
+            go.transform.SetAsLastSibling();
+
+            RectTransform rect = go.GetComponent<RectTransform>();
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+
+            Image image = go.GetComponent<Image>();
+            image.color = new Color(0f, 0f, 0f, 0f);
+            image.raycastTarget = true;
+
+            Button button = go.GetComponent<Button>();
+            button.transition = Selectable.Transition.None;
+
+            continueBlocker = image;
+            go.SetActive(false);
         }
 
         private TMP_Text GetSlot(CoachCaptionSlot slot)

@@ -12,8 +12,9 @@ namespace Blobs.Content
     /// </summary>
     /// <remarks>
     /// A cell is hidden at the start when it is marked empty on the board asset or listed in a later
-    /// step's reveal cells. Board blobs sitting on a hidden cell enter with that cell unless a step
-    /// reveals them explicitly. Empty cells that no step reveals stay empty for the whole tutorial.
+    /// step's reveal cells. Revealing a blob that sits on an authored empty cell also opens that cell.
+    /// Board blobs on a hidden cell enter with that cell unless a step reveals them explicitly.
+    /// Empty cells that no step reveals stay empty for the whole tutorial.
     /// </remarks>
     public static class TutorialSequenceMapper
     {
@@ -45,6 +46,8 @@ namespace Blobs.Content
 
             Dictionary<GridPosition, int> revealedCellStep = CollectRevealedCells(asset, board);
             Dictionary<string, int> explicitBlobStep = CollectExplicitBlobReveals(asset, blobsById);
+            // Listing nest/red on a step is enough: their authored-empty cells open with them.
+            InferCellsFromBlobReveals(asset, blobsById, authoredEmpty, explicitBlobStep, revealedCellStep);
 
             // Board blobs on a hidden cell ride in with the cell unless a step reveals them itself.
             var autoRevealsByStep = new Dictionary<int, List<BlobDefinition>>();
@@ -73,13 +76,17 @@ namespace Blobs.Content
                 if (data.kind == TutorialStepKind.Reaction)
                 {
                     if (string.IsNullOrWhiteSpace(data.captionCenter) &&
-                    string.IsNullOrWhiteSpace(data.captionTop) &&
-                    string.IsNullOrWhiteSpace(data.captionBottom))
-                        throw Error(asset, i, "reaction needs caption text.");
+                        string.IsNullOrWhiteSpace(data.captionTop) &&
+                        string.IsNullOrWhiteSpace(data.captionBottom))
+                        throw Error(asset, i, "reaction needs at least one caption (top, bottom, or center).");
                     if (Count(data.revealBlobIds) > 0 || Count(data.revealCells) > 0 || Count(data.removeBlobIds) > 0)
                         throw Error(asset, i, "reaction slides cannot change the board; move the change to the next playable step.");
 
-                    steps.Add(TutorialStep.Reaction(data.captionCenter));
+                    steps.Add(TutorialStep.Reaction(
+                        data.captionTop,
+                        data.captionBottom,
+                        data.captionCenter,
+                        data.reactionBoard));
                     continue;
                 }
 
@@ -101,10 +108,20 @@ namespace Blobs.Content
                 }
 
                 var cells = new List<GridPosition>();
+                var cellSet = new HashSet<GridPosition>();
                 if (data.revealCells != null)
                 {
                     foreach (var c in data.revealCells)
-                        cells.Add(new GridPosition(c.x, c.y));
+                    {
+                        var cell = new GridPosition(c.x, c.y);
+                        if (cellSet.Add(cell))
+                            cells.Add(cell);
+                    }
+                }
+                foreach (KeyValuePair<GridPosition, int> pair in revealedCellStep)
+                {
+                    if (pair.Value == i && cellSet.Add(pair.Key))
+                        cells.Add(pair.Key);
                 }
 
                 var blobs = new List<BlobDefinition>();
@@ -116,17 +133,30 @@ namespace Blobs.Content
                 if (autoRevealsByStep.TryGetValue(i, out List<BlobDefinition> auto))
                     blobs.AddRange(auto);
 
+                var allowedSources = new List<string>();
+                if (data.allowedSourceBlobIds != null)
+                {
+                    foreach (string id in data.allowedSourceBlobIds)
+                    {
+                        if (string.IsNullOrWhiteSpace(id) || !blobsById.ContainsKey(id))
+                            throw Error(asset, i, $"allowed source '{id}' is not on the board or staged pieces.");
+                        allowedSources.Add(id);
+                    }
+                }
+
                 steps.Add(TutorialStep.Playable(
                     data.captionTop,
                     data.advanceWhen,
                     data.captionBottom,
+                    data.captionCenter,
                     blobs,
                     cells,
                     data.showPointer,
                     new GridPosition(data.coachFrom.x, data.coachFrom.y),
                     new GridPosition(data.coachTo.x, data.coachTo.y),
                     data.failureFilter,
-                    removals));
+                    removals,
+                    allowedSources));
             }
 
             if (steps[0].IsReaction)
@@ -214,6 +244,34 @@ namespace Blobs.Content
             }
 
             return revealedBlobStep;
+        }
+
+        /// <summary>
+        /// When a step reveals a blob that sits on an authored empty cell, that cell opens on the
+        /// same step. Authors only need the blob id; listing the cell is optional.
+        /// </summary>
+        private static void InferCellsFromBlobReveals(
+            TutorialSequenceAsset asset,
+            Dictionary<string, BlobDefinition> blobsById,
+            HashSet<GridPosition> authoredEmpty,
+            Dictionary<string, int> explicitBlobStep,
+            Dictionary<GridPosition, int> revealedCellStep)
+        {
+            foreach (KeyValuePair<string, int> pair in explicitBlobStep)
+            {
+                BlobDefinition blob = blobsById[pair.Key];
+                if (!authoredEmpty.Contains(blob.Position))
+                    continue;
+
+                if (!revealedCellStep.TryAdd(blob.Position, pair.Value))
+                {
+                    int cellStep = revealedCellStep[blob.Position];
+                    if (pair.Value < cellStep)
+                        throw Error(asset, pair.Value,
+                            $"blob '{blob.Id}' is revealed at step {pair.Value} but cell {blob.Position} " +
+                            $"only opens at step {cellStep}.");
+                }
+            }
         }
 
         /// <summary>

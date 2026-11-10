@@ -22,6 +22,11 @@ namespace Blobs.Application
             IReadOnlyList<string> removeBlobIds = null);
 
         /// <summary>
+        /// Restricts which blobs may start a move. Empty or null restores normal selection.
+        /// </summary>
+        void SetAllowedSourceBlobIds(IReadOnlyList<string> blobIds);
+
+        /// <summary>
         /// Raised when a move between two blobs is rejected by the rules, whether it came from a
         /// tap or a swipe release.
         /// </summary>
@@ -112,6 +117,7 @@ namespace Blobs.Application
 
             _started = true;
             TutorialStep first = _steps[0];
+            ApplySourceFilter(first);
             var ids = new List<string>(first.RevealBlobs.Count);
             foreach (BlobDefinition blob in first.RevealBlobs)
                 ids.Add(blob.Id);
@@ -135,6 +141,7 @@ namespace Blobs.Application
                 return;
 
             _disposed = true;
+            _session.SetAllowedSourceBlobIds(null);
             _session.MoveRejected -= HandleMoveRejected;
             _session.MoveResolved -= HandleMoveResolved;
             _session.StateRestored -= HandleStateRestored;
@@ -224,6 +231,7 @@ namespace Blobs.Application
             if (StepIndex >= _steps.Count - 1)
             {
                 IsCompleted = true;
+                _session.SetAllowedSourceBlobIds(null);
                 SequenceCompleted?.Invoke();
                 return;
             }
@@ -234,8 +242,15 @@ namespace Blobs.Application
             // it is reacting to. Reactions have no reveals.
             IReadOnlyList<string> revealed = _session.ApplyStage(
                 next.RevealBlobs, next.RevealCells, next.RemoveBlobIds);
+            ApplySourceFilter(next);
             StepChanged?.Invoke(new TutorialStepChange(
                 next, StepIndex, revealed, next.RevealCells, next.RemoveBlobIds));
+        }
+
+        private void ApplySourceFilter(TutorialStep step)
+        {
+            _session.SetAllowedSourceBlobIds(
+                step.IsReaction ? null : step.AllowedSourceBlobIds);
         }
     }
 }

@@ -16,25 +16,25 @@ MonoBehaviour:
   stagedPieces:
   - {fileID: 11400000, guid: 02c37e5c887284fb5a1734476a092814, type: 2}
   defaultTiming:
-    holdBeforeTransition: 0.35
-    captionFadeOutDuration: 0.2
-    gapAfterFadeOut: 0.1
-    entranceOrder: 0
-    entranceGap: 0.1
+    holdBeforeTransition: 0.4
+    captionFadeOutDuration: 0.25
+    gapAfterFadeOut: 0.15
+    entranceOrder: 1
+    captionReadPause: 1.25
+    entranceGap: 0.15
     removeDuration: 0.25
     revealStyle: 1
     revealDuration: 0.45
-    revealStagger: 0.12
-    cellRevealDuration: 0.25
+    revealStagger: 0.18
+    cellRevealDuration: 0.3
     revealDistance: 1.5
     captionOrder: 0
-    captionFadeInDuration: 0.3
-    captionStagger: 0.35
-    pointerDelay: 0.6
-    reactionBoard: 0
+    captionFadeInDuration: 0.4
+    captionStagger: 1
+    pointerDelay: 0.7
     reactionDimAlpha: 0.2
-    boardFadeDuration: 0.3
-    reactionMinDisplay: 0.6
+    boardFadeDuration: 0.35
+    reactionMinDisplay: 0.85
     reactionAutoAdvance: 0
     lockInputUntilEntranceEnds: 1
   steps:
@@ -43,36 +43,38 @@ MonoBehaviour:
     captionBottom: 
     captionCenter: 
     advanceWhen: 0
+    reactionBoard: 0
     failureFilter: 8
     removeBlobIds: []
     revealBlobIds:
     - blue-0
     - blue-1
     revealCells: []
+    allowedSourceBlobIds: []
     showPointer: 1
     coachFrom: {x: 0, y: 1}
     coachTo: {x: 1, y: 1}
-    overrideTiming: 0
+    overrideTiming: 1
     timing:
-      holdBeforeTransition: 0.35
-      captionFadeOutDuration: 0.2
-      gapAfterFadeOut: 0.1
+      holdBeforeTransition: 0.4
+      captionFadeOutDuration: 0.25
+      gapAfterFadeOut: 0.15
       entranceOrder: 0
-      entranceGap: 0.1
+      captionReadPause: 1.4
+      entranceGap: 0.15
       removeDuration: 0.25
       revealStyle: 1
       revealDuration: 0.45
-      revealStagger: 0.12
-      cellRevealDuration: 0.25
+      revealStagger: 0.2
+      cellRevealDuration: 0.3
       revealDistance: 1.5
       captionOrder: 0
-      captionFadeInDuration: 0.3
-      captionStagger: 0.35
-      pointerDelay: 0.6
-      reactionBoard: 0
+      captionFadeInDuration: 0.5
+      captionStagger: 1
+      pointerDelay: 0.75
       reactionDimAlpha: 0.2
-      boardFadeDuration: 0.3
-      reactionMinDisplay: 0.6
+      boardFadeDuration: 0.35
+      reactionMinDisplay: 0.85
       reactionAutoAdvance: 0
       lockInputUntilEntranceEnds: 1
   - kind: 0
@@ -80,108 +82,114 @@ MonoBehaviour:
     captionBottom: Try this red one instead!
     captionCenter: 
     advanceWhen: 1
+    reactionBoard: 0
     failureFilter: 0
     removeBlobIds:
     - blue-1
     revealBlobIds:
     - red-0
     revealCells: []
+    allowedSourceBlobIds:
+    - blue-0
     showPointer: 1
     coachFrom: {x: 0, y: 1}
     coachTo: {x: 1, y: 1}
-    overrideTiming: 0
+    overrideTiming: 1
     timing:
-      holdBeforeTransition: 0.35
-      captionFadeOutDuration: 0.2
-      gapAfterFadeOut: 0.1
-      entranceOrder: 0
+      holdBeforeTransition: 0.4
+      captionFadeOutDuration: 0.25
+      gapAfterFadeOut: 0.15
+      entranceOrder: 1
+      captionReadPause: 0.4
       entranceGap: 0.1
-      removeDuration: 0.25
+      removeDuration: 0.3
       revealStyle: 1
       revealDuration: 0.45
-      revealStagger: 0.12
-      cellRevealDuration: 0.25
+      revealStagger: 0.2
+      cellRevealDuration: 0.3
       revealDistance: 1.5
       captionOrder: 0
-      captionFadeInDuration: 0.3
-      captionStagger: 0.35
-      pointerDelay: 0.6
-      reactionBoard: 0
+      captionFadeInDuration: 0.5
+      captionStagger: 1.5
+      pointerDelay: 0.75
       reactionDimAlpha: 0.2
-      boardFadeDuration: 0.3
-      reactionMinDisplay: 0.6
+      boardFadeDuration: 0.35
+      reactionMinDisplay: 0.85
       reactionAutoAdvance: 0
       lockInputUntilEntranceEnds: 1
   - kind: 1
-    captionTop: 
+    captionTop: Yum! You got the right idea!
     captionBottom: 
-    captionCenter: Yum! You got the right idea!
+    captionCenter: 
     advanceWhen: 3
+    reactionBoard: 0
     failureFilter: 0
     removeBlobIds: []
     revealBlobIds: []
     revealCells: []
+    allowedSourceBlobIds: []
     showPointer: 0
     coachFrom: {x: 0, y: 1}
     coachTo: {x: 1, y: 1}
-    overrideTiming: 0
+    overrideTiming: 1
     timing:
-      holdBeforeTransition: 0.35
-      captionFadeOutDuration: 0.2
-      gapAfterFadeOut: 0.1
-      entranceOrder: 0
-      entranceGap: 0.1
+      holdBeforeTransition: 0.4
+      captionFadeOutDuration: 0.25
+      gapAfterFadeOut: 0.15
+      entranceOrder: 1
+      captionReadPause: 0.5
+      entranceGap: 0.15
       removeDuration: 0.25
       revealStyle: 1
       revealDuration: 0.45
-      revealStagger: 0.12
-      cellRevealDuration: 0.25
+      revealStagger: 0.18
+      cellRevealDuration: 0.3
       revealDistance: 1.5
       captionOrder: 0
-      captionFadeInDuration: 0.3
-      captionStagger: 0.35
-      pointerDelay: 0.6
-      reactionBoard: 1
+      captionFadeInDuration: 0.5
+      captionStagger: 1.1
+      pointerDelay: 0.7
       reactionDimAlpha: 0.2
-      boardFadeDuration: 0.3
-      reactionMinDisplay: 0.6
-      reactionAutoAdvance: 0
+      boardFadeDuration: 0.4
+      reactionMinDisplay: 1
+      reactionAutoAdvance: 0.5
       lockInputUntilEntranceEnds: 1
   - kind: 0
     captionTop: You can also move vertically.
     captionBottom: 
     captionCenter: 
     advanceWhen: 1
+    reactionBoard: 0
     failureFilter: 0
     removeBlobIds: []
     revealBlobIds:
     - red-1
-    revealCells:
-    - {x: 1, y: 0}
+    revealCells: []
+    allowedSourceBlobIds: []
     showPointer: 1
     coachFrom: {x: 1, y: 1}
     coachTo: {x: 1, y: 0}
-    overrideTiming: 0
+    overrideTiming: 1
     timing:
-      holdBeforeTransition: 0.35
-      captionFadeOutDuration: 0.2
-      gapAfterFadeOut: 0.1
-      entranceOrder: 0
-      entranceGap: 0.1
+      holdBeforeTransition: 0.4
+      captionFadeOutDuration: 0.25
+      gapAfterFadeOut: 0.15
+      entranceOrder: 1
+      captionReadPause: 0.4
+      entranceGap: 0.15
       removeDuration: 0.25
       revealStyle: 1
       revealDuration: 0.45
-      revealStagger: 0.12
-      cellRevealDuration: 0.25
+      revealStagger: 0.2
+      cellRevealDuration: 0.3
       revealDistance: 1.5
       captionOrder: 0
-      captionFadeInDuration: 0.3
-      captionStagger: 0.35
-      pointerDelay: 0.6
-      reactionBoard: 0
+      captionFadeInDuration: 0.5
+      captionStagger: 1
+      pointerDelay: 0.75
       reactionDimAlpha: 0.2
-      boardFadeDuration: 0.3
-      reactionMinDisplay: 0.6
+      boardFadeDuration: 0.35
+      reactionMinDisplay: 0.85
       reactionAutoAdvance: 0
       lockInputUntilEntranceEnds: 1
   - kind: 0
@@ -189,36 +197,37 @@ MonoBehaviour:
     captionBottom: 
     captionCenter: 
     advanceWhen: 2
+    reactionBoard: 0
     failureFilter: 0
     removeBlobIds: []
     revealBlobIds:
     - nest
-    revealCells:
-    - {x: 0, y: 0}
+    revealCells: []
+    allowedSourceBlobIds: []
     showPointer: 0
     coachFrom: {x: 1, y: 0}
     coachTo: {x: 0, y: 0}
-    overrideTiming: 0
+    overrideTiming: 1
     timing:
-      holdBeforeTransition: 0.35
-      captionFadeOutDuration: 0.2
-      gapAfterFadeOut: 0.1
-      entranceOrder: 0
-      entranceGap: 0.1
+      holdBeforeTransition: 0.4
+      captionFadeOutDuration: 0.25
+      gapAfterFadeOut: 0.15
+      entranceOrder: 1
+      captionReadPause: 0.4
+      entranceGap: 0.15
       removeDuration: 0.25
       revealStyle: 1
       revealDuration: 0.45
-      revealStagger: 0.12
-      cellRevealDuration: 0.25
+      revealStagger: 0.2
+      cellRevealDuration: 0.3
       revealDistance: 1.5
       captionOrder: 0
-      captionFadeInDuration: 0.3
-      captionStagger: 0.35
-      pointerDelay: 0.6
-      reactionBoard: 0
+      captionFadeInDuration: 0.5
+      captionStagger: 0.4
+      pointerDelay: 0.75
       reactionDimAlpha: 0.2
-      boardFadeDuration: 0.3
-      reactionMinDisplay: 0.6
+      boardFadeDuration: 0.35
+      reactionMinDisplay: 0.85
       reactionAutoAdvance: 0
       lockInputUntilEntranceEnds: 1
   - kind: 1
@@ -226,33 +235,35 @@ MonoBehaviour:
     captionBottom: 
     captionCenter: You're a natural. Ready for a real puzzle?
     advanceWhen: 3
+    reactionBoard: 1
     failureFilter: 0
     removeBlobIds: []
     revealBlobIds: []
     revealCells: []
+    allowedSourceBlobIds: []
     showPointer: 0
     coachFrom: {x: 1, y: 0}
     coachTo: {x: 0, y: 0}
-    overrideTiming: 0
+    overrideTiming: 1
     timing:
-      holdBeforeTransition: 0.35
-      captionFadeOutDuration: 0.2
-      gapAfterFadeOut: 0.1
-      entranceOrder: 0
-      entranceGap: 0.1
+      holdBeforeTransition: 0.4
+      captionFadeOutDuration: 0.25
+      gapAfterFadeOut: 0.15
+      entranceOrder: 1
+      captionReadPause: 0.3
+      entranceGap: 0.15
       removeDuration: 0.25
       revealStyle: 1
       revealDuration: 0.45
-      revealStagger: 0.12
-      cellRevealDuration: 0.25
+      revealStagger: 0.18
+      cellRevealDuration: 0.3
       revealDistance: 1.5
       captionOrder: 0
-      captionFadeInDuration: 0.3
-      captionStagger: 0.35
-      pointerDelay: 0.6
-      reactionBoard: 1
+      captionFadeInDuration: 0.5
+      captionStagger: 0.8
+      pointerDelay: 0.7
       reactionDimAlpha: 0.2
-      boardFadeDuration: 0.3
-      reactionMinDisplay: 0.6
+      boardFadeDuration: 0.4
+      reactionMinDisplay: 1
       reactionAutoAdvance: 0
       lockInputUntilEntranceEnds: 1

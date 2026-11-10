@@ -15,25 +15,25 @@ MonoBehaviour:
   board: {fileID: 11400000, guid: 40a948f5118bc4bb0b5aa3cd78cd8ead, type: 2}
   stagedPieces: []
   defaultTiming:
-    holdBeforeTransition: 0.35
-    captionFadeOutDuration: 0.2
-    gapAfterFadeOut: 0.1
-    entranceOrder: 0
-    entranceGap: 0.1
+    holdBeforeTransition: 0.4
+    captionFadeOutDuration: 0.25
+    gapAfterFadeOut: 0.15
+    entranceOrder: 1
+    captionReadPause: 1.25
+    entranceGap: 0.15
     removeDuration: 0.25
     revealStyle: 1
     revealDuration: 0.45
-    revealStagger: 0.12
-    cellRevealDuration: 0.25
+    revealStagger: 0.18
+    cellRevealDuration: 0.3
     revealDistance: 1.5
     captionOrder: 0
-    captionFadeInDuration: 0.3
-    captionStagger: 0.35
-    pointerDelay: 0.6
-    reactionBoard: 0
+    captionFadeInDuration: 0.4
+    captionStagger: 1
+    pointerDelay: 0.7
     reactionDimAlpha: 0.2
-    boardFadeDuration: 0.3
-    reactionMinDisplay: 0.6
+    boardFadeDuration: 0.35
+    reactionMinDisplay: 0.85
     reactionAutoAdvance: 0
     lockInputUntilEntranceEnds: 1
   steps:
@@ -42,35 +42,74 @@ MonoBehaviour:
     captionBottom: 
     captionCenter: 
     advanceWhen: 2
+    reactionBoard: 0
     failureFilter: 8
     removeBlobIds: []
     revealBlobIds:
     - blue
     - nest
     revealCells: []
+    allowedSourceBlobIds: []
     showPointer: 1
     coachFrom: {x: 0, y: 0}
     coachTo: {x: 2, y: 0}
-    overrideTiming: 0
+    overrideTiming: 1
     timing:
-      holdBeforeTransition: 0.35
-      captionFadeOutDuration: 0.2
-      gapAfterFadeOut: 0.1
+      holdBeforeTransition: 0.4
+      captionFadeOutDuration: 0.25
+      gapAfterFadeOut: 0.15
       entranceOrder: 0
-      entranceGap: 0.1
+      captionReadPause: 1.4
+      entranceGap: 0.15
       removeDuration: 0.25
       revealStyle: 1
       revealDuration: 0.45
-      revealStagger: 0.12
-      cellRevealDuration: 0.25
+      revealStagger: 0.2
+      cellRevealDuration: 0.3
       revealDistance: 1.5
       captionOrder: 0
-      captionFadeInDuration: 0.3
-      captionStagger: 0.35
-      pointerDelay: 0.6
-      reactionBoard: 0
+      captionFadeInDuration: 0.5
+      captionStagger: 1
+      pointerDelay: 0.8
       reactionDimAlpha: 0.2
-      boardFadeDuration: 0.3
-      reactionMinDisplay: 0.6
-      reactionAutoAdvance: 0
+      boardFadeDuration: 0.35
+      reactionMinDisplay: 0.85
+      reactionAutoAdvance: 4.78
+      lockInputUntilEntranceEnds: 1
+  - kind: 1
+    captionTop: Excellent!
+    captionBottom: 
+    captionCenter: 'Blobsters can only nest in their own color. '
+    advanceWhen: 3
+    reactionBoard: 0
+    failureFilter: 8
+    removeBlobIds: []
+    revealBlobIds: []
+    revealCells: []
+    allowedSourceBlobIds: []
+    showPointer: 1
+    coachFrom: {x: 0, y: 0}
+    coachTo: {x: 2, y: 0}
+    overrideTiming: 1
+    timing:
+      holdBeforeTransition: 0.4
+      captionFadeOutDuration: 0.25
+      gapAfterFadeOut: 0.15
+      entranceOrder: 0
+      captionReadPause: 1.4
+      entranceGap: 0.15
+      removeDuration: 0.25
+      revealStyle: 1
+      revealDuration: 0.45
+      revealStagger: 0.2
+      cellRevealDuration: 0.3
+      revealDistance: 1.5
+      captionOrder: 0
+      captionFadeInDuration: 0.5
+      captionStagger: 1
+      pointerDelay: 0.8
+      reactionDimAlpha: 0.2
+      boardFadeDuration: 0.35
+      reactionMinDisplay: 0.85
+      reactionAutoAdvance: 1.78
       lockInputUntilEntranceEnds: 1

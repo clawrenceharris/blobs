@@ -54,22 +54,25 @@ namespace Blobs.Content
     [Serializable]
     public sealed class TutorialStepAssetData
     {
-        [Tooltip("Playable steps accept moves. Reaction slides show centered text over the dimmed board.")]
+        [Tooltip("Playable: board accepts moves. Reaction: tap-to-continue slide over a hidden, dimmed, or kept board.")]
         public TutorialStepKind kind = TutorialStepKind.Playable;
 
         [Header("Captions")]
         [FormerlySerializedAs("caption")]
-        [TextArea(1, 3), Tooltip("Top of the canvas. Used by Playable steps.")]
+        [TextArea(1, 3), Tooltip("Top of the canvas. Available on Playable and Reaction.")]
         public string captionTop;
 
-        [TextArea(1, 3), Tooltip("Bottom of the canvas. Optional second line for Playable steps.")]
+        [TextArea(1, 3), Tooltip("Bottom of the canvas. Available on Playable and Reaction.")]
         public string captionBottom;
 
-        [TextArea(1, 3), Tooltip("Centered on the canvas. Used by Reaction slides.")]
+        [TextArea(1, 3), Tooltip("Center of the canvas. Available on Playable and Reaction.")]
         public string captionCenter;
 
         [Tooltip("Playable: FailedMoveAttempt / SuccessfulMove / LevelComplete. Reaction: TapContinue.")]
         public TutorialAdvanceGate advanceWhen = TutorialAdvanceGate.SuccessfulMove;
+
+        [Tooltip("Reaction only: hide, dim, or keep the board behind the captions.")]
+        public TutorialReactionBoard reactionBoard = TutorialReactionBoard.Dim;
 
         [Tooltip("Only for FailedMoveAttempt. None accepts any rejected attempt.")]
         public MoveFailureReason failureFilter = MoveFailureReason.None;
@@ -83,8 +86,15 @@ namespace Blobs.Content
             "order. Board blobs not listed on any step are on the board from the start.")]
         public List<string> revealBlobIds = new();
 
-        [Tooltip("Board cells that open when this step starts. They are hidden until then.")]
+        [Tooltip("Board cells that open when this step starts. Optional when a revealed blob already " +
+            "sits on an empty cell — that cell opens automatically with the blob.")]
         public List<Vector2Int> revealCells = new();
+
+        [Header("Input lock (Playable only)")]
+        [Tooltip("When non-empty, only these blob ids may be selected or dragged as a move source. " +
+            "Leave empty to allow any legal source. Use this to stop the player from starting with " +
+            "the wrong blob on a teaching beat.")]
+        public List<string> allowedSourceBlobIds = new();
 
         [Header("Coach")]
         public bool showPointer;
@@ -92,7 +102,8 @@ namespace Blobs.Content
         public Vector2Int coachTo;
 
         [Header("Timing")]
-        [Tooltip("Use the timing below instead of the sequence defaults for the transition into this step.")]
+        [Tooltip("When enabled, this step uses the Timing block below. When off, the sequence Default Timing is used — " +
+            "edits in the nested Timing block are ignored until this is checked.")]
         public bool overrideTiming;
         public TutorialTimingAssetData timing = new();
     }

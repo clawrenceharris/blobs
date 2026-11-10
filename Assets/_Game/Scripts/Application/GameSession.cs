@@ -102,6 +102,7 @@ namespace Blobs.Application
         private int _committedMoveCount;
         private BoardState _restartBoard;
         private ObjectiveProgress _restartObjectives;
+        private HashSet<string> _allowedSourceBlobIds;
         public BoardState CurrentState => _board;
         /// <summary>
         /// Raised after a successful move or restart changes the session snapshot.
@@ -176,6 +177,8 @@ namespace Blobs.Application
             {
                 MoveFailureReason failure =
                     _resolver.ValidateSourceSelection(_board, blob.Id);
+                if (failure == MoveFailureReason.None && !IsAllowedSource(blob.Id))
+                    failure = MoveFailureReason.SourceCannotMove;
 
                 if (failure != MoveFailureReason.None)
                 {
@@ -480,6 +483,30 @@ namespace Blobs.Application
             BlobSelected?.Invoke(BlobSelectionResult.Cleared());
             SnapshotChanged?.Invoke(CreateSnapshot());
             return added;
+        }
+
+        /// <inheritdoc />
+        public void SetAllowedSourceBlobIds(IReadOnlyList<string> blobIds)
+        {
+            if (blobIds == null || blobIds.Count == 0)
+            {
+                _allowedSourceBlobIds = null;
+                return;
+            }
+
+            _allowedSourceBlobIds = new HashSet<string>(blobIds);
+            // Drop a held selection that the new step no longer allows as a source.
+            if (!string.IsNullOrEmpty(_selectedBlobId) && !IsAllowedSource(_selectedBlobId))
+            {
+                EndDragPreview();
+                _selectedBlobId = null;
+                BlobSelected?.Invoke(BlobSelectionResult.Cleared());
+            }
+        }
+
+        private bool IsAllowedSource(string blobId)
+        {
+            return _allowedSourceBlobIds == null || _allowedSourceBlobIds.Contains(blobId);
         }
 
         /// <summary>

@@ -9,14 +9,25 @@ namespace Blobs.Application
     /// </summary>
     public enum TutorialStepKind
     {
-        /// <summary>The shared board accepts moves, with optional top/bottom coaching text.</summary>
+        /// <summary>The shared board accepts moves. Captions may use top, bottom, and/or center.</summary>
         Playable,
 
         /// <summary>
-        /// Centered text over the dimmed or hidden board. Used to react to the previous move or
-        /// preface the next one.
+        /// Tap-to-continue slide. Captions may use top, bottom, and/or center over a hidden, dimmed,
+        /// or kept board.
         /// </summary>
         Reaction
+    }
+
+    /// <summary>What happens to the board behind a reaction slide.</summary>
+    public enum TutorialReactionBoard
+    {
+        /// <summary>Fades the board down so the prior result stays faintly readable.</summary>
+        Dim,
+        /// <summary>Fades the board out completely.</summary>
+        Hide,
+        /// <summary>Leaves the board fully visible.</summary>
+        Keep
     }
 
     /// <summary>
@@ -53,10 +64,12 @@ namespace Blobs.Application
             IReadOnlyList<BlobDefinition> revealBlobs,
             IReadOnlyList<GridPosition> revealCells,
             IReadOnlyList<string> removeBlobIds,
+            IReadOnlyList<string> allowedSourceBlobIds,
             bool showPointer,
             GridPosition coachFrom,
             GridPosition coachTo,
-            MoveFailureReason failureFilter)
+            MoveFailureReason failureFilter,
+            TutorialReactionBoard reactionBoard = TutorialReactionBoard.Dim)
         {
             Kind = kind;
             CaptionTop = captionTop ?? string.Empty;
@@ -66,10 +79,12 @@ namespace Blobs.Application
             RevealBlobs = revealBlobs ?? Array.Empty<BlobDefinition>();
             RevealCells = revealCells ?? Array.Empty<GridPosition>();
             RemoveBlobIds = removeBlobIds ?? Array.Empty<string>();
+            AllowedSourceBlobIds = allowedSourceBlobIds ?? Array.Empty<string>();
             ShowPointer = showPointer;
             CoachFrom = coachFrom;
             CoachTo = coachTo;
             FailureFilter = failureFilter;
+            ReactionBoard = reactionBoard;
         }
 
         /// <summary>
@@ -81,13 +96,15 @@ namespace Blobs.Application
             string captionTop,
             TutorialAdvanceGate advanceWhen,
             string captionBottom = null,
+            string captionCenter = null,
             IReadOnlyList<BlobDefinition> revealBlobs = null,
             IReadOnlyList<GridPosition> revealCells = null,
             bool showPointer = false,
             GridPosition coachFrom = default,
             GridPosition coachTo = default,
             MoveFailureReason failureFilter = MoveFailureReason.None,
-            IReadOnlyList<string> removeBlobIds = null)
+            IReadOnlyList<string> removeBlobIds = null,
+            IReadOnlyList<string> allowedSourceBlobIds = null)
         {
             if (advanceWhen == TutorialAdvanceGate.TapContinue)
                 throw new ArgumentException("Playable steps advance on a move gate.", nameof(advanceWhen));
@@ -96,33 +113,51 @@ namespace Blobs.Application
                 TutorialStepKind.Playable,
                 captionTop,
                 captionBottom,
-                captionCenter: null,
+                captionCenter,
                 advanceWhen,
                 revealBlobs,
                 revealCells,
                 removeBlobIds,
+                allowedSourceBlobIds,
                 showPointer,
                 coachFrom,
                 coachTo,
                 failureFilter);
         }
 
-        /// <summary>Centered reaction/preface slide. The board stays loaded underneath.</summary>
-        public static TutorialStep Reaction(string captionCenter)
+        /// <summary>
+        /// Tap-to-continue slide. Captions may use any combination of top, bottom, and center.
+        /// Board visibility (hide / dim / keep) is authored on the step.
+        /// </summary>
+        public static TutorialStep Reaction(
+            string captionTop = null,
+            string captionBottom = null,
+            string captionCenter = null,
+            TutorialReactionBoard reactionBoard = TutorialReactionBoard.Dim)
         {
+            if (string.IsNullOrWhiteSpace(captionTop) &&
+                string.IsNullOrWhiteSpace(captionBottom) &&
+                string.IsNullOrWhiteSpace(captionCenter))
+            {
+                throw new ArgumentException(
+                    "A reaction needs at least one of captionTop, captionBottom, or captionCenter.");
+            }
+
             return new TutorialStep(
                 TutorialStepKind.Reaction,
-                captionTop: null,
-                captionBottom: null,
+                captionTop,
+                captionBottom,
                 captionCenter,
                 TutorialAdvanceGate.TapContinue,
                 revealBlobs: null,
                 revealCells: null,
                 removeBlobIds: null,
+                allowedSourceBlobIds: null,
                 showPointer: false,
                 coachFrom: default,
                 coachTo: default,
-                failureFilter: MoveFailureReason.None);
+                failureFilter: MoveFailureReason.None,
+                reactionBoard);
         }
 
         public TutorialStepKind Kind { get; }
@@ -143,6 +178,12 @@ namespace Blobs.Application
         /// <summary>Blob ids that leave the board when this step starts, before reveals join.</summary>
         public IReadOnlyList<string> RemoveBlobIds { get; }
 
+        /// <summary>
+        /// When non-empty, only these blobs may be selected or dragged as a move source. Empty means
+        /// any legal source. Targets are never restricted, so a blocked blob can still be eaten.
+        /// </summary>
+        public IReadOnlyList<string> AllowedSourceBlobIds { get; }
+
         public bool HasReveals => RevealBlobs.Count > 0 || RevealCells.Count > 0;
 
         public bool ShowPointer { get; }
@@ -154,6 +195,14 @@ namespace Blobs.Application
         /// <see cref="MoveFailureReason.None"/> accepts any rejected attempt.
         /// </summary>
         public MoveFailureReason FailureFilter { get; }
+
+        /// <summary>Board treatment behind a reaction. Ignored on playable steps.</summary>
+        public TutorialReactionBoard ReactionBoard { get; }
+
+        public bool HasCaption =>
+            !string.IsNullOrWhiteSpace(CaptionTop) ||
+            !string.IsNullOrWhiteSpace(CaptionBottom) ||
+            !string.IsNullOrWhiteSpace(CaptionCenter);
     }
 
     /// <summary>

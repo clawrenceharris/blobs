@@ -123,29 +123,25 @@ namespace Blobs.Presentation
                 transition.AppendInterval(timing.captionFadeOutDuration);
             }
 
-            float boardAlpha = step.IsReaction ? ReactionAlpha(timing) : 1f;
+            float boardAlpha = step.IsReaction ? ReactionAlpha(step, timing) : 1f;
             if (!Mathf.Approximately(_board.BoardAlpha, boardAlpha))
                 transition.Insert(exitAt, _board.FadeBoardTo(boardAlpha, timing.boardFadeDuration));
         }
 
         private void AppendReaction(Sequence transition, TutorialStepChange change, TutorialTimingAssetData timing)
         {
-            TutorialStep step = change.Step;
-            Tween caption = _view != null
-                ? _view.CaptionIn(CoachCaptionSlot.Center, step.CaptionCenter, timing.captionFadeInDuration)
-                : null;
-            if (caption != null)
-                transition.Append(caption);
+            Sequence captions = CreateCaptionSequence(change.Step, timing);
+            if (captions != null)
+                transition.Append(captions);
 
             transition.AppendInterval(timing.reactionMinDisplay);
             transition.AppendCallback(ForStep(change, ArmReactionContinue));
 
-            float autoAdvance = timing.reactionAutoAdvance;
-            if (_view == null || !_view.HasContinueBlocker)
-                autoAdvance = Mathf.Max(autoAdvance, 1.5f);
-            if (autoAdvance > 0f)
+            // Only auto-advance when authored. A missing continue blocker is created at arm time;
+            // never invent a timeout that skips the player's read.
+            if (timing.reactionAutoAdvance > 0f)
             {
-                transition.AppendInterval(autoAdvance);
+                transition.AppendInterval(timing.reactionAutoAdvance);
                 transition.AppendCallback(ForStep(change, _sequencer.Continue));
             }
         }
@@ -178,7 +174,7 @@ namespace Blobs.Presentation
                     break;
                 case TutorialEntranceOrder.CaptionsThenReveal:
                     if (captions != null)
-                        revealAt += captionLength + timing.entranceGap;
+                        revealAt += captionLength + timing.captionReadPause + timing.entranceGap;
                     break;
             }
 
@@ -203,20 +199,42 @@ namespace Blobs.Presentation
 
             Tween top = _view.CaptionIn(CoachCaptionSlot.Top, step.CaptionTop, timing.captionFadeInDuration);
             Tween bottom = _view.CaptionIn(CoachCaptionSlot.Bottom, step.CaptionBottom, timing.captionFadeInDuration);
-            if (top == null && bottom == null)
+            Tween center = _view.CaptionIn(CoachCaptionSlot.Center, step.CaptionCenter, timing.captionFadeInDuration);
+            if (top == null && bottom == null && center == null)
                 return null;
 
-            Tween first = timing.captionOrder == TutorialCaptionOrder.BottomFirst ? bottom : top;
-            Tween second = timing.captionOrder == TutorialCaptionOrder.BottomFirst ? top : bottom;
+            Tween first;
+            Tween second;
+            switch (timing.captionOrder)
+            {
+                case TutorialCaptionOrder.BottomFirst:
+                    first = bottom ?? top ?? center;
+                    second = first == bottom ? (top ?? center) : (first == top ? center : null);
+                    break;
+                default:
+                    first = top ?? bottom ?? center;
+                    second = first == top ? (bottom ?? center) : (first == bottom ? center : null);
+                    break;
+            }
+
+            Tween third = null;
+            if (top != null && bottom != null && center != null)
+                third = center;
+
             float secondAt = timing.captionOrder == TutorialCaptionOrder.Together || first == null
                 ? 0f
                 : timing.captionStagger;
+            float thirdAt = timing.captionOrder == TutorialCaptionOrder.Together
+                ? 0f
+                : secondAt + timing.captionStagger;
 
             Sequence captions = DOTween.Sequence();
             if (first != null)
                 captions.Insert(0f, first);
             if (second != null)
                 captions.Insert(secondAt, second);
+            if (third != null)
+                captions.Insert(thirdAt, third);
             return captions;
         }
 
@@ -232,12 +250,12 @@ namespace Blobs.Presentation
             TutorialStep step = _current.Step;
             TutorialTimingAssetData timing = _asset.GetTiming(_current.Index);
 
-            _board.SetBoardAlpha(step.IsReaction ? ReactionAlpha(timing) : 1f);
+            _board.SetBoardAlpha(step.IsReaction ? ReactionAlpha(step, timing) : 1f);
             if (step.IsReaction)
             {
                 _board.SetInteractionLocked(true);
                 if (_view != null)
-                    _view.ShowCaptions(top: null, bottom: null, center: step.CaptionCenter);
+                    _view.ShowCaptions(step.CaptionTop, step.CaptionBottom, step.CaptionCenter);
                 ArmReactionContinue();
                 return;
             }
@@ -246,7 +264,7 @@ namespace Blobs.Presentation
             if (_view == null)
                 return;
 
-            _view.ShowCaptions(step.CaptionTop, step.CaptionBottom, center: null);
+            _view.ShowCaptions(step.CaptionTop, step.CaptionBottom, step.CaptionCenter);
             if (step.ShowPointer)
                 PlayPointer();
         }
@@ -321,9 +339,9 @@ namespace Blobs.Presentation
                 transition.Kill(complete);
         }
 
-        private static float ReactionAlpha(TutorialTimingAssetData timing)
+        private static float ReactionAlpha(TutorialStep step, TutorialTimingAssetData timing)
         {
-            return timing.reactionBoard switch
+            return step.ReactionBoard switch
             {
                 TutorialReactionBoard.Hide => 0f,
                 TutorialReactionBoard.Keep => 1f,

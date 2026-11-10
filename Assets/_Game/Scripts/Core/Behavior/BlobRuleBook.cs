@@ -123,7 +123,7 @@ namespace Blobs.Core
                     [BlobType.Normal] =
                         new BlobTraits(canBeSource: true, isClearable: true),
 
-                    [BlobType.Flag] =
+                    [BlobType.Nest] =
                         new BlobTraits(canBeSource: false, isClearable: false),
                     [BlobType.Trail] =
                         new BlobTraits(canBeSource: true, isClearable: true),
@@ -148,11 +148,11 @@ namespace Blobs.Core
                     [new MergeKey(BlobType.Normal, BlobType.Trail)] =
                         new NormalCollisionStrategy(),
 
-                    // Flag blobs
-                    [new MergeKey(BlobType.Normal, BlobType.Flag)] =
-                        new FlagCollisionStrategy(),
-                    [new MergeKey(BlobType.Trail, BlobType.Flag)] =
-                        new FlagCollisionStrategy(),
+                    // Nest blobs
+                    [new MergeKey(BlobType.Normal, BlobType.Nest)] =
+                        new NestCollisionStrategy(),
+                    [new MergeKey(BlobType.Trail, BlobType.Nest)] =
+                        new NestCollisionStrategy(),
 
                     // Rock blobs
                     [new MergeKey(BlobType.Normal, BlobType.Rock)] =
@@ -181,11 +181,11 @@ namespace Blobs.Core
                     [new MergeKey(BlobType.Normal, BlobType.Trail)] =
                         new NormalMoveStrategy(),
 
-                    // Flag blobs
-                    [new MergeKey(BlobType.Normal, BlobType.Flag)] =
-                        new NormalMoveStrategy(),
-                    [new MergeKey(BlobType.Trail, BlobType.Flag)] =
-                        new NormalMoveStrategy(),
+                    // Nest blobs
+                    [new MergeKey(BlobType.Normal, BlobType.Nest)] =
+                        new NestMoveStrategy(),
+                    [new MergeKey(BlobType.Trail, BlobType.Nest)] =
+                        new NestMoveStrategy(),
 
                     // Rock blobs
                     [new MergeKey(BlobType.Normal, BlobType.Rock)] =

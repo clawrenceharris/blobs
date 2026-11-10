@@ -55,14 +55,14 @@ namespace Blobs.Core
         public BlobSize Size { get; }
         public BlobColor Color { get; }
     }
-    public sealed class FlagBlobDefinition : BlobDefinition
+    public sealed class NestBlobDefinition : BlobDefinition
     {
-        public FlagBlobDefinition(
+        public NestBlobDefinition(
             string id,
             GridPosition position,
             BlobColor color,
             Direction facing = Direction.South)
-            : base(id, position, BlobType.Flag, facing)
+            : base(id, position, BlobType.Nest, facing)
         {
             Color = color;
         }

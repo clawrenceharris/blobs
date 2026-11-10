@@ -1,0 +1,258 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cf3c0b5b442d4e5e9ca0a2b096bf5b9, type: 3}
+  m_Name: Tutorial_02
+  m_EditorClassIdentifier: Blobs.Content::Blobs.Content.TutorialSequenceAsset
+  board: {fileID: 11400000, guid: df014b8de027f4ec189a295ab87da353, type: 2}
+  stagedPieces:
+  - {fileID: 11400000, guid: 02c37e5c887284fb5a1734476a092814, type: 2}
+  defaultTiming:
+    holdBeforeTransition: 0.35
+    captionFadeOutDuration: 0.2
+    gapAfterFadeOut: 0.1
+    entranceOrder: 0
+    entranceGap: 0.1
+    removeDuration: 0.25
+    revealStyle: 1
+    revealDuration: 0.45
+    revealStagger: 0.12
+    cellRevealDuration: 0.25
+    revealDistance: 1.5
+    captionOrder: 0
+    captionFadeInDuration: 0.3
+    captionStagger: 0.35
+    pointerDelay: 0.6
+    reactionBoard: 0
+    reactionDimAlpha: 0.2
+    boardFadeDuration: 0.3
+    reactionMinDisplay: 0.6
+    reactionAutoAdvance: 0
+    lockInputUntilEntranceEnds: 1
+  steps:
+  - kind: 0
+    captionTop: Another Blobster entered the board...
+    captionBottom: 
+    captionCenter: 
+    advanceWhen: 0
+    failureFilter: 8
+    removeBlobIds: []
+    revealBlobIds:
+    - blue-0
+    - blue-1
+    revealCells: []
+    showPointer: 1
+    coachFrom: {x: 0, y: 1}
+    coachTo: {x: 1, y: 1}
+    overrideTiming: 0
+    timing:
+      holdBeforeTransition: 0.35
+      captionFadeOutDuration: 0.2
+      gapAfterFadeOut: 0.1
+      entranceOrder: 0
+      entranceGap: 0.1
+      removeDuration: 0.25
+      revealStyle: 1
+      revealDuration: 0.45
+      revealStagger: 0.12
+      cellRevealDuration: 0.25
+      revealDistance: 1.5
+      captionOrder: 0
+      captionFadeInDuration: 0.3
+      captionStagger: 0.35
+      pointerDelay: 0.6
+      reactionBoard: 0
+      reactionDimAlpha: 0.2
+      boardFadeDuration: 0.3
+      reactionMinDisplay: 0.6
+      reactionAutoAdvance: 0
+      lockInputUntilEntranceEnds: 1
+  - kind: 0
+    captionTop: Blobsters never eat their own kind.
+    captionBottom: Try this red one instead!
+    captionCenter: 
+    advanceWhen: 1
+    failureFilter: 0
+    removeBlobIds:
+    - blue-1
+    revealBlobIds:
+    - red-0
+    revealCells: []
+    showPointer: 1
+    coachFrom: {x: 0, y: 1}
+    coachTo: {x: 1, y: 1}
+    overrideTiming: 0
+    timing:
+      holdBeforeTransition: 0.35
+      captionFadeOutDuration: 0.2
+      gapAfterFadeOut: 0.1
+      entranceOrder: 0
+      entranceGap: 0.1
+      removeDuration: 0.25
+      revealStyle: 1
+      revealDuration: 0.45
+      revealStagger: 0.12
+      cellRevealDuration: 0.25
+      revealDistance: 1.5
+      captionOrder: 0
+      captionFadeInDuration: 0.3
+      captionStagger: 0.35
+      pointerDelay: 0.6
+      reactionBoard: 0
+      reactionDimAlpha: 0.2
+      boardFadeDuration: 0.3
+      reactionMinDisplay: 0.6
+      reactionAutoAdvance: 0
+      lockInputUntilEntranceEnds: 1
+  - kind: 1
+    captionTop: 
+    captionBottom: 
+    captionCenter: Yum! You got the right idea!
+    advanceWhen: 3
+    failureFilter: 0
+    removeBlobIds: []
+    revealBlobIds: []
+    revealCells: []
+    showPointer: 0
+    coachFrom: {x: 0, y: 1}
+    coachTo: {x: 1, y: 1}
+    overrideTiming: 0
+    timing:
+      holdBeforeTransition: 0.35
+      captionFadeOutDuration: 0.2
+      gapAfterFadeOut: 0.1
+      entranceOrder: 0
+      entranceGap: 0.1
+      removeDuration: 0.25
+      revealStyle: 1
+      revealDuration: 0.45
+      revealStagger: 0.12
+      cellRevealDuration: 0.25
+      revealDistance: 1.5
+      captionOrder: 0
+      captionFadeInDuration: 0.3
+      captionStagger: 0.35
+      pointerDelay: 0.6
+      reactionBoard: 1
+      reactionDimAlpha: 0.2
+      boardFadeDuration: 0.3
+      reactionMinDisplay: 0.6
+      reactionAutoAdvance: 0
+      lockInputUntilEntranceEnds: 1
+  - kind: 0
+    captionTop: You can also move vertically.
+    captionBottom: 
+    captionCenter: 
+    advanceWhen: 1
+    failureFilter: 0
+    removeBlobIds: []
+    revealBlobIds:
+    - red-1
+    revealCells:
+    - {x: 1, y: 0}
+    showPointer: 1
+    coachFrom: {x: 1, y: 1}
+    coachTo: {x: 1, y: 0}
+    overrideTiming: 0
+    timing:
+      holdBeforeTransition: 0.35
+      captionFadeOutDuration: 0.2
+      gapAfterFadeOut: 0.1
+      entranceOrder: 0
+      entranceGap: 0.1
+      removeDuration: 0.25
+      revealStyle: 1
+      revealDuration: 0.45
+      revealStagger: 0.12
+      cellRevealDuration: 0.25
+      revealDistance: 1.5
+      captionOrder: 0
+      captionFadeInDuration: 0.3
+      captionStagger: 0.35
+      pointerDelay: 0.6
+      reactionBoard: 0
+      reactionDimAlpha: 0.2
+      boardFadeDuration: 0.3
+      reactionMinDisplay: 0.6
+      reactionAutoAdvance: 0
+      lockInputUntilEntranceEnds: 1
+  - kind: 0
+    captionTop: Now send it home!
+    captionBottom: 
+    captionCenter: 
+    advanceWhen: 2
+    failureFilter: 0
+    removeBlobIds: []
+    revealBlobIds:
+    - nest
+    revealCells:
+    - {x: 0, y: 0}
+    showPointer: 0
+    coachFrom: {x: 1, y: 0}
+    coachTo: {x: 0, y: 0}
+    overrideTiming: 0
+    timing:
+      holdBeforeTransition: 0.35
+      captionFadeOutDuration: 0.2
+      gapAfterFadeOut: 0.1
+      entranceOrder: 0
+      entranceGap: 0.1
+      removeDuration: 0.25
+      revealStyle: 1
+      revealDuration: 0.45
+      revealStagger: 0.12
+      cellRevealDuration: 0.25
+      revealDistance: 1.5
+      captionOrder: 0
+      captionFadeInDuration: 0.3
+      captionStagger: 0.35
+      pointerDelay: 0.6
+      reactionBoard: 0
+      reactionDimAlpha: 0.2
+      boardFadeDuration: 0.3
+      reactionMinDisplay: 0.6
+      reactionAutoAdvance: 0
+      lockInputUntilEntranceEnds: 1
+  - kind: 1
+    captionTop: 
+    captionBottom: 
+    captionCenter: You're a natural. Ready for a real puzzle?
+    advanceWhen: 3
+    failureFilter: 0
+    removeBlobIds: []
+    revealBlobIds: []
+    revealCells: []
+    showPointer: 0
+    coachFrom: {x: 1, y: 0}
+    coachTo: {x: 0, y: 0}
+    overrideTiming: 0
+    timing:
+      holdBeforeTransition: 0.35
+      captionFadeOutDuration: 0.2
+      gapAfterFadeOut: 0.1
+      entranceOrder: 0
+      entranceGap: 0.1
+      removeDuration: 0.25
+      revealStyle: 1
+      revealDuration: 0.45
+      revealStagger: 0.12
+      cellRevealDuration: 0.25
+      revealDistance: 1.5
+      captionOrder: 0
+      captionFadeInDuration: 0.3
+      captionStagger: 0.35
+      pointerDelay: 0.6
+      reactionBoard: 1
+      reactionDimAlpha: 0.2
+      boardFadeDuration: 0.3
+      reactionMinDisplay: 0.6
+      reactionAutoAdvance: 0
+      lockInputUntilEntranceEnds: 1

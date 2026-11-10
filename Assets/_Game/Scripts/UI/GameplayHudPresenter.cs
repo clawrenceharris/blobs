@@ -18,11 +18,10 @@ namespace Blobs.UI
         [SerializeField] private HudButtonView exitButton;
         [SerializeField] private HudButtonView nextLevelButton;
         [SerializeField] private HudButtonView previousLevelButton;
-
         [SerializeField] private GameObject completionRoot;
-        [SerializeField] private string playingStatus = "";
-        [SerializeField] private string completeStatus = "Complete!";
+        [SerializeField] private GameObject topHudRoot;
 
+        [SerializeField] private GameObject movesRoot;
         private IGameplaySessionHost _sessionHost;
         private IGameplayPresentationStatus _presentationStatus;
 
@@ -175,7 +174,7 @@ namespace Blobs.UI
         private void Render(GameSessionSnapshot snapshot)
         {
             if (moveCountText != null)
-                moveCountText.text = FormatMoveCount(snapshot);
+                moveCountText.SetText(snapshot.MoveCount.ToString(), snapshot.MoveCount);
 
             bool isComplete = snapshot != null && snapshot.IsComplete;
             if (!isComplete)
@@ -184,12 +183,17 @@ namespace Blobs.UI
             bool showCompletion = isComplete &&
                 (_presentationStatus == null || _completionPresentationReady);
 
-            if (statusText != null)
-                statusText.text = showCompletion ? completeStatus : playingStatus;
 
             if (completionRoot != null)
                 completionRoot.SetActive(showCompletion);
 
+            if (topHudRoot != null)
+                topHudRoot.SetActive(!_sessionHost.IsTutorial);
+            if (restartButton != null)
+                restartButton.gameObject.SetActive(!_sessionHost.IsTutorial);
+
+            if (movesRoot != null)
+                movesRoot.SetActive(!_sessionHost.IsTutorial);
 
 
             if (snapshot == null || isComplete || !snapshot.CanUndo)
@@ -246,15 +250,6 @@ namespace Blobs.UI
                 current.MoveCount == presented.MoveCount;
         }
 
-        private static string FormatMoveCount(GameSessionSnapshot snapshot)
-        {
-            if (snapshot == null)
-                return "0";
-
-            return snapshot.ParMoves > 0
-                ? $"{snapshot.MoveCount}/{snapshot.ParMoves}"
-                : snapshot.MoveCount.ToString();
-        }
 
         private void UnbindPresentationStatus()
         {

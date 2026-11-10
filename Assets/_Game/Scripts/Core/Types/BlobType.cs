@@ -3,7 +3,7 @@ namespace Blobs.Core
     public enum BlobType
     {
         Normal,
-        Flag,
+        Nest,
         Trail,
         Rock,
         Ghost,

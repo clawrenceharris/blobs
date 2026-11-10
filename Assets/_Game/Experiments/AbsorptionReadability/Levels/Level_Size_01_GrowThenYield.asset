@@ -53,7 +53,7 @@ MonoBehaviour:
         color: 2
         size: 3
     - rid: 604
-      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      type: {class: NestBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
         id: goal
         position: {x: 3, y: 2}

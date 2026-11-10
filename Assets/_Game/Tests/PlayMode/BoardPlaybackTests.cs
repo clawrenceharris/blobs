@@ -145,7 +145,7 @@ namespace Blobs.Tests.PlayMode
 
             session.ExecuteMove(new MoveIntent(
                 session.CurrentState.GetBlob("source"),
-                session.CurrentState.GetBlob("flag")));
+                session.CurrentState.GetBlob("nest")));
             Assert.That(session.IsComplete, Is.True);
             yield return WaitUntil(() => presenter.IsPresenting);
 
@@ -173,7 +173,7 @@ namespace Blobs.Tests.PlayMode
                 {
                     new NormalBlobDefinition("source", new GridPosition(0, 0), BlobColor.Red),
                     new NormalBlobDefinition("target", new GridPosition(1, 0), BlobColor.Blue),
-                    new FlagBlobDefinition("flag", new GridPosition(2, 0), BlobColor.Red)
+                    new NestBlobDefinition("nest", new GridPosition(2, 0), BlobColor.Red)
                 },
                 Array.Empty<TileDefinition>()));
         }

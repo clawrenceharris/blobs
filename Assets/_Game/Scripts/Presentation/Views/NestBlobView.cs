@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Blobs.Presentation
 {
     /// <summary>
-    /// Marks a Flag presentation as a nest home. After a reverse merge into this view,
+    /// Marks a Nest presentation as a nest home. After a reverse merge into this view,
     /// <see cref="NestVictorySequence"/> seats the arriving monster in the nest.
     /// </summary>
     [DisallowMultipleComponent]
@@ -118,6 +118,7 @@ namespace Blobs.Presentation
             visual.localPosition = settledLocalOffset;
             visual.localScale = _occupant.BaseVisualScale;
             ApplyOccupantSorting(visual, behindNest: false);
+            eggs.gameObject.SetActive(false);
             _occupant.Face?.ShowVictory();
         }
 

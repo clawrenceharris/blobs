@@ -1,4 +1,5 @@
 using System;
+using Blobs.Core;
 
 namespace Blobs.Application
 {
@@ -12,6 +13,15 @@ namespace Blobs.Application
         /// Current level index.
         /// </summary>
         int CurrentLevelIndex { get; }
+
+
+        /// <summary>
+        /// Whether the current level is a tutorial.
+        /// </summary>
+        bool IsTutorial { get; }
+
+
+        LevelDefinition CurrentLevel { get; }
         /// <summary>
         /// Raised whenever a new session is started and ready for input, presentation, and UI binding.
         /// </summary>

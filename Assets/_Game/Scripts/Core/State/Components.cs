@@ -6,17 +6,19 @@ namespace Blobs.Core
         public TrailComponent? Trail { get; }
         public SizeComponent? Size { get; }
         public FacingComponent? Facing { get; }
-
+        public OccupantComponent? Occupant { get; }
         public BlobComponents(
             ColorComponent? color = null,
             TrailComponent? trail = null,
             SizeComponent? size = null,
-            FacingComponent? facing = null)
+            FacingComponent? facing = null,
+            OccupantComponent? occupant = null)
         {
             Color = color;
             Trail = trail;
             Size = size;
             Facing = facing;
+            Occupant = occupant;
         }
 
         public BlobComponents WithColor(BlobColor color)
@@ -25,7 +27,8 @@ namespace Blobs.Core
                 color: new ColorComponent(color),
                 trail: Trail,
                 size: Size,
-                facing: Facing);
+                facing: Facing,
+                occupant: Occupant);
         }
         public BlobComponents WithTrail(BlobColor trailColor)
         {
@@ -33,7 +36,8 @@ namespace Blobs.Core
                 color: Color,
                 trail: new TrailComponent(trailColor),
                 size: Size,
-                facing: Facing);
+                facing: Facing,
+                occupant: Occupant);
         }
 
         public BlobComponents WithSize(BlobSize size)
@@ -42,7 +46,8 @@ namespace Blobs.Core
                 color: Color,
                 trail: Trail,
                 size: new SizeComponent(size),
-                facing: Facing);
+                facing: Facing,
+                occupant: Occupant);
         }
 
         public BlobComponents WithFacing(Direction direction)
@@ -51,9 +56,19 @@ namespace Blobs.Core
                 color: Color,
                 trail: Trail,
                 size: Size,
-                facing: new FacingComponent(direction));
+                facing: new FacingComponent(direction),
+                occupant: Occupant);
         }
 
+        public BlobComponents WithOccupant(string occupantId)
+        {
+            return new BlobComponents(
+                color: Color,
+                trail: Trail,
+                size: Size,
+                facing: Facing,
+                occupant: new OccupantComponent(occupantId));
+        }
     }
 
     public readonly struct ColorComponent
@@ -64,6 +79,16 @@ namespace Blobs.Core
         }
 
         public BlobColor Color { get; }
+    }
+
+    public readonly struct OccupantComponent
+    {
+        public OccupantComponent(string occupantId)
+        {
+            OccupantId = occupantId;
+        }
+
+        public string OccupantId { get; }
     }
 
     public readonly struct TrailComponent

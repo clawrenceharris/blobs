@@ -11,7 +11,7 @@ using UnityEngine.InputSystem;
 namespace Blobs.Input
 {
     /// <summary>
-    /// Converts pointer drags into source-to-target gameplay commands. This adapter maps screen/world input
+    /// Converts pointer swipes and two-tap selections into source-to-target gameplay commands. This adapter maps screen/world input
     /// to grid positions but does not update board visuals directly.
     /// </summary>
     public sealed class GameplayInputAdapter : MonoBehaviour
@@ -28,6 +28,10 @@ namespace Blobs.Input
         private InputControl _dragControl;
         private bool _previewActive;
         private GridPosition _dragCell;
+        private GridPosition _pressCell;
+        private bool _pressOnHeldSource;
+        private bool _hasHeldSelection;
+        private GridPosition _heldCell;
         private readonly List<RaycastResult> _uiHits = new();
         public event Action<BlobSelectionResult> BlobSelectionResolved;
 
@@ -136,6 +140,7 @@ namespace Blobs.Input
         {
             _dragControl = null;
             _previewActive = false;
+            _hasHeldSelection = false;
             _commands?.CancelDrag();
         }
 
@@ -153,6 +158,8 @@ namespace Blobs.Input
         {
             if (_commands == null) return;
             if (!isActiveAndEnabled) { CancelDrag(); return; }
+            if (!context.control.device.added) { CancelDrag(); return; }
+
             bool pressed = context.ReadValueAsButton();
             if (pressed && _dragControl != null) return;
             if (!pressed && _dragControl != context.control) return;
@@ -192,10 +199,24 @@ namespace Blobs.Input
                 }
 
                 GridPosition position = new(Mathf.RoundToInt(point.x), Mathf.RoundToInt(point.y));
+                if (_hasHeldSelection && position != _heldCell)
+                {
+                    BlobSelectionResult target = _commands.SelectBlobAt(position);
+                    _hasHeldSelection = target.MoveAttempted
+                        ? !target.MoveResult.Succeeded
+                        : target.HasSelection;
+                    if (!target.MoveAttempted) _heldCell = position;
+                    BlobSelectionResolved?.Invoke(target);
+                    return;
+                }
+
+                _pressOnHeldSource = _hasHeldSelection;
+                _hasHeldSelection = false;
                 BlobSelectionResult result = _commands.BeginDragAt(position);
                 _dragControl = result.HasSelection ? context.control : null;
                 _previewActive = result.HasSelection;
                 _dragCell = position;
+                _pressCell = position;
                 BlobSelectionResolved?.Invoke(result);
             }
             else
@@ -209,7 +230,17 @@ namespace Blobs.Input
                     return;
                 }
 
-                BlobSelectionResolved?.Invoke(_commands.EndDragAt(ResolveDragCell(point)));
+                GridPosition releaseCell = ResolveDragCell(point);
+                if (_pressOnHeldSource && releaseCell == _pressCell)
+                {
+                    CancelDrag();
+                    return;
+                }
+
+                BlobSelectionResult released = _commands.EndDragAt(releaseCell);
+                _hasHeldSelection = released.HasSelection && !released.MoveAttempted;
+                _heldCell = _pressCell;
+                BlobSelectionResolved?.Invoke(released);
             }
         }
 

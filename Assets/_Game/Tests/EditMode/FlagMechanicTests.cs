@@ -5,16 +5,16 @@ using NUnit.Framework;
 
 namespace Blobs.Tests.EditMode
 {
-    public sealed class FlagMechanicTests
+    public sealed class NestMechanicTests
     {
         [Test]
-        public void SelectingFlagAsSourceIsRejectedWithoutChangingSessionState()
+        public void SelectingNestAsSourceIsRejectedWithoutChangingSessionState()
         {
             GameSession session = CreateSession(
-                "flag_source_selection",
+                "nest_source_selection",
                 2,
                 1,
-                FlagBlob("purple_flag", BlobColor.Purple, 0, 0),
+                NestBlob("purple_nest", BlobColor.Purple, 0, 0),
                 NormalBlob("purple_normal", BlobColor.Purple, 1, 0));
 
             BlobSelectionResult result =
@@ -34,20 +34,20 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void ExplicitMoveWithFlagAsSourceIsRejectedWithoutMutatingBoard()
+        public void ExplicitMoveWithNestAsSourceIsRejectedWithoutMutatingBoard()
         {
             GameSession session = CreateSession(
-                "flag_explicit_source",
+                "nest_explicit_source",
                 2,
                 1,
-                FlagBlob("purple_flag", BlobColor.Purple, 0, 0),
+                NestBlob("purple_nest", BlobColor.Purple, 0, 0),
                 NormalBlob("purple_normal", BlobColor.Purple, 1, 0));
 
-            var flagBlob = session.CurrentState.GetBlob("purple_flag");
+            var nest = session.CurrentState.GetBlob("purple_nest");
             var normalBlob = session.CurrentState.GetBlob("purple_normal");
 
             MoveResult result = session.ExecuteMove(
-                new MoveIntent(flagBlob, normalBlob));
+                new MoveIntent(nest, normalBlob));
             GameSessionSnapshot snapshot = session.CreateSnapshot();
 
             Assert.That(result.Succeeded, Is.False);
@@ -60,75 +60,78 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void DifferentColorSourceCannotMergeIntoFlag()
+        public void DifferentColorSourceCannotMergeIntoNest()
         {
 
             GameSession session = CreateSession(
-                "flag_color_mismatch",
+                "nest_color_mismatch",
                 2,
                 1,
-                FlagBlob("purple_flag", BlobColor.Purple, 0, 0),
+                NestBlob("purple_nest", BlobColor.Purple, 0, 0),
                 NormalBlob("blue_normal", BlobColor.Blue, 1, 0));
 
-            var flagBlob = session.CurrentState.GetBlob("purple_flag");
+            var nest = session.CurrentState.GetBlob("purple_nest");
             var normalBlob = session.CurrentState.GetBlob("blue_normal");
 
             MoveResult result = session.ExecuteMove(
-                new MoveIntent(normalBlob, flagBlob));
+                new MoveIntent(normalBlob, nest));
             GameSessionSnapshot snapshot = session.CreateSnapshot();
 
             Assert.That(result.Succeeded, Is.False);
             Assert.That(
                 result.FailureReason,
-                Is.EqualTo(MoveFailureReason.FlagRequiresMatchingColor));
+                Is.EqualTo(MoveFailureReason.NestRequiresMatchingColor));
             Assert.That(result.Effects, Is.Empty);
             Assert.That(snapshot.Board.Blobs.Count, Is.EqualTo(2));
             Assert.That(snapshot.MoveCount, Is.Zero);
         }
 
         [Test]
-        public void MatchingSourceCannotMergeIntoFlagWhileAnotherBlobRemains()
+        public void OccupiedNestRejectsASecondMatchingSource()
         {
-
             GameSession session = CreateSession(
-                "flag_requires_last_blob",
+                "nest_already_occupied",
                 3,
-                2,
-                NormalBlob("purple_normal", BlobColor.Purple, 0, 0),
-                FlagBlob("purple_flag", BlobColor.Purple, 2, 0),
-                NormalBlob("blue_normal", BlobColor.Blue, 0, 1));
+                1,
+                NormalBlob("first", BlobColor.Purple, 0, 0),
+                NestBlob("purple_nest", BlobColor.Purple, 1, 0),
+                NormalBlob("second", BlobColor.Purple, 2, 0));
 
-            var normalBlob = session.CurrentState.GetBlob("purple_normal");
-            var flagBlob = session.CurrentState.GetBlob("purple_flag");
+            MoveResult first = session.ExecuteMove(new MoveIntent(
+                session.CurrentState.GetBlob("first"),
+                session.CurrentState.GetBlob("purple_nest")));
+            Assert.That(first.Succeeded, Is.True);
+            Assert.That(session.CurrentState.GetBlob("purple_nest").HasOccupant, Is.True);
 
-            MoveResult result = session.ExecuteMove(
-                new MoveIntent(normalBlob, flagBlob));
+            MoveResult second = session.ExecuteMove(new MoveIntent(
+                session.CurrentState.GetBlob("second"),
+                session.CurrentState.GetBlob("purple_nest")));
             GameSessionSnapshot snapshot = session.CreateSnapshot();
 
-            Assert.That(result.Succeeded, Is.False);
+            Assert.That(second.Succeeded, Is.False);
             Assert.That(
-                result.FailureReason,
-                Is.EqualTo(MoveFailureReason.FlagRequiresNoOtherBlobsOfSameColor));
-            Assert.That(result.Effects, Is.Empty);
-            Assert.That(snapshot.Board.Blobs.Count, Is.EqualTo(3));
-            Assert.That(snapshot.MoveCount, Is.Zero);
+                second.FailureReason,
+                Is.EqualTo(MoveFailureReason.NestAlreadyOccupied));
+            Assert.That(second.Effects, Is.Empty);
+            Assert.That(snapshot.Board.GetBlob("second"), Is.Not.Null);
+            Assert.That(snapshot.Board.Blobs.Count, Is.EqualTo(2));
         }
 
         [Test]
-        public void FlagMergeStillRequiresRowOrColumnAlignment()
+        public void NestMergeStillRequiresRowOrColumnAlignment()
         {
             GameSession session = CreateSession(
-                "flag_requires_alignment",
+                "nest_requires_alignment",
                 2,
                 2,
                 NormalBlob("purple_normal", BlobColor.Purple, 0, 0),
-                FlagBlob("purple_flag", BlobColor.Purple, 1, 1));
+                NestBlob("purple_nest", BlobColor.Purple, 1, 1));
 
             var normal = session.CurrentState.GetBlob("purple_normal");
-            var flag = session.CurrentState.GetBlob("purple_flag");
+            var nest = session.CurrentState.GetBlob("purple_nest");
 
             MoveResult result = session.ExecuteMove(
-                new MoveIntent(normal, flag));
+                new MoveIntent(normal, nest));
 
             Assert.That(result.Succeeded, Is.False);
             Assert.That(
@@ -138,24 +141,24 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void BlobOnPathChainMergesBeforeFinalFlagCapture()
+        public void BlobOnPathChainMergesBeforeFinalNestCapture()
         {
             // Chain merging replaced BlockedPath: the mover merges with every
             // occupant on the path, so a valid intermediate merge followed by a
-            // flag capture resolves in a single move.
+            // nest merge resolves in a single move.
             GameSession session = CreateSession(
-                "flag_chain_merge_path",
+                "nest_chain_merge_path",
                 3,
                 1,
                 NormalBlob("purple_normal", BlobColor.Purple, 0, 0),
                 NormalBlob("blue_blocker", BlobColor.Blue, 1, 0),
-                FlagBlob("purple_flag", BlobColor.Purple, 2, 0));
+                NestBlob("purple_nest", BlobColor.Purple, 2, 0));
 
             var normalBlob = session.CurrentState.GetBlob("purple_normal");
-            var flagBlob = session.CurrentState.GetBlob("purple_flag");
+            var nest = session.CurrentState.GetBlob("purple_nest");
 
             MoveResult result = session.ExecuteMove(
-                new MoveIntent(normalBlob, flagBlob));
+                new MoveIntent(normalBlob, nest));
             GameSessionSnapshot snapshot = session.CreateSnapshot();
 
             Assert.That(result.Succeeded, Is.True);
@@ -167,29 +170,29 @@ namespace Blobs.Tests.EditMode
                 result.Steps[1].Kind,
                 Is.EqualTo(MoveStepKind.Merge));
             Assert.That(snapshot.Board.Blobs.Count, Is.EqualTo(1));
-            Assert.That(snapshot.Board.Blobs.Single().Id, Is.EqualTo("purple_flag"));
+            Assert.That(snapshot.Board.Blobs.Single().Id, Is.EqualTo("purple_nest"));
             Assert.That(snapshot.MoveCount, Is.EqualTo(1));
             Assert.That(snapshot.IsComplete, Is.True);
         }
 
         [Test]
-        public void InvalidIntermediateMergeRejectsWholeFlagMove()
+        public void InvalidIntermediateMergeRejectsWholeNestMove()
         {
             // The blocker matches the mover's color, so the intermediate merge is
             // invalid and the whole intent fails atomically.
             GameSession session = CreateSession(
-                "flag_invalid_chain_link",
+                "nest_invalid_chain_link",
                 3,
                 1,
                 NormalBlob("purple_normal", BlobColor.Purple, 0, 0),
                 NormalBlob("purple_blocker", BlobColor.Purple, 1, 0),
-                FlagBlob("purple_flag", BlobColor.Purple, 2, 0));
+                NestBlob("purple_nest", BlobColor.Purple, 2, 0));
 
             var normalBlob = session.CurrentState.GetBlob("purple_normal");
-            var flagBlob = session.CurrentState.GetBlob("purple_flag");
+            var nest = session.CurrentState.GetBlob("purple_nest");
 
             MoveResult result = session.ExecuteMove(
-                new MoveIntent(normalBlob, flagBlob));
+                new MoveIntent(normalBlob, nest));
 
             Assert.That(result.Succeeded, Is.False);
             Assert.That(
@@ -200,22 +203,22 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void LastMatchingSourceMergesIntoFlagAndIsConsumed()
+        public void LastMatchingSourceMergesIntoNestAndIsConsumed()
         {
             GridPosition sourcePosition = new GridPosition(0, 0);
-            GridPosition flagPosition = new GridPosition(2, 0);
+            GridPosition nestPosition = new GridPosition(2, 0);
             GameSession session = CreateSession(
-                "flag_success",
+                "nest_success",
                 3,
                 1,
                 NormalBlob("purple_normal", BlobColor.Purple, sourcePosition.X, sourcePosition.Y),
-                FlagBlob("purple_flag", BlobColor.Purple, flagPosition.X, flagPosition.Y));
+                NestBlob("purple_nest", BlobColor.Purple, nestPosition.X, nestPosition.Y));
 
             var normalBlob = session.CurrentState.GetBlob("purple_normal");
-            var flagBlob = session.CurrentState.GetBlob("purple_flag");
+            var nest = session.CurrentState.GetBlob("purple_nest");
 
             MoveResult result = session.ExecuteMove(
-                new MoveIntent(normalBlob, flagBlob));
+                new MoveIntent(normalBlob, nest));
             GameSessionSnapshot snapshot = session.CreateSnapshot();
 
             Assert.That(result.Succeeded, Is.True);
@@ -223,48 +226,52 @@ namespace Blobs.Tests.EditMode
             // Per-tile timeline: traverse 0,0 -> 1,0, then the capture beat.
             Assert.That(result.Effects.Count, Is.EqualTo(2));
 
-            MergeEffect effect = result.Effects[1] as MergeEffect;
+            var effect = result.Effects[1] as MergeIntoNestEffect;
 
             Assert.That(effect, Is.Not.Null);
-            Assert.That(effect.MovingBlobId, Is.EqualTo("purple_normal"));
-            Assert.That(effect.TargetBlobId, Is.EqualTo("purple_flag"));
+            Assert.That(effect.SourceId, Is.EqualTo("purple_normal"));
+            Assert.That(effect.NestId, Is.EqualTo("purple_nest"));
             Assert.That(effect.From, Is.EqualTo(new GridPosition(1, 0)));
-            Assert.That(effect.To, Is.EqualTo(flagPosition));
+            Assert.That(effect.To, Is.EqualTo(nestPosition));
 
             Assert.That(snapshot.Board.Blobs.Count, Is.EqualTo(1));
-            Assert.That(snapshot.Board.Blobs.Single().Id, Is.EqualTo("purple_flag"));
-            Assert.That(snapshot.Board.Blobs.Single().Type, Is.EqualTo(BlobType.Flag));
-            Assert.That(snapshot.Board.Blobs.Single().Position, Is.EqualTo(flagPosition));
+            BlobState remaining = snapshot.Board.Blobs.Single();
+            Assert.That(remaining.Id, Is.EqualTo("purple_nest"));
+            Assert.That(remaining.Type, Is.EqualTo(BlobType.Nest));
+            Assert.That(remaining.Position, Is.EqualTo(nestPosition));
+            Assert.That(remaining.HasOccupant, Is.True);
+            Assert.That(remaining.Components.Occupant?.OccupantId, Is.EqualTo("purple_normal"));
             Assert.That(snapshot.MoveCount, Is.EqualTo(1));
             Assert.That(snapshot.IsComplete, Is.True);
         }
 
         [Test]
-        public void NormalMergeCanClearOtherBlobBeforeFinalFlagMerge()
+        public void NormalMergeCanClearOtherBlobBeforeFinalNestMerge()
         {
             GameSession session = CreateSession(
-                "flag_full_sequence",
+                "nest_full_sequence",
                 3,
                 1,
                 NormalBlob("purple_normal", BlobColor.Purple, 0, 0),
                 NormalBlob("blue_normal", BlobColor.Blue, 1, 0),
-                FlagBlob("purple_flag", BlobColor.Purple, 2, 0));
+                NestBlob("purple_nest", BlobColor.Purple, 2, 0));
 
             var purpleBlob = session.CurrentState.GetBlob("purple_normal");
             var blueBlob = session.CurrentState.GetBlob("blue_normal");
-            var flagBlob = session.CurrentState.GetBlob("purple_flag");
+            var nest = session.CurrentState.GetBlob("purple_nest");
 
             MoveResult normalMerge = session.ExecuteMove(
                 new MoveIntent(purpleBlob, blueBlob));
-            MoveResult flagMerge = session.ExecuteMove(
-                new MoveIntent(session.CurrentState.GetBlob("purple_normal"), flagBlob));
+            MoveResult nestMerge = session.ExecuteMove(
+                new MoveIntent(session.CurrentState.GetBlob("purple_normal"), nest));
             GameSessionSnapshot snapshot = session.CreateSnapshot();
 
             Assert.That(normalMerge.Succeeded, Is.True);
-            Assert.That(flagMerge.Succeeded, Is.True);
-            Assert.That(flagMerge.Effects.Single(), Is.TypeOf<MergeEffect>());
+            Assert.That(nestMerge.Succeeded, Is.True);
+            Assert.That(nestMerge.Effects.Single(), Is.TypeOf<MergeIntoNestEffect>());
             Assert.That(snapshot.Board.Blobs.Count, Is.EqualTo(1));
-            Assert.That(snapshot.Board.Blobs.Single().Id, Is.EqualTo("purple_flag"));
+            Assert.That(snapshot.Board.Blobs.Single().Id, Is.EqualTo("purple_nest"));
+            Assert.That(snapshot.Board.Blobs.Single().HasOccupant, Is.True);
             Assert.That(snapshot.MoveCount, Is.EqualTo(2));
             Assert.That(snapshot.IsComplete, Is.True);
         }
@@ -296,13 +303,13 @@ namespace Blobs.Tests.EditMode
                 color);
         }
 
-        private static FlagBlobDefinition FlagBlob(
+        private static NestBlobDefinition NestBlob(
             string id,
             BlobColor color,
             int x,
             int y)
         {
-            return new FlagBlobDefinition(
+            return new NestBlobDefinition(
                 id,
                 new GridPosition(x, y),
                 color);

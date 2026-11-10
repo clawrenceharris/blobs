@@ -5,7 +5,7 @@ namespace Blobs.Core
     /// <summary>
     /// Shapes the selected source/target intent before the resolver walks the path.
     /// Use a move strategy for pair-level validation or rare whole-route changes that
-    /// must be known before per-tile simulation begins, such as flag eligibility or a
+    /// must be known before per-tile simulation begins, such as nest eligibility or a
     /// mechanic that changes the starting point, ending point, source, or intended target.
     /// </summary>
     /// <remarks>
@@ -38,22 +38,23 @@ namespace Blobs.Core
     }
 
     /// <summary>
-    /// Pair-level gate for flag capture intents. The actual capture is still resolved
-    /// by <see cref="FlagCollisionStrategy"/> when the mover reaches the flag cell.
+    /// Pair-level gate for nest merge intents. The actual merge is still resolved
+    /// by <see cref="NestCollisionStrategy"/> when the mover reaches the nest cell.
     /// </summary>
-    public sealed class FlagMoveStrategy : IMoveStrategy
+    public sealed class NestMoveStrategy : IMoveStrategy
     {
         public MovePlan BuildPlan(MoveContext context)
         {
             var source = context.Source;
-            var target = context.Target;
+            var nest = context.Target;
 
             if (source.Type != BlobType.Normal)
-                return context.Plan.Failed(MoveFailureReason.FlagRequiresNormalSource);
-            if (source.Components.Color?.Color != target.Components.Color?.Color)
-                return context.Plan.Failed(MoveFailureReason.FlagRequiresMatchingColor);
-
-            return context.Plan.Success(source, target);
+                return context.Plan.Failed(MoveFailureReason.NestRequiresNormalSource);
+            if (source.Components.Color?.Color != nest.Components.Color?.Color)
+                return context.Plan.Failed(MoveFailureReason.NestRequiresMatchingColor);
+            if (nest.HasOccupant)
+                return context.Plan.Failed(MoveFailureReason.NestAlreadyOccupied);
+            return context.Plan.Success(source, nest);
 
         }
     }

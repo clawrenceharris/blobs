@@ -14,18 +14,18 @@ namespace Blobs.Tests.EditMode
         {
             var board = new BoardState(2, 1, new[]
             {
-                new BlobState("flag", BlobType.Flag, new GridPosition(0, 0)).WithColor(BlobColor.Red),
+                new BlobState("nest", BlobType.Nest, new GridPosition(0, 0)).WithColor(BlobColor.Red),
                 new BlobState("remaining", type, new GridPosition(1, 0)).WithColor(BlobColor.Red)
             }, Array.Empty<TileState>());
             Assert.That(ObjectiveEvaluator.IsComplete(board), Is.EqualTo(expected));
         }
 
         [Test]
-        public void FlagAloneIsComplete()
+        public void NestAloneIsComplete()
         {
             var board = new BoardState(1, 1, new[]
             {
-                new BlobState("flag", BlobType.Flag, new GridPosition(0, 0)).WithColor(BlobColor.Red)
+                new BlobState("nest", BlobType.Nest, new GridPosition(0, 0)).WithColor(BlobColor.Red)
             }, Array.Empty<TileState>());
             Assert.That(ObjectiveEvaluator.IsComplete(board), Is.True);
         }

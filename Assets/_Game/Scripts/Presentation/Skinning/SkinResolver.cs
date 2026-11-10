@@ -31,7 +31,7 @@ namespace Blobs.Presentation
         }
 
     }
-    public sealed class FlagBlobSkinResolver : IBlobSkinResolver
+    public sealed class NestBlobSkinResolver : IBlobSkinResolver
     {
         public Skin ResolveSkin(BlobColor color, LevelColorPaletteAsset palette)
         {

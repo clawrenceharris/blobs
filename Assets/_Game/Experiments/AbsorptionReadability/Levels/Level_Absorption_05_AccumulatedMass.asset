@@ -46,5 +46,5 @@ MonoBehaviour:
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data: {id: five, position: {x: 4, y: 1}, type: 0, color: 4, size: 2}
     - rid: 506
-      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      type: {class: NestBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data: {id: goal, position: {x: 4, y: 2}, type: 1, color: 0}

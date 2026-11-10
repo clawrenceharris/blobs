@@ -10,14 +10,13 @@ namespace Blobs.Core
         NotAligned,
         PathBlocked,
         UnsupportedInteraction,
-
         NormalMergeRequiresDifferentColors,
-        FlagRequiresMatchingColor,
-        FlagRequiresNoOtherBlobsOfSameColor,
-        FlagRequiresNormalSource,
-        FlagCaptureRequired,
+        NestRequiresMatchingColor,
+        NestRequiresNoOtherBlobsOfSameColor,
+        NestRequiresNormalSource,
+        NestAlreadyOccupied,
+        NestingRequired,
         NormalMergeRequiresSize,
-
     }
 
     public static class MoveFailureReasonExtensions
@@ -32,10 +31,11 @@ namespace Blobs.Core
             {
                 case MoveFailureReason.NormalMergeRequiresDifferentColors:
                 case MoveFailureReason.NormalMergeRequiresSize:
-                case MoveFailureReason.FlagRequiresMatchingColor:
-                case MoveFailureReason.FlagRequiresNoOtherBlobsOfSameColor:
-                case MoveFailureReason.FlagRequiresNormalSource:
-                case MoveFailureReason.FlagCaptureRequired:
+                case MoveFailureReason.NestRequiresMatchingColor:
+                case MoveFailureReason.NestRequiresNoOtherBlobsOfSameColor:
+                case MoveFailureReason.NestRequiresNormalSource:
+                case MoveFailureReason.NestAlreadyOccupied:
+                case MoveFailureReason.NestingRequired:
                     return true;
                 default:
                     return false;

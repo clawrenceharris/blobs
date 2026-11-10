@@ -14,15 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
   levelId: level-01
   schemaVersion: 1
-  width: 3
-  height: 1
-  emptyPositions: []
+  width: 2
+  height: 2
+  emptyPositions:
+  - {x: 1, y: 1}
   blobs:
+  - rid: 7368861676701745344
   - rid: 7368861676701745345
-  - rid: 7368861676701745346
+  - rid: 2084607085137100862
   tiles: []
-  objective: 0
-  parMoves: 1
+  objective:
+    items:
+    - target:
+        rid: 2084607058465259647
+      amount: 1
+  parMoves: 2
   palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
   showSwipeCoach: 1
   coachFrom: {x: 0, y: 2}
@@ -31,20 +37,37 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 7368861676701745345
+    - rid: 2084607058465259647
+      type: {class: BlobObjectiveTargetAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        type: 1
+        matchColor: 1
+        color: 0
+        matchSize: 0
+        size: 2
+    - rid: 2084607085137100862
+      type: {class: NestBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blob-2
+        position: {x: 1, y: 0}
+        type: 1
+        facing: 2
+        color: 0
+    - rid: 7368861676701745344
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
         id: blob-0
+        position: {x: 0, y: 1}
+        type: 0
+        facing: 2
+        color: 0
+        size: 2
+    - rid: 7368861676701745345
+      type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
+      data:
+        id: blob-1
         position: {x: 0, y: 0}
         type: 0
         facing: 2
         color: 1
         size: 2
-    - rid: 7368861676701745346
-      type: {class: FlagBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
-      data:
-        id: blob-1
-        position: {x: 2, y: 0}
-        type: 1
-        facing: 2
-        color: 1

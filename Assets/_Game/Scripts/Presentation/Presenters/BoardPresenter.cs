@@ -7,6 +7,7 @@ using Blobs.Content;
 using Blobs.Core;
 using UnityEngine;
 using DG.Tweening;
+using System.Linq;
 
 namespace Blobs.Presentation
 {
@@ -26,6 +27,8 @@ namespace Blobs.Presentation
         private CoachPointerView _coachPointerView;
         [SerializeField, Range(0f, 1f)] private float cellOpacity = 0.15f;
         [SerializeField] private float cellSize = 1.25f;
+        [SerializeField] private GameObject cellPrefab;
+        [SerializeField] private Transform cellRoot;
 
         [SerializeField] private Vector2 origin;
         private PresentationTimeline _effectTimeline;
@@ -44,7 +47,221 @@ namespace Blobs.Presentation
 
         public float CellSize => cellSize;
         public Vector2 Origin => origin;
+
+        /// <summary>Board-space coach pointer shared with level and tutorial coaching. May be null.</summary>
+        public CoachPointerView CoachPointerView => _coachPointerView;
+
+        private readonly Dictionary<SpriteRenderer, float> _authoredAlpha = new();
+        private readonly List<SpriteRenderer> _rendererBuffer = new();
+        private float _boardAlpha = 1f;
+
+        /// <summary>
+        /// When true, queued commands ignore board input. Used to keep taps from skipping a tutorial
+        /// entrance or acting on the board behind a reaction slide.
+        /// </summary>
+        public bool IsInteractionLocked { get; private set; }
+
+        public void SetInteractionLocked(bool locked)
+        {
+            IsInteractionLocked = locked;
+        }
+
+        /// <summary>Opacity multiplier applied to every cell, blob, and tile renderer.</summary>
+        public float BoardAlpha => _boardAlpha;
+
+        public void SetBoardAlpha(float alpha)
+        {
+            _boardAlpha = Mathf.Clamp01(alpha);
+            ApplyBoardAlpha(cellRoot);
+            ApplyBoardAlpha(_blobPresenter != null ? _blobPresenter.Root : null);
+            ApplyBoardAlpha(_tilePresenter != null ? _tilePresenter.Root : null);
+            if (_boardAlpha >= 1f)
+                _authoredAlpha.Clear();
+            if (_boardAlpha <= 0f && _swipeIndicatorView != null)
+                _swipeIndicatorView.HideImmediately();
+        }
+
+        /// <summary>Fades the whole board from its opacity when the tween starts. Meant to be nested in a caller's sequence.</summary>
+        public Tween FadeBoardTo(float alpha, float duration)
+        {
+            return DOTween.To(() => _boardAlpha, SetBoardAlpha, Mathf.Clamp01(alpha), duration)
+                .SetEase(Ease.InOutSine);
+        }
+
+        private void ApplyBoardAlpha(Transform root)
+        {
+            if (root == null)
+                return;
+
+            root.GetComponentsInChildren(true, _rendererBuffer);
+            foreach (SpriteRenderer renderer in _rendererBuffer)
+            {
+                if (IsOverlay(renderer.transform))
+                    continue;
+                if (!_authoredAlpha.TryGetValue(renderer, out float authored))
+                {
+                    authored = renderer.color.a;
+                    _authoredAlpha.Add(renderer, authored);
+                }
+
+                Color color = renderer.color;
+                color.a = authored * _boardAlpha;
+                renderer.color = color;
+            }
+            _rendererBuffer.Clear();
+        }
+
+        /// <summary>The coach pointer and swipe indicator own their opacity even when parented under a board root.</summary>
+        private bool IsOverlay(Transform candidate)
+        {
+            return (_coachPointerView != null && candidate.IsChildOf(_coachPointerView.transform)) ||
+                (_swipeIndicatorView != null && candidate.IsChildOf(_swipeIndicatorView.transform));
+        }
+
+        /// <summary>
+        /// Builds an entrance meant to be nested in a caller's sequence for pieces that are already in Core state: cells grow
+        /// in first, then blobs enter one after another in list order. Views that do not exist yet are
+        /// created hidden immediately so nothing pops in before its turn.
+        /// </summary>
+        public Sequence CreateRevealSequence(
+            IReadOnlyList<GridPosition> cells,
+            IReadOnlyList<string> blobIds,
+            BoardRevealOptions options)
+        {
+            Sequence sequence = DOTween.Sequence();
+            float cellStagger = options.Stagger * 0.5f;
+            float at = 0f;
+            int cellCount = 0;
+
+            if (cells != null)
+            {
+                foreach (GridPosition position in cells)
+                {
+                    GameObject cell = FindCell(position) ?? CreateCell(position.X, position.Y);
+                    if (cell == null)
+                        continue;
+
+                    Transform cellTransform = cell.transform;
+                    Vector3 scale = cellTransform.localScale;
+                    cellTransform.localScale = Vector3.zero;
+                    sequence.Insert(at, cellTransform.DOScale(scale, options.CellDuration).SetEase(Ease.OutBack));
+                    at += cellStagger;
+                    cellCount++;
+                }
+            }
+
+            at = cellCount > 0 ? at - cellStagger + options.CellDuration * 0.6f : 0f;
+
+            if (blobIds == null || blobIds.Count == 0 || _state == null)
+                return sequence;
+
+            BoardState board = _state.CreateSnapshot().Board;
+            foreach (string id in blobIds)
+            {
+                if (!TryGetBlobView(id, out BlobView view))
+                {
+                    BlobState blob = board.GetBlob(id);
+                    if (blob == null || !_blobPresenter.TryCreateView(blob, out view))
+                        continue;
+                }
+
+                InsertBlobEntrance(sequence, view.transform, at, options);
+                at += options.Stagger;
+            }
+
+            if (_boardAlpha < 1f)
+                SetBoardAlpha(_boardAlpha);
+            return sequence;
+        }
+
+        /// <summary>
+        /// Builds a shrink-away for blobs already removed from Core state. Their views are retired
+        /// immediately and destroyed when the tween completes, including when it is completed early.
+        /// </summary>
+        public Sequence CreateRemovalSequence(IReadOnlyList<string> blobIds, float duration)
+        {
+            Sequence sequence = DOTween.Sequence();
+            if (blobIds == null)
+                return sequence;
+
+            foreach (string id in blobIds)
+            {
+                if (!_blobPresenter.TryRetireView(id, out BlobView view))
+                    continue;
+
+                Transform viewTransform = view.transform;
+                Vector3 scale = viewTransform.localScale;
+                sequence.Insert(0f, DOTween.To(
+                        () => 0f,
+                        progress =>
+                        {
+                            if (view == null)
+                                return;
+                            if (progress >= 1f)
+                                _blobPresenter.DestroyRetiringView(view);
+                            else
+                                viewTransform.localScale = scale * (1f - progress);
+                        },
+                        1f,
+                        Mathf.Max(0.0001f, duration))
+                    .SetEase(Ease.InBack));
+            }
+
+            return sequence;
+        }
+
+        private void InsertBlobEntrance(Sequence sequence, Transform view, float at, BoardRevealOptions options)
+        {
+            Vector3 scale = view.localScale;
+            Vector3 target = view.localPosition;
+            float duration = Mathf.Max(0.0001f, options.Duration);
+            float distance = options.Distance * cellSize;
+            view.localScale = Vector3.zero;
+
+            Vector3 offset;
+            Ease ease = Ease.OutBack;
+            switch (options.Style)
+            {
+                case BlobRevealStyle.Pop:
+                    sequence.Insert(at, view.DOScale(scale, duration).SetEase(Ease.OutBack));
+                    return;
+                case BlobRevealStyle.Instant:
+                    // Tween (not callback) so completing the sequence early still shows the blob.
+                    sequence.Insert(at, view.DOScale(scale, 0.0001f));
+                    return;
+                case BlobRevealStyle.DropIn:
+                    offset = Vector3.up * distance;
+                    ease = Ease.OutBounce;
+                    break;
+                case BlobRevealStyle.SlideFromLeft:
+                    offset = Vector3.left * distance;
+                    break;
+                case BlobRevealStyle.SlideFromRight:
+                    offset = Vector3.right * distance;
+                    break;
+                case BlobRevealStyle.RiseFromBelow:
+                    offset = Vector3.down * distance;
+                    break;
+                default:
+                    offset = Vector3.zero;
+                    break;
+            }
+
+            view.localPosition = target + offset;
+            sequence.Insert(at, view.DOScale(scale, Mathf.Min(duration, 0.15f)).SetEase(Ease.OutQuad));
+            sequence.Insert(at, view.DOLocalMove(target, duration).SetEase(ease));
+        }
+
+        private GameObject FindCell(GridPosition position)
+        {
+            if (cellRoot == null)
+                return null;
+
+            Transform cell = cellRoot.Find(CellName(position.X, position.Y));
+            return cell != null ? cell.gameObject : null;
+        }
         private string _dragCommitSource;
+        private LevelColorPaletteAsset _colorPalette;
 
         public BlobSelectionResult CommitDragPreview(string sourceId, Func<BlobSelectionResult> commit)
         {
@@ -127,7 +344,11 @@ namespace Blobs.Presentation
 
             Unsubscribe();
             ResolvePresenters(snapshot.Board);
+            IsInteractionLocked = false;
+            _boardAlpha = 1f;
+            _authoredAlpha.Clear();
             _state = state;
+            _colorPalette = palette;
             _blobPresenter.Initialize(state, palette, cellSize, origin, blobViewFactory);
             _tilePresenter.Initialize(cellSize, origin, tileViewFactory);
             if (_swipeIndicatorView != null)
@@ -144,6 +365,47 @@ namespace Blobs.Presentation
             _state.UndoResolved += HandleUndoResolved;
             _state.StateRestored += Rebuild;
             Rebuild(snapshot);
+        }
+
+        private void CreateCells(GameSessionSnapshot snapshot)
+        {
+            var board = snapshot.Board;
+            for (int x = 0; x < board.Width; x++)
+            {
+                for (int y = 0; y < board.Height; y++)
+                {
+                    if (snapshot.Board.EmptyPositions.Any(p => p.X == x && p.Y == y))
+                    {
+                        continue;
+                    }
+                    CreateCell(x, y);
+                }
+
+            }
+        }
+
+        private GameObject CreateCell(int x, int y)
+        {
+            if (cellPrefab == null || cellRoot == null)
+                return null;
+
+            var cell = Instantiate(cellPrefab, cellRoot);
+            cell.transform.localPosition = new Vector3(x * cellSize, y * cellSize, 0);
+            cell.name = CellName(x, y);
+            cell.GetComponent<SpriteRenderer>().color = _colorPalette.CellColor;
+            return cell;
+        }
+
+        private static string CellName(int x, int y) => $"Cell_{x}_{y}";
+
+        private void DestroyCells()
+        {
+            foreach (Transform child in cellRoot)
+            {
+                // Renamed so FindCell never returns a cell that is pending destruction this frame.
+                child.name = "Cell_Destroyed";
+                Destroy(child.gameObject);
+            }
         }
 
         private void HandleUndoResolved(UndoResult undo)
@@ -239,11 +501,14 @@ namespace Blobs.Presentation
         {
             if (snapshot == null)
                 throw new ArgumentNullException(nameof(snapshot));
-
+            DestroyCells();
+            CreateCells(snapshot);
             ResolvePresenters(snapshot.Board);
             KillEffectTimeline();
             _tilePresenter.Rebuild(snapshot.Board);
             _blobPresenter.Rebuild(snapshot.Board.Blobs);
+            if (_boardAlpha < 1f)
+                SetBoardAlpha(_boardAlpha);
             SnapshotChanged?.Invoke(snapshot);
         }
 

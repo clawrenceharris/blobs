@@ -20,6 +20,9 @@ namespace Blobs.Presentation
 
         public int VisibleCount => _views.Count;
 
+        /// <summary>Parent of every tile view.</summary>
+        public Transform Root => tileRoot != null ? tileRoot : transform;
+
         /// <summary>
         /// Configures the shared board coordinate system and clears views from any prior session.
         /// </summary>

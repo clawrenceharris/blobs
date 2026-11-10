@@ -30,8 +30,6 @@ namespace Blobs.Tests.EditMode
                 Assert.That(levelIds.Add(level.Id), Is.True, $"Duplicate level ID: {level.Id}.");
                 Assert.That(level.SchemaVersion, Is.EqualTo(LevelDefinition.CurrentSchemaVersion));
                 Assert.That(level.Blobs.Count, Is.GreaterThanOrEqualTo(2));
-                Assert.That(level.Objective.Type,
-                    Is.EqualTo(LevelObjectiveType.ClearAllClearableBlobs));
                 Assert.DoesNotThrow(() => LevelFactory.CreateInitialBoard(level));
             }
         }

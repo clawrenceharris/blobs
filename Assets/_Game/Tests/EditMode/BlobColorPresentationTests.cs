@@ -12,13 +12,13 @@ namespace Blobs.Tests.EditMode
     public sealed class BlobColorPresentationTests
     {
         private const string PalettePath =
-            "Assets/_Game/Production/Content/Presentation/LevelColorPalette_New.asset";
+            "Assets/_Game/Content/Presentation/LevelColorPalette_New.asset";
         private const string NormalPrefabPath =
-            "Assets/_Game/Production/Prefabs/Blobs/PF_NormalBlob.prefab";
+            "Assets/_Game/Prefabs/Blobs/PF_NormalBlob.prefab";
         private const string TrailPrefabPath =
-            "Assets/_Game/Production/Prefabs/Blobs/PF_TrailBlob Variant.prefab";
-        private const string FlagPrefabPath =
-            "Assets/_Game/Production/Prefabs/Blobs/PF_FlagBlob.prefab";
+            "Assets/_Game/Prefabs/Blobs/PF_TrailBlob Variant.prefab";
+        private const string NestPrefabPath =
+            "Assets/_Game/Prefabs/Blobs/PF_Nest.prefab";
 
         private readonly List<UnityEngine.Object> _createdObjects = new();
 
@@ -99,11 +99,11 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void FlagBlobUsesFlatPaletteColorOnCheckersAndFinial()
+        public void NestBlobUsesFlatPaletteColorOnCheckersAndFinial()
         {
             LevelColorPaletteAsset palette = LoadPalette();
-            BlobView view = InstantiateView(FlagPrefabPath);
-            BlobState state = Blob("flag", BlobType.Flag, BlobColor.Purple);
+            BlobView view = InstantiateView(NestPrefabPath);
+            BlobState state = Blob("nest", BlobType.Nest, BlobColor.Purple);
             SpriteRenderer checkers = FindRenderer(view, "Checkers");
             SpriteRenderer finial = FindRenderer(view, "Finial");
             Material authoredCheckersMaterial = checkers.sharedMaterial;

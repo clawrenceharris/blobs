@@ -64,10 +64,10 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void TrailCannotCaptureFlagEvenWhenAdjacentAndMatching()
+        public void TrailCannotCaptureNestEvenWhenAdjacentAndMatching()
         {
             RejectUnchanged(Board(new[] { Blob("source", BlobType.Trail, 0),
-                Blob("target", BlobType.Flag, 1) }), MoveFailureReason.FlagRequiresNormalSource);
+                Blob("target", BlobType.Nest, 1) }), MoveFailureReason.NestRequiresNormalSource);
         }
 
         [Test]
@@ -159,10 +159,10 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void FlagCaptureCanClearOtherBlobsEarlierInTheSameAction()
+        public void NestMergeCanClearOtherBlobsEarlierInTheSameAction()
         {
             var board = Board(new[] { Blob("source", BlobType.Normal, 0),
-                Blob("middle", BlobType.Normal, 1, BlobColor.Blue), Blob("target", BlobType.Flag, 3) });
+                Blob("middle", BlobType.Normal, 1, BlobColor.Blue), Blob("target", BlobType.Nest, 3) });
             var result = Resolve(board);
             Assert.That(result.Succeeded, Is.True, result.FailureReason.ToString());
             Assert.That(result.IsComplete, Is.True);
@@ -170,24 +170,24 @@ namespace Blobs.Tests.EditMode
         }
 
         [Test]
-        public void SelectedFlagCannotBeReplacedByAnIntermediateRock()
+        public void SelectedNestCannotBeReplacedByAnIntermediateRock()
         {
             RejectUnchanged(Board(new[] { Blob("source", BlobType.Normal, 0),
-                Blob("rock", BlobType.Rock, 2), Blob("target", BlobType.Flag, 5) }));
+                Blob("rock", BlobType.Rock, 2), Blob("target", BlobType.Nest, 5) }));
         }
 
         [Test]
-        public void SelectedFlagCannotBeReplacedByAnIntermediateGhost()
+        public void SelectedNestCannotBeReplacedByAnIntermediateGhost()
         {
             RejectUnchanged(Board(new[] { Blob("source", BlobType.Normal, 0),
-                Blob("ghost", BlobType.Ghost, 2), Blob("target", BlobType.Flag, 5) }));
+                Blob("ghost", BlobType.Ghost, 2), Blob("target", BlobType.Nest, 5) }));
         }
 
         [Test]
-        public void IntermediateFlagRejectsEvenWhenItsColorMatches()
+        public void IntermediateNestRejectsEvenWhenItsColorMatches()
         {
             RejectUnchanged(Board(new[] { Blob("source", BlobType.Normal, 0),
-                Blob("flag", BlobType.Flag, 2), Blob("target", BlobType.Rock, 5) }));
+                Blob("nest", BlobType.Nest, 2), Blob("target", BlobType.Rock, 5) }));
         }
     }
 }

@@ -16,7 +16,6 @@ namespace Blobs.Presentation
     public sealed class BlobView : MonoBehaviour
     {
         public BlobRenderer BlobRenderer { get; private set; }
-        private IMergeTargetFeedback _mergeTargetFeedback;
         private readonly List<IBlobContactFeedback> _contactFeedback = new();
         private readonly BlobSkinApplier _skinApplier = new();
         private readonly BlobSkinResolver _skinResolver = new();
@@ -297,7 +296,6 @@ namespace Blobs.Presentation
 
         private void CacheOptionalBehaviors()
         {
-            _mergeTargetFeedback = null;
             _contactFeedback.Clear();
             Face = TryGetComponent(out MonsterFaceView face) ? face : null;
 

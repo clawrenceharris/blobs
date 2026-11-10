@@ -59,7 +59,6 @@ namespace Blobs.Tests.PlayMode
 
             Assert.That(moveText.text, Is.EqualTo("2"));
 
-            state.ParMoves = 10;
             state.RaiseSnapshotChanged();
 
             Assert.That(moveText.text, Is.EqualTo("2/10"));
@@ -215,7 +214,7 @@ namespace Blobs.Tests.PlayMode
             public event Action<DragPreview> DragPreviewChanged;
 
             public int MoveCount { get; set; }
-            public int ParMoves { get; set; }
+
             public bool IsComplete { get; set; }
             public bool UndoAvailable { get; set; }
             public bool CanUndo => UndoAvailable;
@@ -227,8 +226,7 @@ namespace Blobs.Tests.PlayMode
                     new BoardState(2, 1, new List<BlobState>(), new List<TileState>()),
                     MoveCount,
                     IsComplete,
-                    CanUndo,
-                    ParMoves);
+                    CanUndo);
             }
 
             public void RaiseSnapshotChanged()
@@ -255,11 +253,13 @@ namespace Blobs.Tests.PlayMode
                 CurrentState = state;
             }
             public int CurrentLevelIndex { get; }
+            public bool IsTutorial { get; }
             public event Action<IGameplayCommands, IGameplayState> SessionStarted;
             public event Action<GameSessionSnapshot> PresentationSettled;
 
             public IGameplayCommands CurrentCommands { get; }
             public IGameplayState CurrentState { get; }
+            public LevelDefinition CurrentLevel { get; }
             public GameSessionSnapshot PresentedSnapshot { get; private set; }
 
             public void RaisePresentationSettled(GameSessionSnapshot snapshot)
@@ -292,7 +292,9 @@ namespace Blobs.Tests.PlayMode
 
             public IGameplayCommands CurrentCommands { get; }
             public IGameplayState CurrentState { get; }
+            public LevelDefinition CurrentLevel { get; }
             public int CurrentLevelIndex { get; }
+            public bool IsTutorial { get; }
             public void RaiseSessionStarted()
             {
                 SessionStarted?.Invoke(CurrentCommands, CurrentState);

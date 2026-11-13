@@ -82,6 +82,12 @@ namespace Blobs.Application
         /// Raised when a drag begins, its tail cell changes, or it ends for any reason.
         /// </summary>
         event Action<DragPreview> DragPreviewChanged;
+
+        /// <summary>
+        /// Raised when a released drag is refused for a player-facing rule reason, the same case the
+        /// preview marks <see cref="DragVerdict.Invalid"/>. Carries the drag as it was released.
+        /// </summary>
+        event Action<DragPreview> DragRejected;
     }
 
     /// <summary>
@@ -126,6 +132,9 @@ namespace Blobs.Application
 
         /// <inheritdoc />
         public event Action<DragPreview> DragPreviewChanged;
+
+        /// <inheritdoc />
+        public event Action<DragPreview> DragRejected;
 
         /// <inheritdoc />
         public event Action<MoveResult> MoveRejected;
@@ -294,8 +303,20 @@ namespace Blobs.Application
                 return held;
             }
 
+            string sourceId = _dragSourceId;
+            GridPosition origin = _dragOrigin;
             EndDragPreview();
-            return SelectAt(tail, keepSourceOnFailure: false);
+            BlobSelectionResult released = SelectAt(tail, keepSourceOnFailure: false);
+
+            MoveResult move = released.MoveResult;
+            if (released.MoveAttempted && move != null && !move.Succeeded &&
+                move.FailureReason.IsPlayerFacing())
+            {
+                DragRejected?.Invoke(DragPreview.Active(
+                    sourceId, origin, tail, move.TargetBlobId, DragVerdict.Invalid, move.FailureReason));
+            }
+
+            return released;
         }
 
         public void CancelDrag()
@@ -387,6 +408,7 @@ namespace Blobs.Application
             }
             _objectives = result.Objectives ?? _objectives;
             IsComplete = result.IsComplete;
+            _selectedBlobId = null;
             // Valid contact can produce feedback without changing the board.
             if (result.Effects.Count > 0)
             {

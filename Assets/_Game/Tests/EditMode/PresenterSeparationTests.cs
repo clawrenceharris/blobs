@@ -89,7 +89,7 @@ namespace Blobs.Tests.EditMode
         public void RockPrefabComposesContactAudioFeedback()
         {
             GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(
-                "Assets/_Game/Production/Prefabs/Blobs/PF_RockBlob.prefab");
+                "Assets/_Game/Prefabs/Blobs/PF_Rock.prefab");
 
             Assert.That(prefab, Is.Not.Null);
             Assert.That(prefab.GetComponent<BlobContactAudioFeedback>(), Is.Not.Null);
@@ -200,7 +200,7 @@ namespace Blobs.Tests.EditMode
         public void GraveTilePrefabIsRegisteredInProductionCatalog()
         {
             ViewCatalogAsset catalog = AssetDatabase.LoadAssetAtPath<ViewCatalogAsset>(
-                "Assets/_Game/Production/Content/Presentation/ViewCatalog.asset");
+                "Assets/_Game/Content/Presentation/ViewCatalog_Monsters.asset");
 
             Assert.That(catalog, Is.Not.Null);
             TileView prefab = catalog.GetRequiredTilePrefab(TileType.Grave);
@@ -512,7 +512,7 @@ namespace Blobs.Tests.EditMode
                         animator,
                         "_blobAnimationSettings",
                         AssetDatabase.LoadAssetAtPath<BlobAnimationSettingsAsset>(
-                            "Assets/_Game/Production/Content/Presentation/BlobAnimationSettings.asset"));
+                            "Assets/_Game/Content/Presentation/BlobAnimationSettings_Default.asset"));
                 }
                 view.Initialize(blob, _palette, cellSize, origin);
                 return view;
@@ -563,6 +563,7 @@ namespace Blobs.Tests.EditMode
             public event Action<UndoResult> UndoResolved;
             public event Action<GameSessionSnapshot> StateRestored;
             public event Action<DragPreview> DragPreviewChanged;
+            public event Action<DragPreview> DragRejected;
 #pragma warning restore CS0067
 
             public event Action<BlobSelectionResult> BlobSelected

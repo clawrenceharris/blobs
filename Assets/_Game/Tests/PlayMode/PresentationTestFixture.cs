@@ -206,6 +206,7 @@ namespace Blobs.Tests.PlayMode
             public event Action<UndoResult> UndoResolved;
             public event Action<BlobSelectionResult> BlobSelected;
             public event Action<DragPreview> DragPreviewChanged;
+            public event Action<DragPreview> DragRejected;
 
             public GameSessionSnapshot CreateSnapshot()
             {

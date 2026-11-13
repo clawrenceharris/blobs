@@ -76,7 +76,7 @@ namespace Blobs.Tests.PlayMode
 
             SetPrivateField(board.GetComponent<BlobPresenter>(), "_viewCatalog", viewCatalog);
             SetPrivateField(bootstrapper, "boardPresenter", board);
-            SetPrivateField(bootstrapper, "levelAsset", level);
+            SetPrivateField(bootstrapper, "levels", new[] { level });
             SetPrivateField(bootstrapper, "inputAdapter", input);
             SetPrivateField(bootstrapper, "commandAdapter", commands);
 

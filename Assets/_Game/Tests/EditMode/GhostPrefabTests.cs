@@ -13,9 +13,9 @@ namespace Blobs.Tests.EditMode
         public void CatalogsResolveGhostAndGravePrefabs()
         {
             var blobs = AssetDatabase.LoadAssetAtPath<ViewCatalogAsset>(
-                "Assets/_Game/Production/Content/Presentation/ViewCatalog.asset");
+                "Assets/_Game/Content/Presentation/ViewCatalog_Monsters.asset");
             var tiles = AssetDatabase.LoadAssetAtPath<ViewCatalogAsset>(
-                "Assets/_Game/Production/Content/Presentation/ViewCatalog.asset");
+                "Assets/_Game/Content/Presentation/ViewCatalog_Monsters.asset");
             Assert.That(blobs, Is.Not.Null);
             Assert.That(tiles, Is.Not.Null);
             Assert.That(tiles.GetRequiredTilePrefab(TileType.Grave), Is.Not.Null);
@@ -27,7 +27,7 @@ namespace Blobs.Tests.EditMode
         public void AuthoredGhostFadesBodyAndShadowWhilePreservingHalo()
         {
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(
-                "Assets/_Game/Production/Prefabs/Blobs/PF_GhostBlob.prefab");
+                "Assets/_Game/Prefabs/Blobs/PF_Ghost.prefab");
             Assert.That(prefab, Is.Not.Null);
             var instance = Object.Instantiate(prefab);
             try

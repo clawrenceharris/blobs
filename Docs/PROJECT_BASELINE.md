@@ -11,7 +11,7 @@ This is the starting-state inventory for the 15-week independent study. It compa
 
 Current roots:
 
-- Production: `Assets/_Game/Production/`
+- Production: `Assets/_Game/`
 - Unity: 6000.3.6f1; URP 17.0.3; Input System 1.18.0; Unity Test Framework 1.4.5; DOTween and UniTask used for presentation.
 
 Existing uncommitted edits to production `Level_Ghost.asset`, `ViewCatalog.asset`, and `Game.unity` were preserved.
@@ -26,7 +26,7 @@ The prototype is also more structured than the original proposal suggests: it al
 
 ## Systems comparison
 
-Paths below are relative to the repository. In this table, `P/` means `Assets/_Game/Production/Scripts/` and `L/` means `Assets/_Game/Prototype/Scripts/`.
+Paths below are relative to the repository. In this table, `P/` means `Assets/_Game/Scripts/` and `L/` means `Assets/_Game/Prototype/Scripts/`.
 
 | System                       | Prototype evidence                                                                                                                       | Production state                                                                                                                                               | Remaining semester work                                                                                                                            |
 | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -74,7 +74,7 @@ This baseline is now historical. Since the September 8 inspection, the productio
 | B02 | **Done, pending fresh full-suite validation** | `BlobRuleBook` now registers Normal/Trail movement and collision combinations, with coverage in `MoveResolverPathTests`. |
 | B03 | **Done, pending fresh full-suite validation** | Intermediate and adjacent Rock behavior is implemented and covered by resolver/session tests, including unchanged contact not incrementing move count. |
 | B04 | **Done, pending fresh full-suite validation** | The level editor now creates Grave tiles and initializes special blob `type` values that match the mapper. |
-| B05 | **Done, pending fresh full-suite validation** | Production tests now reference `Assets/_Game/Production/...` asset paths. README records a recent local pass of 114 Edit Mode and 20 Play Mode tests. |
+| B05 | **Done, pending fresh full-suite validation** | Production tests now reference `Assets/_Game/...` asset paths. README records a recent local pass of 114 Edit Mode and 20 Play Mode tests. |
 | B06 | **Done, pending fresh full-suite validation** | `MoveResolver` checks board bounds, `EmptyPositions`, and non-traversable tiles during reached-path simulation. |
 | B07 | **Open** | This is now the main product gap: production still needs a complete menu/level sequence, completion flow, scoped persistence decision, and end-to-end player journey validation. |
 | B08 | **Mostly done, ongoing** | Core rule docs, architecture notes, README, and implementation checklist have been reconciled. Continue updating docs alongside code and validation evidence. |

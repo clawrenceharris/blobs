@@ -10,7 +10,8 @@ namespace Blobs.Presentation
         Selected,
         PickedUp,
         Moving,
-        Merging
+        Merging,
+        Rejected
     }
 
     /// <summary>
@@ -72,6 +73,20 @@ namespace Blobs.Presentation
         public virtual void SetPickedUp()
         {
             SetState(new BlobPickedUpState());
+        }
+
+        /// <summary>
+        /// Leans toward a refused swipe, then settles back to idle. A repeat rejection restarts the lean.
+        /// </summary>
+        public virtual void SetRejected(Vector2 direction)
+        {
+            if (_currentState?.State == BlobAnimationState.Rejected)
+            {
+                _currentState.Exit(_context);
+                _currentState = null;
+            }
+
+            SetState(new BlobRejectedState(direction));
         }
 
         public virtual void SetMoving()

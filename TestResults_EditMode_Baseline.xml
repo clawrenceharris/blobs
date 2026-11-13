@@ -1,0 +1,1448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="151" result="Failed(Child)" total="151" passed="108" failed="43" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-11 19:17:27Z" end-time="2026-11-11 19:17:32Z" duration="5.1312822">
+  <test-suite type="TestSuite" id="1190" name="blobs" fullname="blobs" runstate="Runnable" testcasecount="151" result="Failed" site="Child" start-time="2026-11-11 19:17:27Z" end-time="2026-11-11 19:17:32Z" duration="5.131282" total="151" passed="108" failed="43" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1178" name="Blobs.Tests.EditMode.dll" fullname="/Users/caleb/Dev/blobs/Library/ScriptAssemblies/Blobs.Tests.EditMode.dll" runstate="Runnable" testcasecount="151" result="Failed" site="Child" start-time="2026-11-11 19:17:27Z" end-time="2026-11-11 19:17:32Z" duration="4.938702" total="151" passed="108" failed="43" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="47431" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1179" name="Blobs" fullname="Blobs" runstate="Runnable" testcasecount="151" result="Failed" site="Child" start-time="2026-11-11 19:17:27Z" end-time="2026-11-11 19:17:32Z" duration="4.739001" total="151" passed="108" failed="43" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1180" name="Tests" fullname="Blobs.Tests" runstate="Runnable" testcasecount="151" result="Failed" site="Child" start-time="2026-11-11 19:17:27Z" end-time="2026-11-11 19:17:32Z" duration="4.537108" total="151" passed="108" failed="43" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1181" name="EditMode" fullname="Blobs.Tests.EditMode" runstate="Runnable" testcasecount="151" result="Failed" site="Child" start-time="2026-11-11 19:17:27Z" end-time="2026-11-11 19:17:32Z" duration="4.333875" total="151" passed="108" failed="43" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="1001" name="BlobColorPresentationTests" fullname="Blobs.Tests.EditMode.BlobColorPresentationTests" classname="Blobs.Tests.EditMode.BlobColorPresentationTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.113183" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1005" name="NestBlobUsesFlatPaletteColorOnCheckersAndFinial" fullname="Blobs.Tests.EditMode.BlobColorPresentationTests.NestBlobUsesFlatPaletteColorOnCheckersAndFinial" methodname="NestBlobUsesFlatPaletteColorOnCheckersAndFinial" classname="Blobs.Tests.EditMode.BlobColorPresentationTests" runstate="Runnable" seed="1173288910" result="Failed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.006991" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.BlobColorPresentationTests.LoadPalette () [0x0000c] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BlobColorPresentationTests.cs:126
+at Blobs.Tests.EditMode.BlobColorPresentationTests.NestBlobUsesFlatPaletteColorOnCheckersAndFinial () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BlobColorPresentationTests.cs:104
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1003" name="NormalBlobAppliesPaletteToBodyShaderProperties" fullname="Blobs.Tests.EditMode.BlobColorPresentationTests.NormalBlobAppliesPaletteToBodyShaderProperties" methodname="NormalBlobAppliesPaletteToBodyShaderProperties" classname="Blobs.Tests.EditMode.BlobColorPresentationTests" runstate="Runnable" seed="274064177" result="Failed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000297" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.BlobColorPresentationTests.LoadPalette () [0x0000c] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BlobColorPresentationTests.cs:126
+at Blobs.Tests.EditMode.BlobColorPresentationTests.NormalBlobAppliesPaletteToBodyShaderProperties () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BlobColorPresentationTests.cs:55
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1002" name="PaletteDefinesThreeShaderColorsForEveryBlobColor" fullname="Blobs.Tests.EditMode.BlobColorPresentationTests.PaletteDefinesThreeShaderColorsForEveryBlobColor" methodname="PaletteDefinesThreeShaderColorsForEveryBlobColor" classname="Blobs.Tests.EditMode.BlobColorPresentationTests" runstate="Runnable" seed="96660238" result="Failed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000654" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.BlobColorPresentationTests.LoadPalette () [0x0000c] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BlobColorPresentationTests.cs:126
+at Blobs.Tests.EditMode.BlobColorPresentationTests.PaletteDefinesThreeShaderColorsForEveryBlobColor () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BlobColorPresentationTests.cs:40
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1004" name="TrailBlobUsesPrimaryColorForBodyAndTrailColorForPuddle" fullname="Blobs.Tests.EditMode.BlobColorPresentationTests.TrailBlobUsesPrimaryColorForBodyAndTrailColorForPuddle" methodname="TrailBlobUsesPrimaryColorForBodyAndTrailColorForPuddle" classname="Blobs.Tests.EditMode.BlobColorPresentationTests" runstate="Runnable" seed="594510851" result="Failed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.001484" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.BlobColorPresentationTests.LoadPalette () [0x0000c] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BlobColorPresentationTests.cs:126
+at Blobs.Tests.EditMode.BlobColorPresentationTests.TrailBlobUsesPrimaryColorForBodyAndTrailColorForPuddle () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BlobColorPresentationTests.cs:73
+]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1006" name="BlobSizeMechanicTests" fullname="Blobs.Tests.EditMode.BlobSizeMechanicTests" classname="Blobs.Tests.EditMode.BlobSizeMechanicTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.208070" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1007" name="AuthoredSizeSliceLoadsAndCanBeCompleted" fullname="Blobs.Tests.EditMode.BlobSizeMechanicTests.AuthoredSizeSliceLoadsAndCanBeCompleted" methodname="AuthoredSizeSliceLoadsAndCanBeCompleted" classname="Blobs.Tests.EditMode.BlobSizeMechanicTests" runstate="Runnable" seed="57307126" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.019045" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1011" name="LargerMoverConsumesSmallerTargetAndKeepsItsSize" fullname="Blobs.Tests.EditMode.BlobSizeMechanicTests.LargerMoverConsumesSmallerTargetAndKeepsItsSize" methodname="LargerMoverConsumesSmallerTargetAndKeepsItsSize" classname="Blobs.Tests.EditMode.BlobSizeMechanicTests" runstate="Runnable" seed="1216737974" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000150" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1010" name="LargerTargetConsumesSmallerMoverAndKeepsItsSize" fullname="Blobs.Tests.EditMode.BlobSizeMechanicTests.LargerTargetConsumesSmallerMoverAndKeepsItsSize" methodname="LargerTargetConsumesSmallerMoverAndKeepsItsSize" classname="Blobs.Tests.EditMode.BlobSizeMechanicTests" runstate="Runnable" seed="1749954462" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000107" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1009" name="NormalPlusNormalRemainsNormal" fullname="Blobs.Tests.EditMode.BlobSizeMechanicTests.NormalPlusNormalRemainsNormal" methodname="NormalPlusNormalRemainsNormal" classname="Blobs.Tests.EditMode.BlobSizeMechanicTests" runstate="Runnable" seed="2028434913" result="Failed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.001289" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: <empty>
+  But was:  < <Blobs.Core.ChangeBlobSizeEffect> >
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.BlobSizeMechanicTests.NormalPlusNormalRemainsNormal () [0x00095] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BlobSizeMechanicTests.cs:81
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1008" name="SmallPlusSmallGrowsSurvivingMoverToNormal" fullname="Blobs.Tests.EditMode.BlobSizeMechanicTests.SmallPlusSmallGrowsSurvivingMoverToNormal" methodname="SmallPlusSmallGrowsSurvivingMoverToNormal" classname="Blobs.Tests.EditMode.BlobSizeMechanicTests" runstate="Runnable" seed="1670409381" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000137" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1012" name="BoardPresenterTests" fullname="Blobs.Tests.EditMode.BoardPresenterTests" classname="Blobs.Tests.EditMode.BoardPresenterTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.101346" total="5" passed="0" failed="5" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1016" name="MissingMappedViewFallsBackToSnapshotRebuild" fullname="Blobs.Tests.EditMode.BoardPresenterTests.MissingMappedViewFallsBackToSnapshotRebuild" methodname="MissingMappedViewFallsBackToSnapshotRebuild" classname="Blobs.Tests.EditMode.BoardPresenterTests" runstate="Runnable" seed="651691505" result="Failed" label="Error" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.020686" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BlobPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, System.Single cellSize, UnityEngine.Vector2 origin, Blobs.Presentation.IBlobViewFactory viewFactory) [0x00050] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BlobPresenter.cs:62 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x0005c] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:352 
+  at Blobs.Tests.EditMode.BoardPresenterTests.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot) [0x00046] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BoardPresenterTests.cs:168 
+  at Blobs.Tests.EditMode.BoardPresenterTests.MissingMappedViewFallsBackToSnapshotRebuild () [0x0001d] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BoardPresenterTests.cs:128 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1013" name="OrderedRemoveMoveSpawnChainMatchesFinalSnapshot" fullname="Blobs.Tests.EditMode.BoardPresenterTests.OrderedRemoveMoveSpawnChainMatchesFinalSnapshot" methodname="OrderedRemoveMoveSpawnChainMatchesFinalSnapshot" classname="Blobs.Tests.EditMode.BoardPresenterTests" runstate="Runnable" seed="1624608179" result="Failed" label="Error" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000465" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BlobPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, System.Single cellSize, UnityEngine.Vector2 origin, Blobs.Presentation.IBlobViewFactory viewFactory) [0x00050] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BlobPresenter.cs:62 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x0005c] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:352 
+  at Blobs.Tests.EditMode.BoardPresenterTests.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot) [0x00046] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BoardPresenterTests.cs:168 
+  at Blobs.Tests.EditMode.BoardPresenterTests.OrderedRemoveMoveSpawnChainMatchesFinalSnapshot () [0x0002b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BoardPresenterTests.cs:35 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1014" name="StepTimelineWithTraverseSpawnAndMergeBeatsMatchesFinalSnapshot" fullname="Blobs.Tests.EditMode.BoardPresenterTests.StepTimelineWithTraverseSpawnAndMergeBeatsMatchesFinalSnapshot" methodname="StepTimelineWithTraverseSpawnAndMergeBeatsMatchesFinalSnapshot" classname="Blobs.Tests.EditMode.BoardPresenterTests" runstate="Runnable" seed="1923866285" result="Failed" label="Error" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000816" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BlobPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, System.Single cellSize, UnityEngine.Vector2 origin, Blobs.Presentation.IBlobViewFactory viewFactory) [0x00050] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BlobPresenter.cs:62 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x0005c] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:352 
+  at Blobs.Tests.EditMode.BoardPresenterTests.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot) [0x00046] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BoardPresenterTests.cs:168 
+  at Blobs.Tests.EditMode.BoardPresenterTests.StepTimelineWithTraverseSpawnAndMergeBeatsMatchesFinalSnapshot () [0x0002b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BoardPresenterTests.cs:64 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1015" name="StepWithMissingViewFallsBackToSnapshotRebuild" fullname="Blobs.Tests.EditMode.BoardPresenterTests.StepWithMissingViewFallsBackToSnapshotRebuild" methodname="StepWithMissingViewFallsBackToSnapshotRebuild" classname="Blobs.Tests.EditMode.BoardPresenterTests" runstate="Runnable" seed="895607811" result="Failed" label="Error" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000382" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BlobPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, System.Single cellSize, UnityEngine.Vector2 origin, Blobs.Presentation.IBlobViewFactory viewFactory) [0x00050] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BlobPresenter.cs:62 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x0005c] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:352 
+  at Blobs.Tests.EditMode.BoardPresenterTests.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot) [0x00046] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BoardPresenterTests.cs:168 
+  at Blobs.Tests.EditMode.BoardPresenterTests.StepWithMissingViewFallsBackToSnapshotRebuild () [0x0001d] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BoardPresenterTests.cs:104 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1017" name="UnsupportedEffectFallsBackToAuthoritativeSnapshot" fullname="Blobs.Tests.EditMode.BoardPresenterTests.UnsupportedEffectFallsBackToAuthoritativeSnapshot" methodname="UnsupportedEffectFallsBackToAuthoritativeSnapshot" classname="Blobs.Tests.EditMode.BoardPresenterTests" runstate="Runnable" seed="1205272534" result="Failed" label="Error" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000364" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BlobPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, System.Single cellSize, UnityEngine.Vector2 origin, Blobs.Presentation.IBlobViewFactory viewFactory) [0x00050] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BlobPresenter.cs:62 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x0005c] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:352 
+  at Blobs.Tests.EditMode.BoardPresenterTests.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot) [0x00046] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BoardPresenterTests.cs:168 
+  at Blobs.Tests.EditMode.BoardPresenterTests.UnsupportedEffectFallsBackToAuthoritativeSnapshot () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BoardPresenterTests.cs:146 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1028" name="GameBootstrapperTests" fullname="Blobs.Tests.EditMode.GameBootstrapperTests" classname="Blobs.Tests.EditMode.GameBootstrapperTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.085302" total="3" passed="1" failed="2" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1031" name="MissingRequiredSceneCollaboratorsAbortWithoutRuntimeFallbacks" fullname="Blobs.Tests.EditMode.GameBootstrapperTests.MissingRequiredSceneCollaboratorsAbortWithoutRuntimeFallbacks" methodname="MissingRequiredSceneCollaboratorsAbortWithoutRuntimeFallbacks" classname="Blobs.Tests.EditMode.GameBootstrapperTests" runstate="Runnable" seed="1439078650" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.005312" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[GameBootstrapper requires authored BoardPresenter, GameplayInputAdapter, and GameplayCommandAdapter references.
+]]></output>
+              </test-case>
+              <test-case id="1030" name="RestartRestoresInitialVisibleBlobsAndClearsSelection" fullname="Blobs.Tests.EditMode.GameBootstrapperTests.RestartRestoresInitialVisibleBlobsAndClearsSelection" methodname="RestartRestoresInitialVisibleBlobsAndClearsSelection" classname="Blobs.Tests.EditMode.GameBootstrapperTests" runstate="Runnable" seed="230360269" result="Failed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.002039" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.GameBootstrapperTests.CreateSceneShell () [0x0007c] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GameBootstrapperTests.cs:101
+at Blobs.Tests.EditMode.GameBootstrapperTests.RestartRestoresInitialVisibleBlobsAndClearsSelection () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GameBootstrapperTests.cs:50
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1029" name="SuccessfulMergeLeavesSourceVisibleAtTargetPosition" fullname="Blobs.Tests.EditMode.GameBootstrapperTests.SuccessfulMergeLeavesSourceVisibleAtTargetPosition" methodname="SuccessfulMergeLeavesSourceVisibleAtTargetPosition" classname="Blobs.Tests.EditMode.GameBootstrapperTests" runstate="Runnable" seed="1529278866" result="Failed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000448" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.GameBootstrapperTests.CreateSceneShell () [0x0007c] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GameBootstrapperTests.cs:101
+at Blobs.Tests.EditMode.GameBootstrapperTests.SuccessfulMergeLeavesSourceVisibleAtTargetPosition () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GameBootstrapperTests.cs:34
+]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1032" name="GameSessionTests" fullname="Blobs.Tests.EditMode.GameSessionTests" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" testcasecount="33" result="Failed" site="Child" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:29Z" duration="0.699928" total="33" passed="29" failed="4" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1061" name="AdjacentRockDoesNotIncrementSessionMoveCountButStillPublishesContact" fullname="Blobs.Tests.EditMode.GameSessionTests.AdjacentRockDoesNotIncrementSessionMoveCountButStillPublishesContact" methodname="AdjacentRockDoesNotIncrementSessionMoveCountButStillPublishesContact" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="2120341526" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000402" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1044" name="CanceledOrRestartedDragCannotCommitOnRelease" fullname="Blobs.Tests.EditMode.GameSessionTests.CanceledOrRestartedDragCannotCommitOnRelease" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.200783" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1042" name="CanceledOrRestartedDragCannotCommitOnRelease(False)" fullname="Blobs.Tests.EditMode.GameSessionTests.CanceledOrRestartedDragCannotCommitOnRelease(False)" methodname="CanceledOrRestartedDragCannotCommitOnRelease" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="186074954" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.001350" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1043" name="CanceledOrRestartedDragCannotCommitOnRelease(True)" fullname="Blobs.Tests.EditMode.GameSessionTests.CanceledOrRestartedDragCannotCommitOnRelease(True)" methodname="CanceledOrRestartedDragCannotCommitOnRelease" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="944637468" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000187" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1052" name="DiagonalDragProjectsOntoDominantAxisAndReleaseCommitsToThatTail" fullname="Blobs.Tests.EditMode.GameSessionTests.DiagonalDragProjectsOntoDominantAxisAndReleaseCommitsToThatTail" methodname="DiagonalDragProjectsOntoDominantAxisAndReleaseCommitsToThatTail" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1237189415" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000761" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1049" name="DragAcrossGapStopsTailOnTheLastReachableCell" fullname="Blobs.Tests.EditMode.GameSessionTests.DragAcrossGapStopsTailOnTheLastReachableCell" methodname="DragAcrossGapStopsTailOnTheLastReachableCell" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1114272214" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000172" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1033" name="DragCommitsOnlyOnReleaseAndOnlyOnce" fullname="Blobs.Tests.EditMode.GameSessionTests.DragCommitsOnlyOnReleaseAndOnlyOnce" methodname="DragCommitsOnlyOnReleaseAndOnlyOnce" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="44195500" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000146" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1046" name="DragOntoMismatchedNestIsInvalidWithoutCommitting" fullname="Blobs.Tests.EditMode.GameSessionTests.DragOntoMismatchedNestIsInvalidWithoutCommitting" methodname="DragOntoMismatchedNestIsInvalidWithoutCommitting" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="920511365" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000403" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1047" name="DragOntoSameColorBlobIsInvalid" fullname="Blobs.Tests.EditMode.GameSessionTests.DragOntoSameColorBlobIsInvalid" methodname="DragOntoSameColorBlobIsInvalid" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1384447558" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000119" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1048" name="DragPastRockStopsTailOnTheRockAndCommitsContact" fullname="Blobs.Tests.EditMode.GameSessionTests.DragPastRockStopsTailOnTheRockAndCommitsContact" methodname="DragPastRockStopsTailOnTheRockAndCommitsContact" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="300051187" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000174" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1053" name="DragPreviewEndsOnceBeforeTheMoveResolves" fullname="Blobs.Tests.EditMode.GameSessionTests.DragPreviewEndsOnceBeforeTheMoveResolves" methodname="DragPreviewEndsOnceBeforeTheMoveResolves" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1005134251" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000202" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1045" name="DragPreviewExtendsToClampedTailOnlyWhenTheTailChanges" fullname="Blobs.Tests.EditMode.GameSessionTests.DragPreviewExtendsToClampedTailOnlyWhenTheTailChanges" methodname="DragPreviewExtendsToClampedTailOnlyWhenTheTailChanges" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="924119746" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000276" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1051" name="DragPreviewsDoNotShiftIdsSpawnedByTheCommittedMove" fullname="Blobs.Tests.EditMode.GameSessionTests.DragPreviewsDoNotShiftIdsSpawnedByTheCommittedMove" methodname="DragPreviewsDoNotShiftIdsSpawnedByTheCommittedMove" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1166950369" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000818" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1050" name="DragThroughNestTowardBlobBeyondIsInvalid" fullname="Blobs.Tests.EditMode.GameSessionTests.DragThroughNestTowardBlobBeyondIsInvalid" methodname="DragThroughNestTowardBlobBeyondIsInvalid" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1804178572" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:28Z" duration="0.000528" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1037" name="DragWithMissingEndpointOrSamePieceDoesNotCommit" fullname="Blobs.Tests.EditMode.GameSessionTests.DragWithMissingEndpointOrSamePieceDoesNotCommit" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-11 19:17:28Z" end-time="2026-11-11 19:17:29Z" duration="0.093941" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1034" name="DragWithMissingEndpointOrSamePieceDoesNotCommit(3,1)" fullname="Blobs.Tests.EditMode.GameSessionTests.DragWithMissingEndpointOrSamePieceDoesNotCommit(3,1)" methodname="DragWithMissingEndpointOrSamePieceDoesNotCommit" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="390176173" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000252" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1035" name="DragWithMissingEndpointOrSamePieceDoesNotCommit(0,3)" fullname="Blobs.Tests.EditMode.GameSessionTests.DragWithMissingEndpointOrSamePieceDoesNotCommit(0,3)" methodname="DragWithMissingEndpointOrSamePieceDoesNotCommit" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="822460912" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000148" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1036" name="DragWithMissingEndpointOrSamePieceDoesNotCommit(-1,1)" fullname="Blobs.Tests.EditMode.GameSessionTests.DragWithMissingEndpointOrSamePieceDoesNotCommit(-1,1)" methodname="DragWithMissingEndpointOrSamePieceDoesNotCommit" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="159014275" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000105" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1039" name="InvalidDragDoesNotCommitAndNextDragCanStartFresh" fullname="Blobs.Tests.EditMode.GameSessionTests.InvalidDragDoesNotCommitAndNextDragCanStartFresh" methodname="InvalidDragDoesNotCommitAndNextDragCanStartFresh" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="467987183" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000137" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1040" name="InvalidDragReleasePublishesRejectionWithSwipeDirection" fullname="Blobs.Tests.EditMode.GameSessionTests.InvalidDragReleasePublishesRejectionWithSwipeDirection" methodname="InvalidDragReleasePublishesRejectionWithSwipeDirection" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1233453239" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000213" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1063" name="NewMoveAfterUndoIncrementsCountAndDiscardsUndoneFuture" fullname="Blobs.Tests.EditMode.GameSessionTests.NewMoveAfterUndoIncrementsCountAndDiscardsUndoneFuture" methodname="NewMoveAfterUndoIncrementsCountAndDiscardsUndoneFuture" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="496628194" result="Failed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000917" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: 3
+  But was:  2
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.GameSessionTests.NewMoveAfterUndoIncrementsCountAndDiscardsUndoneFuture () [0x00084] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GameSessionTests.cs:471
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1058" name="RejectedTapTargetKeepsSourceWithoutPublishingACommittedMove" fullname="Blobs.Tests.EditMode.GameSessionTests.RejectedTapTargetKeepsSourceWithoutPublishingACommittedMove" methodname="RejectedTapTargetKeepsSourceWithoutPublishingACommittedMove" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1981480632" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.001195" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1064" name="RejectionAfterValidMoveDoesNotChangeWhichActionUndoRestores" fullname="Blobs.Tests.EditMode.GameSessionTests.RejectionAfterValidMoveDoesNotChangeWhichActionUndoRestores" methodname="RejectionAfterValidMoveDoesNotChangeWhichActionUndoRestores" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1683409468" result="Failed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.001061" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.GameSessionTests.RejectionAfterValidMoveDoesNotChangeWhichActionUndoRestores () [0x0004c] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GameSessionTests.cs:487
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1059" name="RestartAfterCompletionRestoresAuthoredBoardAndResetsCountAndSelection" fullname="Blobs.Tests.EditMode.GameSessionTests.RestartAfterCompletionRestoresAuthoredBoardAndResetsCountAndSelection" methodname="RestartAfterCompletionRestoresAuthoredBoardAndResetsCountAndSelection" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1893156895" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000841" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1056" name="SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving" fullname="Blobs.Tests.EditMode.GameSessionTests.SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.188268" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1054" name="SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving(0)" fullname="Blobs.Tests.EditMode.GameSessionTests.SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving(0)" methodname="SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="92049305" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000357" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1055" name="SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving(3)" fullname="Blobs.Tests.EditMode.GameSessionTests.SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving(3)" methodname="SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="854339293" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000176" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1057" name="SelectionExecutesOneMoveAndPublishesCommittedState" fullname="Blobs.Tests.EditMode.GameSessionTests.SelectionExecutesOneMoveAndPublishesCommittedState" methodname="SelectionExecutesOneMoveAndPublishesCommittedState" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1474481521" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000264" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1060" name="SnapshotsRemainIndependentOfLaterMovesAndExternalBoardMutations" fullname="Blobs.Tests.EditMode.GameSessionTests.SnapshotsRemainIndependentOfLaterMovesAndExternalBoardMutations" methodname="SnapshotsRemainIndependentOfLaterMovesAndExternalBoardMutations" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1693527884" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000272" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1038" name="TapHoldsSourceAndPreviewUntilSecondTapCommits" fullname="Blobs.Tests.EditMode.GameSessionTests.TapHoldsSourceAndPreviewUntilSecondTapCommits" methodname="TapHoldsSourceAndPreviewUntilSecondTapCommits" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="60400163" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000197" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1062" name="TwoBoardChangingMovesUndoTwiceRestoresInitialBoardAndKeepsCount" fullname="Blobs.Tests.EditMode.GameSessionTests.TwoBoardChangingMovesUndoTwiceRestoresInitialBoardAndKeepsCount" methodname="TwoBoardChangingMovesUndoTwiceRestoresInitialBoardAndKeepsCount" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="341842492" result="Failed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000438" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: 2
+  But was:  1
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.GameSessionTests.TwoBoardChangingMovesUndoTwiceRestoresInitialBoardAndKeepsCount () [0x0007f] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GameSessionTests.cs:447
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1065" name="UnchangedRockContactAfterValidMoveDoesNotChangeWhichActionUndoRestores" fullname="Blobs.Tests.EditMode.GameSessionTests.UnchangedRockContactAfterValidMoveDoesNotChangeWhichActionUndoRestores" methodname="UnchangedRockContactAfterValidMoveDoesNotChangeWhichActionUndoRestores" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1819528467" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000557" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1067" name="UndoRestoresConsumedBlobIdentityAndClearsSelection" fullname="Blobs.Tests.EditMode.GameSessionTests.UndoRestoresConsumedBlobIdentityAndClearsSelection" methodname="UndoRestoresConsumedBlobIdentityAndClearsSelection" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1381723434" result="Failed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000272" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: "source"
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.GameSessionTests.UndoRestoresConsumedBlobIdentityAndClearsSelection () [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GameSessionTests.cs:550
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1068" name="UndoRestoresTrailLeftoversConsumedDuringGhostHaunt" fullname="Blobs.Tests.EditMode.GameSessionTests.UndoRestoresTrailLeftoversConsumedDuringGhostHaunt" methodname="UndoRestoresTrailLeftoversConsumedDuringGhostHaunt" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="983768898" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.002050" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1041" name="ValidReleaseAndTapRejectionDoNotPublishDragRejection" fullname="Blobs.Tests.EditMode.GameSessionTests.ValidReleaseAndTapRejectionDoNotPublishDragRejection" methodname="ValidReleaseAndTapRejectionDoNotPublishDragRejection" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1171194849" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000623" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1066" name="WinningActionLocksUndoWithoutReducingCount" fullname="Blobs.Tests.EditMode.GameSessionTests.WinningActionLocksUndoWithoutReducingCount" methodname="WinningActionLocksUndoWithoutReducingCount" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="341378" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000497" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1069" name="GhostMechanicTests" fullname="Blobs.Tests.EditMode.GhostMechanicTests" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" testcasecount="12" result="Failed" site="Child" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.293272" total="12" passed="11" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1079" name="ChainMergeReturnsToOriginalSourcePosition" fullname="Blobs.Tests.EditMode.GhostMechanicTests.ChainMergeReturnsToOriginalSourcePosition" methodname="ChainMergeReturnsToOriginalSourcePosition" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="63372515" result="Failed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000854" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.GhostMechanicTests.ChainMergeReturnsToOriginalSourcePosition () [0x0002d] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GhostMechanicTests.cs:97
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1082" name="EmptyReturnIsRejectedAtConstruction" fullname="Blobs.Tests.EditMode.GhostMechanicTests.EmptyReturnIsRejectedAtConstruction" methodname="EmptyReturnIsRejectedAtConstruction" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="173831193" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000550" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1071" name="EmptyReturnPathPreservesGhostIdentityAndConsumesSource" fullname="Blobs.Tests.EditMode.GhostMechanicTests.EmptyReturnPathPreservesGhostIdentityAndConsumesSource" methodname="EmptyReturnPathPreservesGhostIdentityAndConsumesSource" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="696340433" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.012384" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1076" name="FirstGraveStopsReturn" fullname="Blobs.Tests.EditMode.GhostMechanicTests.FirstGraveStopsReturn" methodname="FirstGraveStopsReturn" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="716028622" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000167" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1081" name="GhostAlreadyOnGraveRestsWhenHauntBegins" fullname="Blobs.Tests.EditMode.GhostMechanicTests.GhostAlreadyOnGraveRestsWhenHauntBegins" methodname="GhostAlreadyOnGraveRestsWhenHauntBegins" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="1793785303" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000218" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1070" name="GhostCannotBeSourceAndCountsTowardObjective" fullname="Blobs.Tests.EditMode.GhostMechanicTests.GhostCannotBeSourceAndCountsTowardObjective" methodname="GhostCannotBeSourceAndCountsTowardObjective" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="540771304" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000148" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1075" name="GraveCrossingIncludesGraveAndClearsGhost" fullname="Blobs.Tests.EditMode.GhostMechanicTests.GraveCrossingIncludesGraveAndClearsGhost" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.184783" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1072" name="GraveCrossingIncludesGraveAndClearsGhost(2)" fullname="Blobs.Tests.EditMode.GhostMechanicTests.GraveCrossingIncludesGraveAndClearsGhost(2)" methodname="GraveCrossingIncludesGraveAndClearsGhost" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="1137726002" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000481" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1073" name="GraveCrossingIncludesGraveAndClearsGhost(1)" fullname="Blobs.Tests.EditMode.GhostMechanicTests.GraveCrossingIncludesGraveAndClearsGhost(1)" methodname="GraveCrossingIncludesGraveAndClearsGhost" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="2123714812" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000281" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1074" name="GraveCrossingIncludesGraveAndClearsGhost(0)" fullname="Blobs.Tests.EditMode.GhostMechanicTests.GraveCrossingIncludesGraveAndClearsGhost(0)" methodname="GraveCrossingIncludesGraveAndClearsGhost" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="237993404" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000144" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1080" name="InvalidOutboundCollisionLeavesBoardUnchanged" fullname="Blobs.Tests.EditMode.GhostMechanicTests.InvalidOutboundCollisionLeavesBoardUnchanged" methodname="InvalidOutboundCollisionLeavesBoardUnchanged" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="1242482500" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000144" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1078" name="OccupiedGraveClearsGhostAndAbsorbsOccupant" fullname="Blobs.Tests.EditMode.GhostMechanicTests.OccupiedGraveClearsGhostAndAbsorbsOccupant" methodname="OccupiedGraveClearsGhostAndAbsorbsOccupant" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="1616893427" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000193" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1077" name="ReturnPhasesThroughTrailAndAbsorbsOnlyLandingOccupant" fullname="Blobs.Tests.EditMode.GhostMechanicTests.ReturnPhasesThroughTrailAndAbsorbsOnlyLandingOccupant" methodname="ReturnPhasesThroughTrailAndAbsorbsOnlyLandingOccupant" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="975381186" result="Passed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000165" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1083" name="GhostPrefabTests" fullname="Blobs.Tests.EditMode.GhostPrefabTests" classname="Blobs.Tests.EditMode.GhostPrefabTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.200112" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1085" name="AuthoredGhostFadesBodyAndShadowWhilePreservingHalo" fullname="Blobs.Tests.EditMode.GhostPrefabTests.AuthoredGhostFadesBodyAndShadowWhilePreservingHalo" methodname="AuthoredGhostFadesBodyAndShadowWhilePreservingHalo" classname="Blobs.Tests.EditMode.GhostPrefabTests" runstate="Runnable" seed="1922061755" result="Failed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.001882" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.GhostPrefabTests.AuthoredGhostFadesBodyAndShadowWhilePreservingHalo () [0x0000c] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GhostPrefabTests.cs:31
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1084" name="CatalogsResolveGhostAndGravePrefabs" fullname="Blobs.Tests.EditMode.GhostPrefabTests.CatalogsResolveGhostAndGravePrefabs" methodname="CatalogsResolveGhostAndGravePrefabs" classname="Blobs.Tests.EditMode.GhostPrefabTests" runstate="Runnable" seed="217829821" result="Failed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.000779" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.GhostPrefabTests.CatalogsResolveGhostAndGravePrefabs () [0x00017] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GhostPrefabTests.cs:19
+]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1086" name="LevelAssetMapperTests" fullname="Blobs.Tests.EditMode.LevelAssetMapperTests" classname="Blobs.Tests.EditMode.LevelAssetMapperTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.198746" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1087" name="AuthoredLevelsLoadAndMapToValidatedCoreDefinitions" fullname="Blobs.Tests.EditMode.LevelAssetMapperTests.AuthoredLevelsLoadAndMapToValidatedCoreDefinitions" methodname="AuthoredLevelsLoadAndMapToValidatedCoreDefinitions" classname="Blobs.Tests.EditMode.LevelAssetMapperTests" runstate="Runnable" seed="426012630" result="Failed" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:29Z" duration="0.001826" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Missing authored level at Assets/_Game/Production/Content/Levels/SO/Level_01.asset.
+  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.LevelAssetMapperTests.AuthoredLevelsLoadAndMapToValidatedCoreDefinitions () [0x0002e] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/LevelAssetMapperTests.cs:27
+]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1088" name="LevelValidatorTests" fullname="Blobs.Tests.EditMode.LevelValidatorTests" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" testcasecount="14" result="Failed" site="Child" start-time="2026-11-11 19:17:29Z" end-time="2026-11-11 19:17:30Z" duration="0.506923" total="14" passed="13" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1089" name="ValidatorRejectsDuplicateBlobIds" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsDuplicateBlobIds" methodname="ValidatorRejectsDuplicateBlobIds" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="1087065668" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.001792" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1095" name="ValidatorRejectsMissingBlobIds" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsMissingBlobIds" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.100773" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1092" name="ValidatorRejectsMissingBlobIds(null)" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsMissingBlobIds(null)" methodname="ValidatorRejectsMissingBlobIds" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="308170236" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000579" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1093" name="ValidatorRejectsMissingBlobIds(&quot;&quot;)" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsMissingBlobIds(&quot;&quot;)" methodname="ValidatorRejectsMissingBlobIds" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="304897215" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000150" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1094" name="ValidatorRejectsMissingBlobIds(&quot;   &quot;)" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsMissingBlobIds(&quot;   &quot;)" methodname="ValidatorRejectsMissingBlobIds" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="1544497964" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000275" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1090" name="ValidatorRejectsMultipleBlobsInOneCell" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsMultipleBlobsInOneCell" methodname="ValidatorRejectsMultipleBlobsInOneCell" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="2108669149" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000153" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1091" name="ValidatorRejectsMultipleTilesInOneCell" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsMultipleTilesInOneCell" methodname="ValidatorRejectsMultipleTilesInOneCell" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="1945618311" result="Failed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000377" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: String containing "Multiple tiles occupy"
+  But was:  "Level must have at least one selectable source blob."
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsMultipleTilesInOneCell () [0x0004a] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/LevelValidatorTests.cs:52
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1101" name="ValidatorRejectsNonPositiveObjectiveAmounts" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsNonPositiveObjectiveAmounts" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.199747" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1099" name="ValidatorRejectsNonPositiveObjectiveAmounts(0)" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsNonPositiveObjectiveAmounts(0)" methodname="ValidatorRejectsNonPositiveObjectiveAmounts" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="1022241585" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000815" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1100" name="ValidatorRejectsNonPositiveObjectiveAmounts(-1)" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsNonPositiveObjectiveAmounts(-1)" methodname="ValidatorRejectsNonPositiveObjectiveAmounts" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="24628499" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000253" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1103" name="ValidatorRejectsObjectiveItemsWithoutTarget" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsObjectiveItemsWithoutTarget" methodname="ValidatorRejectsObjectiveItemsWithoutTarget" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="1972171243" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000143" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1102" name="ValidatorRejectsObjectivesThatCanNeverBeCollected" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsObjectivesThatCanNeverBeCollected" methodname="ValidatorRejectsObjectivesThatCanNeverBeCollected" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="2138977758" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000995" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1096" name="ValidatorRejectsOutOfBoundsCoordinates" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsOutOfBoundsCoordinates" methodname="ValidatorRejectsOutOfBoundsCoordinates" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="390756604" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000091" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1097" name="ValidatorRejectsUnsupportedColorValues" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsUnsupportedColorValues" methodname="ValidatorRejectsUnsupportedColorValues" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="907497332" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000080" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1098" name="ValidatorRejectsUnsupportedObjectiveValues" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsUnsupportedObjectiveValues" methodname="ValidatorRejectsUnsupportedObjectiveValues" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="778856459" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000141" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1104" name="ValidatorRejectsUnsupportedSchemaVersions" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsUnsupportedSchemaVersions" methodname="ValidatorRejectsUnsupportedSchemaVersions" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="872080910" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000103" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1105" name="MoveResolverPathTests" fullname="Blobs.Tests.EditMode.MoveResolverPathTests" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.493211" total="17" passed="17" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1118" name="AdjacentRockContactProducesNoBoardEffects" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.AdjacentRockContactProducesNoBoardEffects" methodname="AdjacentRockContactProducesNoBoardEffects" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="235600747" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.001729" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1116" name="GapAfterValidMergeRejectsWithoutPartialCommit" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.GapAfterValidMergeRejectsWithoutPartialCommit" methodname="GapAfterValidMergeRejectsWithoutPartialCommit" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1528127153" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000281" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1120" name="GhostBeforeGapEndsForwardTravelAndHauntsOriginalStart" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.GhostBeforeGapEndsForwardTravelAndHauntsOriginalStart" methodname="GhostBeforeGapEndsForwardTravelAndHauntsOriginalStart" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1099846710" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000130" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1124" name="IntermediateNestRejectsEvenWhenItsColorMatches" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.IntermediateNestRejectsEvenWhenItsColorMatches" methodname="IntermediateNestRejectsEvenWhenItsColorMatches" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1730680225" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000139" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1113" name="IntermediateRockStopsBeforeItAndIgnoresLaterGap" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.IntermediateRockStopsBeforeItAndIgnoresLaterGap" methodname="IntermediateRockStopsBeforeItAndIgnoresLaterGap" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1119507198" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000139" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1111" name="MergeKeepsSourceColorAndIdentity" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.MergeKeepsSourceColorAndIdentity" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.198602" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1109" name="MergeKeepsSourceColorAndIdentity(Normal)" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.MergeKeepsSourceColorAndIdentity(Normal)" methodname="MergeKeepsSourceColorAndIdentity" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="687647422" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.001713" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1110" name="MergeKeepsSourceColorAndIdentity(Trail)" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.MergeKeepsSourceColorAndIdentity(Trail)" methodname="MergeKeepsSourceColorAndIdentity" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1029276439" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000347" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1121" name="NestMergeCanClearOtherBlobsEarlierInTheSameAction" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.NestMergeCanClearOtherBlobsEarlierInTheSameAction" methodname="NestMergeCanClearOtherBlobsEarlierInTheSameAction" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1833778416" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.004735" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1114" name="ResultIdentifiesTheRockThatActuallyStoppedTheMove" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.ResultIdentifiesTheRockThatActuallyStoppedTheMove" methodname="ResultIdentifiesTheRockThatActuallyStoppedTheMove" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="78887483" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000192" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1117" name="SameColorBeforeRockRejectsWithoutPartialCommit" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.SameColorBeforeRockRejectsWithoutPartialCommit" methodname="SameColorBeforeRockRejectsWithoutPartialCommit" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1131922267" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000360" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1123" name="SelectedNestCannotBeReplacedByAnIntermediateGhost" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.SelectedNestCannotBeReplacedByAnIntermediateGhost" methodname="SelectedNestCannotBeReplacedByAnIntermediateGhost" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="12078446" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.001149" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1122" name="SelectedNestCannotBeReplacedByAnIntermediateRock" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.SelectedNestCannotBeReplacedByAnIntermediateRock" methodname="SelectedNestCannotBeReplacedByAnIntermediateRock" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1583604219" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000130" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1112" name="TrailCannotCaptureNestEvenWhenAdjacentAndMatching" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.TrailCannotCaptureNestEvenWhenAdjacentAndMatching" methodname="TrailCannotCaptureNestEvenWhenAdjacentAndMatching" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="830430314" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000162" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1119" name="TrailStopsBeforeRockAndSpawnsOnlyOnDepartedCells" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.TrailStopsBeforeRockAndSpawnsOnlyOnDepartedCells" methodname="TrailStopsBeforeRockAndSpawnsOnlyOnDepartedCells" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1228505013" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000137" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1108" name="TrailTargetsUseNormalColorMergeRules" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.TrailTargetsUseNormalColorMergeRules" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.186983" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1106" name="TrailTargetsUseNormalColorMergeRules(Normal)" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.TrailTargetsUseNormalColorMergeRules(Normal)" methodname="TrailTargetsUseNormalColorMergeRules" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1231957251" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000404" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1107" name="TrailTargetsUseNormalColorMergeRules(Trail)" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.TrailTargetsUseNormalColorMergeRules(Trail)" methodname="TrailTargetsUseNormalColorMergeRules" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="108028730" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000302" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1115" name="ValidMergeBeforeRockCommitsButDoesNotReachSelectedTarget" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.ValidMergeBeforeRockCommitsButDoesNotReachSelectedTarget" methodname="ValidMergeBeforeRockCommitsButDoesNotReachSelectedTarget" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1672924148" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:30Z" duration="0.000177" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1018" name="NestMechanicTests" fullname="Blobs.Tests.EditMode.NestMechanicTests" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-11 19:17:30Z" end-time="2026-11-11 19:17:31Z" duration="0.209126" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1024" name="BlobOnPathChainMergesBeforeFinalNestCapture" fullname="Blobs.Tests.EditMode.NestMechanicTests.BlobOnPathChainMergesBeforeFinalNestCapture" methodname="BlobOnPathChainMergesBeforeFinalNestCapture" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="1463147778" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.001678" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1021" name="DifferentColorSourceCannotMergeIntoNest" fullname="Blobs.Tests.EditMode.NestMechanicTests.DifferentColorSourceCannotMergeIntoNest" methodname="DifferentColorSourceCannotMergeIntoNest" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="779020780" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000995" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1020" name="ExplicitMoveWithNestAsSourceIsRejectedWithoutMutatingBoard" fullname="Blobs.Tests.EditMode.NestMechanicTests.ExplicitMoveWithNestAsSourceIsRejectedWithoutMutatingBoard" methodname="ExplicitMoveWithNestAsSourceIsRejectedWithoutMutatingBoard" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="851254437" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000706" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1025" name="InvalidIntermediateMergeRejectsWholeNestMove" fullname="Blobs.Tests.EditMode.NestMechanicTests.InvalidIntermediateMergeRejectsWholeNestMove" methodname="InvalidIntermediateMergeRejectsWholeNestMove" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="83926911" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000234" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1026" name="LastMatchingSourceMergesIntoNestAndIsConsumed" fullname="Blobs.Tests.EditMode.NestMechanicTests.LastMatchingSourceMergesIntoNestAndIsConsumed" methodname="LastMatchingSourceMergesIntoNestAndIsConsumed" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="1563342848" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.001966" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1023" name="NestMergeStillRequiresRowOrColumnAlignment" fullname="Blobs.Tests.EditMode.NestMechanicTests.NestMergeStillRequiresRowOrColumnAlignment" methodname="NestMergeStillRequiresRowOrColumnAlignment" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="1361197936" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000403" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1027" name="NormalMergeCanClearOtherBlobBeforeFinalNestMerge" fullname="Blobs.Tests.EditMode.NestMechanicTests.NormalMergeCanClearOtherBlobBeforeFinalNestMerge" methodname="NormalMergeCanClearOtherBlobBeforeFinalNestMerge" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="1710400200" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000585" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1022" name="OccupiedNestRejectsASecondMatchingSource" fullname="Blobs.Tests.EditMode.NestMechanicTests.OccupiedNestRejectsASecondMatchingSource" methodname="OccupiedNestRejectsASecondMatchingSource" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="2129067662" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000520" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1019" name="SelectingNestAsSourceIsRejectedWithoutChangingSessionState" fullname="Blobs.Tests.EditMode.NestMechanicTests.SelectingNestAsSourceIsRejectedWithoutChangingSessionState" methodname="SelectingNestAsSourceIsRejectedWithoutChangingSessionState" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="1305225184" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000421" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1125" name="ObjectiveEvaluatorTests" fullname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests" classname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.292527" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="ParameterizedMethod" id="1130" name="CompletionDependsOnRemainingClearableBlobs" fullname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests.CompletionDependsOnRemainingClearableBlobs" classname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.205381" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1126" name="CompletionDependsOnRemainingClearableBlobs(Normal,False)" fullname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests.CompletionDependsOnRemainingClearableBlobs(Normal,False)" methodname="CompletionDependsOnRemainingClearableBlobs" classname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests" runstate="Runnable" seed="267765370" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.001700" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1127" name="CompletionDependsOnRemainingClearableBlobs(Trail,False)" fullname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests.CompletionDependsOnRemainingClearableBlobs(Trail,False)" methodname="CompletionDependsOnRemainingClearableBlobs" classname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests" runstate="Runnable" seed="542117190" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000191" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1128" name="CompletionDependsOnRemainingClearableBlobs(Ghost,False)" fullname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests.CompletionDependsOnRemainingClearableBlobs(Ghost,False)" methodname="CompletionDependsOnRemainingClearableBlobs" classname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests" runstate="Runnable" seed="1904571827" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000117" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1129" name="CompletionDependsOnRemainingClearableBlobs(Rock,True)" fullname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests.CompletionDependsOnRemainingClearableBlobs(Rock,True)" methodname="CompletionDependsOnRemainingClearableBlobs" classname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests" runstate="Runnable" seed="419144001" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.001562" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1131" name="NestAloneIsComplete" fullname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests.NestAloneIsComplete" methodname="NestAloneIsComplete" classname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests" runstate="Runnable" seed="1867455985" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000155" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1132" name="ObjectiveProgressTests" fullname="Blobs.Tests.EditMode.ObjectiveProgressTests" classname="Blobs.Tests.EditMode.ObjectiveProgressTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.095848" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1133" name="EatingMatchingBlobDecrementsRemaining" fullname="Blobs.Tests.EditMode.ObjectiveProgressTests.EatingMatchingBlobDecrementsRemaining" methodname="EatingMatchingBlobDecrementsRemaining" classname="Blobs.Tests.EditMode.ObjectiveProgressTests" runstate="Runnable" seed="592467409" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.001056" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1134" name="EatingNonMatchingColorDoesNotCount" fullname="Blobs.Tests.EditMode.ObjectiveProgressTests.EatingNonMatchingColorDoesNotCount" methodname="EatingNonMatchingColorDoesNotCount" classname="Blobs.Tests.EditMode.ObjectiveProgressTests" runstate="Runnable" seed="1658119167" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000286" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1138" name="LevelWithoutItemsKeepsClearBoardCompletion" fullname="Blobs.Tests.EditMode.ObjectiveProgressTests.LevelWithoutItemsKeepsClearBoardCompletion" methodname="LevelWithoutItemsKeepsClearBoardCompletion" classname="Blobs.Tests.EditMode.ObjectiveProgressTests" runstate="Runnable" seed="754654828" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000173" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1135" name="NestingCountsForBothTheMonsterAndTheNest" fullname="Blobs.Tests.EditMode.ObjectiveProgressTests.NestingCountsForBothTheMonsterAndTheNest" methodname="NestingCountsForBothTheMonsterAndTheNest" classname="Blobs.Tests.EditMode.ObjectiveProgressTests" runstate="Runnable" seed="820204000" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000161" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1136" name="TypeFilterSeparatesNormalMonstersFromNests" fullname="Blobs.Tests.EditMode.ObjectiveProgressTests.TypeFilterSeparatesNormalMonstersFromNests" methodname="TypeFilterSeparatesNormalMonstersFromNests" classname="Blobs.Tests.EditMode.ObjectiveProgressTests" runstate="Runnable" seed="1347284171" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000151" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1137" name="UndoAndRestartRestoreCounts" fullname="Blobs.Tests.EditMode.ObjectiveProgressTests.UndoAndRestartRestoreCounts" methodname="UndoAndRestartRestoreCounts" classname="Blobs.Tests.EditMode.ObjectiveProgressTests" runstate="Runnable" seed="278860034" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000344" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1139" name="PresenterSeparationTests" fullname="Blobs.Tests.EditMode.PresenterSeparationTests" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" testcasecount="17" result="Failed" site="Child" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.351028" total="17" passed="10" failed="7" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1143" name="AudioFeedbackDoesNotCreateMissingAudioSourcesAtPlaybackTime" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.AudioFeedbackDoesNotCreateMissingAudioSourcesAtPlaybackTime" methodname="AudioFeedbackDoesNotCreateMissingAudioSourcesAtPlaybackTime" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="123530399" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.023609" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Blob contact audio on 'Authored Audio Source Test' has a clip but no authored AudioSource.
+Merge impact audio on 'Authored Audio Source Test' has a clip but no authored AudioSource.
+]]></output>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1149" name="BlobPresenterAcceptsAuthoredMergeOrchestration" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.BlobPresenterAcceptsAuthoredMergeOrchestration" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.082218" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1147" name="BlobPresenterAcceptsAuthoredMergeOrchestration(Blobs.Presentation.MergeAnimationOrchestrator)" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.BlobPresenterAcceptsAuthoredMergeOrchestration(Blobs.Presentation.MergeAnimationOrchestrator)" methodname="BlobPresenterAcceptsAuthoredMergeOrchestration" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="48299165" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.004031" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1148" name="BlobPresenterAcceptsAuthoredMergeOrchestration(Blobs.Presentation.SimpleMergeAnimationOrchestrator)" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.BlobPresenterAcceptsAuthoredMergeOrchestration(Blobs.Presentation.SimpleMergeAnimationOrchestrator)" methodname="BlobPresenterAcceptsAuthoredMergeOrchestration" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="1825646976" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.001312" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1141" name="BlobViewRoutesContactToEveryComposedFeedbackBehavior" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.BlobViewRoutesContactToEveryComposedFeedbackBehavior" methodname="BlobViewRoutesContactToEveryComposedFeedbackBehavior" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="744374715" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.016036" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1140" name="BoardPresenterDelegatesViewTrackingAndRemovalToFocusedPresenters" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.BoardPresenterDelegatesViewTrackingAndRemovalToFocusedPresenters" methodname="BoardPresenterDelegatesViewTrackingAndRemovalToFocusedPresenters" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="1015919707" result="Failed" label="Error" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.003798" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BlobPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, System.Single cellSize, UnityEngine.Vector2 origin, Blobs.Presentation.IBlobViewFactory viewFactory) [0x00050] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BlobPresenter.cs:62 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x0005c] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:352 
+  at Blobs.Tests.EditMode.PresenterSeparationTests.BoardPresenterDelegatesViewTrackingAndRemovalToFocusedPresenters () [0x00080] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/PresenterSeparationTests.cs:48 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1145" name="BoardSynchronizationRejectsChangedBlobPresentationTraits" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.BoardSynchronizationRejectsChangedBlobPresentationTraits" methodname="BoardSynchronizationRejectsChangedBlobPresentationTraits" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="1782817198" result="Failed" label="Error" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000523" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BlobPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, System.Single cellSize, UnityEngine.Vector2 origin, Blobs.Presentation.IBlobViewFactory viewFactory) [0x00050] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BlobPresenter.cs:62 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x0005c] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:352 
+  at Blobs.Tests.EditMode.PresenterSeparationTests.BoardSynchronizationRejectsChangedBlobPresentationTraits () [0x0006e] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/PresenterSeparationTests.cs:171 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1146" name="GraveTilePrefabIsRegisteredInProductionCatalog" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.GraveTilePrefabIsRegisteredInProductionCatalog" methodname="GraveTilePrefabIsRegisteredInProductionCatalog" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="116994268" result="Failed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000573" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.PresenterSeparationTests.GraveTilePrefabIsRegisteredInProductionCatalog () [0x0000c] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/PresenterSeparationTests.cs:205
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1153" name="MergeOrchestratorHonoursAnExplicitContactPoint" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.MergeOrchestratorHonoursAnExplicitContactPoint" methodname="MergeOrchestratorHonoursAnExplicitContactPoint" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="1736032945" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.001225" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1154" name="MergeOrchestratorKeepsContactAndDestinationAnchorsDistinct" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.MergeOrchestratorKeepsContactAndDestinationAnchorsDistinct" methodname="MergeOrchestratorKeepsContactAndDestinationAnchorsDistinct" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="877110654" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000578" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1152" name="MergeOrchestratorPlacesImpactAtSourceTargetMidpoint" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.MergeOrchestratorPlacesImpactAtSourceTargetMidpoint" methodname="MergeOrchestratorPlacesImpactAtSourceTargetMidpoint" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="412554653" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000807" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1151" name="MergeOrchestratorRoutesAnticipationAndSettledCuesToComposedChannels" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.MergeOrchestratorRoutesAnticipationAndSettledCuesToComposedChannels" methodname="MergeOrchestratorRoutesAnticipationAndSettledCuesToComposedChannels" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="1852523585" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.001296" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1150" name="MergeOrchestratorRoutesImpactToEveryComposedFeedbackChannel" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.MergeOrchestratorRoutesImpactToEveryComposedFeedbackChannel" methodname="MergeOrchestratorRoutesImpactToEveryComposedFeedbackChannel" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="1562290204" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.001243" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1155" name="RegisteredEffectHandlerExtendsBoardPresentationWithoutCoordinatorChanges" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.RegisteredEffectHandlerExtendsBoardPresentationWithoutCoordinatorChanges" methodname="RegisteredEffectHandlerExtendsBoardPresentationWithoutCoordinatorChanges" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="1831741936" result="Failed" label="Error" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.002506" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BlobPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, System.Single cellSize, UnityEngine.Vector2 origin, Blobs.Presentation.IBlobViewFactory viewFactory) [0x00050] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BlobPresenter.cs:62 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x0005c] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:352 
+  at Blobs.Tests.EditMode.PresenterSeparationTests.RegisteredEffectHandlerExtendsBoardPresentationWithoutCoordinatorChanges () [0x00076] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/PresenterSeparationTests.cs:357 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1156" name="RegisteredMoveStepHandlerOwnsCompositeEffectsWithoutCoordinatorChanges" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.RegisteredMoveStepHandlerOwnsCompositeEffectsWithoutCoordinatorChanges" methodname="RegisteredMoveStepHandlerOwnsCompositeEffectsWithoutCoordinatorChanges" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="164297288" result="Failed" label="Error" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.001381" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BlobPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, System.Single cellSize, UnityEngine.Vector2 origin, Blobs.Presentation.IBlobViewFactory viewFactory) [0x00050] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BlobPresenter.cs:62 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x0005c] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:352 
+  at Blobs.Tests.EditMode.PresenterSeparationTests.RegisteredMoveStepHandlerOwnsCompositeEffectsWithoutCoordinatorChanges () [0x00086] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/PresenterSeparationTests.cs:401 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1142" name="RockPrefabComposesContactAudioFeedback" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.RockPrefabComposesContactAudioFeedback" methodname="RockPrefabComposesContactAudioFeedback" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="2134210083" result="Failed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000563" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.PresenterSeparationTests.RockPrefabComposesContactAudioFeedback () [0x0000c] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/PresenterSeparationTests.cs:94
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1157" name="SelectionPresenterUpdatesOnlyPreviouslyAndCurrentlySelectedViews" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.SelectionPresenterUpdatesOnlyPreviouslyAndCurrentlySelectedViews" methodname="SelectionPresenterUpdatesOnlyPreviouslyAndCurrentlySelectedViews" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="1182952536" result="Failed" label="Error" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000392" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BlobPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, System.Single cellSize, UnityEngine.Vector2 origin, Blobs.Presentation.IBlobViewFactory viewFactory) [0x00050] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BlobPresenter.cs:62 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x0005c] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:352 
+  at Blobs.Tests.EditMode.PresenterSeparationTests.SelectionPresenterUpdatesOnlyPreviouslyAndCurrentlySelectedViews () [0x000ad] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/PresenterSeparationTests.cs:455 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1144" name="TileViewRoutesStateToEveryComposedBinding" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.TileViewRoutesStateToEveryComposedBinding" methodname="TileViewRoutesStateToEveryComposedBinding" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="890951490" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.002333" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[TileView tile initialized at (1.00, 2.00, 0.00) with scale (1.00, 1.00, 1.00)
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1158" name="TrailMechanicTests" fullname="Blobs.Tests.EditMode.TrailMechanicTests" classname="Blobs.Tests.EditMode.TrailMechanicTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.043428" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1160" name="TrailMoveRejectsInvalidLaterMergeWithoutPartialSpawns" fullname="Blobs.Tests.EditMode.TrailMechanicTests.TrailMoveRejectsInvalidLaterMergeWithoutPartialSpawns" methodname="TrailMoveRejectsInvalidLaterMergeWithoutPartialSpawns" classname="Blobs.Tests.EditMode.TrailMechanicTests" runstate="Runnable" seed="1406921332" result="Passed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.001184" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1159" name="TrailMoveSpawnsNormalTrailColorBlobsExceptOnMergeSites" fullname="Blobs.Tests.EditMode.TrailMechanicTests.TrailMoveSpawnsNormalTrailColorBlobsExceptOnMergeSites" methodname="TrailMoveSpawnsNormalTrailColorBlobsExceptOnMergeSites" classname="Blobs.Tests.EditMode.TrailMechanicTests" runstate="Runnable" seed="1868158653" result="Failed" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:31Z" duration="0.000410" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.TrailMechanicTests.TrailMoveSpawnsNormalTrailColorBlobsExceptOnMergeSites () [0x00042] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TrailMechanicTests.cs:20
+]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1161" name="TutorialSequencerTests" fullname="Blobs.Tests.EditMode.TutorialSequencerTests" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" testcasecount="16" result="Failed" site="Child" start-time="2026-11-11 19:17:31Z" end-time="2026-11-11 19:17:32Z" duration="0.228432" total="16" passed="2" failed="14" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1171" name="AllowedSourceFilterBlocksSelectingOtherBlobsAsSources" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.AllowedSourceFilterBlocksSelectingOtherBlobsAsSources" methodname="AllowedSourceFilterBlocksSelectingOtherBlobsAsSources" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="1916746702" result="Failed" label="Error" start-time="2026-11-11 19:17:32Z" end-time="2026-11-11 19:17:32Z" duration="0.004433" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.InvalidOperationException : Level must have at least one nest.]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Core.LevelValidator.RequireAtLeastOneNest (System.Collections.Generic.HashSet`1[T] flagIds) [0x0000f] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:149 
+  at Blobs.Core.LevelValidator.ValidateOrThrow (Blobs.Core.LevelDefinition level) [0x00260] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:71 
+  at Blobs.Core.LevelFactory.CreateInitialBoard (Blobs.Core.LevelDefinition level) [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelFactory.cs:16 
+  at Blobs.Application.GameSession..ctor (Blobs.Core.LevelDefinition level, Blobs.Core.MoveResolver resolver) [0x0003b] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Application/GameSession.cs:157 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.CreateSession (Blobs.Core.LevelDefinition level) [0x00000] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:368 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.AllowedSourceFilterBlocksSelectingOtherBlobsAsSources () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:222 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1175" name="ContinueIsIgnoredOnPlayableSteps" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.ContinueIsIgnoredOnPlayableSteps" methodname="ContinueIsIgnoredOnPlayableSteps" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="1174432617" result="Failed" label="Error" start-time="2026-11-11 19:17:32Z" end-time="2026-11-11 19:17:32Z" duration="0.000316" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.InvalidOperationException : Level must have at least one nest.]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Core.LevelValidator.RequireAtLeastOneNest (System.Collections.Generic.HashSet`1[T] flagIds) [0x0000f] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:149 
+  at Blobs.Core.LevelValidator.ValidateOrThrow (Blobs.Core.LevelDefinition level) [0x00260] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:71 
+  at Blobs.Core.LevelFactory.CreateInitialBoard (Blobs.Core.LevelDefinition level) [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelFactory.cs:16 
+  at Blobs.Application.GameSession..ctor (Blobs.Core.LevelDefinition level, Blobs.Core.MoveResolver resolver) [0x0003b] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Application/GameSession.cs:157 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.CreateSession (Blobs.Core.LevelDefinition level) [0x00000] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:368 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.ContinueIsIgnoredOnPlayableSteps () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:329 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1167" name="DeferredAdvanceIsDroppedWhenTheBoardIsRestartedFirst" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.DeferredAdvanceIsDroppedWhenTheBoardIsRestartedFirst" methodname="DeferredAdvanceIsDroppedWhenTheBoardIsRestartedFirst" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="1862558283" result="Failed" label="Error" start-time="2026-11-11 19:17:32Z" end-time="2026-11-11 19:17:32Z" duration="0.000200" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.InvalidOperationException : Level must have at least one nest.]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Core.LevelValidator.RequireAtLeastOneNest (System.Collections.Generic.HashSet`1[T] flagIds) [0x0000f] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:149 
+  at Blobs.Core.LevelValidator.ValidateOrThrow (Blobs.Core.LevelDefinition level) [0x00260] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:71 
+  at Blobs.Core.LevelFactory.CreateInitialBoard (Blobs.Core.LevelDefinition level) [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelFactory.cs:16 
+  at Blobs.Application.GameSession..ctor (Blobs.Core.LevelDefinition level, Blobs.Core.MoveResolver resolver) [0x0003b] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Application/GameSession.cs:157 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.CreateSession (Blobs.Core.LevelDefinition level) [0x00000] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:368 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.DeferredAdvanceIsDroppedWhenTheBoardIsRestartedFirst () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:140 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1162" name="FailedMoveGateAdvancesAndRevealsTheNextPiecesOnTheSameBoard" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.FailedMoveGateAdvancesAndRevealsTheNextPiecesOnTheSameBoard" methodname="FailedMoveGateAdvancesAndRevealsTheNextPiecesOnTheSameBoard" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="2096150995" result="Failed" label="Error" start-time="2026-11-11 19:17:32Z" end-time="2026-11-11 19:17:32Z" duration="0.002113" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.InvalidOperationException : Level must have at least one nest.]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Core.LevelValidator.RequireAtLeastOneNest (System.Collections.Generic.HashSet`1[T] flagIds) [0x0000f] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:149 
+  at Blobs.Core.LevelValidator.ValidateOrThrow (Blobs.Core.LevelDefinition level) [0x00260] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:71 
+  at Blobs.Core.LevelFactory.CreateInitialBoard (Blobs.Core.LevelDefinition level) [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelFactory.cs:16 
+  at Blobs.Application.GameSession..ctor (Blobs.Core.LevelDefinition level, Blobs.Core.MoveResolver resolver) [0x0003b] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Application/GameSession.cs:157 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.CreateSession (Blobs.Core.LevelDefinition level) [0x00000] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:368 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.FailedMoveGateAdvancesAndRevealsTheNextPiecesOnTheSameBoard () [0x00007] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:20 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1163" name="FailedMoveGateHonorsTheFailureFilter" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.FailedMoveGateHonorsTheFailureFilter" methodname="FailedMoveGateHonorsTheFailureFilter" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="451496332" result="Failed" label="Error" start-time="2026-11-11 19:17:32Z" end-time="2026-11-11 19:17:32Z" duration="0.003854" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.InvalidOperationException : Level must have at least one nest.]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Core.LevelValidator.RequireAtLeastOneNest (System.Collections.Generic.HashSet`1[T] flagIds) [0x0000f] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:149 
+  at Blobs.Core.LevelValidator.ValidateOrThrow (Blobs.Core.LevelDefinition level) [0x00260] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:71 
+  at Blobs.Core.LevelFactory.CreateInitialBoard (Blobs.Core.LevelDefinition level) [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelFactory.cs:16 
+  at Blobs.Application.GameSession..ctor (Blobs.Core.LevelDefinition level, Blobs.Core.MoveResolver resolver) [0x0003b] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Application/GameSession.cs:157 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.CreateSession (Blobs.Core.LevelDefinition level) [0x00000] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:368 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.FailedMoveGateHonorsTheFailureFilter () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:50 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1165" name="LevelCompleteGateEndsTheSequenceOnceTheRevealedNestIsFilled" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.LevelCompleteGateEndsTheSequenceOnceTheRevealedNestIsFilled" methodname="LevelCompleteGateEndsTheSequenceOnceTheRevealedNestIsFilled" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="809544825" result="Failed" label="Error" start-time="2026-11-11 19:17:32Z" end-time="2026-11-11 19:17:32Z" duration="0.000831" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.InvalidOperationException : Level must have at least one nest.]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Core.LevelValidator.RequireAtLeastOneNest (System.Collections.Generic.HashSet`1[T] flagIds) [0x0000f] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:149 
+  at Blobs.Core.LevelValidator.ValidateOrThrow (Blobs.Core.LevelDefinition level) [0x00260] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:71 
+  at Blobs.Core.LevelFactory.CreateInitialBoard (Blobs.Core.LevelDefinition level) [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelFactory.cs:16 
+  at Blobs.Application.GameSession..ctor (Blobs.Core.LevelDefinition level, Blobs.Core.MoveResolver resolver) [0x0003b] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Application/GameSession.cs:157 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.CreateSession (Blobs.Core.LevelDefinition level) [0x00000] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:368 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.LevelCompleteGateEndsTheSequenceOnceTheRevealedNestIsFilled () [0x00007] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:88 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1176" name="PlayableStepExposesTopAndBottomCaptions" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.PlayableStepExposesTopAndBottomCaptions" methodname="PlayableStepExposesTopAndBottomCaptions" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="1360254094" result="Passed" start-time="2026-11-11 19:17:32Z" end-time="2026-11-11 19:17:32Z" duration="0.000355" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1174" name="ReactionSlideKeepsTheBoardAndAdvancesOnContinue" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.ReactionSlideKeepsTheBoardAndAdvancesOnContinue" methodname="ReactionSlideKeepsTheBoardAndAdvancesOnContinue" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="2086194618" result="Failed" label="Error" start-time="2026-11-11 19:17:32Z" end-time="2026-11-11 19:17:32Z" duration="0.000302" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.InvalidOperationException : Level must have at least one nest.]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Core.LevelValidator.RequireAtLeastOneNest (System.Collections.Generic.HashSet`1[T] flagIds) [0x0000f] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:149 
+  at Blobs.Core.LevelValidator.ValidateOrThrow (Blobs.Core.LevelDefinition level) [0x00260] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:71 
+  at Blobs.Core.LevelFactory.CreateInitialBoard (Blobs.Core.LevelDefinition level) [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelFactory.cs:16 
+  at Blobs.Application.GameSession..ctor (Blobs.Core.LevelDefinition level, Blobs.Core.MoveResolver resolver) [0x0003b] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Application/GameSession.cs:157 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.CreateSession (Blobs.Core.LevelDefinition level) [0x00000] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:368 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.ReactionSlideKeepsTheBoardAndAdvancesOnContinue () [0x00007] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:297 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1177" name="ReactionStepAcceptsAnyCaptionSlotAndBoardMode" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.ReactionStepAcceptsAnyCaptionSlotAndBoardMode" methodname="ReactionStepAcceptsAnyCaptionSlotAndBoardMode" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="223345746" result="Passed" start-time="2026-11-11 19:17:32Z" end-time="2026-11-11 19:17:32Z" duration="0.000408" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1169" name="RestartReturnsToTheLatestStageInsteadOfTheInitialBoard" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.RestartReturnsToTheLatestStageInsteadOfTheInitialBoard" methodname="RestartReturnsToTheLatestStageInsteadOfTheInitialBoard" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="43167160" result="Failed" label="Error" start-time="2026-11-11 19:17:32Z" end-time="2026-11-11 19:17:32Z" duration="0.000230" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.InvalidOperationException : Level must have at least one nest.]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Core.LevelValidator.RequireAtLeastOneNest (System.Collections.Generic.HashSet`1[T] flagIds) [0x0000f] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:149 
+  at Blobs.Core.LevelValidator.ValidateOrThrow (Blobs.Core.LevelDefinition level) [0x00260] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:71 
+  at Blobs.Core.LevelFactory.CreateInitialBoard (Blobs.Core.LevelDefinition level) [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelFactory.cs:16 
+  at Blobs.Application.GameSession..ctor (Blobs.Core.LevelDefinition level, Blobs.Core.MoveResolver resolver) [0x0003b] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Application/GameSession.cs:157 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.CreateSession (Blobs.Core.LevelDefinition level) [0x00000] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:368 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.RestartReturnsToTheLatestStageInsteadOfTheInitialBoard () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:188 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1170" name="RevealedCellsOpenBeforeTheirBlobsJoin" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.RevealedCellsOpenBeforeTheirBlobsJoin" methodname="RevealedCellsOpenBeforeTheirBlobsJoin" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="996563545" result="Failed" label="Error" start-time="2026-11-11 19:17:32Z" end-time="2026-11-11 19:17:32Z" duration="0.001462" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.InvalidOperationException : Level must have at least one nest.]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Core.LevelValidator.RequireAtLeastOneNest (System.Collections.Generic.HashSet`1[T] flagIds) [0x0000f] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:149 
+  at Blobs.Core.LevelValidator.ValidateOrThrow (Blobs.Core.LevelDefinition level) [0x00260] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:71 
+  at Blobs.Core.LevelFactory.CreateInitialBoard (Blobs.Core.LevelDefinition level) [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelFactory.cs:16 
+  at Blobs.Application.GameSession..ctor (Blobs.Core.LevelDefinition level, Blobs.Core.MoveResolver resolver) [0x0003b] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Application/GameSession.cs:157 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.CreateSession (Blobs.Core.LevelDefinition level) [0x00000] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:368 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.RevealedCellsOpenBeforeTheirBlobsJoin () [0x00036] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:209 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1173" name="RevealOntoAnOccupiedCellIsSkipped" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.RevealOntoAnOccupiedCellIsSkipped" methodname="RevealOntoAnOccupiedCellIsSkipped" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="660275896" result="Failed" label="Error" start-time="2026-11-11 19:17:32Z" end-time="2026-11-11 19:17:32Z" duration="0.000212" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.InvalidOperationException : Level must have at least one nest.]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Core.LevelValidator.RequireAtLeastOneNest (System.Collections.Generic.HashSet`1[T] flagIds) [0x0000f] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:149 
+  at Blobs.Core.LevelValidator.ValidateOrThrow (Blobs.Core.LevelDefinition level) [0x00260] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:71 
+  at Blobs.Core.LevelFactory.CreateInitialBoard (Blobs.Core.LevelDefinition level) [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelFactory.cs:16 
+  at Blobs.Application.GameSession..ctor (Blobs.Core.LevelDefinition level, Blobs.Core.MoveResolver resolver) [0x0003b] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Application/GameSession.cs:157 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.CreateSession (Blobs.Core.LevelDefinition level) [0x00000] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:368 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.RevealOntoAnOccupiedCellIsSkipped () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:285 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1168" name="StartPublishesTheFirstStepOnceWithItsEntranceReveals" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.StartPublishesTheFirstStepOnceWithItsEntranceReveals" methodname="StartPublishesTheFirstStepOnceWithItsEntranceReveals" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="1318122990" result="Failed" label="Error" start-time="2026-11-11 19:17:32Z" end-time="2026-11-11 19:17:32Z" duration="0.000173" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.InvalidOperationException : Level must have at least one nest.]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Core.LevelValidator.RequireAtLeastOneNest (System.Collections.Generic.HashSet`1[T] flagIds) [0x0000f] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:149 
+  at Blobs.Core.LevelValidator.ValidateOrThrow (Blobs.Core.LevelDefinition level) [0x00260] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:71 
+  at Blobs.Core.LevelFactory.CreateInitialBoard (Blobs.Core.LevelDefinition level) [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelFactory.cs:16 
+  at Blobs.Application.GameSession..ctor (Blobs.Core.LevelDefinition level, Blobs.Core.MoveResolver resolver) [0x0003b] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Application/GameSession.cs:157 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.CreateSession (Blobs.Core.LevelDefinition level) [0x00000] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:368 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.StartPublishesTheFirstStepOnceWithItsEntranceReveals () [0x0002b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:171 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1172" name="StepCanSwapABlobOutForARevealOnTheSameCell" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.StepCanSwapABlobOutForARevealOnTheSameCell" methodname="StepCanSwapABlobOutForARevealOnTheSameCell" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="1553182482" result="Failed" label="Error" start-time="2026-11-11 19:17:32Z" end-time="2026-11-11 19:17:32Z" duration="0.000913" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.InvalidOperationException : Level must have at least one nest.]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Core.LevelValidator.RequireAtLeastOneNest (System.Collections.Generic.HashSet`1[T] flagIds) [0x0000f] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:149 
+  at Blobs.Core.LevelValidator.ValidateOrThrow (Blobs.Core.LevelDefinition level) [0x00260] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:71 
+  at Blobs.Core.LevelFactory.CreateInitialBoard (Blobs.Core.LevelDefinition level) [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelFactory.cs:16 
+  at Blobs.Application.GameSession..ctor (Blobs.Core.LevelDefinition level, Blobs.Core.MoveResolver resolver) [0x0003b] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Application/GameSession.cs:157 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.CreateSession (Blobs.Core.LevelDefinition level) [0x00000] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:368 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.StepCanSwapABlobOutForARevealOnTheSameCell () [0x00007] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:254 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1164" name="SuccessfulMoveGateIgnoresFailedAttempts" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.SuccessfulMoveGateIgnoresFailedAttempts" methodname="SuccessfulMoveGateIgnoresFailedAttempts" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="1745183391" result="Failed" label="Error" start-time="2026-11-11 19:17:32Z" end-time="2026-11-11 19:17:32Z" duration="0.001209" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.InvalidOperationException : Level must have at least one nest.]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Core.LevelValidator.RequireAtLeastOneNest (System.Collections.Generic.HashSet`1[T] flagIds) [0x0000f] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:149 
+  at Blobs.Core.LevelValidator.ValidateOrThrow (Blobs.Core.LevelDefinition level) [0x00260] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:71 
+  at Blobs.Core.LevelFactory.CreateInitialBoard (Blobs.Core.LevelDefinition level) [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelFactory.cs:16 
+  at Blobs.Application.GameSession..ctor (Blobs.Core.LevelDefinition level, Blobs.Core.MoveResolver resolver) [0x0003b] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Application/GameSession.cs:157 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.CreateSession (Blobs.Core.LevelDefinition level) [0x00000] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:368 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.SuccessfulMoveGateIgnoresFailedAttempts () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:69 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1166" name="SuccessGateWaitsForPresentationToSettleBeforeAdvancing" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.SuccessGateWaitsForPresentationToSettleBeforeAdvancing" methodname="SuccessGateWaitsForPresentationToSettleBeforeAdvancing" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="959312175" result="Failed" label="Error" start-time="2026-11-11 19:17:32Z" end-time="2026-11-11 19:17:32Z" duration="0.001365" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.InvalidOperationException : Level must have at least one nest.]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Core.LevelValidator.RequireAtLeastOneNest (System.Collections.Generic.HashSet`1[T] flagIds) [0x0000f] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:149 
+  at Blobs.Core.LevelValidator.ValidateOrThrow (Blobs.Core.LevelDefinition level) [0x00260] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelValidator.cs:71 
+  at Blobs.Core.LevelFactory.CreateInitialBoard (Blobs.Core.LevelDefinition level) [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Core/Levels/LevelFactory.cs:16 
+  at Blobs.Application.GameSession..ctor (Blobs.Core.LevelDefinition level, Blobs.Core.MoveResolver resolver) [0x0003b] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Application/GameSession.cs:157 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.CreateSession (Blobs.Core.LevelDefinition level) [0x00000] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:368 
+  at Blobs.Tests.EditMode.TutorialSequencerTests.SuccessGateWaitsForPresentationToSettleBeforeAdvancing () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/TutorialSequencerTests.cs:114 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                </failure>
+                <output><![CDATA[Saving results to: /Users/caleb/Library/Application Support/DefaultCompany/blobs/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

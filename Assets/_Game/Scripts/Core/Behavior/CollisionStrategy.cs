@@ -59,12 +59,13 @@ namespace Blobs.Core
                 MergeEffect.NormalMerge(context)
             };
 
-            if (sourceSize.Value == targetSize.Value && sourceSize.Value < BlobSize.Large)
+            BlobSize nextSize = sourceSize.Value.Next();
+            if (sourceSize.Value == targetSize.Value && nextSize != sourceSize.Value)
             {
                 effects.Add(new ChangeBlobSizeEffect(
                     context.Source.Id,
                     before: sourceSize.Value,
-                    after: sourceSize.Value.Next()));
+                    after: nextSize));
             }
 
             return CollisionPlan.Continue(effects.ToArray());

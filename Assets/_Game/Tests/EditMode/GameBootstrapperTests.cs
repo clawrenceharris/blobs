@@ -96,14 +96,14 @@ namespace Blobs.Tests.EditMode
             var commands = root.AddComponent<GameplayCommandAdapter>();
             var level = CreateLevelAsset();
             var viewCatalog = AssetDatabase.LoadAssetAtPath<ViewCatalogAsset>(
-                "Assets/_Game/Production/Content/Presentation/ViewCatalog.asset");
+                "Assets/_Game/Content/Presentation/ViewCatalog_Monsters.asset");
 
             Assert.That(viewCatalog, Is.Not.Null);
 
             SetPrivateField(bootstrapper, "boardPresenter", board);
             SetPrivateField(bootstrapper, "inputAdapter", input);
             SetPrivateField(bootstrapper, "commandAdapter", commands);
-            SetPrivateField(bootstrapper, "levelAsset", level);
+            SetPrivateField(bootstrapper, "levels", new[] { level });
             SetPrivateField(
                 board.GetComponent<BlobPresenter>(),
                 "_viewCatalog",

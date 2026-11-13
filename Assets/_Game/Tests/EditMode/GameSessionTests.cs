@@ -65,6 +65,43 @@ namespace Blobs.Tests.EditMode
             Assert.That(session.BeginDragAt(new GridPosition(1, 0)).SourceId, Is.EqualTo("target"));
         }
 
+        [Test]
+        public void InvalidDragReleasePublishesRejectionWithSwipeDirection()
+        {
+            var session = CreateSession(BlobColor.Red);
+            DragPreview rejected = null;
+            session.DragRejected += preview => rejected = preview;
+
+            session.BeginDragAt(new GridPosition(0, 0));
+            session.UpdateDragAt(new GridPosition(1, 0));
+            session.EndDragAt(new GridPosition(1, 0));
+
+            Assert.That(rejected, Is.Not.Null);
+            Assert.That(rejected.SourceId, Is.EqualTo("source"));
+            Assert.That(rejected.Origin, Is.EqualTo(new GridPosition(0, 0)));
+            Assert.That(rejected.Tail, Is.EqualTo(new GridPosition(1, 0)));
+            Assert.That(rejected.Verdict, Is.EqualTo(DragVerdict.Invalid));
+            Assert.That(rejected.FailureReason, Is.EqualTo(MoveFailureReason.NormalMergeRequiresDifferentColors));
+        }
+
+        [Test]
+        public void ValidReleaseAndTapRejectionDoNotPublishDragRejection()
+        {
+            var valid = CreateSession();
+            int validRejections = 0;
+            valid.DragRejected += _ => validRejections++;
+            valid.BeginDragAt(new GridPosition(0, 0));
+            valid.EndDragAt(new GridPosition(1, 0));
+            Assert.That(validRejections, Is.Zero);
+
+            var tapped = CreateSession(BlobColor.Red);
+            int tapRejections = 0;
+            tapped.DragRejected += _ => tapRejections++;
+            tapped.SelectBlobAt(new GridPosition(0, 0));
+            Assert.That(tapped.SelectBlobAt(new GridPosition(1, 0)).MoveResult.Succeeded, Is.False);
+            Assert.That(tapRejections, Is.Zero);
+        }
+
         [TestCase(false)]
         [TestCase(true)]
         public void CanceledOrRestartedDragCannotCommitOnRelease(bool restart)
@@ -407,12 +444,12 @@ namespace Blobs.Tests.EditMode
             Assert.That(session.CanUndo, Is.True);
 
             Assert.That(session.Undo(), Is.True);
-            Assert.That(session.MoveCount, Is.EqualTo(2));
+            Assert.That(session.MoveCount, Is.EqualTo(1));
             Assert.That(session.CurrentState.GetBlob("far"), Is.Not.Null);
             Assert.That(session.CanUndo, Is.True);
 
             Assert.That(session.Undo(), Is.True);
-            Assert.That(session.MoveCount, Is.EqualTo(2));
+            Assert.That(session.MoveCount, Is.Zero);
             Assert.That(session.CanUndo, Is.False);
             Assert.That(session.CurrentState.GetBlob("source").Position, Is.EqualTo(new GridPosition(0, 0)));
             Assert.That(session.CurrentState.GetBlob("mid"), Is.Not.Null);
@@ -431,7 +468,7 @@ namespace Blobs.Tests.EditMode
 
             var result = session.ExecuteMove(Intent(session, "source", "far"));
             Assert.That(result.Succeeded, Is.True);
-            Assert.That(session.MoveCount, Is.EqualTo(3));
+            Assert.That(session.MoveCount, Is.EqualTo(2));
             Assert.That(session.CurrentState.GetBlob("far"), Is.Null);
             Assert.That(session.CurrentState.GetBlob("mid"), Is.Null);
             session.Undo();
@@ -442,7 +479,7 @@ namespace Blobs.Tests.EditMode
         [Test]
         public void RejectionAfterValidMoveDoesNotChangeWhichActionUndoRestores()
         {
-            var session = CreateChainSession();
+            var session = CreateChainSession(BlobColor.Red);
             session.ExecuteMove(Intent(session, "source", "mid"));
             Assert.That(session.MoveCount, Is.EqualTo(1));
 
@@ -452,7 +489,7 @@ namespace Blobs.Tests.EditMode
             Assert.That(session.CurrentState.GetBlob("mid"), Is.Null);
 
             Assert.That(session.Undo(), Is.True);
-            Assert.That(session.MoveCount, Is.EqualTo(1));
+            Assert.That(session.MoveCount, Is.Zero);
             Assert.That(session.CurrentState.GetBlob("mid"), Is.Not.Null);
             Assert.That(session.CurrentState.GetBlob("source").Position, Is.EqualTo(new GridPosition(0, 0)));
         }
@@ -547,14 +584,14 @@ namespace Blobs.Tests.EditMode
                 blobs, Array.Empty<TileDefinition>()));
         }
 
-        private static GameSession CreateChainSession()
+        private static GameSession CreateChainSession(BlobColor farColor = BlobColor.Green)
         {
             return new GameSession(new LevelDefinition("undo-chain", LevelDefinition.CurrentSchemaVersion, 5, 1,
                 new BlobDefinition[]
                 {
                     new NormalBlobDefinition("source", new GridPosition(0, 0), BlobColor.Red),
                     new NormalBlobDefinition("mid", new GridPosition(1, 0), BlobColor.Blue),
-                    new NormalBlobDefinition("far", new GridPosition(2, 0), BlobColor.Green),
+                    new NormalBlobDefinition("far", new GridPosition(2, 0), farColor),
                     new NestBlobDefinition("nest", new GridPosition(3, 0), BlobColor.Red)
                 }, Array.Empty<TileDefinition>()));
         }

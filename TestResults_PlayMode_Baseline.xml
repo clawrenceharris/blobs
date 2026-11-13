@@ -1,0 +1,749 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="42" result="Failed(Child)" total="42" passed="3" failed="39" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-11 19:18:48Z" end-time="2026-11-11 19:18:50Z" duration="1.5106684">
+  <test-suite type="TestSuite" id="1061" name="blobs" fullname="blobs" runstate="Runnable" testcasecount="42" result="Failed" site="Child" start-time="2026-11-11 19:18:48Z" end-time="2026-11-11 19:18:50Z" duration="1.510668" total="42" passed="3" failed="39" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1054" name="Blobs.Tests.PlayMode.dll" fullname="/Users/caleb/Dev/blobs/Library/ScriptAssemblies/Blobs.Tests.PlayMode.dll" runstate="Runnable" testcasecount="42" result="Failed" site="Child" start-time="2026-11-11 19:18:48Z" end-time="2026-11-11 19:18:50Z" duration="1.481226" total="42" passed="3" failed="39" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="47431" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1055" name="Blobs" fullname="Blobs" runstate="Runnable" testcasecount="42" result="Failed" site="Child" start-time="2026-11-11 19:18:48Z" end-time="2026-11-11 19:18:50Z" duration="1.472401" total="42" passed="3" failed="39" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1056" name="Tests" fullname="Blobs.Tests" runstate="Runnable" testcasecount="42" result="Failed" site="Child" start-time="2026-11-11 19:18:48Z" end-time="2026-11-11 19:18:50Z" duration="1.464742" total="42" passed="3" failed="39" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1057" name="PlayMode" fullname="Blobs.Tests.PlayMode" runstate="Runnable" testcasecount="42" result="Failed" site="Child" start-time="2026-11-11 19:18:48Z" end-time="2026-11-11 19:18:50Z" duration="1.460935" total="42" passed="3" failed="39" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="1001" name="BlobSizePresentationTests" fullname="Blobs.Tests.PlayMode.BlobSizePresentationTests" classname="Blobs.Tests.PlayMode.BlobSizePresentationTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-11-11 19:18:48Z" end-time="2026-11-11 19:18:49Z" duration="0.152113" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1002" name="SmallMergeGrowthPersistsThroughTheNextMergeStateCycle" fullname="Blobs.Tests.PlayMode.BlobSizePresentationTests.SmallMergeGrowthPersistsThroughTheNextMergeStateCycle" methodname="SmallMergeGrowthPersistsThroughTheNextMergeStateCycle" classname="Blobs.Tests.PlayMode.BlobSizePresentationTests" runstate="Runnable" seed="1152004191" result="Failed" label="Error" start-time="2026-11-11 19:18:48Z" end-time="2026-11-11 19:18:49Z" duration="0.114855" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.BlobSizePresentationTests+<SmallMergeGrowthPersistsThroughTheNextMergeStateCycle>d__0.MoveNext () [0x000c8] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/BlobSizePresentationTests.cs:20 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1003" name="BoardPlaybackTests" fullname="Blobs.Tests.PlayMode.BoardPlaybackTests" classname="Blobs.Tests.PlayMode.BoardPlaybackTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.194387" total="5" passed="0" failed="5" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1006" name="AwaitedPlaybackCancellationRestoresCommittedSnapshot" fullname="Blobs.Tests.PlayMode.BoardPlaybackTests.AwaitedPlaybackCancellationRestoresCommittedSnapshot" methodname="AwaitedPlaybackCancellationRestoresCommittedSnapshot" classname="Blobs.Tests.PlayMode.BoardPlaybackTests" runstate="Runnable" seed="2046237647" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.072123" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.BoardPlaybackTests+<AwaitedPlaybackCancellationRestoresCommittedSnapshot>d__2.MoveNext () [0x00079] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/BoardPlaybackTests.cs:86 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1004" name="MoveStepBeatsRunSequentially" fullname="Blobs.Tests.PlayMode.BoardPlaybackTests.MoveStepBeatsRunSequentially" methodname="MoveStepBeatsRunSequentially" classname="Blobs.Tests.PlayMode.BoardPlaybackTests" runstate="Runnable" seed="1001838225" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.020002" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.BoardPlaybackTests+<MoveStepBeatsRunSequentially>d__0.MoveNext () [0x0002e] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/BoardPlaybackTests.cs:20 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1007" name="PlaybackBlocksSelectionAndQueuesUndoUntilItSettles" fullname="Blobs.Tests.PlayMode.BoardPlaybackTests.PlaybackBlocksSelectionAndQueuesUndoUntilItSettles" methodname="PlaybackBlocksSelectionAndQueuesUndoUntilItSettles" classname="Blobs.Tests.PlayMode.BoardPlaybackTests" runstate="Runnable" seed="2141013365" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.048091" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.BoardPlaybackTests+<PlaybackBlocksSelectionAndQueuesUndoUntilItSettles>d__3.MoveNext () [0x0009f] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/BoardPlaybackTests.cs:106 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1005" name="RebuildDuringMergeCleansUpInterruptedViewsAndAnimationState" fullname="Blobs.Tests.PlayMode.BoardPlaybackTests.RebuildDuringMergeCleansUpInterruptedViewsAndAnimationState" methodname="RebuildDuringMergeCleansUpInterruptedViewsAndAnimationState" classname="Blobs.Tests.PlayMode.BoardPlaybackTests" runstate="Runnable" seed="1611873990" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.013092" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.BoardPlaybackTests+<RebuildDuringMergeCleansUpInterruptedViewsAndAnimationState>d__1.MoveNext () [0x0007c] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/BoardPlaybackTests.cs:45 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1008" name="RestartDuringWinningPlaybackSuppressesStaleCompletion" fullname="Blobs.Tests.PlayMode.BoardPlaybackTests.RestartDuringWinningPlaybackSuppressesStaleCompletion" methodname="RestartDuringWinningPlaybackSuppressesStaleCompletion" classname="Blobs.Tests.PlayMode.BoardPlaybackTests" runstate="Runnable" seed="1738689829" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.015478" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.BoardPlaybackTests+<RestartDuringWinningPlaybackSuppressesStaleCompletion>d__4.MoveNext () [0x00082] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/BoardPlaybackTests.cs:141 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1009" name="CameraPresenterTests" fullname="Blobs.Tests.PlayMode.CameraPresenterTests" classname="Blobs.Tests.PlayMode.CameraPresenterTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.371941" total="5" passed="1" failed="4" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="ParameterizedMethod" id="1012" name="BoardFitsBelowTopHud" fullname="Blobs.Tests.PlayMode.CameraPresenterTests.BoardFitsBelowTopHud" classname="Blobs.Tests.PlayMode.CameraPresenterTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.053930" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1010" name="BoardFitsBelowTopHud(0.5f)" fullname="Blobs.Tests.PlayMode.CameraPresenterTests.BoardFitsBelowTopHud(0.5f)" methodname="BoardFitsBelowTopHud" classname="Blobs.Tests.PlayMode.CameraPresenterTests" runstate="Runnable" seed="211023983" result="Failed" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.045115" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Expected: 0.375f +/- 0.00100000005f
+  But was:  0.395744234f
+]]></message>
+                    <stack-trace><![CDATA[at Blobs.Tests.PlayMode.CameraPresenterTests.BoardFitsBelowTopHud (System.Single aspect) [0x00134] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/CameraPresenterTests.cs:43
+]]></stack-trace>
+                  </failure>
+                </test-case>
+                <test-case id="1011" name="BoardFitsBelowTopHud(2.0f)" fullname="Blobs.Tests.PlayMode.CameraPresenterTests.BoardFitsBelowTopHud(2.0f)" methodname="BoardFitsBelowTopHud" classname="Blobs.Tests.PlayMode.CameraPresenterTests" runstate="Runnable" seed="1638825869" result="Failed" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.006041" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Expected: 0.375f +/- 0.00100000005f
+  But was:  0.395744205f
+]]></message>
+                    <stack-trace><![CDATA[at Blobs.Tests.PlayMode.CameraPresenterTests.BoardFitsBelowTopHud (System.Single aspect) [0x00134] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/CameraPresenterTests.cs:43
+]]></stack-trace>
+                  </failure>
+                </test-case>
+              </test-suite>
+              <test-case id="1014" name="BoardFitsBetweenTopAndBottomHud" fullname="Blobs.Tests.PlayMode.CameraPresenterTests.BoardFitsBetweenTopAndBottomHud" methodname="BoardFitsBetweenTopAndBottomHud" classname="Blobs.Tests.PlayMode.CameraPresenterTests" runstate="Runnable" seed="519814416" result="Passed" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.012109" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1015" name="CameraFramingUsesLiveAspectAndPreservesDepth" fullname="Blobs.Tests.PlayMode.CameraPresenterTests.CameraFramingUsesLiveAspectAndPreservesDepth" methodname="CameraFramingUsesLiveAspectAndPreservesDepth" classname="Blobs.Tests.PlayMode.CameraPresenterTests" runstate="Runnable" seed="2120033090" result="Failed" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.270975" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: 1.25f +/- 0.00100000005f
+  But was:  1.37831497f
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.PlayMode.CameraPresenterTests+<CameraFramingUsesLiveAspectAndPreservesDepth>d__5.MoveNext () [0x0011d] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/CameraPresenterTests.cs:120
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1013" name="HiddenHudRestoresFullScreenFraming" fullname="Blobs.Tests.PlayMode.CameraPresenterTests.HiddenHudRestoresFullScreenFraming" methodname="HiddenHudRestoresFullScreenFraming" classname="Blobs.Tests.PlayMode.CameraPresenterTests" runstate="Runnable" seed="1284764794" result="Failed" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.023547" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: 3.5f +/- 0.00100000005f
+  But was:  3.90410304f
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.PlayMode.CameraPresenterTests+<HiddenHudRestoresFullScreenFraming>d__1.MoveNext () [0x000fc] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/CameraPresenterTests.cs:62
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1016" name="GameplayHudPresenterTests" fullname="Blobs.Tests.PlayMode.GameplayHudPresenterTests" classname="Blobs.Tests.PlayMode.GameplayHudPresenterTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.182263" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1017" name="HudBindsToSessionHostUpdatesMoveCountAndForwardsRestart" fullname="Blobs.Tests.PlayMode.GameplayHudPresenterTests.HudBindsToSessionHostUpdatesMoveCountAndForwardsRestart" methodname="HudBindsToSessionHostUpdatesMoveCountAndForwardsRestart" classname="Blobs.Tests.PlayMode.GameplayHudPresenterTests" runstate="Runnable" seed="1577225233" result="Failed" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.097015" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Missing field: button
+  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.PlayMode.GameplayHudPresenterTests.SetPrivateField (System.Object target, System.String fieldName, System.Object value) [0x00010] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/GameplayHudPresenterTests.cs:178
+at Blobs.Tests.PlayMode.GameplayHudPresenterTests.CreateHudButton (System.String name) [0x0001e] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/GameplayHudPresenterTests.cs:170
+at Blobs.Tests.PlayMode.GameplayHudPresenterTests+<HudBindsToSessionHostUpdatesMoveCountAndForwardsRestart>d__2.MoveNext () [0x00072] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/GameplayHudPresenterTests.cs:40
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1019" name="RestartHidesVictoryAndIgnoresStaleWinningPresentation" fullname="Blobs.Tests.PlayMode.GameplayHudPresenterTests.RestartHidesVictoryAndIgnoresStaleWinningPresentation" methodname="RestartHidesVictoryAndIgnoresStaleWinningPresentation" classname="Blobs.Tests.PlayMode.GameplayHudPresenterTests" runstate="Runnable" seed="1347253844" result="Passed" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.029959" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1020" name="UndoAvailabilityUsesImmediateLogicalSnapshotDuringPlayback" fullname="Blobs.Tests.PlayMode.GameplayHudPresenterTests.UndoAvailabilityUsesImmediateLogicalSnapshotDuringPlayback" methodname="UndoAvailabilityUsesImmediateLogicalSnapshotDuringPlayback" classname="Blobs.Tests.PlayMode.GameplayHudPresenterTests" runstate="Runnable" seed="844847392" result="Failed" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.009503" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Missing field: button
+  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.PlayMode.GameplayHudPresenterTests.SetPrivateField (System.Object target, System.String fieldName, System.Object value) [0x00010] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/GameplayHudPresenterTests.cs:178
+at Blobs.Tests.PlayMode.GameplayHudPresenterTests.CreateHudButton (System.String name) [0x0001e] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/GameplayHudPresenterTests.cs:170
+at Blobs.Tests.PlayMode.GameplayHudPresenterTests+<UndoAvailabilityUsesImmediateLogicalSnapshotDuringPlayback>d__5.MoveNext () [0x00057] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/GameplayHudPresenterTests.cs:139
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1018" name="WinningSnapshotWaitsForPresentationBeforeShowingCompletion" fullname="Blobs.Tests.PlayMode.GameplayHudPresenterTests.WinningSnapshotWaitsForPresentationBeforeShowingCompletion" methodname="WinningSnapshotWaitsForPresentationBeforeShowingCompletion" classname="Blobs.Tests.PlayMode.GameplayHudPresenterTests" runstate="Runnable" seed="1464058883" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.037595" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.ArgumentException : The actual value must be a string or a non-null IEnumerable or DirectoryInfo
+Parameter name: actual]]></message>
+                  <stack-trace><![CDATA[  at NUnit.Framework.Constraints.EmptyConstraint.ApplyTo (System.Object actual) [0x00018] in <f577cd9686154d6ab10efd7e65e64366>:0 
+  at NUnit.Framework.Assert.That[TActual] (TActual actual, NUnit.Framework.Constraints.IResolveConstraint expression, System.String message, System.Object[] args) [0x0000b] in <f577cd9686154d6ab10efd7e65e64366>:0 
+  at NUnit.Framework.Assert.That[TActual] (TActual actual, NUnit.Framework.Constraints.IResolveConstraint expression) [0x00000] in <f577cd9686154d6ab10efd7e65e64366>:0 
+  at Blobs.Tests.PlayMode.GameplayHudPresenterTests+<WinningSnapshotWaitsForPresentationBeforeShowingCompletion>d__3.MoveNext () [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/GameplayHudPresenterTests.cs:98 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1021" name="GhostPresentationTests" fullname="Blobs.Tests.PlayMode.GhostPresentationTests" classname="Blobs.Tests.PlayMode.GhostPresentationTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.096552" total="5" passed="0" failed="5" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1026" name="DisabledPresenterAppliesGhostEffectsImmediately" fullname="Blobs.Tests.PlayMode.GhostPresentationTests.DisabledPresenterAppliesGhostEffectsImmediately" methodname="DisabledPresenterAppliesGhostEffectsImmediately" classname="Blobs.Tests.PlayMode.GhostPresentationTests" runstate="Runnable" seed="958812182" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.009132" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.GhostPresentationTests+<DisabledPresenterAppliesGhostEffectsImmediately>d__4.MoveNext () [0x00074] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/GhostPresentationTests.cs:119 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1022" name="GhostReturnFadesBodyOnceAndKeepsHaloVisible" fullname="Blobs.Tests.PlayMode.GhostPresentationTests.GhostReturnFadesBodyOnceAndKeepsHaloVisible" methodname="GhostReturnFadesBodyOnceAndKeepsHaloVisible" classname="Blobs.Tests.PlayMode.GhostPresentationTests" runstate="Runnable" seed="1914752470" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.023672" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.GhostPresentationTests+<GhostReturnFadesBodyOnceAndKeepsHaloVisible>d__0.MoveNext () [0x00096] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/GhostPresentationTests.cs:28 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1024" name="GraveReturnClearsOnlyAfterTravel" fullname="Blobs.Tests.PlayMode.GhostPresentationTests.GraveReturnClearsOnlyAfterTravel" methodname="GraveReturnClearsOnlyAfterTravel" classname="Blobs.Tests.PlayMode.GhostPresentationTests" runstate="Runnable" seed="1865993531" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.010343" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.GhostPresentationTests+<GraveReturnClearsOnlyAfterTravel>d__2.MoveNext () [0x000d7] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/GhostPresentationTests.cs:82 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1025" name="LandingAbsorptionKeepsIntermediateTrailViews" fullname="Blobs.Tests.PlayMode.GhostPresentationTests.LandingAbsorptionKeepsIntermediateTrailViews" methodname="LandingAbsorptionKeepsIntermediateTrailViews" classname="Blobs.Tests.PlayMode.GhostPresentationTests" runstate="Runnable" seed="1668592224" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.013794" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.GhostPresentationTests+<LandingAbsorptionKeepsIntermediateTrailViews>d__3.MoveNext () [0x00086] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/GhostPresentationTests.cs:104 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1023" name="RebuildDuringInvisibleReturnCancelsOldCompletion" fullname="Blobs.Tests.PlayMode.GhostPresentationTests.RebuildDuringInvisibleReturnCancelsOldCompletion" methodname="RebuildDuringInvisibleReturnCancelsOldCompletion" classname="Blobs.Tests.PlayMode.GhostPresentationTests" runstate="Runnable" seed="362579819" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.024609" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.GhostPresentationTests+<RebuildDuringInvisibleReturnCancelsOldCompletion>d__1.MoveNext () [0x0008d] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/GhostPresentationTests.cs:55 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1027" name="MergePresentationTests" fullname="Blobs.Tests.PlayMode.MergePresentationTests" classname="Blobs.Tests.PlayMode.MergePresentationTests" runstate="Runnable" testcasecount="10" result="Failed" site="Child" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:50Z" duration="0.196518" total="10" passed="0" failed="10" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1032" name="ExplicitMergeDoesNotDependOnNeighboringEffectOrder" fullname="Blobs.Tests.PlayMode.MergePresentationTests.ExplicitMergeDoesNotDependOnNeighboringEffectOrder" methodname="ExplicitMergeDoesNotDependOnNeighboringEffectOrder" classname="Blobs.Tests.PlayMode.MergePresentationTests" runstate="Runnable" seed="1386192344" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.010791" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.MergePresentationTests+<ExplicitMergeDoesNotDependOnNeighboringEffectOrder>d__4.MoveNext () [0x000c9] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/MergePresentationTests.cs:141 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1037" name="ExplicitMergeInstantPlaybackPreservesCorrectSurvivor" fullname="Blobs.Tests.PlayMode.MergePresentationTests.ExplicitMergeInstantPlaybackPreservesCorrectSurvivor" methodname="ExplicitMergeInstantPlaybackPreservesCorrectSurvivor" classname="Blobs.Tests.PlayMode.MergePresentationTests" runstate="Runnable" seed="126480596" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.024333" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.MergePresentationTests+<ExplicitMergeInstantPlaybackPreservesCorrectSurvivor>d__9.MoveNext () [0x000b6] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/MergePresentationTests.cs:274 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1028" name="ExplicitNormalMergeWorksInFlatListsAndSteps" fullname="Blobs.Tests.PlayMode.MergePresentationTests.ExplicitNormalMergeWorksInFlatListsAndSteps" methodname="ExplicitNormalMergeWorksInFlatListsAndSteps" classname="Blobs.Tests.PlayMode.MergePresentationTests" runstate="Runnable" seed="1922214768" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.007802" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.MergePresentationTests+<ExplicitNormalMergeWorksInFlatListsAndSteps>d__0.MoveNext () [0x000ad] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/MergePresentationTests.cs:22 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1030" name="ExplicitReverseMergePreservesNestOrGhostInBothInputFormats" fullname="Blobs.Tests.PlayMode.MergePresentationTests.ExplicitReverseMergePreservesNestOrGhostInBothInputFormats" methodname="ExplicitReverseMergePreservesNestOrGhostInBothInputFormats" classname="Blobs.Tests.PlayMode.MergePresentationTests" runstate="Runnable" seed="641616994" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.028799" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.MergePresentationTests+<ExplicitReverseMergePreservesNestOrGhostInBothInputFormats>d__2.MoveNext () [0x000ec] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/MergePresentationTests.cs:85 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1035" name="ExplicitReverseMergeRebuildCancelsOldPlayback" fullname="Blobs.Tests.PlayMode.MergePresentationTests.ExplicitReverseMergeRebuildCancelsOldPlayback" methodname="ExplicitReverseMergeRebuildCancelsOldPlayback" classname="Blobs.Tests.PlayMode.MergePresentationTests" runstate="Runnable" seed="125785865" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:49Z" duration="0.016549" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.MergePresentationTests+<ExplicitReverseMergeRebuildCancelsOldPlayback>d__7.MoveNext () [0x000a4] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/MergePresentationTests.cs:224 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1033" name="ExplicitReverseMergeThenGhostReturnKeepsSameGhost" fullname="Blobs.Tests.PlayMode.MergePresentationTests.ExplicitReverseMergeThenGhostReturnKeepsSameGhost" methodname="ExplicitReverseMergeThenGhostReturnKeepsSameGhost" classname="Blobs.Tests.PlayMode.MergePresentationTests" runstate="Runnable" seed="1854394612" result="Failed" label="Error" start-time="2026-11-11 19:18:49Z" end-time="2026-11-11 19:18:50Z" duration="0.014282" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.MergePresentationTests+<ExplicitReverseMergeThenGhostReturnKeepsSameGhost>d__5.MoveNext () [0x000a4] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/MergePresentationTests.cs:161 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1034" name="GhostRestRevealsBeforeDestructionAndRetiresItsRegistryEntry" fullname="Blobs.Tests.PlayMode.MergePresentationTests.GhostRestRevealsBeforeDestructionAndRetiresItsRegistryEntry" methodname="GhostRestRevealsBeforeDestructionAndRetiresItsRegistryEntry" classname="Blobs.Tests.PlayMode.MergePresentationTests" runstate="Runnable" seed="1095308034" result="Failed" label="Error" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.023070" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.MergePresentationTests+<GhostRestRevealsBeforeDestructionAndRetiresItsRegistryEntry>d__6.MoveNext () [0x000b6] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/MergePresentationTests.cs:190 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1029" name="MergeImpactFiresAtContactPoseWithSeparateTileAnchor" fullname="Blobs.Tests.PlayMode.MergePresentationTests.MergeImpactFiresAtContactPoseWithSeparateTileAnchor" methodname="MergeImpactFiresAtContactPoseWithSeparateTileAnchor" classname="Blobs.Tests.PlayMode.MergePresentationTests" runstate="Runnable" seed="1683512056" result="Failed" label="Error" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.015086" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.MergePresentationTests+<MergeImpactFiresAtContactPoseWithSeparateTileAnchor>d__1.MoveNext () [0x00087] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/MergePresentationTests.cs:47 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1031" name="NestCaptureAppendsVictorySequenceAndSeatsMonster" fullname="Blobs.Tests.PlayMode.MergePresentationTests.NestCaptureAppendsVictorySequenceAndSeatsMonster" methodname="NestCaptureAppendsVictorySequenceAndSeatsMonster" classname="Blobs.Tests.PlayMode.MergePresentationTests" runstate="Runnable" seed="1767448075" result="Failed" label="Error" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.013290" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.MergePresentationTests+<NestCaptureAppendsVictorySequenceAndSeatsMonster>d__3.MoveNext () [0x00082] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/MergePresentationTests.cs:110 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1036" name="SeparateMoveAndRemovalAreNotInferredAsMerge" fullname="Blobs.Tests.PlayMode.MergePresentationTests.SeparateMoveAndRemovalAreNotInferredAsMerge" methodname="SeparateMoveAndRemovalAreNotInferredAsMerge" classname="Blobs.Tests.PlayMode.MergePresentationTests" runstate="Runnable" seed="2073729349" result="Failed" label="Error" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.017411" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.MergePresentationTests+<SeparateMoveAndRemovalAreNotInferredAsMerge>d__8.MoveNext () [0x0007c] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/MergePresentationTests.cs:244 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1038" name="PresentationCompositionTests" fullname="Blobs.Tests.PlayMode.PresentationCompositionTests" classname="Blobs.Tests.PlayMode.PresentationCompositionTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.109634" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1040" name="ComposedSceneRootStartsSessionOnFirstFrame" fullname="Blobs.Tests.PlayMode.PresentationCompositionTests.ComposedSceneRootStartsSessionOnFirstFrame" methodname="ComposedSceneRootStartsSessionOnFirstFrame" classname="Blobs.Tests.PlayMode.PresentationCompositionTests" runstate="Runnable" seed="77888001" result="Failed" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.040493" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Missing field: levelAsset
+  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.PlayMode.PresentationTestFixture.SetPrivateField (System.Object target, System.String fieldName, System.Object value) [0x00010] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:190
+at Blobs.Tests.PlayMode.PresentationCompositionTests+<ComposedSceneRootStartsSessionOnFirstFrame>d__1.MoveNext () [0x00175] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationCompositionTests.cs:79
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1039" name="InstantiatedBlobCompositionInvokesEveryContactFeedbackChannel" fullname="Blobs.Tests.PlayMode.PresentationCompositionTests.InstantiatedBlobCompositionInvokesEveryContactFeedbackChannel" methodname="InstantiatedBlobCompositionInvokesEveryContactFeedbackChannel" classname="Blobs.Tests.PlayMode.PresentationCompositionTests" runstate="Runnable" seed="756552020" result="Passed" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.051686" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1041" name="SimpleMergePresentationTests" fullname="Blobs.Tests.PlayMode.SimpleMergePresentationTests" classname="Blobs.Tests.PlayMode.SimpleMergePresentationTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.069987" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1045" name="AssignedSimpleOrchestratorSupportsBothSurvivorsAndChainedMerges" fullname="Blobs.Tests.PlayMode.SimpleMergePresentationTests.AssignedSimpleOrchestratorSupportsBothSurvivorsAndChainedMerges" methodname="AssignedSimpleOrchestratorSupportsBothSurvivorsAndChainedMerges" classname="Blobs.Tests.PlayMode.SimpleMergePresentationTests" runstate="Runnable" seed="1782233906" result="Failed" label="Error" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.013304" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.SimpleMergePresentationTests+<AssignedSimpleOrchestratorSupportsBothSurvivorsAndChainedMerges>d__1.MoveNext () [0x000e5] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/SimpleMergePresentationTests.cs:66 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1046" name="RebuildDuringSimpleSlideCancelsPlaybackAndRestoresBoard" fullname="Blobs.Tests.PlayMode.SimpleMergePresentationTests.RebuildDuringSimpleSlideCancelsPlaybackAndRestoresBoard" methodname="RebuildDuringSimpleSlideCancelsPlaybackAndRestoresBoard" classname="Blobs.Tests.PlayMode.SimpleMergePresentationTests" runstate="Runnable" seed="1386813728" result="Failed" label="Error" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.017486" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.SimpleMergePresentationTests+<RebuildDuringSimpleSlideCancelsPlaybackAndRestoresBoard>d__2.MoveNext () [0x000be] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/SimpleMergePresentationTests.cs:98 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1044" name="SimpleMergeSlidesDirectlyAndRemovesConsumedAtContact" fullname="Blobs.Tests.PlayMode.SimpleMergePresentationTests.SimpleMergeSlidesDirectlyAndRemovesConsumedAtContact" classname="Blobs.Tests.PlayMode.SimpleMergePresentationTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.026163" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1042" name="SimpleMergeSlidesDirectlyAndRemovesConsumedAtContact(True)" fullname="Blobs.Tests.PlayMode.SimpleMergePresentationTests.SimpleMergeSlidesDirectlyAndRemovesConsumedAtContact(True)" methodname="SimpleMergeSlidesDirectlyAndRemovesConsumedAtContact" classname="Blobs.Tests.PlayMode.SimpleMergePresentationTests" runstate="Runnable" seed="675073600" result="Failed" label="Error" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.007688" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                    <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.SimpleMergePresentationTests.SimpleMergeSlidesDirectlyAndRemovesConsumedAtContact (System.Boolean sourceSurvives) [0x00035] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/SimpleMergePresentationTests.cs:19 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                  </failure>
+                </test-case>
+                <test-case id="1043" name="SimpleMergeSlidesDirectlyAndRemovesConsumedAtContact(False)" fullname="Blobs.Tests.PlayMode.SimpleMergePresentationTests.SimpleMergeSlidesDirectlyAndRemovesConsumedAtContact(False)" methodname="SimpleMergeSlidesDirectlyAndRemovesConsumedAtContact" classname="Blobs.Tests.PlayMode.SimpleMergePresentationTests" runstate="Runnable" seed="896011269" result="Failed" label="Error" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.009137" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                    <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.SimpleMergePresentationTests.SimpleMergeSlidesDirectlyAndRemovesConsumedAtContact (System.Boolean sourceSurvives) [0x00035] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/SimpleMergePresentationTests.cs:19 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <032c206a1674455bacfc3546f1de5ef3>:0 ]]></stack-trace>
+                  </failure>
+                </test-case>
+              </test-suite>
+            </test-suite>
+            <test-suite type="TestFixture" id="1047" name="UndoPresentationTests" fullname="Blobs.Tests.PlayMode.UndoPresentationTests" classname="Blobs.Tests.PlayMode.UndoPresentationTests" runstate="Runnable" testcasecount="6" result="Failed" site="Child" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.071037" total="6" passed="0" failed="6" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1053" name="RebuildDuringReverseSettlesToAuthoredBoard" fullname="Blobs.Tests.PlayMode.UndoPresentationTests.RebuildDuringReverseSettlesToAuthoredBoard" methodname="RebuildDuringReverseSettlesToAuthoredBoard" classname="Blobs.Tests.PlayMode.UndoPresentationTests" runstate="Runnable" seed="883920246" result="Failed" label="Error" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.007709" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.UndoPresentationTests+<RebuildDuringReverseSettlesToAuthoredBoard>d__5.MoveNext () [0x00085] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/UndoPresentationTests.cs:194 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1050" name="ReverseGhostHauntRestoresLandingOccupantAndGhostOrigin" fullname="Blobs.Tests.PlayMode.UndoPresentationTests.ReverseGhostHauntRestoresLandingOccupantAndGhostOrigin" methodname="ReverseGhostHauntRestoresLandingOccupantAndGhostOrigin" classname="Blobs.Tests.PlayMode.UndoPresentationTests" runstate="Runnable" seed="1737406303" result="Failed" label="Error" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.012953" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.UndoPresentationTests+<ReverseGhostHauntRestoresLandingOccupantAndGhostOrigin>d__2.MoveNext () [0x0008b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/UndoPresentationTests.cs:95 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1051" name="ReverseGhostRestRecreatesGhostIdentity" fullname="Blobs.Tests.PlayMode.UndoPresentationTests.ReverseGhostRestRecreatesGhostIdentity" methodname="ReverseGhostRestRecreatesGhostIdentity" classname="Blobs.Tests.PlayMode.UndoPresentationTests" runstate="Runnable" seed="1090131612" result="Failed" label="Error" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.007071" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.UndoPresentationTests+<ReverseGhostRestRecreatesGhostIdentity>d__3.MoveNext () [0x0008b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/UndoPresentationTests.cs:128 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1048" name="ReverseNormalMergeRestoresConsumedIdentityWithoutRebuild" fullname="Blobs.Tests.PlayMode.UndoPresentationTests.ReverseNormalMergeRestoresConsumedIdentityWithoutRebuild" methodname="ReverseNormalMergeRestoresConsumedIdentityWithoutRebuild" classname="Blobs.Tests.PlayMode.UndoPresentationTests" runstate="Runnable" seed="1697923608" result="Failed" label="Error" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.007832" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.UndoPresentationTests+<ReverseNormalMergeRestoresConsumedIdentityWithoutRebuild>d__0.MoveNext () [0x00085] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/UndoPresentationTests.cs:21 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1049" name="ReverseTrailSpawnAndMoveRestoresDepartureCell" fullname="Blobs.Tests.PlayMode.UndoPresentationTests.ReverseTrailSpawnAndMoveRestoresDepartureCell" methodname="ReverseTrailSpawnAndMoveRestoresDepartureCell" classname="Blobs.Tests.PlayMode.UndoPresentationTests" runstate="Runnable" seed="1980305670" result="Failed" label="Error" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.010376" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.UndoPresentationTests+<ReverseTrailSpawnAndMoveRestoresDepartureCell>d__1.MoveNext () [0x0009e] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/UndoPresentationTests.cs:61 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1052" name="UndoResolvedPlaysDedicatedFeedbackAndSkipsForwardContact" fullname="Blobs.Tests.PlayMode.UndoPresentationTests.UndoResolvedPlaysDedicatedFeedbackAndSkipsForwardContact" methodname="UndoResolvedPlaysDedicatedFeedbackAndSkipsForwardContact" classname="Blobs.Tests.PlayMode.UndoPresentationTests" runstate="Runnable" seed="470153924" result="Failed" label="Error" start-time="2026-11-11 19:18:50Z" end-time="2026-11-11 19:18:50Z" duration="0.012257" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                  <stack-trace><![CDATA[  at Blobs.Presentation.BoardPresenter.DestroyCells () [0x00002] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:403 
+  at Blobs.Presentation.BoardPresenter.Rebuild (Blobs.Application.GameSessionSnapshot snapshot) [0x00014] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:504 
+  at Blobs.Presentation.BoardPresenter.Initialize (Blobs.Application.IGameplayState state, Blobs.Content.LevelColorPaletteAsset palette, Blobs.Presentation.IBlobViewFactory blobViewFactory, Blobs.Presentation.ITileViewFactory tileViewFactory, Blobs.Content.LevelDefinitionAsset level) [0x00149] in /Users/caleb/Dev/blobs/Assets/_Game/Scripts/Presentation/Presenters/BoardPresenter.cs:367 
+  at Blobs.Tests.PlayMode.PresentationTestFixture.CreatePresenter (Blobs.Application.GameSessionSnapshot initialSnapshot, Blobs.Application.IGameplayState state, Blobs.Presentation.MergeAnimationOrchestratorBase mergeOrchestrator) [0x0005b] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/PresentationTestFixture.cs:75 
+  at Blobs.Tests.PlayMode.UndoPresentationTests+<UndoResolvedPlaysDedicatedFeedbackAndSkipsForwardContact>d__4.MoveNext () [0x000cd] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/PlayMode/UndoPresentationTests.cs:160 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44 ]]></stack-trace>
+                </failure>
+                <output><![CDATA[Saving results to: /Users/caleb/Library/Application Support/DefaultCompany/blobs/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

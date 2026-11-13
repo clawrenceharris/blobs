@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4173c870dfbf743d597ebc3e2ddea515
+guid: 18f30e854947a41a5a0de027309f9e5d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2775318788634878275
-    second: SPR_Checkers_0
+      213: -114982823557378674
+    second: SPR_UI_Button_Circle_Pressed_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,16 +96,42 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SPR_Checkers_0
+      name: SPR_UI_Button_Circle_Pressed_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 26
         y: 0
-        width: 526
+        width: 500
         height: 526
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -115,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: dbe53f814461c79d0800000000000000
-      internalID: -2775318788634878275
+      spriteID: e8d479e2bbf776ef0800000000000000
+      internalID: -114982823557378674
       vertices: []
       indices: 
       edges: []
@@ -135,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SPR_Checkers_0: -2775318788634878275
+      SPR_UI_Button_Circle_Pressed_0: -114982823557378674
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

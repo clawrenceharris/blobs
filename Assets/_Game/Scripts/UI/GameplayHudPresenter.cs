@@ -158,7 +158,8 @@ namespace Blobs.UI
 
         private void ExitGame()
         {
-            _sessionHost?.ExitGame();
+            // Skeleton player flow: leave Game for Home instead of quitting the app.
+            PlayerFlow.GoHome();
         }
 
         public void NextLevel()

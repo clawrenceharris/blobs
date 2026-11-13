@@ -400,6 +400,9 @@ namespace Blobs.Presentation
 
         private void DestroyCells()
         {
+            if (cellRoot == null)
+                return;
+
             foreach (Transform child in cellRoot)
             {
                 // Renamed so FindCell never returns a cell that is pending destruction this frame.

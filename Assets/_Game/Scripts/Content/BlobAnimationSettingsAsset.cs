@@ -62,6 +62,31 @@ namespace Blobs.Content
 
 
     [Serializable]
+    public sealed class BlobRejectNudgeSettings
+    {
+        [SerializeField, Min(0f), Tooltip("Local distance the visual leans toward a refused swipe, in the same units as pick-up lift.")]
+        private float nudgeDistance = 0.12f;
+        [SerializeField, Min(0.01f)] private float pushDuration = 0.07f;
+        [SerializeField, Min(0.01f), Tooltip("Spring back to rest. Uses an overshoot ease so the blob wobbles into place.")]
+        private float settleDuration = 0.24f;
+        [SerializeField, Tooltip("Scale multipliers at the peak of the lean: x along the swipe axis, y across it.")]
+        private Vector2 pushScale = new(1.08f, 0.94f);
+
+        public float NudgeDistance => nudgeDistance;
+        public float PushDuration => pushDuration;
+        public float SettleDuration => settleDuration;
+        public Vector2 PushScale => pushScale;
+
+        public void OnValidate()
+        {
+            nudgeDistance = Mathf.Max(0f, nudgeDistance);
+            pushDuration = Mathf.Max(0.01f, pushDuration);
+            settleDuration = Mathf.Max(0.01f, settleDuration);
+            pushScale = new Vector2(Mathf.Max(0.01f, pushScale.x), Mathf.Max(0.01f, pushScale.y));
+        }
+    }
+
+    [Serializable]
     public sealed class BlobMotionSettings
     {
         [SerializeField, Min(0f)] private float spawnDuration = 0.14f;
@@ -159,6 +184,7 @@ namespace Blobs.Content
 
         public BlobSelectionSettings BlobSelectionSettings;
         public BlobIdleSettings BlobIdleSettings;
+        public BlobRejectNudgeSettings RejectNudgeSettings;
         public BlobMergeImpactSettings MergeImpactSettings;
         public BlobMotionSettings BlobMotionSettings;
         public GhostReturnSettings GhostReturnSettings;
@@ -167,6 +193,7 @@ namespace Blobs.Content
         {
             BlobSelectionSettings.OnValidate();
             BlobIdleSettings.OnValidate();
+            RejectNudgeSettings.OnValidate();
             BlobMotionSettings.OnValidate();
             MergeImpactSettings.OnValidate();
 

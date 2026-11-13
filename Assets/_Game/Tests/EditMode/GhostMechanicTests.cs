@@ -9,7 +9,7 @@ namespace Blobs.Tests.EditMode
     {
         private static BlobState Source(bool trail = false) => new BlobState("source",
             trail ? BlobType.Trail : BlobType.Normal, new GridPosition(0, 0))
-            .WithColor(BlobColor.Red).WithTrail(BlobColor.Blue);
+            .WithColor(BlobColor.Red).WithTrail(BlobColor.Blue).WithSize(BlobSize.Normal);
         private static BlobState Ghost(int x = 3) => new("ghost", BlobType.Ghost, new GridPosition(x, 0));
         private static BoardState Board(bool trail = false, params int[] graves) => new(4, 1,
             new[] { Source(trail), Ghost() }, graves.Select(x =>
@@ -93,7 +93,7 @@ namespace Blobs.Tests.EditMode
         {
             BoardState board = Board();
             board.AddBlob(new BlobState("middle", BlobType.Normal, new GridPosition(1, 0))
-                .WithColor(BlobColor.Blue));
+                .WithColor(BlobColor.Blue).WithSize(BlobSize.Normal));
             Assert.That(Move(board).Succeeded, Is.True);
             Assert.That(board.GetBlob("middle"), Is.Null);
             Assert.That(board.GetBlob("ghost").Position, Is.EqualTo(new GridPosition(0, 0)));
@@ -104,7 +104,7 @@ namespace Blobs.Tests.EditMode
         {
             BoardState board = Board();
             board.AddBlob(new BlobState("middle", BlobType.Normal, new GridPosition(1, 0))
-                .WithColor(BlobColor.Red));
+                .WithColor(BlobColor.Red).WithSize(BlobSize.Normal));
             Assert.That(Move(board).Succeeded, Is.False);
             Assert.That(board.Blobs.Count(), Is.EqualTo(3));
             Assert.That(board.GetBlob("source").Position.X, Is.Zero);

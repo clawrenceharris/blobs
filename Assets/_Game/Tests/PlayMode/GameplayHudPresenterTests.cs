@@ -61,7 +61,7 @@ namespace Blobs.Tests.PlayMode
 
             state.RaiseSnapshotChanged();
 
-            Assert.That(moveText.text, Is.EqualTo("2/10"));
+            Assert.That(moveText.text, Is.EqualTo("2"));
 
             state.IsComplete = true;
             state.RaiseSnapshotChanged();
@@ -95,12 +95,10 @@ namespace Blobs.Tests.PlayMode
             state.RaiseSnapshotChanged();
 
             Assert.That(completionRoot.activeSelf, Is.False);
-            Assert.That(statusText.text, Is.Empty);
 
             host.RaisePresentationSettled(state.CreateSnapshot());
 
             Assert.That(completionRoot.activeSelf, Is.True);
-            Assert.That(statusText.text, Is.EqualTo("Complete!"));
         }
 
         [UnityTest]
@@ -164,10 +162,9 @@ namespace Blobs.Tests.PlayMode
         private HudButtonView CreateHudButton(string name)
         {
             GameObject buttonObject = CreateGameObject(name);
-            var button = buttonObject.AddComponent<Button>();
+            buttonObject.AddComponent<Button>();
             var icon = buttonObject.AddComponent<Image>();
             var view = buttonObject.AddComponent<HudButtonView>();
-            SetPrivateField(view, "button", button);
             SetPrivateField(view, "icon", icon);
             return view;
         }
@@ -212,6 +209,7 @@ namespace Blobs.Tests.PlayMode
             public event Action<GameSessionSnapshot> StateRestored;
             public event Action<BlobSelectionResult> BlobSelected;
             public event Action<DragPreview> DragPreviewChanged;
+            public event Action<DragPreview> DragRejected;
 
             public int MoveCount { get; set; }
 

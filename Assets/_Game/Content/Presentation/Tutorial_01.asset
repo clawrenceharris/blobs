@@ -77,9 +77,9 @@ MonoBehaviour:
       reactionAutoAdvance: 4.78
       lockInputUntilEntranceEnds: 1
   - kind: 1
-    captionTop: Excellent!
+    captionTop: Excellent! Blobsters can only nest in their own color.
     captionBottom: 
-    captionCenter: 'Blobsters can only nest in their own color. '
+    captionCenter: ' '
     advanceWhen: 3
     reactionBoard: 0
     failureFilter: 8

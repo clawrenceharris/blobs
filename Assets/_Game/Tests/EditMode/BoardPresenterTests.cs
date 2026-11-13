@@ -257,6 +257,12 @@ namespace Blobs.Tests.EditMode
                 remove { }
             }
 
+            public event Action<DragPreview> DragRejected
+            {
+                add { }
+                remove { }
+            }
+
             public bool CanUndo => false;
 
             public GameSessionSnapshot CreateSnapshot()

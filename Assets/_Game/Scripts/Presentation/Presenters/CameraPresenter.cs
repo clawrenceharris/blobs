@@ -3,73 +3,127 @@ using UnityEngine;
 namespace Blobs.Presentation
 {
     /// <summary>
-    /// Positions and sizes an orthographic camera so the current board fits in view.
+    /// Positions and sizes an orthographic camera so the current board fits inside the screen
+    /// space left by safe-area insets and persistent HUD chrome.
     /// </summary>
     [RequireComponent(typeof(Camera))]
     public class CameraPresenter : MonoBehaviour
     {
-        [SerializeField, Min(0f)] private float padding;
+        [SerializeField, Min(0f), Tooltip("Distance from each outer cell center to the usable viewport edge. A half-cell minimum is always preserved.")]
+        private float padding;
         [SerializeField, Tooltip("Top HUD bounds. The board is framed below this rectangle, including any gap above it.")]
         private RectTransform topHud;
 
+        [SerializeField, Tooltip("Optional bottom HUD bounds. The board is framed above this rectangle.")]
+        private RectTransform bottomHud;
+        [SerializeField, Tooltip("Keep the board inside the device safe area before reserving HUD space.")]
+        private bool respectSafeArea = true;
 
         private Camera _camera;
-        private RectTransform _cachedHud;
-        private Canvas _hudCanvas;
+        private RectTransform _cachedTopHud;
+        private RectTransform _cachedBottomHud;
+        private Canvas _topHudCanvas;
+        private Canvas _bottomHudCanvas;
         private readonly Vector3[] _hudCorners = new Vector3[4];
-        private Vector2 _boardSize;
+        private Vector2 _boardCenter;
+        private Vector2 _boardHalfExtents;
         private bool _hasBoard;
         private float _lastAspect;
-        private float _lastAvailableHeight;
+        private Rect _lastAvailableViewport;
 
         /// <summary>
-        /// Fits the padded board below the optional top HUD, preserving camera depth.
+        /// Fits the complete padded board inside the usable viewport, preserving camera depth.
         /// </summary>
         public void FitCameraToBoard(int width, int height, float cellSize)
         {
             _camera ??= GetComponent<Camera>();
 
-            _boardSize = new Vector2((width - 1) * cellSize, (height - 1) * cellSize);
+            float centerSpanX = Mathf.Max(0, width - 1) * cellSize;
+            float centerSpanY = Mathf.Max(0, height - 1) * cellSize;
+            float edgePadding = Mathf.Max(padding, cellSize * 0.5f);
+            _boardCenter = new Vector2(centerSpanX * 0.5f, centerSpanY * 0.5f);
+            _boardHalfExtents = new Vector2(
+                centerSpanX * 0.5f + edgePadding,
+                centerSpanY * 0.5f + edgePadding);
             _hasBoard = true;
             // Startup can precede the first canvas layout pass.
-            if (topHud != null)
+            if (topHud != null || bottomHud != null)
                 Canvas.ForceUpdateCanvases();
-            ApplyFraming(GetAvailableHeight());
+            ApplyFraming(GetAvailableViewport());
         }
 
-        private void ApplyFraming(float availableHeight)
+        private void ApplyFraming(Rect availableViewport)
         {
-            float requiredForHeight = (_boardSize.y * 0.5f + padding) / availableHeight;
-            float requiredForWidth = (_boardSize.x * 0.5f + padding) / _camera.aspect;
+            float requiredForHeight = _boardHalfExtents.y / availableViewport.height;
+            float requiredForWidth = _boardHalfExtents.x /
+                (_camera.aspect * availableViewport.width);
             _camera.orthographicSize = Mathf.Max(requiredForHeight, requiredForWidth);
-            // Move the camera up so the board is centered in the unobstructed lower area.
+
+            // Align the board center with the center of the usable viewport rather than the screen.
+            Vector2 viewportOffset = availableViewport.center - new Vector2(0.5f, 0.5f);
             transform.position = new Vector3(
-                _boardSize.x * 0.5f,
-                _boardSize.y * 0.5f + _camera.orthographicSize * (1f - availableHeight),
+                _boardCenter.x - viewportOffset.x * 2f * _camera.orthographicSize * _camera.aspect,
+                _boardCenter.y - viewportOffset.y * 2f * _camera.orthographicSize,
                 transform.position.z);
 
             _lastAspect = _camera.aspect;
-            _lastAvailableHeight = availableHeight;
+            _lastAvailableViewport = availableViewport;
         }
 
-        private float GetAvailableHeight()
+        private Rect GetAvailableViewport()
         {
-            if (topHud == null || !topHud.gameObject.activeInHierarchy)
-                return 1f;
+            Rect viewport = _camera.pixelRect;
+            if (viewport.width <= 0f || viewport.height <= 0f)
+                return new Rect(0f, 0f, 1f, 1f);
 
-            if (_cachedHud != topHud || _hudCanvas == null)
+            Rect usablePixels = respectSafeArea
+                ? Intersect(viewport, Screen.safeArea)
+                : viewport;
+            Rect available = ToNormalizedViewport(usablePixels, viewport);
+
+            if (TryGetScreenBounds(topHud, ref _cachedTopHud, ref _topHudCanvas, out Rect topBounds) &&
+                topBounds.Overlaps(viewport))
             {
-                _cachedHud = topHud;
-                _hudCanvas = topHud.GetComponentInParent<Canvas>();
+                float topHudBottom = Mathf.InverseLerp(viewport.yMin, viewport.yMax, topBounds.yMin);
+                available.yMax = Mathf.Min(available.yMax, topHudBottom);
             }
-            if (_hudCanvas == null || !_hudCanvas.isActiveAndEnabled)
-                return 1f;
 
-            Canvas rootCanvas = _hudCanvas.rootCanvas;
+            if (TryGetScreenBounds(bottomHud, ref _cachedBottomHud, ref _bottomHudCanvas, out Rect bottomBounds) &&
+                bottomBounds.Overlaps(viewport))
+            {
+                float bottomHudTop = Mathf.InverseLerp(viewport.yMin, viewport.yMax, bottomBounds.yMax);
+                available.yMin = Mathf.Max(available.yMin, bottomHudTop);
+            }
+
+            const float minimumSize = 0.01f;
+            available.width = Mathf.Max(minimumSize, available.width);
+            available.height = Mathf.Max(minimumSize, available.height);
+            return available;
+        }
+
+        private bool TryGetScreenBounds(
+            RectTransform target,
+            ref RectTransform cachedTarget,
+            ref Canvas cachedCanvas,
+            out Rect bounds)
+        {
+            bounds = default;
+            if (target == null || !target.gameObject.activeInHierarchy)
+                return false;
+
+            if (cachedTarget != target || cachedCanvas == null)
+            {
+                cachedTarget = target;
+                cachedCanvas = target.GetComponentInParent<Canvas>();
+            }
+            if (cachedCanvas == null || !cachedCanvas.isActiveAndEnabled)
+                return false;
+
+            Canvas rootCanvas = cachedCanvas.rootCanvas;
             Camera uiCamera = rootCanvas.renderMode == RenderMode.ScreenSpaceOverlay
                 ? null
                 : rootCanvas.worldCamera;
-            topHud.GetWorldCorners(_hudCorners);
+            target.GetWorldCorners(_hudCorners);
             float bottom = float.PositiveInfinity;
             float top = float.NegativeInfinity;
             float left = float.PositiveInfinity;
@@ -83,13 +137,28 @@ namespace Blobs.Presentation
                 right = Mathf.Max(right, screenPoint.x);
             }
 
-            Rect viewport = _camera.pixelRect;
-            if (viewport.height <= 0f || top <= viewport.yMin || bottom >= viewport.yMax ||
-                right <= viewport.xMin || left >= viewport.xMax)
-                return 1f;
+            bounds = Rect.MinMaxRect(left, bottom, right, top);
+            return true;
+        }
 
-            // A HUD covering the entire viewport cannot leave usable board space; keep the fit finite.
-            return Mathf.Clamp((bottom - viewport.yMin) / viewport.height, 0.01f, 1f);
+        private static Rect Intersect(Rect a, Rect b)
+        {
+            float xMin = Mathf.Max(a.xMin, b.xMin);
+            float yMin = Mathf.Max(a.yMin, b.yMin);
+            float xMax = Mathf.Min(a.xMax, b.xMax);
+            float yMax = Mathf.Min(a.yMax, b.yMax);
+            if (xMax <= xMin || yMax <= yMin)
+                return a;
+            return Rect.MinMaxRect(xMin, yMin, xMax, yMax);
+        }
+
+        private static Rect ToNormalizedViewport(Rect pixels, Rect viewport)
+        {
+            return Rect.MinMaxRect(
+                Mathf.InverseLerp(viewport.xMin, viewport.xMax, pixels.xMin),
+                Mathf.InverseLerp(viewport.yMin, viewport.yMax, pixels.yMin),
+                Mathf.InverseLerp(viewport.xMin, viewport.xMax, pixels.xMax),
+                Mathf.InverseLerp(viewport.yMin, viewport.yMax, pixels.yMax));
         }
 
         private void LateUpdate()
@@ -97,10 +166,18 @@ namespace Blobs.Presentation
             if (!_hasBoard)
                 return;
 
-            float availableHeight = GetAvailableHeight();
+            Rect availableViewport = GetAvailableViewport();
             if (!Mathf.Approximately(_lastAspect, _camera.aspect) ||
-                !Mathf.Approximately(_lastAvailableHeight, availableHeight))
-                ApplyFraming(availableHeight);
+                !Approximately(_lastAvailableViewport, availableViewport))
+                ApplyFraming(availableViewport);
+        }
+
+        private static bool Approximately(Rect a, Rect b)
+        {
+            return Mathf.Approximately(a.x, b.x) &&
+                Mathf.Approximately(a.y, b.y) &&
+                Mathf.Approximately(a.width, b.width) &&
+                Mathf.Approximately(a.height, b.height);
         }
 
         private void Awake()

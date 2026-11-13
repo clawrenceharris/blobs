@@ -28,8 +28,9 @@ namespace Blobs.Presentation
         [SerializeField] private CameraPresenter cameraPresenter;
         [SerializeField] private GameplayInputAdapter inputAdapter;
         [SerializeField] private GameplayCommandAdapter commandAdapter;
-        [SerializeField] private GameplayFeedbackPresenter feedbackPresenter;
         [SerializeField, Min(0)] private int initialLevelIndex;
+
+        [SerializeField] private bool shouldShowTutorial = false;
 
         [SerializeField, Tooltip("Optional. Tutorials run in order, each fading into the next; after the last " +
             "one the level at Initial Level Index fades in.")]
@@ -94,7 +95,7 @@ namespace Blobs.Presentation
             CurrentLevelIndex = ClampLevelIndex(initialLevelIndex);
 
             int firstTutorial = NextTutorialIndex(-1);
-            if (firstTutorial >= 0)
+            if (firstTutorial >= 0 && shouldShowTutorial)
             {
                 StartTutorial(tutorials[firstTutorial]);
                 return;
@@ -228,8 +229,7 @@ namespace Blobs.Presentation
 
             inputAdapter.Initialize(_commands, boardPresenter.CellSize, boardPresenter.Origin);
             commandAdapter.Initialize(_commands);
-            if (feedbackPresenter != null)
-                feedbackPresenter.Initialize(inputAdapter, _session);
+
             FitCameraToSession();
 
             SessionStarted?.Invoke(_commands, _session);

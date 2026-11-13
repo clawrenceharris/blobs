@@ -75,7 +75,8 @@ namespace Blobs.Tests.EditMode
         private static BlobState NormalBlob(string id, BlobColor color, int x)
         {
             return new BlobState(id, BlobType.Normal, new GridPosition(x, 0))
-                .WithColor(color);
+                .WithColor(color)
+                .WithSize(BlobSize.Normal);
         }
 
         private static BlobState TrailBlob(
@@ -86,7 +87,8 @@ namespace Blobs.Tests.EditMode
         {
             return new BlobState(id, BlobType.Trail, new GridPosition(x, 0))
                 .WithColor(bodyColor)
-                .WithTrail(trailColor);
+                .WithTrail(trailColor)
+                .WithSize(BlobSize.Normal);
         }
 
         private static string Snapshot(BoardState board)

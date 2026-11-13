@@ -176,6 +176,73 @@ namespace Blobs.Presentation
         }
     }
 
+    /// <summary>
+    /// One-shot refusal beat: the visual leans a short way along the refused swipe, squashed along
+    /// that axis, then springs back to rest and hands control to idle. Any other transition cuts it
+    /// short and restores the rest pose, so it never competes with pick-up or merge motion.
+    /// </summary>
+    public class BlobRejectedState : AnimationState
+    {
+        private readonly Vector2 _direction;
+        private Sequence _nudgeSequence;
+
+        public BlobRejectedState(Vector2 direction)
+        {
+            _direction = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.zero;
+        }
+
+        public override BlobAnimationState State => BlobAnimationState.Rejected;
+
+        public override void Enter(AnimationStateContext context)
+        {
+            BlobRejectNudgeSettings settings = AnimationSettings(context)?.RejectNudgeSettings;
+            if (settings == null || _direction == Vector2.zero)
+            {
+                context.BlobAnimator.SetIdle();
+                return;
+            }
+
+            Transform visual = VisualTransform(context);
+            Vector3 leanPosition = context.BaseLocalPosition + (Vector3)(_direction * settings.NudgeDistance);
+            Vector3 leanScale = Vector3.Scale(context.BaseScale, AxisScale(settings.PushScale));
+
+            _nudgeSequence = DOTween.Sequence()
+                .SetLink(context.BlobView.gameObject, LinkBehaviour.KillOnDestroy)
+                .Append(visual.DOLocalMove(leanPosition, settings.PushDuration).SetEase(Ease.OutQuad))
+                .Join(visual.DOScale(leanScale, settings.PushDuration).SetEase(Ease.OutQuad))
+                .Append(visual.DOLocalMove(context.BaseLocalPosition, settings.SettleDuration).SetEase(Ease.OutBack))
+                .Join(visual.DOScale(context.BaseScale, settings.SettleDuration).SetEase(Ease.OutBack))
+                .OnComplete(() =>
+                {
+                    _nudgeSequence = null;
+                    context.BlobAnimator.SetIdle();
+                });
+        }
+
+        public override void Exit(AnimationStateContext context)
+        {
+            _nudgeSequence?.Kill();
+            _nudgeSequence = null;
+            Transform visual = VisualTransform(context);
+            visual.localPosition = context.BaseLocalPosition;
+            visual.localScale = context.BaseScale;
+        }
+
+        public override IEnumerator Update(AnimationStateContext context)
+        {
+            yield return null;
+        }
+
+        /// <summary>Maps along/across multipliers onto x/y for the axis-aligned swipe.</summary>
+        private Vector3 AxisScale(Vector2 alongAcross)
+        {
+            bool horizontal = Mathf.Abs(_direction.x) >= Mathf.Abs(_direction.y);
+            return horizontal
+                ? new Vector3(alongAcross.x, alongAcross.y, 1f)
+                : new Vector3(alongAcross.y, alongAcross.x, 1f);
+        }
+    }
+
     public class BlobMovingState : AnimationState
     {
         public override BlobAnimationState State => BlobAnimationState.Moving;

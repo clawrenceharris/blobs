@@ -532,6 +532,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.CameraPresenter
   padding: 1.2
   topHud: {fileID: 1672090550}
+  bottomHud: {fileID: 0}
+  respectSafeArea: 1
 --- !u!1 &255617743
 GameObject:
   m_ObjectHideFlags: 0

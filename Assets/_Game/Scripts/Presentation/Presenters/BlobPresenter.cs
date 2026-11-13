@@ -25,6 +25,7 @@ namespace Blobs.Presentation
         private IBlobViewFactory _viewFactory;
         private BlobSelectionPresenter _selectionPresenter;
         private DragPreviewFeedbackPresenter _dragPreviewFeedbackPresenter;
+        private DragRejectionFeedbackPresenter _dragRejectionFeedbackPresenter;
         private float _cellSize;
         private Vector2 _origin;
 
@@ -69,6 +70,7 @@ namespace Blobs.Presentation
                 blobAnimationSettings.MergeImpactSettings, blobAnimationSettings.BlobMotionSettings);
             _selectionPresenter = new BlobSelectionPresenter(this, state);
             _dragPreviewFeedbackPresenter = new DragPreviewFeedbackPresenter(this, state);
+            _dragRejectionFeedbackPresenter = new DragRejectionFeedbackPresenter(this, state);
         }
 
         internal float SizeChangeDuration => blobAnimationSettings.MergeImpactSettings.GrowDuration;
@@ -233,6 +235,8 @@ namespace Blobs.Presentation
         /// <summary>Releases the gameplay-state subscription owned for the active session.</summary>
         internal void DisconnectFromState()
         {
+            _dragRejectionFeedbackPresenter?.Dispose();
+            _dragRejectionFeedbackPresenter = null;
             _dragPreviewFeedbackPresenter?.Dispose();
             _dragPreviewFeedbackPresenter = null;
             _selectionPresenter?.Dispose();

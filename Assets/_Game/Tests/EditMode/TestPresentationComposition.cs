@@ -19,7 +19,7 @@ namespace Blobs.Tests.EditMode
             var serialized = new SerializedObject(root.GetComponent<BlobPresenter>());
             serialized.FindProperty("blobAnimationSettings").objectReferenceValue =
                 AssetDatabase.LoadAssetAtPath<BlobAnimationSettingsAsset>(
-                    "Assets/_Game/Production/Content/Presentation/BlobAnimationSettings.asset");
+                    "Assets/_Game/Content/Presentation/BlobAnimationSettings_Default.asset");
             serialized.ApplyModifiedPropertiesWithoutUndo();
             return presenter;
         }

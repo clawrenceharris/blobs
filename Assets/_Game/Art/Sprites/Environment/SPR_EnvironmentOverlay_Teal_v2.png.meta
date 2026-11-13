@@ -1,0 +1,6305 @@
+fileFormatVersion: 2
+guid: 1c3e394a99e6445c484865b3940f6b24
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1787647087284987303
+    second: SPR_EnvironmentOverlay_Teal_v2_0
+  - first:
+      213: 5089973188121331961
+    second: SPR_EnvironmentOverlay_Teal_v2_1
+  - first:
+      213: -6241422558013993897
+    second: SPR_EnvironmentOverlay_Teal_v2_2
+  - first:
+      213: -4112250005896420997
+    second: SPR_EnvironmentOverlay_Teal_v2_3
+  - first:
+      213: -7232485641458581874
+    second: SPR_EnvironmentOverlay_Teal_v2_4
+  - first:
+      213: 6265596328961847923
+    second: SPR_EnvironmentOverlay_Teal_v2_5
+  - first:
+      213: 5426269157066305456
+    second: SPR_EnvironmentOverlay_Teal_v2_6
+  - first:
+      213: -378454241170931427
+    second: SPR_EnvironmentOverlay_Teal_v2_7
+  - first:
+      213: 710831000845052116
+    second: SPR_EnvironmentOverlay_Teal_v2_8
+  - first:
+      213: -6431189810291197666
+    second: SPR_EnvironmentOverlay_Teal_v2_9
+  - first:
+      213: 6552820178786660083
+    second: SPR_EnvironmentOverlay_Teal_v2_10
+  - first:
+      213: 3322155979973931274
+    second: SPR_EnvironmentOverlay_Teal_v2_11
+  - first:
+      213: 6791810910649733837
+    second: SPR_EnvironmentOverlay_Teal_v2_12
+  - first:
+      213: 7621736763401399223
+    second: SPR_EnvironmentOverlay_Teal_v2_13
+  - first:
+      213: -6227197957129499015
+    second: SPR_EnvironmentOverlay_Teal_v2_14
+  - first:
+      213: 3830074228486028751
+    second: SPR_EnvironmentOverlay_Teal_v2_15
+  - first:
+      213: 816312635132855354
+    second: SPR_EnvironmentOverlay_Teal_v2_16
+  - first:
+      213: -2822810718320534754
+    second: SPR_EnvironmentOverlay_Teal_v2_17
+  - first:
+      213: 194891786540439570
+    second: SPR_EnvironmentOverlay_Teal_v2_18
+  - first:
+      213: -7075769315934701966
+    second: SPR_EnvironmentOverlay_Teal_v2_19
+  - first:
+      213: -6487671905582397420
+    second: SPR_EnvironmentOverlay_Teal_v2_20
+  - first:
+      213: 4022821948050874078
+    second: SPR_EnvironmentOverlay_Teal_v2_21
+  - first:
+      213: 9096211660569597693
+    second: SPR_EnvironmentOverlay_Teal_v2_22
+  - first:
+      213: 2064666460695248506
+    second: SPR_EnvironmentOverlay_Teal_v2_23
+  - first:
+      213: 4708279551425623440
+    second: SPR_EnvironmentOverlay_Teal_v2_24
+  - first:
+      213: -8921213411679939712
+    second: SPR_EnvironmentOverlay_Teal_v2_25
+  - first:
+      213: -2365906589764360393
+    second: SPR_EnvironmentOverlay_Teal_v2_26
+  - first:
+      213: 2093564383707979308
+    second: SPR_EnvironmentOverlay_Teal_v2_27
+  - first:
+      213: -5190875865941604381
+    second: SPR_EnvironmentOverlay_Teal_v2_28
+  - first:
+      213: -7584276706654402500
+    second: SPR_EnvironmentOverlay_Teal_v2_29
+  - first:
+      213: 4085776506255170152
+    second: SPR_EnvironmentOverlay_Teal_v2_30
+  - first:
+      213: -5293132041948423380
+    second: SPR_EnvironmentOverlay_Teal_v2_31
+  - first:
+      213: -1727559907502715590
+    second: SPR_EnvironmentOverlay_Teal_v2_32
+  - first:
+      213: -5725894145958747301
+    second: SPR_EnvironmentOverlay_Teal_v2_33
+  - first:
+      213: -3348288802607517011
+    second: SPR_EnvironmentOverlay_Teal_v2_34
+  - first:
+      213: -7971350432318705084
+    second: SPR_EnvironmentOverlay_Teal_v2_35
+  - first:
+      213: -7757523238046546460
+    second: SPR_EnvironmentOverlay_Teal_v2_36
+  - first:
+      213: -1986016837742070003
+    second: SPR_EnvironmentOverlay_Teal_v2_37
+  - first:
+      213: -3954788711099860017
+    second: SPR_EnvironmentOverlay_Teal_v2_38
+  - first:
+      213: 6949071658420370510
+    second: SPR_EnvironmentOverlay_Teal_v2_39
+  - first:
+      213: 2678137765403738904
+    second: SPR_EnvironmentOverlay_Teal_v2_40
+  - first:
+      213: 8028563262948661945
+    second: SPR_EnvironmentOverlay_Teal_v2_41
+  - first:
+      213: 7084045127835358423
+    second: SPR_EnvironmentOverlay_Teal_v2_42
+  - first:
+      213: -8628780789970077956
+    second: SPR_EnvironmentOverlay_Teal_v2_43
+  - first:
+      213: -7444130080959056449
+    second: SPR_EnvironmentOverlay_Teal_v2_44
+  - first:
+      213: -5483537149547992892
+    second: SPR_EnvironmentOverlay_Teal_v2_45
+  - first:
+      213: 1101197707854899740
+    second: SPR_EnvironmentOverlay_Teal_v2_46
+  - first:
+      213: 4114506655671958330
+    second: SPR_EnvironmentOverlay_Teal_v2_47
+  - first:
+      213: 7233017150861288806
+    second: SPR_EnvironmentOverlay_Teal_v2_48
+  - first:
+      213: -294368578185248028
+    second: SPR_EnvironmentOverlay_Teal_v2_49
+  - first:
+      213: 4497558759405011732
+    second: SPR_EnvironmentOverlay_Teal_v2_50
+  - first:
+      213: -5572751078602549297
+    second: SPR_EnvironmentOverlay_Teal_v2_51
+  - first:
+      213: 270312841764180247
+    second: SPR_EnvironmentOverlay_Teal_v2_52
+  - first:
+      213: -436744986413040850
+    second: SPR_EnvironmentOverlay_Teal_v2_53
+  - first:
+      213: -8955603251468402761
+    second: SPR_EnvironmentOverlay_Teal_v2_54
+  - first:
+      213: -8788734726165434741
+    second: SPR_EnvironmentOverlay_Teal_v2_55
+  - first:
+      213: -1103367127713926009
+    second: SPR_EnvironmentOverlay_Teal_v2_56
+  - first:
+      213: -1945621694314172078
+    second: SPR_EnvironmentOverlay_Teal_v2_57
+  - first:
+      213: -1827590540606087
+    second: SPR_EnvironmentOverlay_Teal_v2_58
+  - first:
+      213: 3036259750143134641
+    second: SPR_EnvironmentOverlay_Teal_v2_59
+  - first:
+      213: -3549578705670387871
+    second: SPR_EnvironmentOverlay_Teal_v2_60
+  - first:
+      213: -1938457854792968254
+    second: SPR_EnvironmentOverlay_Teal_v2_61
+  - first:
+      213: 6944923122667596808
+    second: SPR_EnvironmentOverlay_Teal_v2_62
+  - first:
+      213: -7450175713603586036
+    second: SPR_EnvironmentOverlay_Teal_v2_63
+  - first:
+      213: 9167992365905439055
+    second: SPR_EnvironmentOverlay_Teal_v2_64
+  - first:
+      213: 7882420494450508220
+    second: SPR_EnvironmentOverlay_Teal_v2_65
+  - first:
+      213: -8826227262238029049
+    second: SPR_EnvironmentOverlay_Teal_v2_66
+  - first:
+      213: -8316954089477797612
+    second: SPR_EnvironmentOverlay_Teal_v2_67
+  - first:
+      213: -196098766583210304
+    second: SPR_EnvironmentOverlay_Teal_v2_68
+  - first:
+      213: -1908971393477598320
+    second: SPR_EnvironmentOverlay_Teal_v2_69
+  - first:
+      213: -7584431367069114101
+    second: SPR_EnvironmentOverlay_Teal_v2_70
+  - first:
+      213: 5608323243423399929
+    second: SPR_EnvironmentOverlay_Teal_v2_71
+  - first:
+      213: 3437566336361337900
+    second: SPR_EnvironmentOverlay_Teal_v2_72
+  - first:
+      213: -7178530858674976644
+    second: SPR_EnvironmentOverlay_Teal_v2_73
+  - first:
+      213: -446967953857066421
+    second: SPR_EnvironmentOverlay_Teal_v2_74
+  - first:
+      213: 8996900892371144785
+    second: SPR_EnvironmentOverlay_Teal_v2_75
+  - first:
+      213: 268272239410521318
+    second: SPR_EnvironmentOverlay_Teal_v2_76
+  - first:
+      213: -8347103438136054264
+    second: SPR_EnvironmentOverlay_Teal_v2_77
+  - first:
+      213: 2600873030002825240
+    second: SPR_EnvironmentOverlay_Teal_v2_78
+  - first:
+      213: 5510024004999190497
+    second: SPR_EnvironmentOverlay_Teal_v2_79
+  - first:
+      213: 3910209806490148282
+    second: SPR_EnvironmentOverlay_Teal_v2_80
+  - first:
+      213: 9028347630894893901
+    second: SPR_EnvironmentOverlay_Teal_v2_81
+  - first:
+      213: -7046498924187196285
+    second: SPR_EnvironmentOverlay_Teal_v2_82
+  - first:
+      213: 3440421101929611646
+    second: SPR_EnvironmentOverlay_Teal_v2_83
+  - first:
+      213: -7605533257867242674
+    second: SPR_EnvironmentOverlay_Teal_v2_84
+  - first:
+      213: 1515221516970971591
+    second: SPR_EnvironmentOverlay_Teal_v2_85
+  - first:
+      213: 160242859593374693
+    second: SPR_EnvironmentOverlay_Teal_v2_86
+  - first:
+      213: -5231236683693353036
+    second: SPR_EnvironmentOverlay_Teal_v2_87
+  - first:
+      213: 4705460207787493904
+    second: SPR_EnvironmentOverlay_Teal_v2_88
+  - first:
+      213: -4382670706323723446
+    second: SPR_EnvironmentOverlay_Teal_v2_89
+  - first:
+      213: 654508701112449546
+    second: SPR_EnvironmentOverlay_Teal_v2_90
+  - first:
+      213: -2067814627245838649
+    second: SPR_EnvironmentOverlay_Teal_v2_91
+  - first:
+      213: 6243534793081186328
+    second: SPR_EnvironmentOverlay_Teal_v2_92
+  - first:
+      213: 4712449469167514728
+    second: SPR_EnvironmentOverlay_Teal_v2_93
+  - first:
+      213: 5393431884247513334
+    second: SPR_EnvironmentOverlay_Teal_v2_94
+  - first:
+      213: -6353862943133379955
+    second: SPR_EnvironmentOverlay_Teal_v2_95
+  - first:
+      213: 641611472718343149
+    second: SPR_EnvironmentOverlay_Teal_v2_96
+  - first:
+      213: -5893435104056781066
+    second: SPR_EnvironmentOverlay_Teal_v2_97
+  - first:
+      213: -3541998906048307212
+    second: SPR_EnvironmentOverlay_Teal_v2_98
+  - first:
+      213: -6603106656740758616
+    second: SPR_EnvironmentOverlay_Teal_v2_99
+  - first:
+      213: -1966164589686863812
+    second: SPR_EnvironmentOverlay_Teal_v2_100
+  - first:
+      213: 5785880097161752897
+    second: SPR_EnvironmentOverlay_Teal_v2_101
+  - first:
+      213: 7209046960908096331
+    second: SPR_EnvironmentOverlay_Teal_v2_102
+  - first:
+      213: 125669718998085407
+    second: SPR_EnvironmentOverlay_Teal_v2_103
+  - first:
+      213: 8726095656840755881
+    second: SPR_EnvironmentOverlay_Teal_v2_104
+  - first:
+      213: -7833775765793839314
+    second: SPR_EnvironmentOverlay_Teal_v2_105
+  - first:
+      213: 2305185858202084386
+    second: SPR_EnvironmentOverlay_Teal_v2_106
+  - first:
+      213: -6370605220886425309
+    second: SPR_EnvironmentOverlay_Teal_v2_107
+  - first:
+      213: -4444083863109485782
+    second: SPR_EnvironmentOverlay_Teal_v2_108
+  - first:
+      213: -7514643127743204989
+    second: SPR_EnvironmentOverlay_Teal_v2_109
+  - first:
+      213: -7639101937635103744
+    second: SPR_EnvironmentOverlay_Teal_v2_110
+  - first:
+      213: -8687405431700969412
+    second: SPR_EnvironmentOverlay_Teal_v2_111
+  - first:
+      213: 4014391889783240723
+    second: SPR_EnvironmentOverlay_Teal_v2_112
+  - first:
+      213: -7637273067606952129
+    second: SPR_EnvironmentOverlay_Teal_v2_113
+  - first:
+      213: 1200967612321355465
+    second: SPR_EnvironmentOverlay_Teal_v2_114
+  - first:
+      213: 372981775310190225
+    second: SPR_EnvironmentOverlay_Teal_v2_115
+  - first:
+      213: 4450777574067111371
+    second: SPR_EnvironmentOverlay_Teal_v2_116
+  - first:
+      213: 7235133135390338527
+    second: SPR_EnvironmentOverlay_Teal_v2_117
+  - first:
+      213: 7465196145306205288
+    second: SPR_EnvironmentOverlay_Teal_v2_118
+  - first:
+      213: -1392651675012340344
+    second: SPR_EnvironmentOverlay_Teal_v2_119
+  - first:
+      213: -2947927244107100707
+    second: SPR_EnvironmentOverlay_Teal_v2_120
+  - first:
+      213: 4849099633743291348
+    second: SPR_EnvironmentOverlay_Teal_v2_121
+  - first:
+      213: -5440134038524064644
+    second: SPR_EnvironmentOverlay_Teal_v2_122
+  - first:
+      213: -1447916911551451726
+    second: SPR_EnvironmentOverlay_Teal_v2_123
+  - first:
+      213: -7303165058575348210
+    second: SPR_EnvironmentOverlay_Teal_v2_124
+  - first:
+      213: -8818725911757576728
+    second: SPR_EnvironmentOverlay_Teal_v2_125
+  - first:
+      213: 726079610333483415
+    second: SPR_EnvironmentOverlay_Teal_v2_126
+  - first:
+      213: 815686190500523814
+    second: SPR_EnvironmentOverlay_Teal_v2_127
+  - first:
+      213: -1956664239893567042
+    second: SPR_EnvironmentOverlay_Teal_v2_128
+  - first:
+      213: 2888696764338303638
+    second: SPR_EnvironmentOverlay_Teal_v2_129
+  - first:
+      213: 8122087426126342331
+    second: SPR_EnvironmentOverlay_Teal_v2_130
+  - first:
+      213: -39779490680441440
+    second: SPR_EnvironmentOverlay_Teal_v2_131
+  - first:
+      213: 8597958810411583005
+    second: SPR_EnvironmentOverlay_Teal_v2_132
+  - first:
+      213: 2739441065953916748
+    second: SPR_EnvironmentOverlay_Teal_v2_133
+  - first:
+      213: -7249136069760183650
+    second: SPR_EnvironmentOverlay_Teal_v2_134
+  - first:
+      213: -294007115231628072
+    second: SPR_EnvironmentOverlay_Teal_v2_135
+  - first:
+      213: -8292265911064326076
+    second: SPR_EnvironmentOverlay_Teal_v2_136
+  - first:
+      213: 300245935027618903
+    second: SPR_EnvironmentOverlay_Teal_v2_137
+  - first:
+      213: 6483394697737298622
+    second: SPR_EnvironmentOverlay_Teal_v2_138
+  - first:
+      213: 8209445769697836876
+    second: SPR_EnvironmentOverlay_Teal_v2_139
+  - first:
+      213: -5869588934905075962
+    second: SPR_EnvironmentOverlay_Teal_v2_140
+  - first:
+      213: 7031166693232481730
+    second: SPR_EnvironmentOverlay_Teal_v2_141
+  - first:
+      213: -4977172081023828344
+    second: SPR_EnvironmentOverlay_Teal_v2_142
+  - first:
+      213: 7503434924264796176
+    second: SPR_EnvironmentOverlay_Teal_v2_143
+  - first:
+      213: 2721617076139845044
+    second: SPR_EnvironmentOverlay_Teal_v2_144
+  - first:
+      213: 366815150486541735
+    second: SPR_EnvironmentOverlay_Teal_v2_145
+  - first:
+      213: -2359734671294164542
+    second: SPR_EnvironmentOverlay_Teal_v2_146
+  - first:
+      213: -958536290967887274
+    second: SPR_EnvironmentOverlay_Teal_v2_147
+  - first:
+      213: 8785214066480375242
+    second: SPR_EnvironmentOverlay_Teal_v2_148
+  - first:
+      213: -2691706839295568378
+    second: SPR_EnvironmentOverlay_Teal_v2_149
+  - first:
+      213: 7810783007632269642
+    second: SPR_EnvironmentOverlay_Teal_v2_150
+  - first:
+      213: 7322649091621889587
+    second: SPR_EnvironmentOverlay_Teal_v2_151
+  - first:
+      213: 6816096825253617582
+    second: SPR_EnvironmentOverlay_Teal_v2_152
+  - first:
+      213: 8468373340036024489
+    second: SPR_EnvironmentOverlay_Teal_v2_153
+  - first:
+      213: -8649831031392444188
+    second: SPR_EnvironmentOverlay_Teal_v2_154
+  - first:
+      213: 8514753464544975873
+    second: SPR_EnvironmentOverlay_Teal_v2_155
+  - first:
+      213: 7827181101686965111
+    second: SPR_EnvironmentOverlay_Teal_v2_156
+  - first:
+      213: 8138144075282648988
+    second: SPR_EnvironmentOverlay_Teal_v2_157
+  - first:
+      213: 8163633524998784410
+    second: SPR_EnvironmentOverlay_Teal_v2_158
+  - first:
+      213: -4619514808779400099
+    second: SPR_EnvironmentOverlay_Teal_v2_159
+  - first:
+      213: -6175428881940219849
+    second: SPR_EnvironmentOverlay_Teal_v2_160
+  - first:
+      213: -6436928536776057128
+    second: SPR_EnvironmentOverlay_Teal_v2_161
+  - first:
+      213: 3911144936793401802
+    second: SPR_EnvironmentOverlay_Teal_v2_162
+  - first:
+      213: 5991809116344624102
+    second: SPR_EnvironmentOverlay_Teal_v2_163
+  - first:
+      213: -2651771877898523265
+    second: SPR_EnvironmentOverlay_Teal_v2_164
+  - first:
+      213: 1267325897990359286
+    second: SPR_EnvironmentOverlay_Teal_v2_165
+  - first:
+      213: 8914680592932581989
+    second: SPR_EnvironmentOverlay_Teal_v2_166
+  - first:
+      213: -7469787590994758637
+    second: SPR_EnvironmentOverlay_Teal_v2_167
+  - first:
+      213: -1144087557458665176
+    second: SPR_EnvironmentOverlay_Teal_v2_168
+  - first:
+      213: -3506830549345007328
+    second: SPR_EnvironmentOverlay_Teal_v2_169
+  - first:
+      213: 2863490839487952582
+    second: SPR_EnvironmentOverlay_Teal_v2_170
+  - first:
+      213: 7234200217552543397
+    second: SPR_EnvironmentOverlay_Teal_v2_171
+  - first:
+      213: -1009632457793840592
+    second: SPR_EnvironmentOverlay_Teal_v2_172
+  - first:
+      213: 1470573882261524063
+    second: SPR_EnvironmentOverlay_Teal_v2_173
+  - first:
+      213: -6194961222407236812
+    second: SPR_EnvironmentOverlay_Teal_v2_174
+  - first:
+      213: -6057995398106766087
+    second: SPR_EnvironmentOverlay_Teal_v2_175
+  - first:
+      213: 6144045457896147115
+    second: SPR_EnvironmentOverlay_Teal_v2_176
+  - first:
+      213: 6389937487209667446
+    second: SPR_EnvironmentOverlay_Teal_v2_177
+  - first:
+      213: 8214806348529916789
+    second: SPR_EnvironmentOverlay_Teal_v2_178
+  - first:
+      213: 67482941714322953
+    second: SPR_EnvironmentOverlay_Teal_v2_179
+  - first:
+      213: -1193362829630424097
+    second: SPR_EnvironmentOverlay_Teal_v2_180
+  - first:
+      213: -3507507460220533080
+    second: SPR_EnvironmentOverlay_Teal_v2_181
+  - first:
+      213: -7151510262159211679
+    second: SPR_EnvironmentOverlay_Teal_v2_182
+  - first:
+      213: 5711393870378972306
+    second: SPR_EnvironmentOverlay_Teal_v2_183
+  - first:
+      213: -3947250656441124819
+    second: SPR_EnvironmentOverlay_Teal_v2_184
+  - first:
+      213: -5988296061738968684
+    second: SPR_EnvironmentOverlay_Teal_v2_185
+  - first:
+      213: 1966583822005468465
+    second: SPR_EnvironmentOverlay_Teal_v2_186
+  - first:
+      213: -6937059198518271030
+    second: SPR_EnvironmentOverlay_Teal_v2_187
+  - first:
+      213: -1765281147730397391
+    second: SPR_EnvironmentOverlay_Teal_v2_188
+  - first:
+      213: -3130805788096853214
+    second: SPR_EnvironmentOverlay_Teal_v2_189
+  - first:
+      213: 6247496140710295588
+    second: SPR_EnvironmentOverlay_Teal_v2_190
+  - first:
+      213: 577936011194537305
+    second: SPR_EnvironmentOverlay_Teal_v2_191
+  - first:
+      213: 8711456461016006503
+    second: SPR_EnvironmentOverlay_Teal_v2_192
+  - first:
+      213: 8100534912608622524
+    second: SPR_EnvironmentOverlay_Teal_v2_193
+  - first:
+      213: 8951922503340672892
+    second: SPR_EnvironmentOverlay_Teal_v2_194
+  - first:
+      213: 2690740290220357892
+    second: SPR_EnvironmentOverlay_Teal_v2_195
+  - first:
+      213: -4133396370519450754
+    second: SPR_EnvironmentOverlay_Teal_v2_196
+  - first:
+      213: 7557553246150213484
+    second: SPR_EnvironmentOverlay_Teal_v2_197
+  - first:
+      213: 8921363823677598105
+    second: SPR_EnvironmentOverlay_Teal_v2_198
+  - first:
+      213: 894438306812075071
+    second: SPR_EnvironmentOverlay_Teal_v2_199
+  - first:
+      213: 3344217975535625616
+    second: SPR_EnvironmentOverlay_Teal_v2_200
+  - first:
+      213: -8530601682579935285
+    second: SPR_EnvironmentOverlay_Teal_v2_201
+  - first:
+      213: -3799227190228020775
+    second: SPR_EnvironmentOverlay_Teal_v2_202
+  - first:
+      213: 7576712934984856089
+    second: SPR_EnvironmentOverlay_Teal_v2_203
+  - first:
+      213: -2629697973733788299
+    second: SPR_EnvironmentOverlay_Teal_v2_204
+  - first:
+      213: 5289561564212159181
+    second: SPR_EnvironmentOverlay_Teal_v2_205
+  - first:
+      213: 4916769906953095709
+    second: SPR_EnvironmentOverlay_Teal_v2_206
+  - first:
+      213: -6355845039688821048
+    second: SPR_EnvironmentOverlay_Teal_v2_207
+  - first:
+      213: 8160962649092586703
+    second: SPR_EnvironmentOverlay_Teal_v2_208
+  - first:
+      213: 2454130846112939028
+    second: SPR_EnvironmentOverlay_Teal_v2_209
+  - first:
+      213: 367681974863396043
+    second: SPR_EnvironmentOverlay_Teal_v2_210
+  - first:
+      213: 112452249399050668
+    second: SPR_EnvironmentOverlay_Teal_v2_211
+  - first:
+      213: 2937394843799929814
+    second: SPR_EnvironmentOverlay_Teal_v2_212
+  - first:
+      213: 3407695445677211508
+    second: SPR_EnvironmentOverlay_Teal_v2_213
+  - first:
+      213: -6597777213104905819
+    second: SPR_EnvironmentOverlay_Teal_v2_214
+  - first:
+      213: 6297393130139455335
+    second: SPR_EnvironmentOverlay_Teal_v2_215
+  - first:
+      213: 4067563878880935654
+    second: SPR_EnvironmentOverlay_Teal_v2_216
+  - first:
+      213: 7462262030910769317
+    second: SPR_EnvironmentOverlay_Teal_v2_217
+  - first:
+      213: -5888328914867956067
+    second: SPR_EnvironmentOverlay_Teal_v2_218
+  - first:
+      213: -3599237824621176097
+    second: SPR_EnvironmentOverlay_Teal_v2_219
+  - first:
+      213: 7152020365350166198
+    second: SPR_EnvironmentOverlay_Teal_v2_220
+  - first:
+      213: -893823326731193058
+    second: SPR_EnvironmentOverlay_Teal_v2_221
+  - first:
+      213: 2089679888205582890
+    second: SPR_EnvironmentOverlay_Teal_v2_222
+  - first:
+      213: -3435757156198130707
+    second: SPR_EnvironmentOverlay_Teal_v2_223
+  - first:
+      213: 8680977590642893132
+    second: SPR_EnvironmentOverlay_Teal_v2_224
+  - first:
+      213: 9184574702352170609
+    second: SPR_EnvironmentOverlay_Teal_v2_225
+  - first:
+      213: 7990389078865553211
+    second: SPR_EnvironmentOverlay_Teal_v2_226
+  - first:
+      213: -3953426949606924554
+    second: SPR_EnvironmentOverlay_Teal_v2_227
+  - first:
+      213: -2960661882114622902
+    second: SPR_EnvironmentOverlay_Teal_v2_228
+  - first:
+      213: -2820648741303981681
+    second: SPR_EnvironmentOverlay_Teal_v2_229
+  - first:
+      213: -1835893980665150433
+    second: SPR_EnvironmentOverlay_Teal_v2_230
+  - first:
+      213: 224298471856371488
+    second: SPR_EnvironmentOverlay_Teal_v2_231
+  - first:
+      213: -6475869856449022974
+    second: SPR_EnvironmentOverlay_Teal_v2_232
+  - first:
+      213: 3944270900211665395
+    second: SPR_EnvironmentOverlay_Teal_v2_233
+  - first:
+      213: -3572440332573311190
+    second: SPR_EnvironmentOverlay_Teal_v2_234
+  - first:
+      213: -2826370039981943678
+    second: SPR_EnvironmentOverlay_Teal_v2_235
+  - first:
+      213: -3963093099827979800
+    second: SPR_EnvironmentOverlay_Teal_v2_236
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_0
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 1425
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95add9a02700137e0800000000000000
+      internalID: -1787647087284987303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_1
+      rect:
+        serializedVersion: 2
+        x: 693
+        y: 1416
+        width: 13
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f80c3295a733a640800000000000000
+      internalID: 5089973188121331961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_2
+      rect:
+        serializedVersion: 2
+        x: 790
+        y: 1431
+        width: 14
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75c477080430269a0800000000000000
+      internalID: -6241422558013993897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_3
+      rect:
+        serializedVersion: 2
+        x: 798
+        y: 1431
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7122f2486a5ee6c0800000000000000
+      internalID: -4112250005896420997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_4
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 1399
+        width: 20
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8e7fb1e0ac01ab90800000000000000
+      internalID: -7232485641458581874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_5
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 1405
+        width: 22
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37233c52aaed3f650800000000000000
+      internalID: 6265596328961847923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_6
+      rect:
+        serializedVersion: 2
+        x: 729
+        y: 1386
+        width: 36
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0bf689a7c0bfd4b40800000000000000
+      internalID: 5426269157066305456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_7
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 1365
+        width: 33
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d11444f6fd57fbaf0800000000000000
+      internalID: -378454241170931427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_8
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 1383
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d864b477016dd900800000000000000
+      internalID: 710831000845052116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_9
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 1388
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e193b7201f2dfb6a0800000000000000
+      internalID: -6431189810291197666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_10
+      rect:
+        serializedVersion: 2
+        x: 863
+        y: 1370
+        width: 25
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fe2799fb3b40fa50800000000000000
+      internalID: 6552820178786660083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_11
+      rect:
+        serializedVersion: 2
+        x: 898
+        y: 1388
+        width: 15
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0139c2234baa1e20800000000000000
+      internalID: 3322155979973931274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_12
+      rect:
+        serializedVersion: 2
+        x: 316
+        y: 1344
+        width: 29
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc256e6e90c514e50800000000000000
+      internalID: 6791810910649733837
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_13
+      rect:
+        serializedVersion: 2
+        x: 652
+        y: 1352
+        width: 26
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bb63126439d5c960800000000000000
+      internalID: 7621736763401399223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_14
+      rect:
+        serializedVersion: 2
+        x: 792
+        y: 1364
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97e024b737c8499a0800000000000000
+      internalID: -6227197957129499015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_15
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 1340
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcdb94cd738272530800000000000000
+      internalID: 3830074228486028751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_16
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 1323
+        width: 58
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a34c1c24400245b00800000000000000
+      internalID: 816312635132855354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_17
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 1320
+        width: 27
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1bd65a8b9c53d8d0800000000000000
+      internalID: -2822810718320534754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_18
+      rect:
+        serializedVersion: 2
+        x: 886
+        y: 1324
+        width: 50
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 218526a1c0564b200800000000000000
+      internalID: 194891786540439570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_19
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 1322
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2767a13db41ddcd90800000000000000
+      internalID: -7075769315934701966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_20
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 1304
+        width: 25
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 418ca7866c827f5a0800000000000000
+      internalID: -6487671905582397420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_21
+      rect:
+        serializedVersion: 2
+        x: 661
+        y: 1308
+        width: 54
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ede97387f3fe3d730800000000000000
+      internalID: 4022821948050874078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_22
+      rect:
+        serializedVersion: 2
+        x: 806
+        y: 1320
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df6540ebf4c3c3e70800000000000000
+      internalID: 9096211660569597693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_23
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 1303
+        width: 13
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7e3769f43b27ac10800000000000000
+      internalID: 2064666460695248506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_24
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 1282
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 095b5f57e4b275140800000000000000
+      internalID: 4708279551425623440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_25
+      rect:
+        serializedVersion: 2
+        x: 837
+        y: 1298
+        width: 17
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 083dd5f2bab713480800000000000000
+      internalID: -8921213411679939712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_26
+      rect:
+        serializedVersion: 2
+        x: 866
+        y: 1297
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 737e651ed7c9a2fd0800000000000000
+      internalID: -2365906589764360393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_27
+      rect:
+        serializedVersion: 2
+        x: 934
+        y: 1287
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2ed25df6b5dd0d10800000000000000
+      internalID: 2093564383707979308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_28
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 1275
+        width: 24
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e7076107ed46f7b0800000000000000
+      internalID: -5190875865941604381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_29
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 1275
+        width: 29
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c38489db48c3fb690800000000000000
+      internalID: -7584276706654402500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_30
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 1286
+        width: 12
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86ad9f6c51893b830800000000000000
+      internalID: 4085776506255170152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_31
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1260
+        width: 55
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2b1d6ab3740b86b0800000000000000
+      internalID: -5293132041948423380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_32
+      rect:
+        serializedVersion: 2
+        x: 608
+        y: 1281
+        width: 13
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3d0819ca697608e0800000000000000
+      internalID: -1727559907502715590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_33
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 1264
+        width: 35
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b53e3a08c998980b0800000000000000
+      internalID: -5725894145958747301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_34
+      rect:
+        serializedVersion: 2
+        x: 922
+        y: 1286
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da23923f21d7881d0800000000000000
+      internalID: -3348288802607517011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_35
+      rect:
+        serializedVersion: 2
+        x: 751
+        y: 1275
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 442bc7d0403106190800000000000000
+      internalID: -7971350432318705084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_36
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 1247
+        width: 38
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e5c56357bdb75490800000000000000
+      internalID: -7757523238046546460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_37
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 1242
+        width: 28
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d07707c55304074e0800000000000000
+      internalID: -1986016837742070003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_38
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 1255
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcbfa21ee94cd19c0800000000000000
+      internalID: -3954788711099860017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_39
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 1229
+        width: 12
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4c71e60bdf007060800000000000000
+      internalID: 6949071658420370510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_40
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 1241
+        width: 13
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 813c276bb18aa2520800000000000000
+      internalID: 2678137765403738904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_41
+      rect:
+        serializedVersion: 2
+        x: 881
+        y: 1218
+        width: 49
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ba5ec020cf2b6f60800000000000000
+      internalID: 8028563262948661945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_42
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 1214
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d49679c2859f4260800000000000000
+      internalID: 7084045127835358423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_43
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 1208
+        width: 41
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf67e19b699604880800000000000000
+      internalID: -8628780789970077956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_44
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 1226
+        width: 13
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb5b2aec12321b890800000000000000
+      internalID: -7444130080959056449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_45
+      rect:
+        serializedVersion: 2
+        x: 741
+        y: 1209
+        width: 40
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c8a888f30096e3b0800000000000000
+      internalID: -5483537149547992892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_46
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 1211
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1a6a2c1b7d384f00800000000000000
+      internalID: 1101197707854899740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_47
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 1206
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3bbe45f00aa91930800000000000000
+      internalID: 4114506655671958330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_48
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 1191
+        width: 23
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 665256bc6c6d06460800000000000000
+      internalID: 7233017150861288806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_49
+      rect:
+        serializedVersion: 2
+        x: 354
+        y: 1193
+        width: 35
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e24b3876513aebf0800000000000000
+      internalID: -294368578185248028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_50
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 1208
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41348c2dcd98a6e30800000000000000
+      internalID: 4497558759405011732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_51
+      rect:
+        serializedVersion: 2
+        x: 381
+        y: 1194
+        width: 12
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc758327b6c99a2b0800000000000000
+      internalID: -5572751078602549297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_52
+      rect:
+        serializedVersion: 2
+        x: 937
+        y: 1194
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 711949fe81850c300800000000000000
+      internalID: 270312841764180247
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_53
+      rect:
+        serializedVersion: 2
+        x: 757
+        y: 1172
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2bfa63bfbe50f9f0800000000000000
+      internalID: -436744986413040850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_54
+      rect:
+        serializedVersion: 2
+        x: 955
+        y: 1181
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bf74e6aa4e47b380800000000000000
+      internalID: -8955603251468402761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_55
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 1143
+        width: 39
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8ee4cdc454280680800000000000000
+      internalID: -8788734726165434741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_56
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 1169
+        width: 16
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 784b4c7717d00b0f0800000000000000
+      internalID: -1103367127713926009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_57
+      rect:
+        serializedVersion: 2
+        x: 910
+        y: 1165
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2513c1b9063cff4e0800000000000000
+      internalID: -1945621694314172078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_58
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 1159
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 975480be0d189fff0800000000000000
+      internalID: -1827590540606087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_59
+      rect:
+        serializedVersion: 2
+        x: 729
+        y: 1160
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bb091de726f22a20800000000000000
+      internalID: 3036259750143134641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_60
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 1131
+        width: 52
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 167c93249fc5dbec0800000000000000
+      internalID: -3549578705670387871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_61
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 1128
+        width: 45
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c7dff8f9d63915e0800000000000000
+      internalID: -1938457854792968254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_62
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 1121
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80caff6c8c2516060800000000000000
+      internalID: 6944923122667596808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_63
+      rect:
+        serializedVersion: 2
+        x: 459
+        y: 1128
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c087a6449a8ab9890800000000000000
+      internalID: -7450175713603586036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_64
+      rect:
+        serializedVersion: 2
+        x: 466
+        y: 1121
+        width: 23
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4969419b704b3f70800000000000000
+      internalID: 9167992365905439055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_65
+      rect:
+        serializedVersion: 2
+        x: 883
+        y: 1110
+        width: 46
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb14bf54dabf36d60800000000000000
+      internalID: 7882420494450508220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_66
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 1118
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70b0f6f7111f28580800000000000000
+      internalID: -8826227262238029049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_67
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 1097
+        width: 29
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 419817b125e349c80800000000000000
+      internalID: -8316954089477797612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_68
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 1106
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ce5ae4f531574df0800000000000000
+      internalID: -196098766583210304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_69
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 1081
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 093a26db1a8f185e0800000000000000
+      internalID: -1908971393477598320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_70
+      rect:
+        serializedVersion: 2
+        x: 801
+        y: 1077
+        width: 27
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b01e38e0bdfaeb690800000000000000
+      internalID: -7584431367069114101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_71
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 1080
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ff71d59644c4dd40800000000000000
+      internalID: 5608323243423399929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_72
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 1050
+        width: 31
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2498a2be50b4bf20800000000000000
+      internalID: 3437566336361337900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_73
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 1062
+        width: 14
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c788f7fa73cb06c90800000000000000
+      internalID: -7178530858674976644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_74
+      rect:
+        serializedVersion: 2
+        x: 595
+        y: 1042
+        width: 36
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4acd5c930d0cc9f0800000000000000
+      internalID: -446967953857066421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_75
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 1047
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1505d29a1b96bdc70800000000000000
+      internalID: 8996900892371144785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_76
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 1036
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e4a92d2e2819b300800000000000000
+      internalID: 268272239410521318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_77
+      rect:
+        serializedVersion: 2
+        x: 463
+        y: 983
+        width: 40
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80e657ad5a1292c80800000000000000
+      internalID: -8347103438136054264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_78
+      rect:
+        serializedVersion: 2
+        x: 714
+        y: 967
+        width: 26
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8185633ad38281420800000000000000
+      internalID: 2600873030002825240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_79
+      rect:
+        serializedVersion: 2
+        x: 766
+        y: 990
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e71ad1a3a9877c40800000000000000
+      internalID: 5510024004999190497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_80
+      rect:
+        serializedVersion: 2
+        x: 927
+        y: 981
+        width: 14
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abd18111a1bd34630800000000000000
+      internalID: 3910209806490148282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_81
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 970
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4bca3806522b4d70800000000000000
+      internalID: 9028347630894893901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_82
+      rect:
+        serializedVersion: 2
+        x: 897
+        y: 978
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38466a9ff8ec53e90800000000000000
+      internalID: -7046498924187196285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_83
+      rect:
+        serializedVersion: 2
+        x: 911
+        y: 968
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e71c54a93c4debf20800000000000000
+      internalID: 3440421101929611646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_84
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 928
+        width: 26
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e43576d3cc7b37690800000000000000
+      internalID: -7605533257867242674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_85
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 947
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c1551311f5270510800000000000000
+      internalID: 1515221516970971591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_86
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 937
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5eb1bd3280c493200800000000000000
+      internalID: 160242859593374693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_87
+      rect:
+        serializedVersion: 2
+        x: 778
+        y: 914
+        width: 38
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b71774d3f9e667b0800000000000000
+      internalID: -5231236683693353036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_88
+      rect:
+        serializedVersion: 2
+        x: 583
+        y: 920
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01ac8edd0272d4140800000000000000
+      internalID: 4705460207787493904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_89
+      rect:
+        serializedVersion: 2
+        x: 903
+        y: 921
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4b60168630ad23c0800000000000000
+      internalID: -4382670706323723446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_90
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 897
+        width: 15
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0ab5382238451900800000000000000
+      internalID: 654508701112449546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_91
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 882
+        width: 28
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7cea7a16d85ad43e0800000000000000
+      internalID: -2067814627245838649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_92
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 899
+        width: 22
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 818656c80dd75a650800000000000000
+      internalID: 6243534793081186328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_93
+      rect:
+        serializedVersion: 2
+        x: 902
+        y: 895
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86435b713dbf56140800000000000000
+      internalID: 4712449469167514728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_94
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 862
+        width: 47
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f8b6dc19b159da40800000000000000
+      internalID: 5393431884247513334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_95
+      rect:
+        serializedVersion: 2
+        x: 381
+        y: 883
+        width: 16
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d825403415b82d7a0800000000000000
+      internalID: -6353862943133379955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_96
+      rect:
+        serializedVersion: 2
+        x: 942
+        y: 879
+        width: 19
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: deb213b2c3677e800800000000000000
+      internalID: 641611472718343149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_97
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 862
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f6d0e36fff463ea0800000000000000
+      internalID: -5893435104056781066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_98
+      rect:
+        serializedVersion: 2
+        x: 538
+        y: 863
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ff1b22e2ca48dec0800000000000000
+      internalID: -3541998906048307212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_99
+      rect:
+        serializedVersion: 2
+        x: 963
+        y: 869
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ab23fefa7d0d54a0800000000000000
+      internalID: -6603106656740758616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_100
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 842
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3843cd09b7c6b4e0800000000000000
+      internalID: -1966164589686863812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_101
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 845
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14134502b439b4050800000000000000
+      internalID: 5785880097161752897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_102
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 834
+        width: 32
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b43590a040eab0460800000000000000
+      internalID: 7209046960908096331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_103
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 834
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1f67ef81f77eb100800000000000000
+      internalID: 125669718998085407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_104
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 815
+        width: 17
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9aa721e54c1591970800000000000000
+      internalID: 8726095656840755881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_105
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 827
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e276bc53276d84390800000000000000
+      internalID: -7833775765793839314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_106
+      rect:
+        serializedVersion: 2
+        x: 580
+        y: 810
+        width: 37
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 224a36b135aadff10800000000000000
+      internalID: 2305185858202084386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_107
+      rect:
+        serializedVersion: 2
+        x: 849
+        y: 828
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 321d0d4fd401797a0800000000000000
+      internalID: -6370605220886425309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_108
+      rect:
+        serializedVersion: 2
+        x: 927
+        y: 820
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2b3053b5417352c0800000000000000
+      internalID: -4444083863109485782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_109
+      rect:
+        serializedVersion: 2
+        x: 281
+        y: 816
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 381390db3ef96b790800000000000000
+      internalID: -7514643127743204989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_110
+      rect:
+        serializedVersion: 2
+        x: 724
+        y: 815
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00ce24ce2457cf590800000000000000
+      internalID: -7639101937635103744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_111
+      rect:
+        serializedVersion: 2
+        x: 884
+        y: 798
+        width: 29
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c382aa7a9c2207780800000000000000
+      internalID: -8687405431700969412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_112
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 763
+        width: 39
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3183db3972cf5b730800000000000000
+      internalID: 4014391889783240723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_113
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 789
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3731a8eb94f20690800000000000000
+      internalID: -7637273067606952129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_114
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 789
+        width: 12
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c6d92f2ea1baa010800000000000000
+      internalID: 1200967612321355465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_115
+      rect:
+        serializedVersion: 2
+        x: 706
+        y: 794
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 196fe01d2f81d2500800000000000000
+      internalID: 372981775310190225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_116
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 749
+        width: 31
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc58b845f9654cd30800000000000000
+      internalID: 4450777574067111371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_117
+      rect:
+        serializedVersion: 2
+        x: 652
+        y: 770
+        width: 30
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fdd6995d04b586460800000000000000
+      internalID: 7235133135390338527
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_118
+      rect:
+        serializedVersion: 2
+        x: 859
+        y: 762
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86c77938754b99760800000000000000
+      internalID: 7465196145306205288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_119
+      rect:
+        serializedVersion: 2
+        x: 909
+        y: 759
+        width: 24
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 885690f1eae4cace0800000000000000
+      internalID: -1392651675012340344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_120
+      rect:
+        serializedVersion: 2
+        x: 933
+        y: 760
+        width: 18
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dddcc4f4acbd617d0800000000000000
+      internalID: -2947927244107100707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_121
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 747
+        width: 24
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d3eebddc667b4340800000000000000
+      internalID: 4849099633743291348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_122
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 751
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7c034f3ae2c084b0800000000000000
+      internalID: -5440134038524064644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_123
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 703
+        width: 32
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bde1b68d37f7ebe0800000000000000
+      internalID: -1447916911551451726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_124
+      rect:
+        serializedVersion: 2
+        x: 762
+        y: 720
+        width: 29
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0e4293b212f5aa90800000000000000
+      internalID: -7303165058575348210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_125
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 706
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e52822c1879d9580800000000000000
+      internalID: -8818725911757576728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_126
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 681
+        width: 29
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 791d4940f8d831a00800000000000000
+      internalID: 726079610333483415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_127
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 672
+        width: 28
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62fa9f0c446e15b00800000000000000
+      internalID: 815686190500523814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_128
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 683
+        width: 20
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb92f6c9d3888d4e0800000000000000
+      internalID: -1956664239893567042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_129
+      rect:
+        serializedVersion: 2
+        x: 858
+        y: 670
+        width: 40
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6927436f666b61820800000000000000
+      internalID: 2888696764338303638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_130
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 654
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb86dec3b7377b070800000000000000
+      internalID: 8122087426126342331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_131
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 647
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a575a493cca27ff0800000000000000
+      internalID: -39779490680441440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_132
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 619
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d16c500fbf5125770800000000000000
+      internalID: 8597958810411583005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_133
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 611
+        width: 17
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c47fc43a223740620800000000000000
+      internalID: 2739441065953916748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_134
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 619
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e921971f625e56b90800000000000000
+      internalID: -7249136069760183650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_135
+      rect:
+        serializedVersion: 2
+        x: 574
+        y: 613
+        width: 19
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d47e2f161a7bebf0800000000000000
+      internalID: -294007115231628072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_136
+      rect:
+        serializedVersion: 2
+        x: 592
+        y: 614
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4401ee39614fbec80800000000000000
+      internalID: -8292265911064326076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_137
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 613
+        width: 30
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 754839e4610ba2400800000000000000
+      internalID: 300245935027618903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_138
+      rect:
+        serializedVersion: 2
+        x: 828
+        y: 604
+        width: 14
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb268498025a9f950800000000000000
+      internalID: 6483394697737298622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_139
+      rect:
+        serializedVersion: 2
+        x: 934
+        y: 617
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4f3ca99e6fcde170800000000000000
+      internalID: 8209445769697836876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_140
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 595
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6076b6d46f70b8ea0800000000000000
+      internalID: -5869588934905075962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_141
+      rect:
+        serializedVersion: 2
+        x: 763
+        y: 596
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c51ea2dad8b39160800000000000000
+      internalID: 7031166693232481730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_142
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 605
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88e359ccc588deab0800000000000000
+      internalID: -4977172081023828344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_143
+      rect:
+        serializedVersion: 2
+        x: 838
+        y: 605
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01030180f4e812860800000000000000
+      internalID: 7503434924264796176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_144
+      rect:
+        serializedVersion: 2
+        x: 911
+        y: 605
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b5e3fd9f4025c520800000000000000
+      internalID: 2721617076139845044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_145
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 575
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a55bf69f60371500800000000000000
+      internalID: 366815150486541735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_146
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 574
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c19651a1d9804fd0800000000000000
+      internalID: -2359734671294164542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_147
+      rect:
+        serializedVersion: 2
+        x: 367
+        y: 576
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 652e988625892b2f0800000000000000
+      internalID: -958536290967887274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_148
+      rect:
+        serializedVersion: 2
+        x: 536
+        y: 563
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac5e35cb5a95be970800000000000000
+      internalID: 8785214066480375242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_149
+      rect:
+        serializedVersion: 2
+        x: 924
+        y: 554
+        width: 27
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6065c4414e225aad0800000000000000
+      internalID: -2691706839295568378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_150
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 535
+        width: 12
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a41249b13c9756c60800000000000000
+      internalID: 7810783007632269642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_151
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 523
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 336a5f04d864f9560800000000000000
+      internalID: 7322649091621889587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_152
+      rect:
+        serializedVersion: 2
+        x: 647
+        y: 508
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eafd8e703f3a79e50800000000000000
+      internalID: 6816096825253617582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_153
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 499
+        width: 22
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a84c367fa4b58570800000000000000
+      internalID: 8468373340036024489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_154
+      rect:
+        serializedVersion: 2
+        x: 891
+        y: 504
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e0e3b67180a5f780800000000000000
+      internalID: -8649831031392444188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_155
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 485
+        width: 17
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10cda34b92b7a2670800000000000000
+      internalID: 8514753464544975873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_156
+      rect:
+        serializedVersion: 2
+        x: 470
+        y: 484
+        width: 31
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 773c3b6edbbbf9c60800000000000000
+      internalID: 7827181101686965111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_157
+      rect:
+        serializedVersion: 2
+        x: 776
+        y: 490
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9f0c223bee70f070800000000000000
+      internalID: 8138144075282648988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_158
+      rect:
+        serializedVersion: 2
+        x: 790
+        y: 487
+        width: 21
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a95c50e207d0b4170800000000000000
+      internalID: 8163633524998784410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_159
+      rect:
+        serializedVersion: 2
+        x: 871
+        y: 485
+        width: 17
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5c1c04b1cf24efb0800000000000000
+      internalID: -4619514808779400099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_160
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 460
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 738f34496287c4aa0800000000000000
+      internalID: -6175428881940219849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_161
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 437
+        width: 36
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8de53e0a99f6ba6a0800000000000000
+      internalID: -6436928536776057128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_162
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 447
+        width: 25
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac963ae099d274630800000000000000
+      internalID: 3911144936793401802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_163
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 457
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e32ba535ae272350800000000000000
+      internalID: 5991809116344624102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_164
+      rect:
+        serializedVersion: 2
+        x: 853
+        y: 461
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7dec78d683033bd0800000000000000
+      internalID: -2651771877898523265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_165
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 439
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f84e5c8032769110800000000000000
+      internalID: 1267325897990359286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_166
+      rect:
+        serializedVersion: 2
+        x: 219
+        y: 445
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 562b0db64ce47bb70800000000000000
+      internalID: 8914680592932581989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_167
+      rect:
+        serializedVersion: 2
+        x: 611
+        y: 434
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 314f22b33cbf55890800000000000000
+      internalID: -7469787590994758637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_168
+      rect:
+        serializedVersion: 2
+        x: 821
+        y: 415
+        width: 33
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8216bb99d626f10f0800000000000000
+      internalID: -1144087557458665176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_169
+      rect:
+        serializedVersion: 2
+        x: 903
+        y: 431
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0298dc2023c355fc0800000000000000
+      internalID: -3506830549345007328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_170
+      rect:
+        serializedVersion: 2
+        x: 630
+        y: 413
+        width: 21
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c6b3414fb92db720800000000000000
+      internalID: 2863490839487952582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_171
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 375
+        width: 45
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5aed549f4ca056460800000000000000
+      internalID: 7234200217552543397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_172
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 401
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03a5e7ff0a01df1f0800000000000000
+      internalID: -1009632457793840592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_173
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 394
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5e4a2c8727886410800000000000000
+      internalID: 1470573882261524063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_174
+      rect:
+        serializedVersion: 2
+        x: 382
+        y: 382
+        width: 36
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 433d81d2793170aa0800000000000000
+      internalID: -6194961222407236812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_175
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 372
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f425e4384dadeba0800000000000000
+      internalID: -6057995398106766087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_176
+      rect:
+        serializedVersion: 2
+        x: 917
+        y: 387
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba880c99ac8044550800000000000000
+      internalID: 6144045457896147115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_177
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 349
+        width: 35
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67b951e0a4e9da850800000000000000
+      internalID: 6389937487209667446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_178
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 349
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57bdfbe99dad00270800000000000000
+      internalID: 8214806348529916789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_179
+      rect:
+        serializedVersion: 2
+        x: 840
+        y: 352
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 906d741c06fbfe000800000000000000
+      internalID: 67482941714322953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_180
+      rect:
+        serializedVersion: 2
+        x: 905
+        y: 347
+        width: 50
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fdb39b344d2507fe0800000000000000
+      internalID: -1193362829630424097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_181
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 339
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a6c58a6c84d25fc0800000000000000
+      internalID: -3507507460220533080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_182
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 327
+        width: 13
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16380709e4bb0cc90800000000000000
+      internalID: -7151510262159211679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_183
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 320
+        width: 34
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29438400772f24f40800000000000000
+      internalID: 5711393870378972306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_184
+      rect:
+        serializedVersion: 2
+        x: 945
+        y: 339
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d28366ff07c8839c0800000000000000
+      internalID: -3947250656441124819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_185
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 315
+        width: 11
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4999d2e857c45eca0800000000000000
+      internalID: -5988296061738968684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_186
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 316
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13d7aa31195ba4b10800000000000000
+      internalID: 1966583822005468465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_187
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 320
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac3667eb96d9abf90800000000000000
+      internalID: -6937059198518271030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_188
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 323
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 137f5d426267087e0800000000000000
+      internalID: -1765281147730397391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_189
+      rect:
+        serializedVersion: 2
+        x: 941
+        y: 319
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22b00c339b42d84d0800000000000000
+      internalID: -3130805788096853214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_190
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 297
+        width: 39
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42839aaa3a093b650800000000000000
+      internalID: 6247496140710295588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_191
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 314
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 955182a7dbd350800800000000000000
+      internalID: 577936011194537305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_192
+      rect:
+        serializedVersion: 2
+        x: 748
+        y: 281
+        width: 30
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76ff32bfe7f45e870800000000000000
+      internalID: 8711456461016006503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_193
+      rect:
+        serializedVersion: 2
+        x: 835
+        y: 299
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb7dfa4a591ea6070800000000000000
+      internalID: 8100534912608622524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_194
+      rect:
+        serializedVersion: 2
+        x: 861
+        y: 274
+        width: 48
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c774274661e9b3c70800000000000000
+      internalID: 8951922503340672892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_195
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 279
+        width: 32
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4097a6da90e675520800000000000000
+      internalID: 2690740290220357892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_196
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 268
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7b9c4396e933a6c0800000000000000
+      internalID: -4133396370519450754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_197
+      rect:
+        serializedVersion: 2
+        x: 703
+        y: 287
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6f32efb2a2d1e860800000000000000
+      internalID: 7557553246150213484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_198
+      rect:
+        serializedVersion: 2
+        x: 770
+        y: 283
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 999e256512d0fcb70800000000000000
+      internalID: 8921363823677598105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_199
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 245
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3c190fa6eea96c00800000000000000
+      internalID: 894438306812075071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_200
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 243
+        width: 31
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 095e643c78c096e20800000000000000
+      internalID: 3344217975535625616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_201
+      rect:
+        serializedVersion: 2
+        x: 366
+        y: 250
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bcf297d77f63d9980800000000000000
+      internalID: -8530601682579935285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_202
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 255
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d11479effe664bc0800000000000000
+      internalID: -3799227190228020775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_203
+      rect:
+        serializedVersion: 2
+        x: 654
+        y: 244
+        width: 23
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91231ee6544e52960800000000000000
+      internalID: 7576712934984856089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_204
+      rect:
+        serializedVersion: 2
+        x: 673
+        y: 246
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 575780920af618bd0800000000000000
+      internalID: -2629697973733788299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_205
+      rect:
+        serializedVersion: 2
+        x: 910
+        y: 253
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc2ec64a73c486940800000000000000
+      internalID: 5289561564212159181
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_206
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 244
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1a05422e20eb3440800000000000000
+      internalID: 4916769906953095709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_207
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 218
+        width: 40
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c65be17c908bc7a0800000000000000
+      internalID: -6355845039688821048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_208
+      rect:
+        serializedVersion: 2
+        x: 769
+        y: 216
+        width: 43
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fccf46c6a40914170800000000000000
+      internalID: 8160962649092586703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_209
+      rect:
+        serializedVersion: 2
+        x: 848
+        y: 229
+        width: 20
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41cf3e28003de0220800000000000000
+      internalID: 2454130846112939028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_210
+      rect:
+        serializedVersion: 2
+        x: 953
+        y: 233
+        width: 16
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bccfb0edec44a1500800000000000000
+      internalID: 367681974863396043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_211
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 190
+        width: 39
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca1cf9b99b28f8100800000000000000
+      internalID: 112452249399050668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_212
+      rect:
+        serializedVersion: 2
+        x: 357
+        y: 207
+        width: 33
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d342c52c09b3c820800000000000000
+      internalID: 2937394843799929814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_213
+      rect:
+        serializedVersion: 2
+        x: 605
+        y: 212
+        width: 31
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47f7e4ef3f09a4f20800000000000000
+      internalID: 3407695445677211508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_214
+      rect:
+        serializedVersion: 2
+        x: 900
+        y: 218
+        width: 42
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a127b9c49cff64a0800000000000000
+      internalID: -6597777213104905819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_215
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 203
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76f82f4dfa5d46750800000000000000
+      internalID: 6297393130139455335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_216
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 186
+        width: 57
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ee78e50cc3e27830800000000000000
+      internalID: 4067563878880935654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_217
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 198
+        width: 15
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a84255c7c74f8760800000000000000
+      internalID: 7462262030910769317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_218
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 175
+        width: 23
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9652a4bc04784ea0800000000000000
+      internalID: -5888328914867956067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_219
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 169
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fda1e41a440fc0ec0800000000000000
+      internalID: -3599237824621176097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_220
+      rect:
+        serializedVersion: 2
+        x: 707
+        y: 169
+        width: 35
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6be5e0711a4114360800000000000000
+      internalID: 7152020365350166198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_221
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 166
+        width: 58
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e15ba368b608893f0800000000000000
+      internalID: -893823326731193058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_222
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 131
+        width: 41
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2295c669c8000d10800000000000000
+      internalID: 2089679888205582890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_223
+      rect:
+        serializedVersion: 2
+        x: 755
+        y: 157
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: debdd42e11db150d0800000000000000
+      internalID: -3435757156198130707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_224
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 144
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c416569ff17097870800000000000000
+      internalID: 8680977590642893132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_225
+      rect:
+        serializedVersion: 2
+        x: 901
+        y: 133
+        width: 35
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17e7db2a70a267f70800000000000000
+      internalID: 9184574702352170609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_226
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 119
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3721f6488093ee60800000000000000
+      internalID: 7990389078865553211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_227
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 133
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fe193fa22b9229c0800000000000000
+      internalID: -3953426949606924554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_228
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 130
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4ab48854bd99e6d0800000000000000
+      internalID: -2960661882114622902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_229
+      rect:
+        serializedVersion: 2
+        x: 803
+        y: 126
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f896c6a0aea0bd8d0800000000000000
+      internalID: -2820648741303981681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_230
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 110
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f140d2dc6289586e0800000000000000
+      internalID: -1835893980665150433
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_231
+      rect:
+        serializedVersion: 2
+        x: 219
+        y: 96
+        width: 21
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02779a2954edc1300800000000000000
+      internalID: 224298471856371488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_232
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 118
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20432ba1da61126a0800000000000000
+      internalID: -6475869856449022974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_233
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 100
+        width: 30
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f9c6017c7ddcb630800000000000000
+      internalID: 3944270900211665395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_234
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 94
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2f70b3f1742c6ec0800000000000000
+      internalID: -3572440332573311190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_235
+      rect:
+        serializedVersion: 2
+        x: 841
+        y: 104
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 284d1136c67b6c8d0800000000000000
+      internalID: -2826370039981943678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_EnvironmentOverlay_Teal_v2_236
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 96
+        width: 15
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e993f4b2d34009c0800000000000000
+      internalID: -3963093099827979800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      SPR_EnvironmentOverlay_Teal_v2_0: -1787647087284987303
+      SPR_EnvironmentOverlay_Teal_v2_1: 5089973188121331961
+      SPR_EnvironmentOverlay_Teal_v2_10: 6552820178786660083
+      SPR_EnvironmentOverlay_Teal_v2_100: -1966164589686863812
+      SPR_EnvironmentOverlay_Teal_v2_101: 5785880097161752897
+      SPR_EnvironmentOverlay_Teal_v2_102: 7209046960908096331
+      SPR_EnvironmentOverlay_Teal_v2_103: 125669718998085407
+      SPR_EnvironmentOverlay_Teal_v2_104: 8726095656840755881
+      SPR_EnvironmentOverlay_Teal_v2_105: -7833775765793839314
+      SPR_EnvironmentOverlay_Teal_v2_106: 2305185858202084386
+      SPR_EnvironmentOverlay_Teal_v2_107: -6370605220886425309
+      SPR_EnvironmentOverlay_Teal_v2_108: -4444083863109485782
+      SPR_EnvironmentOverlay_Teal_v2_109: -7514643127743204989
+      SPR_EnvironmentOverlay_Teal_v2_11: 3322155979973931274
+      SPR_EnvironmentOverlay_Teal_v2_110: -7639101937635103744
+      SPR_EnvironmentOverlay_Teal_v2_111: -8687405431700969412
+      SPR_EnvironmentOverlay_Teal_v2_112: 4014391889783240723
+      SPR_EnvironmentOverlay_Teal_v2_113: -7637273067606952129
+      SPR_EnvironmentOverlay_Teal_v2_114: 1200967612321355465
+      SPR_EnvironmentOverlay_Teal_v2_115: 372981775310190225
+      SPR_EnvironmentOverlay_Teal_v2_116: 4450777574067111371
+      SPR_EnvironmentOverlay_Teal_v2_117: 7235133135390338527
+      SPR_EnvironmentOverlay_Teal_v2_118: 7465196145306205288
+      SPR_EnvironmentOverlay_Teal_v2_119: -1392651675012340344
+      SPR_EnvironmentOverlay_Teal_v2_12: 6791810910649733837
+      SPR_EnvironmentOverlay_Teal_v2_120: -2947927244107100707
+      SPR_EnvironmentOverlay_Teal_v2_121: 4849099633743291348
+      SPR_EnvironmentOverlay_Teal_v2_122: -5440134038524064644
+      SPR_EnvironmentOverlay_Teal_v2_123: -1447916911551451726
+      SPR_EnvironmentOverlay_Teal_v2_124: -7303165058575348210
+      SPR_EnvironmentOverlay_Teal_v2_125: -8818725911757576728
+      SPR_EnvironmentOverlay_Teal_v2_126: 726079610333483415
+      SPR_EnvironmentOverlay_Teal_v2_127: 815686190500523814
+      SPR_EnvironmentOverlay_Teal_v2_128: -1956664239893567042
+      SPR_EnvironmentOverlay_Teal_v2_129: 2888696764338303638
+      SPR_EnvironmentOverlay_Teal_v2_13: 7621736763401399223
+      SPR_EnvironmentOverlay_Teal_v2_130: 8122087426126342331
+      SPR_EnvironmentOverlay_Teal_v2_131: -39779490680441440
+      SPR_EnvironmentOverlay_Teal_v2_132: 8597958810411583005
+      SPR_EnvironmentOverlay_Teal_v2_133: 2739441065953916748
+      SPR_EnvironmentOverlay_Teal_v2_134: -7249136069760183650
+      SPR_EnvironmentOverlay_Teal_v2_135: -294007115231628072
+      SPR_EnvironmentOverlay_Teal_v2_136: -8292265911064326076
+      SPR_EnvironmentOverlay_Teal_v2_137: 300245935027618903
+      SPR_EnvironmentOverlay_Teal_v2_138: 6483394697737298622
+      SPR_EnvironmentOverlay_Teal_v2_139: 8209445769697836876
+      SPR_EnvironmentOverlay_Teal_v2_14: -6227197957129499015
+      SPR_EnvironmentOverlay_Teal_v2_140: -5869588934905075962
+      SPR_EnvironmentOverlay_Teal_v2_141: 7031166693232481730
+      SPR_EnvironmentOverlay_Teal_v2_142: -4977172081023828344
+      SPR_EnvironmentOverlay_Teal_v2_143: 7503434924264796176
+      SPR_EnvironmentOverlay_Teal_v2_144: 2721617076139845044
+      SPR_EnvironmentOverlay_Teal_v2_145: 366815150486541735
+      SPR_EnvironmentOverlay_Teal_v2_146: -2359734671294164542
+      SPR_EnvironmentOverlay_Teal_v2_147: -958536290967887274
+      SPR_EnvironmentOverlay_Teal_v2_148: 8785214066480375242
+      SPR_EnvironmentOverlay_Teal_v2_149: -2691706839295568378
+      SPR_EnvironmentOverlay_Teal_v2_15: 3830074228486028751
+      SPR_EnvironmentOverlay_Teal_v2_150: 7810783007632269642
+      SPR_EnvironmentOverlay_Teal_v2_151: 7322649091621889587
+      SPR_EnvironmentOverlay_Teal_v2_152: 6816096825253617582
+      SPR_EnvironmentOverlay_Teal_v2_153: 8468373340036024489
+      SPR_EnvironmentOverlay_Teal_v2_154: -8649831031392444188
+      SPR_EnvironmentOverlay_Teal_v2_155: 8514753464544975873
+      SPR_EnvironmentOverlay_Teal_v2_156: 7827181101686965111
+      SPR_EnvironmentOverlay_Teal_v2_157: 8138144075282648988
+      SPR_EnvironmentOverlay_Teal_v2_158: 8163633524998784410
+      SPR_EnvironmentOverlay_Teal_v2_159: -4619514808779400099
+      SPR_EnvironmentOverlay_Teal_v2_16: 816312635132855354
+      SPR_EnvironmentOverlay_Teal_v2_160: -6175428881940219849
+      SPR_EnvironmentOverlay_Teal_v2_161: -6436928536776057128
+      SPR_EnvironmentOverlay_Teal_v2_162: 3911144936793401802
+      SPR_EnvironmentOverlay_Teal_v2_163: 5991809116344624102
+      SPR_EnvironmentOverlay_Teal_v2_164: -2651771877898523265
+      SPR_EnvironmentOverlay_Teal_v2_165: 1267325897990359286
+      SPR_EnvironmentOverlay_Teal_v2_166: 8914680592932581989
+      SPR_EnvironmentOverlay_Teal_v2_167: -7469787590994758637
+      SPR_EnvironmentOverlay_Teal_v2_168: -1144087557458665176
+      SPR_EnvironmentOverlay_Teal_v2_169: -3506830549345007328
+      SPR_EnvironmentOverlay_Teal_v2_17: -2822810718320534754
+      SPR_EnvironmentOverlay_Teal_v2_170: 2863490839487952582
+      SPR_EnvironmentOverlay_Teal_v2_171: 7234200217552543397
+      SPR_EnvironmentOverlay_Teal_v2_172: -1009632457793840592
+      SPR_EnvironmentOverlay_Teal_v2_173: 1470573882261524063
+      SPR_EnvironmentOverlay_Teal_v2_174: -6194961222407236812
+      SPR_EnvironmentOverlay_Teal_v2_175: -6057995398106766087
+      SPR_EnvironmentOverlay_Teal_v2_176: 6144045457896147115
+      SPR_EnvironmentOverlay_Teal_v2_177: 6389937487209667446
+      SPR_EnvironmentOverlay_Teal_v2_178: 8214806348529916789
+      SPR_EnvironmentOverlay_Teal_v2_179: 67482941714322953
+      SPR_EnvironmentOverlay_Teal_v2_18: 194891786540439570
+      SPR_EnvironmentOverlay_Teal_v2_180: -1193362829630424097
+      SPR_EnvironmentOverlay_Teal_v2_181: -3507507460220533080
+      SPR_EnvironmentOverlay_Teal_v2_182: -7151510262159211679
+      SPR_EnvironmentOverlay_Teal_v2_183: 5711393870378972306
+      SPR_EnvironmentOverlay_Teal_v2_184: -3947250656441124819
+      SPR_EnvironmentOverlay_Teal_v2_185: -5988296061738968684
+      SPR_EnvironmentOverlay_Teal_v2_186: 1966583822005468465
+      SPR_EnvironmentOverlay_Teal_v2_187: -6937059198518271030
+      SPR_EnvironmentOverlay_Teal_v2_188: -1765281147730397391
+      SPR_EnvironmentOverlay_Teal_v2_189: -3130805788096853214
+      SPR_EnvironmentOverlay_Teal_v2_19: -7075769315934701966
+      SPR_EnvironmentOverlay_Teal_v2_190: 6247496140710295588
+      SPR_EnvironmentOverlay_Teal_v2_191: 577936011194537305
+      SPR_EnvironmentOverlay_Teal_v2_192: 8711456461016006503
+      SPR_EnvironmentOverlay_Teal_v2_193: 8100534912608622524
+      SPR_EnvironmentOverlay_Teal_v2_194: 8951922503340672892
+      SPR_EnvironmentOverlay_Teal_v2_195: 2690740290220357892
+      SPR_EnvironmentOverlay_Teal_v2_196: -4133396370519450754
+      SPR_EnvironmentOverlay_Teal_v2_197: 7557553246150213484
+      SPR_EnvironmentOverlay_Teal_v2_198: 8921363823677598105
+      SPR_EnvironmentOverlay_Teal_v2_199: 894438306812075071
+      SPR_EnvironmentOverlay_Teal_v2_2: -6241422558013993897
+      SPR_EnvironmentOverlay_Teal_v2_20: -6487671905582397420
+      SPR_EnvironmentOverlay_Teal_v2_200: 3344217975535625616
+      SPR_EnvironmentOverlay_Teal_v2_201: -8530601682579935285
+      SPR_EnvironmentOverlay_Teal_v2_202: -3799227190228020775
+      SPR_EnvironmentOverlay_Teal_v2_203: 7576712934984856089
+      SPR_EnvironmentOverlay_Teal_v2_204: -2629697973733788299
+      SPR_EnvironmentOverlay_Teal_v2_205: 5289561564212159181
+      SPR_EnvironmentOverlay_Teal_v2_206: 4916769906953095709
+      SPR_EnvironmentOverlay_Teal_v2_207: -6355845039688821048
+      SPR_EnvironmentOverlay_Teal_v2_208: 8160962649092586703
+      SPR_EnvironmentOverlay_Teal_v2_209: 2454130846112939028
+      SPR_EnvironmentOverlay_Teal_v2_21: 4022821948050874078
+      SPR_EnvironmentOverlay_Teal_v2_210: 367681974863396043
+      SPR_EnvironmentOverlay_Teal_v2_211: 112452249399050668
+      SPR_EnvironmentOverlay_Teal_v2_212: 2937394843799929814
+      SPR_EnvironmentOverlay_Teal_v2_213: 3407695445677211508
+      SPR_EnvironmentOverlay_Teal_v2_214: -6597777213104905819
+      SPR_EnvironmentOverlay_Teal_v2_215: 6297393130139455335
+      SPR_EnvironmentOverlay_Teal_v2_216: 4067563878880935654
+      SPR_EnvironmentOverlay_Teal_v2_217: 7462262030910769317
+      SPR_EnvironmentOverlay_Teal_v2_218: -5888328914867956067
+      SPR_EnvironmentOverlay_Teal_v2_219: -3599237824621176097
+      SPR_EnvironmentOverlay_Teal_v2_22: 9096211660569597693
+      SPR_EnvironmentOverlay_Teal_v2_220: 7152020365350166198
+      SPR_EnvironmentOverlay_Teal_v2_221: -893823326731193058
+      SPR_EnvironmentOverlay_Teal_v2_222: 2089679888205582890
+      SPR_EnvironmentOverlay_Teal_v2_223: -3435757156198130707
+      SPR_EnvironmentOverlay_Teal_v2_224: 8680977590642893132
+      SPR_EnvironmentOverlay_Teal_v2_225: 9184574702352170609
+      SPR_EnvironmentOverlay_Teal_v2_226: 7990389078865553211
+      SPR_EnvironmentOverlay_Teal_v2_227: -3953426949606924554
+      SPR_EnvironmentOverlay_Teal_v2_228: -2960661882114622902
+      SPR_EnvironmentOverlay_Teal_v2_229: -2820648741303981681
+      SPR_EnvironmentOverlay_Teal_v2_23: 2064666460695248506
+      SPR_EnvironmentOverlay_Teal_v2_230: -1835893980665150433
+      SPR_EnvironmentOverlay_Teal_v2_231: 224298471856371488
+      SPR_EnvironmentOverlay_Teal_v2_232: -6475869856449022974
+      SPR_EnvironmentOverlay_Teal_v2_233: 3944270900211665395
+      SPR_EnvironmentOverlay_Teal_v2_234: -3572440332573311190
+      SPR_EnvironmentOverlay_Teal_v2_235: -2826370039981943678
+      SPR_EnvironmentOverlay_Teal_v2_236: -3963093099827979800
+      SPR_EnvironmentOverlay_Teal_v2_24: 4708279551425623440
+      SPR_EnvironmentOverlay_Teal_v2_25: -8921213411679939712
+      SPR_EnvironmentOverlay_Teal_v2_26: -2365906589764360393
+      SPR_EnvironmentOverlay_Teal_v2_27: 2093564383707979308
+      SPR_EnvironmentOverlay_Teal_v2_28: -5190875865941604381
+      SPR_EnvironmentOverlay_Teal_v2_29: -7584276706654402500
+      SPR_EnvironmentOverlay_Teal_v2_3: -4112250005896420997
+      SPR_EnvironmentOverlay_Teal_v2_30: 4085776506255170152
+      SPR_EnvironmentOverlay_Teal_v2_31: -5293132041948423380
+      SPR_EnvironmentOverlay_Teal_v2_32: -1727559907502715590
+      SPR_EnvironmentOverlay_Teal_v2_33: -5725894145958747301
+      SPR_EnvironmentOverlay_Teal_v2_34: -3348288802607517011
+      SPR_EnvironmentOverlay_Teal_v2_35: -7971350432318705084
+      SPR_EnvironmentOverlay_Teal_v2_36: -7757523238046546460
+      SPR_EnvironmentOverlay_Teal_v2_37: -1986016837742070003
+      SPR_EnvironmentOverlay_Teal_v2_38: -3954788711099860017
+      SPR_EnvironmentOverlay_Teal_v2_39: 6949071658420370510
+      SPR_EnvironmentOverlay_Teal_v2_4: -7232485641458581874
+      SPR_EnvironmentOverlay_Teal_v2_40: 2678137765403738904
+      SPR_EnvironmentOverlay_Teal_v2_41: 8028563262948661945
+      SPR_EnvironmentOverlay_Teal_v2_42: 7084045127835358423
+      SPR_EnvironmentOverlay_Teal_v2_43: -8628780789970077956
+      SPR_EnvironmentOverlay_Teal_v2_44: -7444130080959056449
+      SPR_EnvironmentOverlay_Teal_v2_45: -5483537149547992892
+      SPR_EnvironmentOverlay_Teal_v2_46: 1101197707854899740
+      SPR_EnvironmentOverlay_Teal_v2_47: 4114506655671958330
+      SPR_EnvironmentOverlay_Teal_v2_48: 7233017150861288806
+      SPR_EnvironmentOverlay_Teal_v2_49: -294368578185248028
+      SPR_EnvironmentOverlay_Teal_v2_5: 6265596328961847923
+      SPR_EnvironmentOverlay_Teal_v2_50: 4497558759405011732
+      SPR_EnvironmentOverlay_Teal_v2_51: -5572751078602549297
+      SPR_EnvironmentOverlay_Teal_v2_52: 270312841764180247
+      SPR_EnvironmentOverlay_Teal_v2_53: -436744986413040850
+      SPR_EnvironmentOverlay_Teal_v2_54: -8955603251468402761
+      SPR_EnvironmentOverlay_Teal_v2_55: -8788734726165434741
+      SPR_EnvironmentOverlay_Teal_v2_56: -1103367127713926009
+      SPR_EnvironmentOverlay_Teal_v2_57: -1945621694314172078
+      SPR_EnvironmentOverlay_Teal_v2_58: -1827590540606087
+      SPR_EnvironmentOverlay_Teal_v2_59: 3036259750143134641
+      SPR_EnvironmentOverlay_Teal_v2_6: 5426269157066305456
+      SPR_EnvironmentOverlay_Teal_v2_60: -3549578705670387871
+      SPR_EnvironmentOverlay_Teal_v2_61: -1938457854792968254
+      SPR_EnvironmentOverlay_Teal_v2_62: 6944923122667596808
+      SPR_EnvironmentOverlay_Teal_v2_63: -7450175713603586036
+      SPR_EnvironmentOverlay_Teal_v2_64: 9167992365905439055
+      SPR_EnvironmentOverlay_Teal_v2_65: 7882420494450508220
+      SPR_EnvironmentOverlay_Teal_v2_66: -8826227262238029049
+      SPR_EnvironmentOverlay_Teal_v2_67: -8316954089477797612
+      SPR_EnvironmentOverlay_Teal_v2_68: -196098766583210304
+      SPR_EnvironmentOverlay_Teal_v2_69: -1908971393477598320
+      SPR_EnvironmentOverlay_Teal_v2_7: -378454241170931427
+      SPR_EnvironmentOverlay_Teal_v2_70: -7584431367069114101
+      SPR_EnvironmentOverlay_Teal_v2_71: 5608323243423399929
+      SPR_EnvironmentOverlay_Teal_v2_72: 3437566336361337900
+      SPR_EnvironmentOverlay_Teal_v2_73: -7178530858674976644
+      SPR_EnvironmentOverlay_Teal_v2_74: -446967953857066421
+      SPR_EnvironmentOverlay_Teal_v2_75: 8996900892371144785
+      SPR_EnvironmentOverlay_Teal_v2_76: 268272239410521318
+      SPR_EnvironmentOverlay_Teal_v2_77: -8347103438136054264
+      SPR_EnvironmentOverlay_Teal_v2_78: 2600873030002825240
+      SPR_EnvironmentOverlay_Teal_v2_79: 5510024004999190497
+      SPR_EnvironmentOverlay_Teal_v2_8: 710831000845052116
+      SPR_EnvironmentOverlay_Teal_v2_80: 3910209806490148282
+      SPR_EnvironmentOverlay_Teal_v2_81: 9028347630894893901
+      SPR_EnvironmentOverlay_Teal_v2_82: -7046498924187196285
+      SPR_EnvironmentOverlay_Teal_v2_83: 3440421101929611646
+      SPR_EnvironmentOverlay_Teal_v2_84: -7605533257867242674
+      SPR_EnvironmentOverlay_Teal_v2_85: 1515221516970971591
+      SPR_EnvironmentOverlay_Teal_v2_86: 160242859593374693
+      SPR_EnvironmentOverlay_Teal_v2_87: -5231236683693353036
+      SPR_EnvironmentOverlay_Teal_v2_88: 4705460207787493904
+      SPR_EnvironmentOverlay_Teal_v2_89: -4382670706323723446
+      SPR_EnvironmentOverlay_Teal_v2_9: -6431189810291197666
+      SPR_EnvironmentOverlay_Teal_v2_90: 654508701112449546
+      SPR_EnvironmentOverlay_Teal_v2_91: -2067814627245838649
+      SPR_EnvironmentOverlay_Teal_v2_92: 6243534793081186328
+      SPR_EnvironmentOverlay_Teal_v2_93: 4712449469167514728
+      SPR_EnvironmentOverlay_Teal_v2_94: 5393431884247513334
+      SPR_EnvironmentOverlay_Teal_v2_95: -6353862943133379955
+      SPR_EnvironmentOverlay_Teal_v2_96: 641611472718343149
+      SPR_EnvironmentOverlay_Teal_v2_97: -5893435104056781066
+      SPR_EnvironmentOverlay_Teal_v2_98: -3541998906048307212
+      SPR_EnvironmentOverlay_Teal_v2_99: -6603106656740758616
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

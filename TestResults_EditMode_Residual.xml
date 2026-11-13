@@ -1,0 +1,1091 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="151" result="Failed(Child)" total="151" passed="146" failed="5" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-11 19:24:07Z" end-time="2026-11-11 19:24:09Z" duration="1.3693534">
+  <test-suite type="TestSuite" id="1189" name="blobs" fullname="blobs" runstate="Runnable" testcasecount="151" result="Failed" site="Child" start-time="2026-11-11 19:24:07Z" end-time="2026-11-11 19:24:09Z" duration="1.369353" total="151" passed="146" failed="5" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1178" name="Blobs.Tests.EditMode.dll" fullname="/Users/caleb/Dev/blobs/Library/ScriptAssemblies/Blobs.Tests.EditMode.dll" runstate="Runnable" testcasecount="151" result="Failed" site="Child" start-time="2026-11-11 19:24:07Z" end-time="2026-11-11 19:24:09Z" duration="1.343252" total="151" passed="146" failed="5" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="47431" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1179" name="Blobs" fullname="Blobs" runstate="Runnable" testcasecount="151" result="Failed" site="Child" start-time="2026-11-11 19:24:07Z" end-time="2026-11-11 19:24:09Z" duration="1.335423" total="151" passed="146" failed="5" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1180" name="Tests" fullname="Blobs.Tests" runstate="Runnable" testcasecount="151" result="Failed" site="Child" start-time="2026-11-11 19:24:07Z" end-time="2026-11-11 19:24:09Z" duration="1.333339" total="151" passed="146" failed="5" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1181" name="EditMode" fullname="Blobs.Tests.EditMode" runstate="Runnable" testcasecount="151" result="Failed" site="Child" start-time="2026-11-11 19:24:07Z" end-time="2026-11-11 19:24:09Z" duration="1.327380" total="151" passed="146" failed="5" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="1001" name="BlobColorPresentationTests" fullname="Blobs.Tests.EditMode.BlobColorPresentationTests" classname="Blobs.Tests.EditMode.BlobColorPresentationTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-11-11 19:24:07Z" end-time="2026-11-11 19:24:08Z" duration="0.215468" total="4" passed="3" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1005" name="NestBlobUsesFlatPaletteColorOnBodyAndFlag" fullname="Blobs.Tests.EditMode.BlobColorPresentationTests.NestBlobUsesFlatPaletteColorOnBodyAndFlag" methodname="NestBlobUsesFlatPaletteColorOnBodyAndFlag" classname="Blobs.Tests.EditMode.BlobColorPresentationTests" runstate="Runnable" seed="1507404313" result="Failed" start-time="2026-11-11 19:24:07Z" end-time="2026-11-11 19:24:07Z" duration="0.144558" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: RGBA(0.452, 0.307, 1.000, 1.000)
+  But was:  RGBA(0.000, 0.000, 0.000, 0.000)
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.BlobColorPresentationTests.AssertShaderColors (UnityEngine.SpriteRenderer renderer, Blobs.Content.BlobShaderColors expected) [0x0000f] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BlobColorPresentationTests.cs:165
+at Blobs.Tests.EditMode.BlobColorPresentationTests.NestBlobUsesFlatPaletteColorOnBodyAndFlag () [0x00079] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BlobColorPresentationTests.cs:116
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1003" name="NormalBlobAppliesPaletteToBodyShaderProperties" fullname="Blobs.Tests.EditMode.BlobColorPresentationTests.NormalBlobAppliesPaletteToBodyShaderProperties" methodname="NormalBlobAppliesPaletteToBodyShaderProperties" classname="Blobs.Tests.EditMode.BlobColorPresentationTests" runstate="Runnable" seed="1706961075" result="Passed" start-time="2026-11-11 19:24:07Z" end-time="2026-11-11 19:24:08Z" duration="0.031062" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1002" name="PaletteDefinesThreeShaderColorsForEveryBlobColor" fullname="Blobs.Tests.EditMode.BlobColorPresentationTests.PaletteDefinesThreeShaderColorsForEveryBlobColor" methodname="PaletteDefinesThreeShaderColorsForEveryBlobColor" classname="Blobs.Tests.EditMode.BlobColorPresentationTests" runstate="Runnable" seed="2086329692" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.001031" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1004" name="TrailBlobUsesPrimaryColorForBodyAndTrailColorForPuddle" fullname="Blobs.Tests.EditMode.BlobColorPresentationTests.TrailBlobUsesPrimaryColorForBodyAndTrailColorForPuddle" methodname="TrailBlobUsesPrimaryColorForBodyAndTrailColorForPuddle" classname="Blobs.Tests.EditMode.BlobColorPresentationTests" runstate="Runnable" seed="495946187" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.011054" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1006" name="BlobSizeMechanicTests" fullname="Blobs.Tests.EditMode.BlobSizeMechanicTests" classname="Blobs.Tests.EditMode.BlobSizeMechanicTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.067121" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1007" name="AuthoredSizeSliceLoadsAndCanBeCompleted" fullname="Blobs.Tests.EditMode.BlobSizeMechanicTests.AuthoredSizeSliceLoadsAndCanBeCompleted" methodname="AuthoredSizeSliceLoadsAndCanBeCompleted" classname="Blobs.Tests.EditMode.BlobSizeMechanicTests" runstate="Runnable" seed="1228965310" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.039718" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1011" name="LargerMoverConsumesSmallerTargetAndKeepsItsSize" fullname="Blobs.Tests.EditMode.BlobSizeMechanicTests.LargerMoverConsumesSmallerTargetAndKeepsItsSize" methodname="LargerMoverConsumesSmallerTargetAndKeepsItsSize" classname="Blobs.Tests.EditMode.BlobSizeMechanicTests" runstate="Runnable" seed="1950695581" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.001195" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1010" name="LargerTargetConsumesSmallerMoverAndKeepsItsSize" fullname="Blobs.Tests.EditMode.BlobSizeMechanicTests.LargerTargetConsumesSmallerMoverAndKeepsItsSize" methodname="LargerTargetConsumesSmallerMoverAndKeepsItsSize" classname="Blobs.Tests.EditMode.BlobSizeMechanicTests" runstate="Runnable" seed="1797493434" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000331" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1009" name="NormalPlusNormalGrowsSurvivingMoverToLarge" fullname="Blobs.Tests.EditMode.BlobSizeMechanicTests.NormalPlusNormalGrowsSurvivingMoverToLarge" methodname="NormalPlusNormalGrowsSurvivingMoverToLarge" classname="Blobs.Tests.EditMode.BlobSizeMechanicTests" runstate="Runnable" seed="81493522" result="Failed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.001148" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: Large
+  But was:  Normal
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.BlobSizeMechanicTests.NormalPlusNormalGrowsSurvivingMoverToLarge () [0x00045] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/BlobSizeMechanicTests.cs:80
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1008" name="SmallPlusSmallGrowsSurvivingMoverToNormal" fullname="Blobs.Tests.EditMode.BlobSizeMechanicTests.SmallPlusSmallGrowsSurvivingMoverToNormal" methodname="SmallPlusSmallGrowsSurvivingMoverToNormal" classname="Blobs.Tests.EditMode.BlobSizeMechanicTests" runstate="Runnable" seed="1886702693" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000395" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1012" name="BoardPresenterTests" fullname="Blobs.Tests.EditMode.BoardPresenterTests" classname="Blobs.Tests.EditMode.BoardPresenterTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.088058" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1016" name="MissingMappedViewFallsBackToSnapshotRebuild" fullname="Blobs.Tests.EditMode.BoardPresenterTests.MissingMappedViewFallsBackToSnapshotRebuild" methodname="MissingMappedViewFallsBackToSnapshotRebuild" classname="Blobs.Tests.EditMode.BoardPresenterTests" runstate="Runnable" seed="1220521419" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.057683" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1013" name="OrderedRemoveMoveSpawnChainMatchesFinalSnapshot" fullname="Blobs.Tests.EditMode.BoardPresenterTests.OrderedRemoveMoveSpawnChainMatchesFinalSnapshot" methodname="OrderedRemoveMoveSpawnChainMatchesFinalSnapshot" classname="Blobs.Tests.EditMode.BoardPresenterTests" runstate="Runnable" seed="1507577439" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.003742" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1014" name="StepTimelineWithTraverseSpawnAndMergeBeatsMatchesFinalSnapshot" fullname="Blobs.Tests.EditMode.BoardPresenterTests.StepTimelineWithTraverseSpawnAndMergeBeatsMatchesFinalSnapshot" methodname="StepTimelineWithTraverseSpawnAndMergeBeatsMatchesFinalSnapshot" classname="Blobs.Tests.EditMode.BoardPresenterTests" runstate="Runnable" seed="1066019862" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.007350" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1015" name="StepWithMissingViewFallsBackToSnapshotRebuild" fullname="Blobs.Tests.EditMode.BoardPresenterTests.StepWithMissingViewFallsBackToSnapshotRebuild" methodname="StepWithMissingViewFallsBackToSnapshotRebuild" classname="Blobs.Tests.EditMode.BoardPresenterTests" runstate="Runnable" seed="73134601" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.001084" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1017" name="UnsupportedEffectFallsBackToAuthoritativeSnapshot" fullname="Blobs.Tests.EditMode.BoardPresenterTests.UnsupportedEffectFallsBackToAuthoritativeSnapshot" methodname="UnsupportedEffectFallsBackToAuthoritativeSnapshot" classname="Blobs.Tests.EditMode.BoardPresenterTests" runstate="Runnable" seed="455021345" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.001363" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1028" name="GameBootstrapperTests" fullname="Blobs.Tests.EditMode.GameBootstrapperTests" classname="Blobs.Tests.EditMode.GameBootstrapperTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.327530" total="3" passed="1" failed="2" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1031" name="MissingRequiredSceneCollaboratorsAbortWithoutRuntimeFallbacks" fullname="Blobs.Tests.EditMode.GameBootstrapperTests.MissingRequiredSceneCollaboratorsAbortWithoutRuntimeFallbacks" methodname="MissingRequiredSceneCollaboratorsAbortWithoutRuntimeFallbacks" classname="Blobs.Tests.EditMode.GameBootstrapperTests" runstate="Runnable" seed="1109855893" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.010738" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[GameBootstrapper requires authored BoardPresenter, GameplayInputAdapter, and GameplayCommandAdapter references.
+]]></output>
+              </test-case>
+              <test-case id="1030" name="RestartRestoresInitialVisibleBlobsAndClearsSelection" fullname="Blobs.Tests.EditMode.GameBootstrapperTests.RestartRestoresInitialVisibleBlobsAndClearsSelection" methodname="RestartRestoresInitialVisibleBlobsAndClearsSelection" classname="Blobs.Tests.EditMode.GameBootstrapperTests" runstate="Runnable" seed="1302587211" result="Failed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.293736" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Missing field: levelAsset
+  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.GameBootstrapperTests.SetPrivateField (System.Object target, System.String fieldName, System.Object value) [0x00010] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GameBootstrapperTests.cs:167
+at Blobs.Tests.EditMode.GameBootstrapperTests.CreateSceneShell () [0x000ba] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GameBootstrapperTests.cs:106
+at Blobs.Tests.EditMode.GameBootstrapperTests.RestartRestoresInitialVisibleBlobsAndClearsSelection () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GameBootstrapperTests.cs:50
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1029" name="SuccessfulMergeLeavesSourceVisibleAtTargetPosition" fullname="Blobs.Tests.EditMode.GameBootstrapperTests.SuccessfulMergeLeavesSourceVisibleAtTargetPosition" methodname="SuccessfulMergeLeavesSourceVisibleAtTargetPosition" classname="Blobs.Tests.EditMode.GameBootstrapperTests" runstate="Runnable" seed="1069448461" result="Failed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.005758" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Missing field: levelAsset
+  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.GameBootstrapperTests.SetPrivateField (System.Object target, System.String fieldName, System.Object value) [0x00010] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GameBootstrapperTests.cs:167
+at Blobs.Tests.EditMode.GameBootstrapperTests.CreateSceneShell () [0x000ba] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GameBootstrapperTests.cs:106
+at Blobs.Tests.EditMode.GameBootstrapperTests.SuccessfulMergeLeavesSourceVisibleAtTargetPosition () [0x00001] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/GameBootstrapperTests.cs:34
+]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1032" name="GameSessionTests" fullname="Blobs.Tests.EditMode.GameSessionTests" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" testcasecount="33" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.297287" total="33" passed="33" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1061" name="AdjacentRockDoesNotIncrementSessionMoveCountButStillPublishesContact" fullname="Blobs.Tests.EditMode.GameSessionTests.AdjacentRockDoesNotIncrementSessionMoveCountButStillPublishesContact" methodname="AdjacentRockDoesNotIncrementSessionMoveCountButStillPublishesContact" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="804651778" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.016787" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1044" name="CanceledOrRestartedDragCannotCommitOnRelease" fullname="Blobs.Tests.EditMode.GameSessionTests.CanceledOrRestartedDragCannotCommitOnRelease" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.029167" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1042" name="CanceledOrRestartedDragCannotCommitOnRelease(False)" fullname="Blobs.Tests.EditMode.GameSessionTests.CanceledOrRestartedDragCannotCommitOnRelease(False)" methodname="CanceledOrRestartedDragCannotCommitOnRelease" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1032304269" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.006661" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1043" name="CanceledOrRestartedDragCannotCommitOnRelease(True)" fullname="Blobs.Tests.EditMode.GameSessionTests.CanceledOrRestartedDragCannotCommitOnRelease(True)" methodname="CanceledOrRestartedDragCannotCommitOnRelease" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="669809608" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.003197" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1052" name="DiagonalDragProjectsOntoDominantAxisAndReleaseCommitsToThatTail" fullname="Blobs.Tests.EditMode.GameSessionTests.DiagonalDragProjectsOntoDominantAxisAndReleaseCommitsToThatTail" methodname="DiagonalDragProjectsOntoDominantAxisAndReleaseCommitsToThatTail" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="568577400" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.012832" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1049" name="DragAcrossGapStopsTailOnTheLastReachableCell" fullname="Blobs.Tests.EditMode.GameSessionTests.DragAcrossGapStopsTailOnTheLastReachableCell" methodname="DragAcrossGapStopsTailOnTheLastReachableCell" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="902851482" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.004465" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1033" name="DragCommitsOnlyOnReleaseAndOnlyOnce" fullname="Blobs.Tests.EditMode.GameSessionTests.DragCommitsOnlyOnReleaseAndOnlyOnce" methodname="DragCommitsOnlyOnReleaseAndOnlyOnce" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="51345848" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.002497" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1046" name="DragOntoMismatchedNestIsInvalidWithoutCommitting" fullname="Blobs.Tests.EditMode.GameSessionTests.DragOntoMismatchedNestIsInvalidWithoutCommitting" methodname="DragOntoMismatchedNestIsInvalidWithoutCommitting" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="825943233" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.002568" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1047" name="DragOntoSameColorBlobIsInvalid" fullname="Blobs.Tests.EditMode.GameSessionTests.DragOntoSameColorBlobIsInvalid" methodname="DragOntoSameColorBlobIsInvalid" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="599667595" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.001684" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1048" name="DragPastRockStopsTailOnTheRockAndCommitsContact" fullname="Blobs.Tests.EditMode.GameSessionTests.DragPastRockStopsTailOnTheRockAndCommitsContact" methodname="DragPastRockStopsTailOnTheRockAndCommitsContact" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1948390315" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.011286" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1053" name="DragPreviewEndsOnceBeforeTheMoveResolves" fullname="Blobs.Tests.EditMode.GameSessionTests.DragPreviewEndsOnceBeforeTheMoveResolves" methodname="DragPreviewEndsOnceBeforeTheMoveResolves" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="177288294" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.003569" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1045" name="DragPreviewExtendsToClampedTailOnlyWhenTheTailChanges" fullname="Blobs.Tests.EditMode.GameSessionTests.DragPreviewExtendsToClampedTailOnlyWhenTheTailChanges" methodname="DragPreviewExtendsToClampedTailOnlyWhenTheTailChanges" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1339511960" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.056635" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1051" name="DragPreviewsDoNotShiftIdsSpawnedByTheCommittedMove" fullname="Blobs.Tests.EditMode.GameSessionTests.DragPreviewsDoNotShiftIdsSpawnedByTheCommittedMove" methodname="DragPreviewsDoNotShiftIdsSpawnedByTheCommittedMove" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1796326956" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.009697" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1050" name="DragThroughNestTowardBlobBeyondIsInvalid" fullname="Blobs.Tests.EditMode.GameSessionTests.DragThroughNestTowardBlobBeyondIsInvalid" methodname="DragThroughNestTowardBlobBeyondIsInvalid" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="950189420" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.004200" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1037" name="DragWithMissingEndpointOrSamePieceDoesNotCommit" fullname="Blobs.Tests.EditMode.GameSessionTests.DragWithMissingEndpointOrSamePieceDoesNotCommit" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.014718" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1034" name="DragWithMissingEndpointOrSamePieceDoesNotCommit(3,1)" fullname="Blobs.Tests.EditMode.GameSessionTests.DragWithMissingEndpointOrSamePieceDoesNotCommit(3,1)" methodname="DragWithMissingEndpointOrSamePieceDoesNotCommit" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1434986003" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000691" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1035" name="DragWithMissingEndpointOrSamePieceDoesNotCommit(0,3)" fullname="Blobs.Tests.EditMode.GameSessionTests.DragWithMissingEndpointOrSamePieceDoesNotCommit(0,3)" methodname="DragWithMissingEndpointOrSamePieceDoesNotCommit" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1478219699" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000579" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1036" name="DragWithMissingEndpointOrSamePieceDoesNotCommit(-1,1)" fullname="Blobs.Tests.EditMode.GameSessionTests.DragWithMissingEndpointOrSamePieceDoesNotCommit(-1,1)" methodname="DragWithMissingEndpointOrSamePieceDoesNotCommit" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="433250644" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000511" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1039" name="InvalidDragDoesNotCommitAndNextDragCanStartFresh" fullname="Blobs.Tests.EditMode.GameSessionTests.InvalidDragDoesNotCommitAndNextDragCanStartFresh" methodname="InvalidDragDoesNotCommitAndNextDragCanStartFresh" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="488227931" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000383" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1040" name="InvalidDragReleasePublishesRejectionWithSwipeDirection" fullname="Blobs.Tests.EditMode.GameSessionTests.InvalidDragReleasePublishesRejectionWithSwipeDirection" methodname="InvalidDragReleasePublishesRejectionWithSwipeDirection" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="2295656" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000515" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1063" name="NewMoveAfterUndoIncrementsCountAndDiscardsUndoneFuture" fullname="Blobs.Tests.EditMode.GameSessionTests.NewMoveAfterUndoIncrementsCountAndDiscardsUndoneFuture" methodname="NewMoveAfterUndoIncrementsCountAndDiscardsUndoneFuture" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="898886255" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000662" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1058" name="RejectedTapTargetKeepsSourceWithoutPublishingACommittedMove" fullname="Blobs.Tests.EditMode.GameSessionTests.RejectedTapTargetKeepsSourceWithoutPublishingACommittedMove" methodname="RejectedTapTargetKeepsSourceWithoutPublishingACommittedMove" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1250203712" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000416" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1064" name="RejectionAfterValidMoveDoesNotChangeWhichActionUndoRestores" fullname="Blobs.Tests.EditMode.GameSessionTests.RejectionAfterValidMoveDoesNotChangeWhichActionUndoRestores" methodname="RejectionAfterValidMoveDoesNotChangeWhichActionUndoRestores" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1518855080" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000410" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1059" name="RestartAfterCompletionRestoresAuthoredBoardAndResetsCountAndSelection" fullname="Blobs.Tests.EditMode.GameSessionTests.RestartAfterCompletionRestoresAuthoredBoardAndResetsCountAndSelection" methodname="RestartAfterCompletionRestoresAuthoredBoardAndResetsCountAndSelection" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="164279071" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.001302" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1056" name="SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving" fullname="Blobs.Tests.EditMode.GameSessionTests.SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.007139" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1054" name="SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving(0)" fullname="Blobs.Tests.EditMode.GameSessionTests.SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving(0)" methodname="SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1370977464" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000504" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1055" name="SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving(3)" fullname="Blobs.Tests.EditMode.GameSessionTests.SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving(3)" methodname="SelectingSourceAgainOrEmptyCellClearsSelectionWithoutMoving" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1847929966" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000162" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1057" name="SelectionExecutesOneMoveAndPublishesCommittedState" fullname="Blobs.Tests.EditMode.GameSessionTests.SelectionExecutesOneMoveAndPublishesCommittedState" methodname="SelectionExecutesOneMoveAndPublishesCommittedState" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1582364415" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000717" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1060" name="SnapshotsRemainIndependentOfLaterMovesAndExternalBoardMutations" fullname="Blobs.Tests.EditMode.GameSessionTests.SnapshotsRemainIndependentOfLaterMovesAndExternalBoardMutations" methodname="SnapshotsRemainIndependentOfLaterMovesAndExternalBoardMutations" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="689606199" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000587" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1038" name="TapHoldsSourceAndPreviewUntilSecondTapCommits" fullname="Blobs.Tests.EditMode.GameSessionTests.TapHoldsSourceAndPreviewUntilSecondTapCommits" methodname="TapHoldsSourceAndPreviewUntilSecondTapCommits" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="455427490" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000694" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1062" name="TwoBoardChangingMovesUndoTwiceRestoresInitialBoardAndKeepsCount" fullname="Blobs.Tests.EditMode.GameSessionTests.TwoBoardChangingMovesUndoTwiceRestoresInitialBoardAndKeepsCount" methodname="TwoBoardChangingMovesUndoTwiceRestoresInitialBoardAndKeepsCount" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1067308747" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000431" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1065" name="UnchangedRockContactAfterValidMoveDoesNotChangeWhichActionUndoRestores" fullname="Blobs.Tests.EditMode.GameSessionTests.UnchangedRockContactAfterValidMoveDoesNotChangeWhichActionUndoRestores" methodname="UnchangedRockContactAfterValidMoveDoesNotChangeWhichActionUndoRestores" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="614517062" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000387" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1067" name="UndoRestoresConsumedBlobIdentityAndClearsSelection" fullname="Blobs.Tests.EditMode.GameSessionTests.UndoRestoresConsumedBlobIdentityAndClearsSelection" methodname="UndoRestoresConsumedBlobIdentityAndClearsSelection" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="689509701" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000803" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1068" name="UndoRestoresTrailLeftoversConsumedDuringGhostHaunt" fullname="Blobs.Tests.EditMode.GameSessionTests.UndoRestoresTrailLeftoversConsumedDuringGhostHaunt" methodname="UndoRestoresTrailLeftoversConsumedDuringGhostHaunt" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="1306235391" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.003771" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1041" name="ValidReleaseAndTapRejectionDoNotPublishDragRejection" fullname="Blobs.Tests.EditMode.GameSessionTests.ValidReleaseAndTapRejectionDoNotPublishDragRejection" methodname="ValidReleaseAndTapRejectionDoNotPublishDragRejection" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="933383805" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000429" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1066" name="WinningActionLocksUndoWithoutReducingCount" fullname="Blobs.Tests.EditMode.GameSessionTests.WinningActionLocksUndoWithoutReducingCount" methodname="WinningActionLocksUndoWithoutReducingCount" classname="Blobs.Tests.EditMode.GameSessionTests" runstate="Runnable" seed="958194788" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000297" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1069" name="GhostMechanicTests" fullname="Blobs.Tests.EditMode.GhostMechanicTests" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.021403" total="12" passed="12" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1079" name="ChainMergeReturnsToOriginalSourcePosition" fullname="Blobs.Tests.EditMode.GhostMechanicTests.ChainMergeReturnsToOriginalSourcePosition" methodname="ChainMergeReturnsToOriginalSourcePosition" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="1689319064" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.003014" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1082" name="EmptyReturnIsRejectedAtConstruction" fullname="Blobs.Tests.EditMode.GhostMechanicTests.EmptyReturnIsRejectedAtConstruction" methodname="EmptyReturnIsRejectedAtConstruction" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="1054138990" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000717" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1071" name="EmptyReturnPathPreservesGhostIdentityAndConsumesSource" fullname="Blobs.Tests.EditMode.GhostMechanicTests.EmptyReturnPathPreservesGhostIdentityAndConsumesSource" methodname="EmptyReturnPathPreservesGhostIdentityAndConsumesSource" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="252817927" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.003059" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1076" name="FirstGraveStopsReturn" fullname="Blobs.Tests.EditMode.GhostMechanicTests.FirstGraveStopsReturn" methodname="FirstGraveStopsReturn" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="2002171974" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.001397" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1081" name="GhostAlreadyOnGraveRestsWhenHauntBegins" fullname="Blobs.Tests.EditMode.GhostMechanicTests.GhostAlreadyOnGraveRestsWhenHauntBegins" methodname="GhostAlreadyOnGraveRestsWhenHauntBegins" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="1848143018" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000296" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1070" name="GhostCannotBeSourceAndCountsTowardObjective" fullname="Blobs.Tests.EditMode.GhostMechanicTests.GhostCannotBeSourceAndCountsTowardObjective" methodname="GhostCannotBeSourceAndCountsTowardObjective" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="1166867930" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000190" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1075" name="GraveCrossingIncludesGraveAndClearsGhost" fullname="Blobs.Tests.EditMode.GhostMechanicTests.GraveCrossingIncludesGraveAndClearsGhost" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.004377" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1072" name="GraveCrossingIncludesGraveAndClearsGhost(2)" fullname="Blobs.Tests.EditMode.GhostMechanicTests.GraveCrossingIncludesGraveAndClearsGhost(2)" methodname="GraveCrossingIncludesGraveAndClearsGhost" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="1556657625" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000467" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1073" name="GraveCrossingIncludesGraveAndClearsGhost(1)" fullname="Blobs.Tests.EditMode.GhostMechanicTests.GraveCrossingIncludesGraveAndClearsGhost(1)" methodname="GraveCrossingIncludesGraveAndClearsGhost" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="200168873" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000091" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1074" name="GraveCrossingIncludesGraveAndClearsGhost(0)" fullname="Blobs.Tests.EditMode.GhostMechanicTests.GraveCrossingIncludesGraveAndClearsGhost(0)" methodname="GraveCrossingIncludesGraveAndClearsGhost" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="1206066200" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000091" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1080" name="InvalidOutboundCollisionLeavesBoardUnchanged" fullname="Blobs.Tests.EditMode.GhostMechanicTests.InvalidOutboundCollisionLeavesBoardUnchanged" methodname="InvalidOutboundCollisionLeavesBoardUnchanged" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="1907448747" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000167" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1078" name="OccupiedGraveClearsGhostAndAbsorbsOccupant" fullname="Blobs.Tests.EditMode.GhostMechanicTests.OccupiedGraveClearsGhostAndAbsorbsOccupant" methodname="OccupiedGraveClearsGhostAndAbsorbsOccupant" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="2133418609" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000136" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1077" name="ReturnPhasesThroughTrailAndAbsorbsOnlyLandingOccupant" fullname="Blobs.Tests.EditMode.GhostMechanicTests.ReturnPhasesThroughTrailAndAbsorbsOnlyLandingOccupant" methodname="ReturnPhasesThroughTrailAndAbsorbsOnlyLandingOccupant" classname="Blobs.Tests.EditMode.GhostMechanicTests" runstate="Runnable" seed="586321263" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000244" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1083" name="GhostPrefabTests" fullname="Blobs.Tests.EditMode.GhostPrefabTests" classname="Blobs.Tests.EditMode.GhostPrefabTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.020396" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1085" name="AuthoredGhostFadesBodyAndShadowWhilePreservingHalo" fullname="Blobs.Tests.EditMode.GhostPrefabTests.AuthoredGhostFadesBodyAndShadowWhilePreservingHalo" methodname="AuthoredGhostFadesBodyAndShadowWhilePreservingHalo" classname="Blobs.Tests.EditMode.GhostPrefabTests" runstate="Runnable" seed="1314740064" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.005840" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1084" name="CatalogsResolveGhostAndGravePrefabs" fullname="Blobs.Tests.EditMode.GhostPrefabTests.CatalogsResolveGhostAndGravePrefabs" methodname="CatalogsResolveGhostAndGravePrefabs" classname="Blobs.Tests.EditMode.GhostPrefabTests" runstate="Runnable" seed="417769540" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.004127" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1086" name="LevelAssetMapperTests" fullname="Blobs.Tests.EditMode.LevelAssetMapperTests" classname="Blobs.Tests.EditMode.LevelAssetMapperTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.016518" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1087" name="AuthoredLevelsLoadAndMapToValidatedCoreDefinitions" fullname="Blobs.Tests.EditMode.LevelAssetMapperTests.AuthoredLevelsLoadAndMapToValidatedCoreDefinitions" methodname="AuthoredLevelsLoadAndMapToValidatedCoreDefinitions" classname="Blobs.Tests.EditMode.LevelAssetMapperTests" runstate="Runnable" seed="1690546730" result="Failed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.008635" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Missing authored level at Assets/_Game/Content/Levels/SO/Level_03.asset.
+  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at Blobs.Tests.EditMode.LevelAssetMapperTests.AuthoredLevelsLoadAndMapToValidatedCoreDefinitions () [0x0002e] in /Users/caleb/Dev/blobs/Assets/_Game/Tests/EditMode/LevelAssetMapperTests.cs:27
+]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1088" name="LevelValidatorTests" fullname="Blobs.Tests.EditMode.LevelValidatorTests" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.053093" total="14" passed="14" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1089" name="ValidatorRejectsDuplicateBlobIds" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsDuplicateBlobIds" methodname="ValidatorRejectsDuplicateBlobIds" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="1187689470" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.003897" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1095" name="ValidatorRejectsMissingBlobIds" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsMissingBlobIds" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.013740" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1092" name="ValidatorRejectsMissingBlobIds(null)" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsMissingBlobIds(null)" methodname="ValidatorRejectsMissingBlobIds" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="742871060" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000455" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1093" name="ValidatorRejectsMissingBlobIds(&quot;&quot;)" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsMissingBlobIds(&quot;&quot;)" methodname="ValidatorRejectsMissingBlobIds" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="2003752365" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.001856" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1094" name="ValidatorRejectsMissingBlobIds(&quot;   &quot;)" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsMissingBlobIds(&quot;   &quot;)" methodname="ValidatorRejectsMissingBlobIds" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="814917653" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000482" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1090" name="ValidatorRejectsMultipleBlobsInOneCell" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsMultipleBlobsInOneCell" methodname="ValidatorRejectsMultipleBlobsInOneCell" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="1190739935" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.001510" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1091" name="ValidatorRejectsMultipleTilesInOneCell" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsMultipleTilesInOneCell" methodname="ValidatorRejectsMultipleTilesInOneCell" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="1694781823" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.002318" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1101" name="ValidatorRejectsNonPositiveObjectiveAmounts" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsNonPositiveObjectiveAmounts" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.006807" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1099" name="ValidatorRejectsNonPositiveObjectiveAmounts(0)" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsNonPositiveObjectiveAmounts(0)" methodname="ValidatorRejectsNonPositiveObjectiveAmounts" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="466158236" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000644" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1100" name="ValidatorRejectsNonPositiveObjectiveAmounts(-1)" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsNonPositiveObjectiveAmounts(-1)" methodname="ValidatorRejectsNonPositiveObjectiveAmounts" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="164129412" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000423" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1103" name="ValidatorRejectsObjectiveItemsWithoutTarget" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsObjectiveItemsWithoutTarget" methodname="ValidatorRejectsObjectiveItemsWithoutTarget" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="1881050070" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.001862" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1102" name="ValidatorRejectsObjectivesThatCanNeverBeCollected" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsObjectivesThatCanNeverBeCollected" methodname="ValidatorRejectsObjectivesThatCanNeverBeCollected" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="531048488" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.001474" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1096" name="ValidatorRejectsOutOfBoundsCoordinates" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsOutOfBoundsCoordinates" methodname="ValidatorRejectsOutOfBoundsCoordinates" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="948163670" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000320" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1097" name="ValidatorRejectsUnsupportedColorValues" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsUnsupportedColorValues" methodname="ValidatorRejectsUnsupportedColorValues" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="844554541" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000455" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1098" name="ValidatorRejectsUnsupportedObjectiveValues" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsUnsupportedObjectiveValues" methodname="ValidatorRejectsUnsupportedObjectiveValues" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="1065796178" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000225" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1104" name="ValidatorRejectsUnsupportedSchemaVersions" fullname="Blobs.Tests.EditMode.LevelValidatorTests.ValidatorRejectsUnsupportedSchemaVersions" methodname="ValidatorRejectsUnsupportedSchemaVersions" classname="Blobs.Tests.EditMode.LevelValidatorTests" runstate="Runnable" seed="1048897598" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000246" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1105" name="MoveResolverPathTests" fullname="Blobs.Tests.EditMode.MoveResolverPathTests" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.040151" total="17" passed="17" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1118" name="AdjacentRockContactProducesNoBoardEffects" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.AdjacentRockContactProducesNoBoardEffects" methodname="AdjacentRockContactProducesNoBoardEffects" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1837207679" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.014099" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1116" name="GapAfterValidMergeRejectsWithoutPartialCommit" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.GapAfterValidMergeRejectsWithoutPartialCommit" methodname="GapAfterValidMergeRejectsWithoutPartialCommit" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1277347183" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000734" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1120" name="GhostBeforeGapEndsForwardTravelAndHauntsOriginalStart" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.GhostBeforeGapEndsForwardTravelAndHauntsOriginalStart" methodname="GhostBeforeGapEndsForwardTravelAndHauntsOriginalStart" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="189420742" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000251" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1124" name="IntermediateNestRejectsEvenWhenItsColorMatches" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.IntermediateNestRejectsEvenWhenItsColorMatches" methodname="IntermediateNestRejectsEvenWhenItsColorMatches" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="449358750" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000170" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1113" name="IntermediateRockStopsBeforeItAndIgnoresLaterGap" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.IntermediateRockStopsBeforeItAndIgnoresLaterGap" methodname="IntermediateRockStopsBeforeItAndIgnoresLaterGap" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="705638486" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000275" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1111" name="MergeKeepsSourceColorAndIdentity" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.MergeKeepsSourceColorAndIdentity" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.007607" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1109" name="MergeKeepsSourceColorAndIdentity(Normal)" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.MergeKeepsSourceColorAndIdentity(Normal)" methodname="MergeKeepsSourceColorAndIdentity" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="986862300" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000623" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1110" name="MergeKeepsSourceColorAndIdentity(Trail)" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.MergeKeepsSourceColorAndIdentity(Trail)" methodname="MergeKeepsSourceColorAndIdentity" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="870583245" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000224" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1121" name="NestMergeCanClearOtherBlobsEarlierInTheSameAction" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.NestMergeCanClearOtherBlobsEarlierInTheSameAction" methodname="NestMergeCanClearOtherBlobsEarlierInTheSameAction" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1046235852" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000503" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1114" name="ResultIdentifiesTheRockThatActuallyStoppedTheMove" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.ResultIdentifiesTheRockThatActuallyStoppedTheMove" methodname="ResultIdentifiesTheRockThatActuallyStoppedTheMove" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="2112970118" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000276" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1117" name="SameColorBeforeRockRejectsWithoutPartialCommit" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.SameColorBeforeRockRejectsWithoutPartialCommit" methodname="SameColorBeforeRockRejectsWithoutPartialCommit" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="493463129" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000234" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1123" name="SelectedNestCannotBeReplacedByAnIntermediateGhost" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.SelectedNestCannotBeReplacedByAnIntermediateGhost" methodname="SelectedNestCannotBeReplacedByAnIntermediateGhost" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1867395998" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000175" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1122" name="SelectedNestCannotBeReplacedByAnIntermediateRock" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.SelectedNestCannotBeReplacedByAnIntermediateRock" methodname="SelectedNestCannotBeReplacedByAnIntermediateRock" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1459002591" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000225" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1112" name="TrailCannotCaptureNestEvenWhenAdjacentAndMatching" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.TrailCannotCaptureNestEvenWhenAdjacentAndMatching" methodname="TrailCannotCaptureNestEvenWhenAdjacentAndMatching" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="119362139" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000153" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1119" name="TrailStopsBeforeRockAndSpawnsOnlyOnDepartedCells" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.TrailStopsBeforeRockAndSpawnsOnlyOnDepartedCells" methodname="TrailStopsBeforeRockAndSpawnsOnlyOnDepartedCells" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="277566790" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000217" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1108" name="TrailTargetsUseNormalColorMergeRules" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.TrailTargetsUseNormalColorMergeRules" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.004230" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1106" name="TrailTargetsUseNormalColorMergeRules(Normal)" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.TrailTargetsUseNormalColorMergeRules(Normal)" methodname="TrailTargetsUseNormalColorMergeRules" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="1727064828" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000322" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1107" name="TrailTargetsUseNormalColorMergeRules(Trail)" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.TrailTargetsUseNormalColorMergeRules(Trail)" methodname="TrailTargetsUseNormalColorMergeRules" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="50166112" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000149" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1115" name="ValidMergeBeforeRockCommitsButDoesNotReachSelectedTarget" fullname="Blobs.Tests.EditMode.MoveResolverPathTests.ValidMergeBeforeRockCommitsButDoesNotReachSelectedTarget" methodname="ValidMergeBeforeRockCommitsButDoesNotReachSelectedTarget" classname="Blobs.Tests.EditMode.MoveResolverPathTests" runstate="Runnable" seed="238761720" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000309" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1018" name="NestMechanicTests" fullname="Blobs.Tests.EditMode.NestMechanicTests" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.024321" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1024" name="BlobOnPathChainMergesBeforeFinalNestCapture" fullname="Blobs.Tests.EditMode.NestMechanicTests.BlobOnPathChainMergesBeforeFinalNestCapture" methodname="BlobOnPathChainMergesBeforeFinalNestCapture" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="2047689201" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000992" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1021" name="DifferentColorSourceCannotMergeIntoNest" fullname="Blobs.Tests.EditMode.NestMechanicTests.DifferentColorSourceCannotMergeIntoNest" methodname="DifferentColorSourceCannotMergeIntoNest" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="1060628316" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000666" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1020" name="ExplicitMoveWithNestAsSourceIsRejectedWithoutMutatingBoard" fullname="Blobs.Tests.EditMode.NestMechanicTests.ExplicitMoveWithNestAsSourceIsRejectedWithoutMutatingBoard" methodname="ExplicitMoveWithNestAsSourceIsRejectedWithoutMutatingBoard" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="470542584" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000309" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1025" name="InvalidIntermediateMergeRejectsWholeNestMove" fullname="Blobs.Tests.EditMode.NestMechanicTests.InvalidIntermediateMergeRejectsWholeNestMove" methodname="InvalidIntermediateMergeRejectsWholeNestMove" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="766843906" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.003752" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1026" name="LastMatchingSourceMergesIntoNestAndIsConsumed" fullname="Blobs.Tests.EditMode.NestMechanicTests.LastMatchingSourceMergesIntoNestAndIsConsumed" methodname="LastMatchingSourceMergesIntoNestAndIsConsumed" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="1354992984" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.002013" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1023" name="NestMergeStillRequiresRowOrColumnAlignment" fullname="Blobs.Tests.EditMode.NestMechanicTests.NestMergeStillRequiresRowOrColumnAlignment" methodname="NestMergeStillRequiresRowOrColumnAlignment" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="246617584" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000222" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1027" name="NormalMergeCanClearOtherBlobBeforeFinalNestMerge" fullname="Blobs.Tests.EditMode.NestMechanicTests.NormalMergeCanClearOtherBlobBeforeFinalNestMerge" methodname="NormalMergeCanClearOtherBlobBeforeFinalNestMerge" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="1867014468" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.005336" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1022" name="OccupiedNestRejectsASecondMatchingSource" fullname="Blobs.Tests.EditMode.NestMechanicTests.OccupiedNestRejectsASecondMatchingSource" methodname="OccupiedNestRejectsASecondMatchingSource" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="206830623" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.002189" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1019" name="SelectingNestAsSourceIsRejectedWithoutChangingSessionState" fullname="Blobs.Tests.EditMode.NestMechanicTests.SelectingNestAsSourceIsRejectedWithoutChangingSessionState" methodname="SelectingNestAsSourceIsRejectedWithoutChangingSessionState" classname="Blobs.Tests.EditMode.NestMechanicTests" runstate="Runnable" seed="62544736" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000398" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1125" name="ObjectiveEvaluatorTests" fullname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests" classname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.013771" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="ParameterizedMethod" id="1130" name="CompletionDependsOnRemainingClearableBlobs" fullname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests.CompletionDependsOnRemainingClearableBlobs" classname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.006049" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1126" name="CompletionDependsOnRemainingClearableBlobs(Normal,False)" fullname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests.CompletionDependsOnRemainingClearableBlobs(Normal,False)" methodname="CompletionDependsOnRemainingClearableBlobs" classname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests" runstate="Runnable" seed="367542242" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000420" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1127" name="CompletionDependsOnRemainingClearableBlobs(Trail,False)" fullname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests.CompletionDependsOnRemainingClearableBlobs(Trail,False)" methodname="CompletionDependsOnRemainingClearableBlobs" classname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests" runstate="Runnable" seed="646337" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000129" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1128" name="CompletionDependsOnRemainingClearableBlobs(Ghost,False)" fullname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests.CompletionDependsOnRemainingClearableBlobs(Ghost,False)" methodname="CompletionDependsOnRemainingClearableBlobs" classname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests" runstate="Runnable" seed="307850278" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.001513" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1129" name="CompletionDependsOnRemainingClearableBlobs(Rock,True)" fullname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests.CompletionDependsOnRemainingClearableBlobs(Rock,True)" methodname="CompletionDependsOnRemainingClearableBlobs" classname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests" runstate="Runnable" seed="554963432" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000212" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1131" name="NestAloneIsComplete" fullname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests.NestAloneIsComplete" methodname="NestAloneIsComplete" classname="Blobs.Tests.EditMode.ObjectiveEvaluatorTests" runstate="Runnable" seed="1275636602" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:08Z" duration="0.000254" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1132" name="ObjectiveProgressTests" fullname="Blobs.Tests.EditMode.ObjectiveProgressTests" classname="Blobs.Tests.EditMode.ObjectiveProgressTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:09Z" duration="0.008765" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1133" name="EatingMatchingBlobDecrementsRemaining" fullname="Blobs.Tests.EditMode.ObjectiveProgressTests.EatingMatchingBlobDecrementsRemaining" methodname="EatingMatchingBlobDecrementsRemaining" classname="Blobs.Tests.EditMode.ObjectiveProgressTests" runstate="Runnable" seed="1701542969" result="Passed" start-time="2026-11-11 19:24:08Z" end-time="2026-11-11 19:24:09Z" duration="0.002477" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1134" name="EatingNonMatchingColorDoesNotCount" fullname="Blobs.Tests.EditMode.ObjectiveProgressTests.EatingNonMatchingColorDoesNotCount" methodname="EatingNonMatchingColorDoesNotCount" classname="Blobs.Tests.EditMode.ObjectiveProgressTests" runstate="Runnable" seed="734266915" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000384" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1138" name="LevelWithoutItemsKeepsClearBoardCompletion" fullname="Blobs.Tests.EditMode.ObjectiveProgressTests.LevelWithoutItemsKeepsClearBoardCompletion" methodname="LevelWithoutItemsKeepsClearBoardCompletion" classname="Blobs.Tests.EditMode.ObjectiveProgressTests" runstate="Runnable" seed="581505133" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000308" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1135" name="NestingCountsForBothTheMonsterAndTheNest" fullname="Blobs.Tests.EditMode.ObjectiveProgressTests.NestingCountsForBothTheMonsterAndTheNest" methodname="NestingCountsForBothTheMonsterAndTheNest" classname="Blobs.Tests.EditMode.ObjectiveProgressTests" runstate="Runnable" seed="561778154" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000295" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1136" name="TypeFilterSeparatesNormalMonstersFromNests" fullname="Blobs.Tests.EditMode.ObjectiveProgressTests.TypeFilterSeparatesNormalMonstersFromNests" methodname="TypeFilterSeparatesNormalMonstersFromNests" classname="Blobs.Tests.EditMode.ObjectiveProgressTests" runstate="Runnable" seed="928376216" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000253" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1137" name="UndoAndRestartRestoreCounts" fullname="Blobs.Tests.EditMode.ObjectiveProgressTests.UndoAndRestartRestoreCounts" methodname="UndoAndRestartRestoreCounts" classname="Blobs.Tests.EditMode.ObjectiveProgressTests" runstate="Runnable" seed="1447206891" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000438" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1139" name="PresenterSeparationTests" fullname="Blobs.Tests.EditMode.PresenterSeparationTests" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.064546" total="17" passed="17" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1143" name="AudioFeedbackDoesNotCreateMissingAudioSourcesAtPlaybackTime" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.AudioFeedbackDoesNotCreateMissingAudioSourcesAtPlaybackTime" methodname="AudioFeedbackDoesNotCreateMissingAudioSourcesAtPlaybackTime" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="600475899" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.014341" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Blob contact audio on 'Authored Audio Source Test' has a clip but no authored AudioSource.
+Merge impact audio on 'Authored Audio Source Test' has a clip but no authored AudioSource.
+]]></output>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1149" name="BlobPresenterAcceptsAuthoredMergeOrchestration" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.BlobPresenterAcceptsAuthoredMergeOrchestration" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.011927" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1147" name="BlobPresenterAcceptsAuthoredMergeOrchestration(Blobs.Presentation.MergeAnimationOrchestrator)" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.BlobPresenterAcceptsAuthoredMergeOrchestration(Blobs.Presentation.MergeAnimationOrchestrator)" methodname="BlobPresenterAcceptsAuthoredMergeOrchestration" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="38730909" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.002226" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1148" name="BlobPresenterAcceptsAuthoredMergeOrchestration(Blobs.Presentation.SimpleMergeAnimationOrchestrator)" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.BlobPresenterAcceptsAuthoredMergeOrchestration(Blobs.Presentation.SimpleMergeAnimationOrchestrator)" methodname="BlobPresenterAcceptsAuthoredMergeOrchestration" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="206174480" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000728" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1141" name="BlobViewRoutesContactToEveryComposedFeedbackBehavior" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.BlobViewRoutesContactToEveryComposedFeedbackBehavior" methodname="BlobViewRoutesContactToEveryComposedFeedbackBehavior" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="763540110" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.006154" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1140" name="BoardPresenterDelegatesViewTrackingAndRemovalToFocusedPresenters" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.BoardPresenterDelegatesViewTrackingAndRemovalToFocusedPresenters" methodname="BoardPresenterDelegatesViewTrackingAndRemovalToFocusedPresenters" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="297104178" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.004820" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[TileView tile initialized at (1.25, 0.00, 0.00) with scale (1.25, 1.25, 1.25)
+TilePresenter created tile tile at (1,0)
+]]></output>
+              </test-case>
+              <test-case id="1145" name="BoardSynchronizationRejectsChangedBlobPresentationTraits" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.BoardSynchronizationRejectsChangedBlobPresentationTraits" methodname="BoardSynchronizationRejectsChangedBlobPresentationTraits" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="124113353" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000822" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1146" name="GraveTilePrefabIsRegisteredInProductionCatalog" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.GraveTilePrefabIsRegisteredInProductionCatalog" methodname="GraveTilePrefabIsRegisteredInProductionCatalog" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="613784797" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000164" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1153" name="MergeOrchestratorHonoursAnExplicitContactPoint" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.MergeOrchestratorHonoursAnExplicitContactPoint" methodname="MergeOrchestratorHonoursAnExplicitContactPoint" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="1593708383" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.003616" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1154" name="MergeOrchestratorKeepsContactAndDestinationAnchorsDistinct" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.MergeOrchestratorKeepsContactAndDestinationAnchorsDistinct" methodname="MergeOrchestratorKeepsContactAndDestinationAnchorsDistinct" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="1469742344" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000220" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1152" name="MergeOrchestratorPlacesImpactAtSourceTargetMidpoint" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.MergeOrchestratorPlacesImpactAtSourceTargetMidpoint" methodname="MergeOrchestratorPlacesImpactAtSourceTargetMidpoint" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="1871250679" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000783" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1151" name="MergeOrchestratorRoutesAnticipationAndSettledCuesToComposedChannels" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.MergeOrchestratorRoutesAnticipationAndSettledCuesToComposedChannels" methodname="MergeOrchestratorRoutesAnticipationAndSettledCuesToComposedChannels" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="1175094125" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.001895" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1150" name="MergeOrchestratorRoutesImpactToEveryComposedFeedbackChannel" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.MergeOrchestratorRoutesImpactToEveryComposedFeedbackChannel" methodname="MergeOrchestratorRoutesImpactToEveryComposedFeedbackChannel" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="1058440730" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000598" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1155" name="RegisteredEffectHandlerExtendsBoardPresentationWithoutCoordinatorChanges" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.RegisteredEffectHandlerExtendsBoardPresentationWithoutCoordinatorChanges" methodname="RegisteredEffectHandlerExtendsBoardPresentationWithoutCoordinatorChanges" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="633435431" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.001715" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1156" name="RegisteredMoveStepHandlerOwnsCompositeEffectsWithoutCoordinatorChanges" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.RegisteredMoveStepHandlerOwnsCompositeEffectsWithoutCoordinatorChanges" methodname="RegisteredMoveStepHandlerOwnsCompositeEffectsWithoutCoordinatorChanges" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="519534026" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.001780" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1142" name="RockPrefabComposesContactAudioFeedback" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.RockPrefabComposesContactAudioFeedback" methodname="RockPrefabComposesContactAudioFeedback" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="1629315571" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000416" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1157" name="SelectionPresenterUpdatesOnlyPreviouslyAndCurrentlySelectedViews" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.SelectionPresenterUpdatesOnlyPreviouslyAndCurrentlySelectedViews" methodname="SelectionPresenterUpdatesOnlyPreviouslyAndCurrentlySelectedViews" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="199342417" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.005409" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1144" name="TileViewRoutesStateToEveryComposedBinding" fullname="Blobs.Tests.EditMode.PresenterSeparationTests.TileViewRoutesStateToEveryComposedBinding" methodname="TileViewRoutesStateToEveryComposedBinding" classname="Blobs.Tests.EditMode.PresenterSeparationTests" runstate="Runnable" seed="1337524921" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.001527" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[TileView tile initialized at (1.00, 2.00, 0.00) with scale (1.00, 1.00, 1.00)
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1158" name="TrailMechanicTests" fullname="Blobs.Tests.EditMode.TrailMechanicTests" classname="Blobs.Tests.EditMode.TrailMechanicTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.018144" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1160" name="TrailMoveRejectsInvalidLaterMergeWithoutPartialSpawns" fullname="Blobs.Tests.EditMode.TrailMechanicTests.TrailMoveRejectsInvalidLaterMergeWithoutPartialSpawns" methodname="TrailMoveRejectsInvalidLaterMergeWithoutPartialSpawns" classname="Blobs.Tests.EditMode.TrailMechanicTests" runstate="Runnable" seed="343818867" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.001496" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1159" name="TrailMoveSpawnsNormalTrailColorBlobsExceptOnMergeSites" fullname="Blobs.Tests.EditMode.TrailMechanicTests.TrailMoveSpawnsNormalTrailColorBlobsExceptOnMergeSites" methodname="TrailMoveSpawnsNormalTrailColorBlobsExceptOnMergeSites" classname="Blobs.Tests.EditMode.TrailMechanicTests" runstate="Runnable" seed="835252990" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.006080" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1161" name="TutorialSequencerTests" fullname="Blobs.Tests.EditMode.TutorialSequencerTests" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.038846" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1171" name="AllowedSourceFilterBlocksSelectingOtherBlobsAsSources" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.AllowedSourceFilterBlocksSelectingOtherBlobsAsSources" methodname="AllowedSourceFilterBlocksSelectingOtherBlobsAsSources" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="591708079" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.004146" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1175" name="ContinueIsIgnoredOnPlayableSteps" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.ContinueIsIgnoredOnPlayableSteps" methodname="ContinueIsIgnoredOnPlayableSteps" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="341022269" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000367" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1167" name="DeferredAdvanceIsDroppedWhenTheBoardIsRestartedFirst" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.DeferredAdvanceIsDroppedWhenTheBoardIsRestartedFirst" methodname="DeferredAdvanceIsDroppedWhenTheBoardIsRestartedFirst" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="2087170965" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.005947" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1162" name="FailedMoveGateAdvancesAndRevealsTheNextPiecesOnTheSameBoard" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.FailedMoveGateAdvancesAndRevealsTheNextPiecesOnTheSameBoard" methodname="FailedMoveGateAdvancesAndRevealsTheNextPiecesOnTheSameBoard" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="2045515695" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.001697" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1163" name="FailedMoveGateHonorsTheFailureFilter" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.FailedMoveGateHonorsTheFailureFilter" methodname="FailedMoveGateHonorsTheFailureFilter" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="240872452" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000517" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1165" name="LevelCompleteGateEndsTheSequenceOnceTheRevealedNestIsFilled" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.LevelCompleteGateEndsTheSequenceOnceTheRevealedNestIsFilled" methodname="LevelCompleteGateEndsTheSequenceOnceTheRevealedNestIsFilled" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="1913680820" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.001346" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1176" name="PlayableStepExposesTopAndBottomCaptions" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.PlayableStepExposesTopAndBottomCaptions" methodname="PlayableStepExposesTopAndBottomCaptions" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="1405203505" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000344" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1174" name="ReactionSlideKeepsTheBoardAndAdvancesOnContinue" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.ReactionSlideKeepsTheBoardAndAdvancesOnContinue" methodname="ReactionSlideKeepsTheBoardAndAdvancesOnContinue" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="622630269" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000742" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1177" name="ReactionStepAcceptsAnyCaptionSlotAndBoardMode" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.ReactionStepAcceptsAnyCaptionSlotAndBoardMode" methodname="ReactionStepAcceptsAnyCaptionSlotAndBoardMode" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="173280682" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000394" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1169" name="RestartReturnsToTheLatestStageInsteadOfTheInitialBoard" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.RestartReturnsToTheLatestStageInsteadOfTheInitialBoard" methodname="RestartReturnsToTheLatestStageInsteadOfTheInitialBoard" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="366567702" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000447" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1170" name="RevealedCellsOpenBeforeTheirBlobsJoin" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.RevealedCellsOpenBeforeTheirBlobsJoin" methodname="RevealedCellsOpenBeforeTheirBlobsJoin" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="957436741" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.001539" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1173" name="RevealOntoAnOccupiedCellIsSkipped" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.RevealOntoAnOccupiedCellIsSkipped" methodname="RevealOntoAnOccupiedCellIsSkipped" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="849542441" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000548" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1168" name="StartPublishesTheFirstStepOnceWithItsEntranceReveals" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.StartPublishesTheFirstStepOnceWithItsEntranceReveals" methodname="StartPublishesTheFirstStepOnceWithItsEntranceReveals" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="1625786424" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.001816" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1172" name="StepCanSwapABlobOutForARevealOnTheSameCell" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.StepCanSwapABlobOutForARevealOnTheSameCell" methodname="StepCanSwapABlobOutForARevealOnTheSameCell" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="127065474" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000743" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1164" name="SuccessfulMoveGateIgnoresFailedAttempts" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.SuccessfulMoveGateIgnoresFailedAttempts" methodname="SuccessfulMoveGateIgnoresFailedAttempts" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="2090807534" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.000256" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1166" name="SuccessGateWaitsForPresentationToSettleBeforeAdvancing" fullname="Blobs.Tests.EditMode.TutorialSequencerTests.SuccessGateWaitsForPresentationToSettleBeforeAdvancing" methodname="SuccessGateWaitsForPresentationToSettleBeforeAdvancing" classname="Blobs.Tests.EditMode.TutorialSequencerTests" runstate="Runnable" seed="770024748" result="Passed" start-time="2026-11-11 19:24:09Z" end-time="2026-11-11 19:24:09Z" duration="0.002089" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: /Users/caleb/Library/Application Support/DefaultCompany/blobs/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

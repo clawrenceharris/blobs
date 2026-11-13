@@ -34,7 +34,6 @@ namespace Blobs.Core
             var tileIds = new HashSet<string>(StringComparer.Ordinal);
             var blobPositions = new HashSet<GridPosition>();
             var tilePositions = new HashSet<GridPosition>();
-            var nestIds = new HashSet<string>(StringComparer.Ordinal);
 
             foreach (BlobDefinition blob in level.Blobs)
             {
@@ -62,12 +61,7 @@ namespace Blobs.Core
                     RequireEnumValue(nest.Color, "blob color");
                 }
                 RequireEnumValue(blob.Type, "blob type");
-                if (blob is NestBlobDefinition)
-                {
-                    nestIds.Add(blob.Id);
-                }
             }
-            RequireAtLeastOneSelectableSource(level.Blobs);
 
 
 
@@ -84,6 +78,8 @@ namespace Blobs.Core
 
                 RequireEnumValue(tile.Type, "tile type");
             }
+
+            RequireAtLeastOneSelectableSource(level.Blobs);
 
             if (level.Objective == null)
                 throw new InvalidOperationException("Level objective is required.");
@@ -141,8 +137,6 @@ namespace Blobs.Core
             }
             throw new InvalidOperationException("Level must have at least one selectable source blob.");
         }
-
-
         private static void RequireId(string id, string label, ISet<string> ids)
         {
             if (string.IsNullOrWhiteSpace(id))

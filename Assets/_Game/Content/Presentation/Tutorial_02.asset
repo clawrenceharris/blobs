@@ -53,7 +53,7 @@ MonoBehaviour:
     allowedSourceBlobIds: []
     showPointer: 1
     coachFrom: {x: 0, y: 1}
-    coachTo: {x: 1, y: 1}
+    coachTo: {x: 2, y: 1}
     overrideTiming: 1
     timing:
       holdBeforeTransition: 0.4
@@ -93,7 +93,7 @@ MonoBehaviour:
     - blue-0
     showPointer: 1
     coachFrom: {x: 0, y: 1}
-    coachTo: {x: 1, y: 1}
+    coachTo: {x: 2, y: 1}
     overrideTiming: 1
     timing:
       holdBeforeTransition: 0.4
@@ -101,7 +101,7 @@ MonoBehaviour:
       gapAfterFadeOut: 0.15
       entranceOrder: 1
       captionReadPause: 0.4
-      entranceGap: 0.1
+      entranceGap: 1
       removeDuration: 0.3
       revealStyle: 1
       revealDuration: 0.45
@@ -110,7 +110,7 @@ MonoBehaviour:
       revealDistance: 1.5
       captionOrder: 0
       captionFadeInDuration: 0.5
-      captionStagger: 1.5
+      captionStagger: 0.7
       pointerDelay: 0.75
       reactionDimAlpha: 0.2
       boardFadeDuration: 0.35
@@ -165,10 +165,11 @@ MonoBehaviour:
     revealBlobIds:
     - red-1
     revealCells: []
-    allowedSourceBlobIds: []
+    allowedSourceBlobIds:
+    - blue-0
     showPointer: 1
-    coachFrom: {x: 1, y: 1}
-    coachTo: {x: 1, y: 0}
+    coachFrom: {x: 2, y: 1}
+    coachTo: {x: 2, y: 0}
     overrideTiming: 1
     timing:
       holdBeforeTransition: 0.4
@@ -202,10 +203,11 @@ MonoBehaviour:
     removeBlobIds: []
     revealBlobIds:
     - nest
-    revealCells: []
+    revealCells:
+    - {x: 1, y: 0}
     allowedSourceBlobIds: []
     showPointer: 0
-    coachFrom: {x: 1, y: 0}
+    coachFrom: {x: 2, y: 0}
     coachTo: {x: 0, y: 0}
     overrideTiming: 1
     timing:
@@ -265,5 +267,5 @@ MonoBehaviour:
       reactionDimAlpha: 0.2
       boardFadeDuration: 0.4
       reactionMinDisplay: 1
-      reactionAutoAdvance: 0
+      reactionAutoAdvance: 0.4
       lockInputUntilEntranceEnds: 1

@@ -57,7 +57,7 @@ Presentation timing must never decide whether a move is valid. Core and Applicat
 
 ## Tests
 
-Production tests live in `Assets/_Game/Production/Tests`.
+Production tests live in `Assets/_Game/Tests`.
 
 Test files are named for the feature or responsibility they cover rather than
 delivery milestones. Edit Mode covers deterministic Core/Application behavior

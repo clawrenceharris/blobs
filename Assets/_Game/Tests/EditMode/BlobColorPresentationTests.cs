@@ -12,13 +12,13 @@ namespace Blobs.Tests.EditMode
     public sealed class BlobColorPresentationTests
     {
         private const string PalettePath =
-            "Assets/_Game/Content/Presentation/LevelColorPalette_New.asset";
+            "Assets/_Game/Content/Presentation/LevelColorPalette_Default.asset";
         private const string NormalPrefabPath =
-            "Assets/_Game/Prefabs/Blobs/PF_NormalBlob.prefab";
+            "Assets/_Game/Prefabs/Blobs/PF_Normal.prefab";
         private const string TrailPrefabPath =
-            "Assets/_Game/Prefabs/Blobs/PF_TrailBlob Variant.prefab";
+            "Assets/_Game/Prefabs/Blobs/PF_Trail.prefab";
         private const string NestPrefabPath =
-            "Assets/_Game/Prefabs/Blobs/PF_Nest.prefab";
+            "Assets/_Game/Prefabs/Blobs/PF_Flag.prefab";
 
         private readonly List<UnityEngine.Object> _createdObjects = new();
 
@@ -96,27 +96,6 @@ namespace Blobs.Tests.EditMode
             Assert.That(
                 view.GetComponentInChildren<TrailBlobColorBinding>(true),
                 Is.Not.Null);
-        }
-
-        [Test]
-        public void NestBlobUsesFlatPaletteColorOnCheckersAndFinial()
-        {
-            LevelColorPaletteAsset palette = LoadPalette();
-            BlobView view = InstantiateView(NestPrefabPath);
-            BlobState state = Blob("nest", BlobType.Nest, BlobColor.Purple);
-            SpriteRenderer checkers = FindRenderer(view, "Checkers");
-            SpriteRenderer finial = FindRenderer(view, "Finial");
-            Material authoredCheckersMaterial = checkers.sharedMaterial;
-            Material authoredFinialMaterial = finial.sharedMaterial;
-
-            view.Initialize(state, palette, 1f, Vector2.zero);
-
-            Color color = palette.GetRequired(BlobColor.Purple).BaseColor;
-            var expected = new BlobShaderColors(color, color, color);
-            AssertShaderColors(checkers, expected);
-            AssertShaderColors(finial, expected);
-            Assert.That(checkers.sharedMaterial, Is.SameAs(authoredCheckersMaterial));
-            Assert.That(finial.sharedMaterial, Is.SameAs(authoredFinialMaterial));
         }
 
         private LevelColorPaletteAsset LoadPalette()

@@ -67,12 +67,12 @@ Touch / mouse / keyboard
 ## Source layout
 
 ```text
-Assets/_Game/Production/
+Assets/_Game/
   Art/
   Audio/
   Content/
     Levels/
-    ColorSchemes/
+    Presentation/
   Prefabs/
   Scenes/
   Scripts/

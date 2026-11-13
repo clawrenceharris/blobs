@@ -1,6 +1,6 @@
 # Agreed rules — implementation and acceptance checklist
 
-September 9, 2026. Authority: [game design](GAME_DESIGN.md), [resolution rules](RULE_RESOLUTION.md), [Undo and Restart](UNDO_AND_RESTART.md), and [level authoring](LEVEL_AUTHORING.md). This is a pending implementation plan, not a test-run report. No runtime changes are made by the documentation pass. Paths below are under `Assets/_Game/Production/`.
+September 9, 2026. Authority: [game design](GAME_DESIGN.md), [resolution rules](RULE_RESOLUTION.md), [Undo and Restart](UNDO_AND_RESTART.md), and [level authoring](LEVEL_AUTHORING.md). This is a pending implementation plan, not a test-run report. No runtime changes are made by the documentation pass. Paths below are under `Assets/_Game/`.
 
 ## Current gaps and implementation order
 

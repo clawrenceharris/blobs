@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Blobs.Content::Blobs.Content.LevelDefinitionAsset
   levelId: level-tutorial-01
   schemaVersion: 1
-  width: 2
+  width: 3
   height: 2
   emptyPositions:
   - {x: 0, y: 0}
+  - {x: 2, y: 0}
   - {x: 1, y: 0}
   blobs:
   - rid: 7368861676701745345
@@ -40,7 +41,7 @@ MonoBehaviour:
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
         id: blue-1
-        position: {x: 1, y: 1}
+        position: {x: 2, y: 1}
         type: 0
         facing: 2
         color: 1
@@ -57,7 +58,7 @@ MonoBehaviour:
       type: {class: NormalBlobAssetData, ns: Blobs.Content, asm: Blobs.Content}
       data:
         id: red-1
-        position: {x: 1, y: 0}
+        position: {x: 2, y: 0}
         type: 0
         facing: 2
         color: 0

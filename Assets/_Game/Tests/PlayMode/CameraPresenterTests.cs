@@ -29,6 +29,7 @@ namespace Blobs.Tests.PlayMode
             camera.transform.position = new Vector3(0f, 0f, -10f);
             CameraPresenter presenter = camera.gameObject.AddComponent<CameraPresenter>();
             SetPrivateField(presenter, "padding", 0.5f);
+            SetPrivateField(presenter, "respectSafeArea", false);
             SetPrivateField(presenter, "topHud", CreateTopHud());
 
             presenter.FitCameraToBoard(5, 7, 1f);
@@ -51,6 +52,7 @@ namespace Blobs.Tests.PlayMode
             camera.orthographic = true;
             camera.aspect = 1f;
             CameraPresenter presenter = camera.gameObject.AddComponent<CameraPresenter>();
+            SetPrivateField(presenter, "respectSafeArea", false);
             RectTransform hud = CreateTopHud();
             SetPrivateField(presenter, "topHud", hud);
             presenter.FitCameraToBoard(5, 7, 1f);
@@ -59,18 +61,45 @@ namespace Blobs.Tests.PlayMode
             yield return null;
             yield return null;
 
-            Assert.That(camera.orthographicSize, Is.EqualTo(3f).Within(0.001f));
+            Assert.That(camera.orthographicSize, Is.EqualTo(3.5f).Within(0.001f));
             Assert.That(camera.transform.position.y, Is.EqualTo(3f).Within(0.001f));
+        }
+
+        [Test]
+        public void BoardFitsBetweenTopAndBottomHud()
+        {
+            Camera camera = CreateGameObject("Two-Sided HUD Framing Camera").AddComponent<Camera>();
+            camera.orthographic = true;
+            camera.aspect = 1f;
+            CameraPresenter presenter = camera.gameObject.AddComponent<CameraPresenter>();
+            SetPrivateField(presenter, "padding", 0.5f);
+            SetPrivateField(presenter, "respectSafeArea", false);
+            SetPrivateField(presenter, "topHud", CreateHud("Top HUD", 0.75f, 1f));
+            SetPrivateField(presenter, "bottomHud", CreateHud("Bottom HUD", 0f, 0.2f));
+
+            presenter.FitCameraToBoard(5, 7, 1f);
+
+            Vector3 lowerLeft = camera.WorldToViewportPoint(new Vector3(-0.5f, -0.5f));
+            Vector3 upperRight = camera.WorldToViewportPoint(new Vector3(4.5f, 6.5f));
+            Vector3 center = camera.WorldToViewportPoint(new Vector3(2f, 3f));
+            Assert.That(lowerLeft.y, Is.EqualTo(0.2f).Within(0.001f));
+            Assert.That(upperRight.y, Is.EqualTo(0.75f).Within(0.001f));
+            Assert.That(center.y, Is.EqualTo(0.475f).Within(0.001f));
         }
 
         private RectTransform CreateTopHud()
         {
+            return CreateHud("Top HUD", 0.75f, 1f);
+        }
+
+        private RectTransform CreateHud(string name, float minimumY, float maximumY)
+        {
             Canvas canvas = CreateGameObject("HUD Canvas").AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            RectTransform hud = CreateGameObject("Top HUD").AddComponent<RectTransform>();
+            RectTransform hud = CreateGameObject(name).AddComponent<RectTransform>();
             hud.SetParent(canvas.transform, false);
-            hud.anchorMin = new Vector2(0f, 0.75f);
-            hud.anchorMax = Vector2.one;
+            hud.anchorMin = new Vector2(0f, minimumY);
+            hud.anchorMax = new Vector2(1f, maximumY);
             hud.offsetMin = Vector2.zero;
             hud.offsetMax = Vector2.zero;
             return hud;
@@ -86,6 +115,7 @@ namespace Blobs.Tests.PlayMode
             camera.aspect = 0.5f;
             CameraPresenter presenter = cameraObject.AddComponent<CameraPresenter>();
             SetPrivateField(presenter, "padding", 0.5f);
+            SetPrivateField(presenter, "respectSafeArea", false);
 
             presenter.FitCameraToBoard(width: 5, height: 3, cellSize: 1.25f);
             yield return null;
@@ -93,7 +123,7 @@ namespace Blobs.Tests.PlayMode
             Assert.That(cameraObject.transform.position.x, Is.EqualTo(2.5f).Within(0.001f));
             Assert.That(cameraObject.transform.position.y, Is.EqualTo(1.25f).Within(0.001f));
             Assert.That(cameraObject.transform.position.z, Is.EqualTo(-10f).Within(0.001f));
-            Assert.That(camera.orthographicSize, Is.EqualTo(6f).Within(0.001f));
+            Assert.That(camera.orthographicSize, Is.EqualTo(6.25f).Within(0.001f));
         }
     }
 }

@@ -64,7 +64,8 @@ namespace Blobs.UI
                 dimmer.SetActive(true);
             drawerRoot.gameObject.SetActive(true);
             _isOpen = true;
-            BeginAnim(ClosedX(), 0f);
+            // Start from the current position so reopening mid-close does not snap off-screen.
+            BeginAnim(drawerRoot.anchoredPosition.x, 0f);
         }
 
         public void Close()

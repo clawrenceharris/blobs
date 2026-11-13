@@ -81,10 +81,18 @@ namespace Blobs.Presentation
 
         private void Start()
         {
+            MigrateLegacyTutorial();
+
+            // Levels screen (and similar entry points) request a concrete index via PlayerFlowState.
+            // Skip the tutorial sequence when arriving that way so the chosen level opens directly.
+            if (PlayerFlowState.TryConsumePendingLevelIndex(out int pendingLevelIndex))
+            {
+                LoadLevel(pendingLevelIndex);
+                return;
+            }
 
             CurrentLevelIndex = ClampLevelIndex(initialLevelIndex);
 
-            MigrateLegacyTutorial();
             int firstTutorial = NextTutorialIndex(-1);
             if (firstTutorial >= 0)
             {

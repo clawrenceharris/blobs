@@ -12,6 +12,10 @@ namespace Blobs.UI
         public const string LevelsScene = "Levels";
         public const string GameScene = "Game";
 
+        // Statics survive Play mode when domain reload is disabled; drop any stale level request.
+        [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetPendingLevel() => PlayerFlowState.Clear();
+
         public static void GoHome()
         {
             PlayerFlowState.Clear();

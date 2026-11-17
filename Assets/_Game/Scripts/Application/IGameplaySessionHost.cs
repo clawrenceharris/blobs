@@ -20,8 +20,6 @@ namespace Blobs.Application
         /// </summary>
         bool IsTutorial { get; }
 
-
-        LevelDefinition CurrentLevel { get; }
         /// <summary>
         /// Raised whenever a new session is started and ready for input, presentation, and UI binding.
         /// </summary>

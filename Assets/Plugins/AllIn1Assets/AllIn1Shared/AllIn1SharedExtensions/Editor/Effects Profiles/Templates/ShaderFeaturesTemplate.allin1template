@@ -1,0 +1,6 @@
+#ifndef <PluginName>_SHADERFEATURES_<EffectsProfileID>
+#define <PluginName>_SHADERFEATURES_<EffectsProfileID>
+
+<Content>
+
+#endif //<PluginName>_SHADERFEATURES_<EffectsProfileID>

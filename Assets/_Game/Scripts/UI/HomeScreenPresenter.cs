@@ -28,7 +28,7 @@ namespace Blobs.UI
                 settingsButton.onClick.RemoveListener(OnSettings);
         }
 
-        private void OnPlay() => PlayerFlow.GoLevels();
+        private void OnPlay() => PlayerFlow.GoWorlds();
 
         private void OnSettings()
         {

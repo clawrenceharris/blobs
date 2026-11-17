@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b49f2d192cb249159692889a3886f5e6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 156513
+  packageName: All In 1 Sprite Shader
+  packageVersion: 4.71
+  assetPath: Assets/Plugins/AllIn1Assets/AllIn1Shared/Demo/Meshes/Prefabs/SphereVertexColor.prefab
+  uploadId: 1045396

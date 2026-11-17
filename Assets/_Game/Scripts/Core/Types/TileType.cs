@@ -2,6 +2,7 @@ namespace Blobs.Core
 {
     public enum TileType
     {
+        None,
         Grave
 
     }

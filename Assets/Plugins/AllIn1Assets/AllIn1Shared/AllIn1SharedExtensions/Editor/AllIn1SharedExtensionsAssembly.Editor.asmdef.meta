@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e21b290f41bd7574da054fd31a3f2f27
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 156513
+  packageName: All In 1 Sprite Shader
+  packageVersion: 4.71
+  assetPath: Assets/Plugins/AllIn1Assets/AllIn1Shared/AllIn1SharedExtensions/Editor/AllIn1SharedExtensionsAssembly.Editor.asmdef
+  uploadId: 1045396

@@ -1,0 +1,18 @@
+{
+    "name": "AllIn1SpriteShaderDemoAssembly",
+    "rootNamespace": "",
+    "references": [
+        "GUID:91de482a0a233614ab5962ea5f6c24ee",
+        "GUID:742172b1482a6584a8d6c884aed4e370",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

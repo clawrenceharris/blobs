@@ -1,0 +1,24 @@
+{
+    "name": "AllIn1SpriteShaderAssembly.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0fb3b4c444307044a828a0e72684a95b",
+        "GUID:43aa657eab2d48b4690931e3ba32b99b",
+        "GUID:91de482a0a233614ab5962ea5f6c24ee",
+        "GUID:e21b290f41bd7574da054fd31a3f2f27",
+        "GUID:c579267770062bf448e75eb160330b7f",
+        "GUID:15fc0a57446b3144c949da3e2b9737a9",
+        "GUID:7ab3663edede26740845931880bf22af"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

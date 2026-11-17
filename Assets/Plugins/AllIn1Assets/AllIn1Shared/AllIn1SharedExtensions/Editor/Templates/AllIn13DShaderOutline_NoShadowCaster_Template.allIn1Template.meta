@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 315005e969b59c145aa79afe9f17463d
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 156513
+  packageName: All In 1 Sprite Shader
+  packageVersion: 4.71
+  assetPath: Assets/Plugins/AllIn1Assets/AllIn1Shared/AllIn1SharedExtensions/Editor/Templates/AllIn13DShaderOutline_NoShadowCaster_Template.allIn1Template
+  uploadId: 1045396

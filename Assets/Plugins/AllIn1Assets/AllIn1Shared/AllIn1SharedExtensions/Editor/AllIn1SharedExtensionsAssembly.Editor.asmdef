@@ -1,0 +1,22 @@
+{
+    "name": "AllIn1SharedExtensionsAssembly.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:9158091283946da4c92e60441d42951c",
+        "GUID:0fb3b4c444307044a828a0e72684a95b",
+        "GUID:742172b1482a6584a8d6c884aed4e370",
+        "GUID:c579267770062bf448e75eb160330b7f",
+        "GUID:15fc0a57446b3144c949da3e2b9737a9"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

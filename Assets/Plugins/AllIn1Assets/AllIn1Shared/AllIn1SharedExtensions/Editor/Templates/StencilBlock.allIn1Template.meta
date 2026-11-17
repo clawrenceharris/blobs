@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1dba804a99464db49a9b72047ec504d6
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 156513
+  packageName: All In 1 Sprite Shader
+  packageVersion: 4.71
+  assetPath: Assets/Plugins/AllIn1Assets/AllIn1Shared/AllIn1SharedExtensions/Editor/Templates/StencilBlock.allIn1Template
+  uploadId: 1045396

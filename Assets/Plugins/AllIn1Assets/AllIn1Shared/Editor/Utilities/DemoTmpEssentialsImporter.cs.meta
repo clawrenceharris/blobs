@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 36762f3c83924026a757afac8e225568
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 156513
+  packageName: All In 1 Sprite Shader
+  packageVersion: 4.71
+  assetPath: Assets/Plugins/AllIn1Assets/AllIn1Shared/Editor/Utilities/DemoTmpEssentialsImporter.cs
+  uploadId: 1045396

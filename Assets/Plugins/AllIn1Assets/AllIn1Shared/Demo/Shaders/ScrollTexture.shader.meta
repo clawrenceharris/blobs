@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: e6ca95b6b32ec27428cdfe7be82a5bd6
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 156513
+  packageName: All In 1 Sprite Shader
+  packageVersion: 4.71
+  assetPath: Assets/Plugins/AllIn1Assets/AllIn1Shared/Demo/Shaders/ScrollTexture.shader
+  uploadId: 1045396

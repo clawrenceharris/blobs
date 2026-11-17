@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: be1e5962448d6af47997f4beb8693b57
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 156513
+  packageName: All In 1 Sprite Shader
+  packageVersion: 4.71
+  assetPath: Assets/Plugins/AllIn1Assets/AllIn1Shared/Demo/Scripts/MaterialPrewarmer.cs
+  uploadId: 1045396

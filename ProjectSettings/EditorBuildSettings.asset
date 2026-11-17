@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Game/Scenes/Game.unity
     guid: a79cdcb1e8c474cb282c0287d60301b5
+  - enabled: 1
+    path: Assets/_Game/Scenes/Worlds.unity
+    guid: 94ae6287013dd447a9d210af8ed21625
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
   m_UseUCBPForAssetBundles: 0

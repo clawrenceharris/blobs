@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63a4e31508e0d4e5ba0d30d233d9c3a2, type: 3}
+  m_Name: World_01
+  m_EditorClassIdentifier: Blobs.Content::Blobs.Content.WorldDefinitionAsset
+  worldId: 1
+  worldTitle: A Brave New World
+  worldDescription: Every adventure starts somewhere.
+  schemaVersion: 1
+  blobType: 0
+  tileType: 0
+  mechanicType: 1
+  levels:
+  - {fileID: 11400000, guid: 21c30974c6f94806ae44070df7d79c42, type: 2}
+  - {fileID: 11400000, guid: 9261308e56ec34a7aa9c2bc6b23057d5, type: 2}
+  - {fileID: 11400000, guid: f82ce4126287b4e99a84c26002b0ef75, type: 2}
+  levelSlotCount: 10
+  palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
+  mechanicPreviewPrefab: {fileID: 5575016317122839086, guid: 5b6a031b4fdc640bbb38cf38600a946f, type: 3}
+  mechanicPreviewLockedPrefab: {fileID: 5575016317122839086, guid: a87dbf283eb0b4c6f8ba484a67891eb4, type: 3}
+  unlocked: 1

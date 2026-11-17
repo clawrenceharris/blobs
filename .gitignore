@@ -20,7 +20,9 @@
 /[Uu]ser[Ss]ettings/
 *.log
 
+# AllIn1 Sprite Shader Plugin
 /[Aa]ssets/Plugins/AllIn1SpriteShader*
+/[Aa]ssets/Plugins/AllIn1Assets*
 
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be committed to version control.
 *.blend1
@@ -180,3 +182,4 @@ InitTestScene*.unity*
 /[Bb]urst[Dd]ebug[Ii]nformation/output/
 
 output/
+

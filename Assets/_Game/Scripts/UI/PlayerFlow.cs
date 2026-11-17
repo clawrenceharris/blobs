@@ -11,6 +11,7 @@ namespace Blobs.UI
         public const string HomeScene = "Home";
         public const string LevelsScene = "Levels";
         public const string GameScene = "Game";
+        public const string WorldsScene = "Worlds";
 
         // Statics survive Play mode when domain reload is disabled; drop any stale level request.
         [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -20,6 +21,11 @@ namespace Blobs.UI
         {
             PlayerFlowState.Clear();
             SceneManager.LoadScene(HomeScene);
+        }
+        public static void GoWorlds()
+        {
+            PlayerFlowState.Clear();
+            SceneManager.LoadScene(WorldsScene);
         }
 
         public static void GoLevels()

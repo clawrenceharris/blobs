@@ -13,7 +13,7 @@ namespace Blobs.UI
         [SerializeField] private RectTransform content;
         [SerializeField, Min(1f)] private float itemSpacing = 430f;
         [SerializeField, Min(0f)] private float snapSpeed = 12f;
-        [SerializeField, Range(0.1f, 1f)] private float sideScale = 0.68f;
+        [SerializeField, Range(0.1f, 1f)] private float sideScale = 0.62f;
 
         private readonly List<RectTransform> _items = new();
         private Action<int> _selectionChanged;
@@ -22,6 +22,8 @@ namespace Blobs.UI
         private bool _dragging;
 
         public int SelectedIndex => _selectedIndex;
+        public float ItemSpacing => itemSpacing;
+        public float SideScale => sideScale;
 
         public void Configure(
             RectTransform carouselContent,
@@ -33,8 +35,13 @@ namespace Blobs.UI
             _items.Clear();
             for (int i = 0; i < items.Count; i++)
             {
-                _items.Add(items[i]);
-                items[i].anchoredPosition = new Vector2(i * itemSpacing, 0f);
+                RectTransform item = items[i];
+                _items.Add(item);
+                item.anchorMin = new Vector2(0f, 0.5f);
+                item.anchorMax = new Vector2(0f, 0.5f);
+                item.pivot = new Vector2(0.5f, 0.5f);
+                item.anchoredPosition = new Vector2(i * itemSpacing, 0f);
+                item.localScale = Vector3.one;
             }
 
             _selectionChanged = selectionChanged;

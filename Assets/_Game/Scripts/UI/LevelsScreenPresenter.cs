@@ -21,10 +21,11 @@ namespace Blobs.UI
 
         [SerializeField] private TMP_Text worldDescription;
         [SerializeField] private TMP_Text pageLabel;
+        [SerializeField] private Image lockImage;
 
         [Header("Level page")]
         [SerializeField] private Transform levelListRoot;
-        [SerializeField] private Button levelButtonTemplate;
+        [SerializeField] private UiButtonView levelButtonTemplate;
         [SerializeField] private WorldSwipePager levelSwipePager;
 
         private void Awake()
@@ -88,20 +89,23 @@ namespace Blobs.UI
             for (int i = 0; i < world.LevelSlotCount; i++)
             {
                 int levelIndex = i;
-                Button button = Instantiate(levelButtonTemplate, levelListRoot);
-                button.gameObject.SetActive(true);
-                button.name = $"LevelButton_{levelIndex + 1}";
+                UiButtonView buttonView = Instantiate(levelButtonTemplate, levelListRoot);
+                buttonView.gameObject.SetActive(true);
+                buttonView.name = $"LevelButton_{levelIndex + 1}";
 
-                TMP_Text label = button.GetComponentInChildren<TMP_Text>(true);
                 bool available = world.Unlocked && levelIndex < world.Levels.Count;
-                if (label != null)
-                    label.text = available ? $"{levelIndex + 1}" : "LOCKED";
+                buttonView.SetLabelText(available ? $"{levelIndex + 1}" : "");
+                if (buttonView.ButtonIcon != null)
+                {
+                    buttonView.ButtonIcon.gameObject.SetActive(available);
+                }
 
-                button.interactable = available;
+
+                buttonView.SetEnabled(available);
                 if (available)
                 {
                     int gameLevelIndex = firstLevelIndex + levelIndex;
-                    button.onClick.AddListener(() => PlayerFlow.GoGame(gameLevelIndex));
+                    buttonView.Button.onClick.AddListener(() => PlayerFlow.GoGame(gameLevelIndex));
                 }
             }
         }

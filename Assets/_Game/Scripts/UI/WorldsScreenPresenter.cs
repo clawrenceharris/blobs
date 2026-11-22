@@ -13,15 +13,18 @@ namespace Blobs.UI
     {
         [SerializeField] private Button backButton;
         [SerializeField] private List<WorldDefinitionAsset> worlds = new();
+        [SerializeField] private UiThemeAsset theme;
 
         [Header("World carousel")]
         [SerializeField] private WorldCarousel worldCarousel;
         [SerializeField] private RectTransform worldCarouselContent;
         [SerializeField] private WorldCarouselCardView worldCardTemplate;
-        [SerializeField] private TMP_Text pageLabel;
+        [SerializeField] private TMP_Text progressLabel;
+        [SerializeField] private RectTransform progressBar;
         [SerializeField] private TMP_Text worldTitle;
+        [SerializeField] private TMP_Text worldNumber;
 
-        [SerializeField] private PlayButtonView enterButton;
+        [SerializeField] private UiButtonView enterButton;
 
         private void Awake()
         {
@@ -30,7 +33,6 @@ namespace Blobs.UI
             if (enterButton != null)
             {
                 enterButton.Button.onClick.AddListener(PlayerFlow.GoLevels);
-
             }
 
             BuildWorldCards();
@@ -57,6 +59,7 @@ namespace Blobs.UI
             {
                 WorldDefinitionAsset world = worlds[i];
                 WorldCarouselCardView card = Instantiate(worldCardTemplate, worldCarouselContent);
+                card.SetTheme(theme);
                 card.gameObject.SetActive(true);
                 card.name = $"WorldCard_{i + 1:00}";
                 card.SetContent(
@@ -66,7 +69,12 @@ namespace Blobs.UI
                 cards.Add(card.RectTransform);
             }
 
-            worldCarousel.Configure(worldCarouselContent, cards, 0, ShowWorld);
+            worldCarousel.Configure(worldCarouselContent, cards, 0, OnWorldSelected);
+        }
+
+        private void OnWorldSelected(int worldIndex)
+        {
+            ShowWorld(worldIndex);
         }
 
         private void ShowWorld(int worldIndex)
@@ -75,15 +83,24 @@ namespace Blobs.UI
                 return;
 
             WorldDefinitionAsset world = worlds[worldIndex];
-            if (pageLabel != null)
-                pageLabel.text = "WORLD " + (worldIndex + 1);
+            if (progressLabel != null && world.Unlocked)
+            {
+                int levelsCompleted = PlayerPrefs.GetInt("LevelsCompleted", 0);
+                progressLabel.text = levelsCompleted + " / " + world.Levels.Count;
+            }
+            if (progressBar != null)
+            {
+                progressBar.gameObject.SetActive(world.Unlocked);
+            }
             if (worldTitle != null)
                 worldTitle.text = world.Unlocked ? world.WorldTitle : "???";
             if (enterButton != null)
             {
                 enterButton.SetEnabled(world.Unlocked);
-                enterButton.SetLabel(world.Unlocked ? "Enter World" : "Locked");
+                enterButton.SetLabelText(world.Unlocked ? "Enter World" : "Locked");
             }
+            if (worldNumber != null)
+                worldNumber.text = "WORLD " + (worldIndex + 1).ToString();
 
         }
     }

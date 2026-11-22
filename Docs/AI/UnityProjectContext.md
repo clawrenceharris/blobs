@@ -1,5 +1,9 @@
 # Unity Project Context
 
+## November 18, 2026 UI update
+
+The Worlds screen uses `WorldsScreenPresenter` and `WorldCarousel` in the `Blobs.UI` assembly. Chrome styling is centralized in `UiThemeAsset`; gameplay blob and board colors remain in `LevelColorPaletteAsset` and `LevelVisualThemeAsset`. Unity 6000.3.6f1 is open on `Assets/_Game/Scenes/Worlds.unity`. Unity AI Assistant 2.21.0-pre.2 and its relay are installed, but this Codex session exposes no callable Unity MCP tools, so Editor-safe menu tooling and PlayMode tests are the available live integration path.
+
 ## September 9, 2026 rules decision
 
 [Game design](../GAME_DESIGN.md) summarizes the agreed player-facing rules; [resolution rules](../RULE_RESOLUTION.md), [Undo and Restart](../UNDO_AND_RESTART.md), and [level authoring](../LEVEL_AUTHORING.md) hold detailed contracts. [Implementation checklist](../RULES_IMPLEMENTATION_PLAN.md) tracks pending code and acceptance work. Undo is required and leaves move count unchanged; the current intent history/count coupling must change. Flags accept matching Normal sources only, require explicit successful capture when targeted, and level validation requires exactly one Flag. Reached-path atomicity, stopping Rocks, and Ghost starting-Grave clearing are explicit. This update documents decisions; it does not certify runtime implementation or test results.

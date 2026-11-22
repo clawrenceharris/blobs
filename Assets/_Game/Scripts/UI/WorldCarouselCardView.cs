@@ -8,27 +8,26 @@ namespace Blobs.UI
     public sealed class WorldCarouselCardView : MonoBehaviour
     {
         [SerializeField] private RectTransform mechanicRoot;
-        [SerializeField] private TMP_Text worldTitleLabel;
         [SerializeField] private Image lockIcon;
-        [SerializeField] private Image cardBackground;
+        [SerializeField] private UiThemeAsset theme;
 
         public RectTransform RectTransform => (RectTransform)transform;
+        public UiThemeAsset Theme => theme;
+
+        public void SetTheme(UiThemeAsset value)
+        {
+            theme = value;
+        }
 
         public void SetContent(int worldNumber, GameObject mechanicPrefab, bool unlocked)
         {
-            if (worldTitleLabel != null)
-                worldTitleLabel.SetText(worldNumber.ToString(), worldNumber);
-
-            if (cardBackground != null)
-            {
-                cardBackground.enabled = !unlocked;
-            }
-
             BuildMechanicPreview(mechanicPrefab, unlocked);
 
             if (lockIcon != null)
             {
                 lockIcon.gameObject.SetActive(!unlocked);
+                if (!unlocked && theme != null)
+                    lockIcon.color = theme.OnPrimaryText;
             }
         }
 
@@ -72,12 +71,31 @@ namespace Blobs.UI
             if (!hasBounds || totalSize.x <= 0f || totalSize.y <= 0f)
                 return;
 
+            float contentMinimumY = maximum.y;
+            foreach (SpriteRenderer renderer in renderers)
+            {
+                if (renderer.sprite == null || !renderer.enabled || IsShadow(renderer))
+                    continue;
+
+                GetRendererBounds(renderer, out Vector2 rendererMin, out _);
+                contentMinimumY = Mathf.Min(contentMinimumY, rendererMin.y);
+            }
+
             foreach (SpriteRenderer renderer in renderers)
             {
                 if (renderer.sprite == null || !renderer.enabled)
                     continue;
 
+                bool isShadow = IsShadow(renderer);
                 GetRendererBounds(renderer, out Vector2 rendererMin, out Vector2 rendererMax);
+                if (isShadow)
+                {
+                    float desiredShadowTop = contentMinimumY - totalSize.y * 0.02f;
+                    float verticalOffset = desiredShadowTop - rendererMax.y;
+                    rendererMin.y += verticalOffset;
+                    rendererMax.y += verticalOffset;
+                }
+
                 var visual = new GameObject(renderer.gameObject.name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
                 RectTransform rect = visual.GetComponent<RectTransform>();
                 rect.SetParent(mechanicRoot, false);
@@ -95,7 +113,16 @@ namespace Blobs.UI
                 image.sprite = renderer.sprite;
                 image.preserveAspect = true;
                 image.raycastTarget = false;
+                if (!unlocked && theme != null)
+                    image.color = isShadow ? theme.LockedShadow : theme.LockedContent;
             }
+        }
+
+        private static bool IsShadow(SpriteRenderer renderer)
+        {
+            return renderer.gameObject.name.IndexOf(
+                "shadow",
+                StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private static void GetRendererBounds(

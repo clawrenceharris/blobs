@@ -226,12 +226,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 773924423177606914}
-  - component: {fileID: 2890785500506184007}
-  - component: {fileID: 6458006142201185896}
-  - component: {fileID: 1650203626477232014}
   - component: {fileID: 2419277654152970345}
-  - component: {fileID: 6982452964593163978}
-  - component: {fileID: 4241483556889886932}
   m_Layer: 3
   m_Name: PF_UI_Preview_Blob_Normal_Unlocked
   m_TagString: Untagged
@@ -255,53 +250,6 @@ Transform:
   - {fileID: 2999547187601026032}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2890785500506184007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5575016317122839086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fed9378ee5da64bd0aa34d32f9dd14de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BlobView
-  _visualRoot: {fileID: 2999547187601026032}
-  _sortingGroup: {fileID: 2419277654152970345}
---- !u!114 &6458006142201185896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5575016317122839086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12715ad903b44492b9ef46534b9cb391, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BlobRenderer
-  fallbackBaseRenderer: {fileID: 0}
-  targets:
-  - ColorBinding: 1
-    Renderers:
-    - {fileID: 6973145811438369426}
-  shadowRenderer: {fileID: 0}
-  fadeableVisual: {fileID: 0}
-  maskableVisual: {fileID: 4241483556889886932}
---- !u!114 &1650203626477232014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5575016317122839086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b9b9a1554fe94bab985d4d4b3d0c867, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.BlobMotionAnimator
-  _blobAnimationSettings: {fileID: 11400000, guid: 8b153b34bf26a437b8b90f17a3cfdc4d, type: 2}
 --- !u!210 &2419277654152970345
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -310,46 +258,11 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5575016317122839086}
   m_Enabled: 1
-  m_SortingLayerID: 730663389
-  m_SortingLayer: 5
+  m_SortingLayerID: -316043213
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
---- !u!114 &6982452964593163978
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5575016317122839086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1db6a4c1fc4b488ca2c847b0c399248d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.NestBlobView
-  nest: {fileID: 0}
-  eggs: {fileID: 2321634281874894388}
-  occupantMount: {fileID: 2999547187601026032}
-  occupantScale: {x: 0.7, y: 0.7, z: 1}
-  occupantMaskInteraction: 2
-  riseDuration: 0.5
-  hiddenLocalOffset: {x: 0, y: 0, z: 0}
-  settledLocalOffset: {x: 0, y: 0.18, z: 0}
-  occupantSortingOrderOffset: 2
---- !u!114 &4241483556889886932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5575016317122839086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce3bc92bc27a48febf12a95060da9c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Blobs.Presentation::Blobs.Presentation.MaskableVisual
-  renderers:
-  - {fileID: 6973145811438369426}
 --- !u!1 &6524343536701241517
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,8 +12,10 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - HITEFFECT_ON
-  m_InvalidKeywords: []
+  - GREYSCALEOUTLINE_ON
+  - GREYSCALE_ON
+  m_InvalidKeywords:
+  - _GREYSCALEOUTLINE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -134,8 +136,8 @@ Material:
     - _GrassSpeed: 2
     - _GrassWind: 20
     - _GreyscaleBlend: 1
-    - _GreyscaleLuminosity: 0
-    - _GreyscaleOutline: 0
+    - _GreyscaleLuminosity: 1
+    - _GreyscaleOutline: 1
     - _HandDrawnAmount: 10
     - _HandDrawnSpeed: 5
     - _HitEffectBlend: 1
@@ -236,8 +238,8 @@ Material:
     - _GradBotRightCol: {r: 0, g: 1, b: 0, a: 1}
     - _GradTopLeftCol: {r: 1, g: 0, b: 0, a: 1}
     - _GradTopRightCol: {r: 1, g: 1, b: 0, a: 1}
-    - _GreyscaleTintColor: {r: 1, g: 1, b: 1, a: 1}
-    - _HitEffectColor: {r: 0.73700607, g: 0.7927984, b: 0.9245283, a: 1}
+    - _GreyscaleTintColor: {r: 0.80678177, g: 0.83201313, b: 0.9245283, a: 1}
+    - _HitEffectColor: {r: 0.68529725, g: 0.71427554, b: 0.8301887, a: 1}
     - _HologramStripeColor: {r: 0, g: 1, b: 1, a: 1}
     - _InnerOutlineColor: {r: 1, g: 0, b: 0, a: 1}
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}

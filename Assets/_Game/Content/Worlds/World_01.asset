@@ -26,5 +26,5 @@ MonoBehaviour:
   levelSlotCount: 10
   palette: {fileID: 11400000, guid: 62878387e75884b2290302bf25ff741a, type: 2}
   mechanicPreviewPrefab: {fileID: 5575016317122839086, guid: 5b6a031b4fdc640bbb38cf38600a946f, type: 3}
-  mechanicPreviewLockedPrefab: {fileID: 5575016317122839086, guid: a87dbf283eb0b4c6f8ba484a67891eb4, type: 3}
+  mechanicPreviewLockedPrefab: {fileID: 8340918419817704256, guid: 853645ce2435349e48006189cf605ab1, type: 3}
   unlocked: 1

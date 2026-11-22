@@ -37,7 +37,7 @@ namespace Blobs.Tests.PlayMode
             hud.SetActive(false);
             var presenter = hud.AddComponent<GameplayHudPresenter>();
             var moveText = CreateGameObject("Move Text").AddComponent<TextMeshProUGUI>();
-            HudButtonView restartButton = CreateHudButton("Restart Button");
+            UiButtonView restartButton = CreateHudButton("Restart Button");
             var completionRoot = CreateGameObject("Completion Root");
             var commands = new FakeCommands();
             var state = new FakeState();
@@ -134,7 +134,7 @@ namespace Blobs.Tests.PlayMode
             GameObject hud = CreateGameObject("Undo HUD");
             hud.SetActive(false);
             var presenter = hud.AddComponent<GameplayHudPresenter>();
-            HudButtonView undoButton = CreateHudButton("Undo Button");
+            UiButtonView undoButton = CreateHudButton("Undo Button");
             var state = new FakeState();
             var host = new FakePresentationSessionHost(new FakeCommands(), state);
 
@@ -159,13 +159,13 @@ namespace Blobs.Tests.PlayMode
             return gameObject;
         }
 
-        private HudButtonView CreateHudButton(string name)
+        private UiButtonView CreateHudButton(string name)
         {
             GameObject buttonObject = CreateGameObject(name);
             buttonObject.AddComponent<Button>();
             var icon = buttonObject.AddComponent<Image>();
-            var view = buttonObject.AddComponent<HudButtonView>();
-            SetPrivateField(view, "icon", icon);
+            var view = buttonObject.AddComponent<UiButtonView>();
+            SetPrivateField(view, "buttonIcon", icon);
             return view;
         }
 

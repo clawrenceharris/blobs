@@ -13,11 +13,11 @@ namespace Blobs.UI
         [SerializeField] private MonoBehaviour sessionHostBehaviour;
         [SerializeField] private TMP_Text moveCountText;
         [SerializeField] private TMP_Text statusText;
-        [SerializeField] private HudButtonView restartButton;
-        [SerializeField] private HudButtonView undoButton;
-        [SerializeField] private HudButtonView exitButton;
-        [SerializeField] private HudButtonView nextLevelButton;
-        [SerializeField] private HudButtonView previousLevelButton;
+        [SerializeField] private UiButtonView restartButton;
+        [SerializeField] private UiButtonView undoButton;
+        [SerializeField] private UiButtonView exitButton;
+        [SerializeField] private UiButtonView nextLevelButton;
+        [SerializeField] private UiButtonView previousLevelButton;
         [SerializeField] private GameObject completionRoot;
         [SerializeField] private GameObject topHudRoot;
         [SerializeField] private GameObject bottomHudRoot;
@@ -203,20 +203,20 @@ namespace Blobs.UI
 
             if (snapshot == null || isComplete || !snapshot.CanUndo)
             {
-                undoButton?.Disable();
+                undoButton?.SetEnabled(false);
 
             }
             else
             {
-                undoButton?.Enable();
+                undoButton?.SetEnabled(true);
             }
             if (_sessionHost.CurrentLevelIndex == 0)
             {
-                previousLevelButton?.Disable();
+                previousLevelButton?.SetEnabled(false);
             }
             else
             {
-                previousLevelButton?.Enable();
+                previousLevelButton?.SetEnabled(true);
             }
 
         }

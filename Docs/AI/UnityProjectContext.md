@@ -1,5 +1,30 @@
 # Unity Project Context
 
+## November 23, 2026 world transition update
+
+World-specific transition presentation is embedded directly in each
+`WorldDefinitionAsset`; no per-world transition ScriptableObject is required. The
+Worlds screen persists the selected world through `PlayerFlow`, and transitions into
+Levels, Game, back to Levels/Worlds, and between in-scene gameplay levels use that
+world's face, color, optional timing override, and reveal feedback. Home-to-Worlds
+uses the resource-backed neutral default with no face. Reveal feedback currently
+supports an optional non-spatial audio clip with volume and pitch and plays when the
+opening animation begins. Each world can also override composition: normalized mask
+center, normalized face anchor, pixel face offset and size, and face rotation.
+
+## November 22, 2026 transition update
+
+Screen navigation is owned by `PlayerFlow` in `Blobs.UI`. `BlobsterSceneTransition`
+now provides a persistent uGUI overlay that closes a circular stomach mask, loads
+the destination while fully covered, and opens the mask again. Its face sprite,
+background color, mask composition, timing, and edge softness come from the
+resource-backed `BlobsterTransitionStyle` asset. The implementation uses a custom
+screen-space UI shader and does not require scene or prefab wiring.
+
+The official Unity MCP is available in this session. Build Settings contain Home,
+Levels, Game, and Worlds; the active Game scene was dirty and was intentionally not
+opened, saved, or modified while implementing the transition.
+
 ## November 18, 2026 UI update
 
 The Worlds screen uses `WorldsScreenPresenter` and `WorldCarousel` in the `Blobs.UI` assembly. Chrome styling is centralized in `UiThemeAsset`; gameplay blob and board colors remain in `LevelColorPaletteAsset` and `LevelVisualThemeAsset`. Unity 6000.3.6f1 is open on `Assets/_Game/Scenes/Worlds.unity`. Unity AI Assistant 2.21.0-pre.2 and its relay are installed, but this Codex session exposes no callable Unity MCP tools, so Editor-safe menu tooling and PlayMode tests are the available live integration path.
@@ -42,8 +67,8 @@ August snapshot and has not been fully revalidated.
 ## Project Summary
 
 - Project root: `/Users/caleb/Dev/blobs`
-- Last analyzed: 2026-08-15
-- Last analyzed commit: `b0d1980`
+- Last analyzed: 2026-11-22
+- Last analyzed commit: `c041fc7`
 - Production code is under `Assets/_Game`; `Assets/Scripts` is the legacy prototype/feel reference.
 
 ## Confirmed Environment
@@ -87,9 +112,9 @@ August snapshot and has not been fully revalidated.
 
 ## Scenes And Startup Flow
 
-- Build scenes: `Assets/Scenes/Menu.unity`, then `Assets/Scenes/Blobs.unity` (legacy shell)
-- Likely production startup scene: `Assets/_Game/Scenes/Game.unity` through `GameBootstrapper`, but it is not currently enabled in Build Settings
-- Scene loading flow: legacy build flow is authoritative for builds; the production scene composes `GameSession`, input, board Presentation, and UI through `GameBootstrapper`
+- Build scenes: `Assets/_Game/Scenes/Home.unity`, `Levels.unity`, `Game.unity`, and `Worlds.unity`, all enabled
+- Startup scene: `Assets/_Game/Scenes/Home.unity`
+- Scene loading flow: `PlayerFlow` routes screen navigation through `BlobsterSceneTransition`; `GameBootstrapper` composes the gameplay scene after load
 
 ## Architecture
 
@@ -120,21 +145,21 @@ August snapshot and has not been fully revalidated.
 
 | Capability | Status | Evidence |
 | --- | --- | --- |
-| Unity MCP/editor inspection | unavailable | no Unity MCP tools exposed in this task |
+| Unity MCP/editor inspection | available | official Unity MCP responded to project, Build Settings, Console, asset, and script-validation probes |
 | Repository/static inspection | available | shared workspace and shell |
-| Unity batchmode executable | unverified | expected 6000.3.6f1 executable was not discoverable from the sandbox |
+| Unity script/shader validation | available | Unity MCP standard script validation and `ShaderUtil` checks |
 
 ## Important Constraints
 
 - Preserve the dependency direction documented in `Docs/TECHNICAL_ARCHITECTURE.md`.
 - Do not grow production behavior out of legacy `Assets/Scripts` types.
 - Presentation timing and rendering must not decide or mutate gameplay rules.
-- The current worktree contains user edits to the production Game scene, blob catalog, and a UI font asset; preserve them.
+- The current worktree contains extensive user edits and the active Game scene is dirty; preserve them and avoid incidental scene saves.
 
 ## Unknowns And Confidence
 
-- The active Editor scene, Console baseline, and active build target are unknown because no connected Unity tooling is available.
-- The production scene is not in serialized Build Settings, so production runtime validation requires an explicit Editor scene launch or later build-settings decision.
+- The active Editor scene is Game. Its pre-existing Console baseline includes a destroyed-object `CoachPointerView` error unrelated to the transition.
+- The transition scripts, shader, material, and default style were compile/static validated; an interactive Play Mode visual pass remains to be run with the dirty scene preserved.
 
 ## Source Files Inspected
 
@@ -146,6 +171,8 @@ August snapshot and has not been fully revalidated.
 - `ProjectSettings/ProjectSettings.asset`
 - `ProjectSettings/EditorBuildSettings.asset`
 - `Packages/manifest.json`
+- `Assets/_Game/Scripts/UI/PlayerFlow.cs`
+- `Assets/_Game/Scripts/UI/Transitions/*`
 - production asmdefs, `GameBootstrapper.cs`, `BoardPresenter.cs`, `TileView.cs`, Core board/level types, representative EditMode tests and authored level assets
 
 <!-- unity-onboarding:generated:end -->

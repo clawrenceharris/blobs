@@ -50,7 +50,7 @@ MonoBehaviour:
     normalIcon: {r: 1, g: 1, b: 1, a: 1}
     disabledIcon: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   iconButton:
-    normalFill: {r: 1, g: 1, b: 1, a: 1}
+    normalFill: {r: 1, g: 1, b: 1, a: 0}
     pressedFill: {r: 0.89408743, g: 0.8935119, b: 0.9150943, a: 1}
     disabledFill: {r: 1, g: 1, b: 1, a: 1}
     normalLabel: {r: 1, g: 1, b: 1, a: 1}

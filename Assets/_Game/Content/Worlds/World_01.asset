@@ -28,3 +28,40 @@ MonoBehaviour:
   mechanicPreviewPrefab: {fileID: 5575016317122839086, guid: 5b6a031b4fdc640bbb38cf38600a946f, type: 3}
   mechanicPreviewLockedPrefab: {fileID: 8340918419817704256, guid: 853645ce2435349e48006189cf605ab1, type: 3}
   unlocked: 1
+  transition:
+    eyesSprite: {fileID: 21300000, guid: f18d5d6e378d84d75b5eff28f1dc7d05, type: 3}
+    mouthSprite: {fileID: 21300000, guid: 9a3b9e26f5f374a119dc1aaa515e6405, type: 3}
+    backgroundColor: {r: 0.38039216, g: 0.9019608, b: 0.99607843, a: 1}
+    mouthUnitRadius: 0.03
+    closedMouthScale: {x: 0, y: 0}
+    lipVisualScale: 1.22
+    lipWidthPixels: 20
+    reshapeGrowthMultiplier: 1.35
+    mouthReshapeDuration: 0.14
+    reshapeEase: 11
+    overrideComposition: 1
+    maskCenter: {x: 0.5, y: 0.3}
+    faceFollowsMouth: 1
+    faceMouthOffset: {x: 0, y: 1.1}
+    faceAnchor: {x: 0.5, y: 0.5}
+    facePosition: {x: 0, y: 200}
+    faceSize: {x: 500, y: 300}
+    faceRotation: 0
+    overrideTiming: 1
+    closeDuration: 1
+    coveredHoldDuration: 10
+    openDuration: 2
+    closeEase: 3
+    openEase: 3
+    gameTips: []
+    tipFadeDuration: 0.2
+    tipDisplayDuration: 4
+    tipFontSize: 54
+    closingFeedback:
+      audioClip: {fileID: 0}
+      volume: 1
+      pitch: 1
+    openingFeedback:
+      audioClip: {fileID: 0}
+      volume: 1
+      pitch: 1

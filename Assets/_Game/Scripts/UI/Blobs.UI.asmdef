@@ -6,7 +6,8 @@
         "Unity.TextMeshPro",
         "UnityEngine.UI",
         "Blobs.Core",
-        "Blobs.Content"
+        "Blobs.Content",
+        "DOTween.Modules"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

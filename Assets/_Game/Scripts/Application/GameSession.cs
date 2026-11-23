@@ -105,7 +105,7 @@ namespace Blobs.Application
         private string _dragSourceId;
         private GridPosition _dragOrigin;
         private GridPosition _dragTail;
-        private int _committedMoveCount;
+        private int _moveCount;
         private BoardState _restartBoard;
         private ObjectiveProgress _restartObjectives;
         private HashSet<string> _allowedSourceBlobIds;
@@ -140,7 +140,7 @@ namespace Blobs.Application
         public event Action<MoveResult> MoveRejected;
 
         public string LevelId => _level.Id;
-        public int MoveCount => _committedMoveCount;
+        public int MoveCount => _moveCount;
         public bool CanUndo => _history.Count > 0 && !IsComplete;
         public bool IsComplete { get; private set; }
         public string SelectedBlobId => _selectedBlobId;
@@ -412,7 +412,7 @@ namespace Blobs.Application
             // Valid contact can produce feedback without changing the board.
             if (result.Effects.Count > 0)
             {
-                _committedMoveCount++;
+                _moveCount++;
                 _history.Add(new UndoActionRecord(
                     previous,
                     previousObjectives,
@@ -433,7 +433,7 @@ namespace Blobs.Application
             EndDragPreview();
             UndoActionRecord record = _history[_history.Count - 1];
             _history.RemoveAt(_history.Count - 1);
-            _committedMoveCount--;
+            _moveCount--;
             _board = record.PreviousBoard.Clone();
             _objectives = record.PreviousObjectives;
             _selectedBlobId = null;
@@ -497,7 +497,7 @@ namespace Blobs.Application
 
             // A stage boundary is a fresh starting point: Undo cannot cross it and Restart returns here.
             _history.Clear();
-            _committedMoveCount = 0;
+            _moveCount = 0;
             IsComplete = ObjectiveEvaluator.IsComplete(_board, _objectives);
             _restartBoard = _board.Clone();
             _restartObjectives = _objectives;
@@ -540,7 +540,7 @@ namespace Blobs.Application
         {
             EndDragPreview();
             _history.Clear();
-            _committedMoveCount = 0;
+            _moveCount = 0;
             if (_restartBoard != null)
             {
                 _board = _restartBoard.Clone();

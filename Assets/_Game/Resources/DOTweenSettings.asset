@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 16995157, guid: a811bde74b26b53498b4f6d872b09b6d, type: 3}
   m_Name: DOTweenSettings
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: DOTween.dll::DG.Tweening.Core.DOTweenSettings
   useSafeMode: 1
   safeModeOptions:
     logBehaviour: 2
@@ -39,15 +39,16 @@ MonoBehaviour:
   storeSettingsLocation: 0
   modules:
     showPanel: 0
-    audioEnabled: 1
+    audioEnabled: 0
     physicsEnabled: 0
-    physics2DEnabled: 1
+    physics2DEnabled: 0
     spriteEnabled: 1
     uiEnabled: 1
     uiToolkitEnabled: 0
     textMeshProEnabled: 0
     tk2DEnabled: 0
     deAudioEnabled: 0
+    deAudioV2Enabled: 0
     deUnityExtendedEnabled: 0
     epoOutlineEnabled: 0
   createASMDEF: 1

@@ -26,14 +26,14 @@ namespace Blobs.UI
 
         [SerializeField] private UiButtonView enterButton;
 
+        private int selectedWorldIndex;
+
         private void Awake()
         {
             if (backButton != null)
                 backButton.onClick.AddListener(OnBack);
             if (enterButton != null)
-            {
-                enterButton.Button.onClick.AddListener(PlayerFlow.GoLevels);
-            }
+                enterButton.Button.onClick.AddListener(OnEnterWorld);
 
             BuildWorldCards();
 
@@ -44,9 +44,23 @@ namespace Blobs.UI
         {
             if (backButton != null)
                 backButton.onClick.RemoveListener(OnBack);
+            if (enterButton != null)
+                enterButton.Button.onClick.RemoveListener(OnEnterWorld);
         }
 
         private void OnBack() => PlayerFlow.GoHome();
+
+        private void OnEnterWorld()
+        {
+            if (selectedWorldIndex < 0 || selectedWorldIndex >= worlds.Count)
+                return;
+
+            WorldDefinitionAsset world = worlds[selectedWorldIndex];
+            if (world == null || !world.Unlocked)
+                return;
+
+            PlayerFlow.GoLevels(selectedWorldIndex, world);
+        }
 
         private void BuildWorldCards()
         {
@@ -81,6 +95,8 @@ namespace Blobs.UI
         {
             if (worldIndex < 0 || worldIndex >= worlds.Count)
                 return;
+
+            selectedWorldIndex = worldIndex;
 
             WorldDefinitionAsset world = worlds[worldIndex];
             if (progressLabel != null && world.Unlocked)

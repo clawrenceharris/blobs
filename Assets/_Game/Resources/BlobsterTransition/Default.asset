@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be88921ad1eb245509670d9144a53708, type: 3}
+  m_Name: Default
+  m_EditorClassIdentifier: Blobs.UI::Blobs.UI.BlobsterTransitionStyle
+  maskMaterial: {fileID: 2100000, guid: d18be4ed337574e7c94c90f0ebb5163b, type: 2}
+  edgeSoftness: 0.008
+  presentation:
+    eyesSprite: {fileID: 0}
+    mouthSprite: {fileID: 21300000, guid: 9a3b9e26f5f374a119dc1aaa515e6405, type: 3}
+    backgroundColor: {r: 0.30567273, g: 0.30397832, b: 0.31132078, a: 1}
+    mouthUnitRadius: 0.03
+    closedMouthScale: {x: 2, y: 0.2}
+    lipVisualScale: 1.22
+    lipWidthPixels: 20
+    reshapeGrowthMultiplier: 1.35
+    mouthReshapeDuration: 0.14
+    reshapeEase: 11
+    overrideComposition: 0
+    maskCenter: {x: 0.5, y: 0.32}
+    faceFollowsMouth: 1
+    faceMouthOffset: {x: -0.65, y: 0.8}
+    faceAnchor: {x: 0.5, y: 0.82}
+    facePosition: {x: -60, y: 220}
+    faceSize: {x: 360, y: 360}
+    faceRotation: 0
+    overrideTiming: 0
+    closeDuration: 0.42
+    coveredHoldDuration: 1
+    openDuration: 0.58
+    closeEase: 3
+    openEase: 3
+    gameTips:
+    - Swipe or select two Blobsters in the same row or column.
+    - Blobsters only eat a different color.
+    - Rocks stop a moving Blobster on the tile before them.
+    - Trail Blobsters leave a Blobster behind on each tile they depart.
+    - Capture the matching Flag after clearing the other Blobsters.
+    - Ghosts haunt back toward where their victim began.
+    - Graves clear a haunting Ghost; a Blobster on the Grave survives.
+    - Undo restores the previous board-changing move.
+    - Restart resets the puzzle and clears its history.
+    tipFadeDuration: 0.2
+    tipDisplayDuration: 1.2
+    tipFontSize: 54
+    closingFeedback:
+      audioClip: {fileID: 0}
+      volume: 1
+      pitch: 1
+    openingFeedback:
+      audioClip: {fileID: 0}
+      volume: 1
+      pitch: 1

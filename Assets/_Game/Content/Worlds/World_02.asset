@@ -25,3 +25,73 @@ MonoBehaviour:
   mechanicPreviewPrefab: {fileID: 8205278900488965069, guid: f1f9adde2b1054d1e870579d0a7d2077, type: 3}
   mechanicPreviewLockedPrefab: {fileID: 7031506976374054487, guid: 837c0ba2097b049d6adf4f9b57b8ebb0, type: 3}
   unlocked: 0
+  transition:
+    eyesSprite: {fileID: 21300000, guid: 3778af70c1f954adf891b941c0838d96, type: 3}
+    backgroundColor: {r: 1, g: 1, b: 1, a: 1}
+    mouthSprite: {fileID: 0}
+    mouthUnitRadius: 0.03
+    closedMouthScale: {x: 2, y: 0.2}
+    lipVisualScale: 1.22
+    mouthReshapeDuration: 0.14
+    overrideComposition: 1
+    maskCenter: {x: 0.5, y: 0.42}
+    faceAnchor: {x: 0, y: 1}
+    facePosition: {x: 400, y: -400}
+    faceSize: {x: 480, y: 480}
+    faceRotation: 45
+    overrideTiming: 0
+    closeDuration: 0.6
+    coveredHoldDuration: 0.6
+    openDuration: 0.6
+    closeCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    openCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    revealFeedback:
+      audioClip: {fileID: 0}
+      volume: 1
+      pitch: 1

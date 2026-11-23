@@ -1,0 +1,1183 @@
+fileFormatVersion: 2
+guid: 655c193a6b2d74c018dace713e7ad888
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7103474158310323640
+    second: SPR_UI_Icon_Music_0
+  - first:
+      213: -8790385211404799592
+    second: SPR_UI_Icon_Music_1
+  - first:
+      213: 765508012307772791
+    second: SPR_UI_Icon_Music_2
+  - first:
+      213: -6234010715415268638
+    second: SPR_UI_Icon_Music_3
+  - first:
+      213: 7659116957278148535
+    second: SPR_UI_Icon_Music_4
+  - first:
+      213: -5107866157177794600
+    second: SPR_UI_Icon_Music_5
+  - first:
+      213: -1164505382184001688
+    second: SPR_UI_Icon_Music_6
+  - first:
+      213: 3845416837931098526
+    second: SPR_UI_Icon_Music_7
+  - first:
+      213: -8546144874467154399
+    second: SPR_UI_Icon_Music_8
+  - first:
+      213: 3489421028868096724
+    second: SPR_UI_Icon_Music_9
+  - first:
+      213: 7321076722800587686
+    second: SPR_UI_Icon_Music_10
+  - first:
+      213: -6259450717955672398
+    second: SPR_UI_Icon_Music_11
+  - first:
+      213: 2689618724988069355
+    second: SPR_UI_Icon_Music_12
+  - first:
+      213: -3243004185186605071
+    second: SPR_UI_Icon_Music_13
+  - first:
+      213: 1430552471344308911
+    second: SPR_UI_Icon_Music_14
+  - first:
+      213: -6143712511682761850
+    second: SPR_UI_Icon_Music_15
+  - first:
+      213: -5605324443855322276
+    second: SPR_UI_Icon_Music_16
+  - first:
+      213: -8259272119822716305
+    second: SPR_UI_Icon_Music_17
+  - first:
+      213: 9145478270242046863
+    second: SPR_UI_Icon_Music_18
+  - first:
+      213: -3531210930723757988
+    second: SPR_UI_Icon_Music_19
+  - first:
+      213: 7377648466986232151
+    second: SPR_UI_Icon_Music_20
+  - first:
+      213: 1938089823388452848
+    second: SPR_UI_Icon_Music_21
+  - first:
+      213: -4236008975207682907
+    second: SPR_UI_Icon_Music_22
+  - first:
+      213: -2354545308918237507
+    second: SPR_UI_Icon_Music_23
+  - first:
+      213: -6516827618427810193
+    second: SPR_UI_Icon_Music_24
+  - first:
+      213: 1562422661256589113
+    second: SPR_UI_Icon_Music_25
+  - first:
+      213: -4229596067169236917
+    second: SPR_UI_Icon_Music_26
+  - first:
+      213: 3661392963214082703
+    second: SPR_UI_Icon_Music_27
+  - first:
+      213: 1330350940732016940
+    second: SPR_UI_Icon_Music_28
+  - first:
+      213: 764307461575572921
+    second: SPR_UI_Icon_Music_29
+  - first:
+      213: 6826168711783149111
+    second: SPR_UI_Icon_Music_30
+  - first:
+      213: 8813354318341111018
+    second: SPR_UI_Icon_Music_31
+  - first:
+      213: -4204915508594886965
+    second: SPR_UI_Icon_Music_32
+  - first:
+      213: -5962653976719172917
+    second: SPR_UI_Icon_Music_33
+  - first:
+      213: -129407733488785707
+    second: SPR_UI_Icon_Music_34
+  - first:
+      213: 5726738823139978656
+    second: SPR_UI_Icon_Music_35
+  - first:
+      213: 672709801775747584
+    second: SPR_UI_Icon_Music_36
+  - first:
+      213: 2108910827257423446
+    second: SPR_UI_Icon_Music_37
+  - first:
+      213: -9066332889019449911
+    second: SPR_UI_Icon_Music_38
+  - first:
+      213: 8358062470036042502
+    second: SPR_UI_Icon_Music_39
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 1254
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 47
+        width: 1254
+        height: 1187
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84a0fba83e36b6d90800000000000000
+      internalID: -7103474158310323640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_1
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 1173
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 891be534937420680800000000000000
+      internalID: -8790385211404799592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_2
+      rect:
+        serializedVersion: 2
+        x: 860
+        y: 1181
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 775f15a3b71af9a00800000000000000
+      internalID: 765508012307772791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_3
+      rect:
+        serializedVersion: 2
+        x: 876
+        y: 1171
+        width: 23
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e2b1b598485c79a0800000000000000
+      internalID: -6234010715415268638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_4
+      rect:
+        serializedVersion: 2
+        x: 1204
+        y: 933
+        width: 19
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b71cbbfa46aa4a60800000000000000
+      internalID: 7659116957278148535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_5
+      rect:
+        serializedVersion: 2
+        x: 1238
+        y: 845
+        width: 16
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8df8d2deac63d19b0800000000000000
+      internalID: -5107866157177794600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_6
+      rect:
+        serializedVersion: 2
+        x: 1238
+        y: 690
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86f54e35688d6dfe0800000000000000
+      internalID: -1164505382184001688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_7
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 562
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e91603e7d3aad5530800000000000000
+      internalID: 3845416837931098526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_8
+      rect:
+        serializedVersion: 2
+        x: 1212
+        y: 562
+        width: 9
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1262c5e148ef56980800000000000000
+      internalID: -8546144874467154399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_9
+      rect:
+        serializedVersion: 2
+        x: 1220
+        y: 567
+        width: 9
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d2067120f9ec6030800000000000000
+      internalID: 3489421028868096724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_10
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 363
+        width: 15
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a3f8eb9d70b99560800000000000000
+      internalID: 7321076722800587686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_11
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 216
+        width: 23
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b6303b6cb6f129a0800000000000000
+      internalID: -6259450717955672398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_12
+      rect:
+        serializedVersion: 2
+        x: 418
+        y: 208
+        width: 7
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be5272ceaf1735520800000000000000
+      internalID: 2689618724988069355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_13
+      rect:
+        serializedVersion: 2
+        x: 496
+        y: 210
+        width: 14
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f7e8d030e88ef2d0800000000000000
+      internalID: -3243004185186605071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_14
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 210
+        width: 10
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa2e80fa4e75ad310800000000000000
+      internalID: 1430552471344308911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_15
+      rect:
+        serializedVersion: 2
+        x: 520
+        y: 214
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68ba60b75062dbaa0800000000000000
+      internalID: -6143712511682761850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_16
+      rect:
+        serializedVersion: 2
+        x: 534
+        y: 208
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c538039dd13e532b0800000000000000
+      internalID: -5605324443855322276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_17
+      rect:
+        serializedVersion: 2
+        x: 557
+        y: 214
+        width: 19
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f62fdaa34cb216d80800000000000000
+      internalID: -8259272119822716305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_18
+      rect:
+        serializedVersion: 2
+        x: 973
+        y: 208
+        width: 25
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f83c4de28044bee70800000000000000
+      internalID: 9145478270242046863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_19
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 184
+        width: 24
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c50eb3f1e5e9efec0800000000000000
+      internalID: -3531210930723757988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_20
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 190
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7596b68313ca26660800000000000000
+      internalID: 7377648466986232151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_21
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 182
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f74ed90d6a75ea10800000000000000
+      internalID: 1938089823388452848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_22
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 192
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ac2167c74ca635c0800000000000000
+      internalID: -4236008975207682907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_23
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 196
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db6bd563489f25fd0800000000000000
+      internalID: -2354545308918237507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_24
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 192
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6ec7250fc39f85a0800000000000000
+      internalID: -6516827618427810193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_25
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 192
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93f2831e127dea510800000000000000
+      internalID: 1562422661256589113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_26
+      rect:
+        serializedVersion: 2
+        x: 434
+        y: 198
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b480df849c47d45c0800000000000000
+      internalID: -4229596067169236917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_27
+      rect:
+        serializedVersion: 2
+        x: 444
+        y: 192
+        width: 9
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f828d7b4081efc230800000000000000
+      internalID: 3661392963214082703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_28
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 186
+        width: 23
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2940f0d12b567210800000000000000
+      internalID: 1330350940732016940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_29
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 182
+        width: 14
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bd746a369d5b9a00800000000000000
+      internalID: 764307461575572921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_30
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 168
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73e68bad64c6bbe50800000000000000
+      internalID: 6826168711783149111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_31
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 166
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aec7060be035f4a70800000000000000
+      internalID: 8813354318341111018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_32
+      rect:
+        serializedVersion: 2
+        x: 520
+        y: 168
+        width: 32
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc6bbaf9f9325a5c0800000000000000
+      internalID: -4204915508594886965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_33
+      rect:
+        serializedVersion: 2
+        x: 918
+        y: 178
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bca5517bcc5604da0800000000000000
+      internalID: -5962653976719172917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_34
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 156
+        width: 10
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d6663e1a50443ef0800000000000000
+      internalID: -129407733488785707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_35
+      rect:
+        serializedVersion: 2
+        x: 545
+        y: 144
+        width: 21
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ad62ba3e96797f40800000000000000
+      internalID: 5726738823139978656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_36
+      rect:
+        serializedVersion: 2
+        x: 796
+        y: 162
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00254c32002f55900800000000000000
+      internalID: 672709801775747584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_37
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 128
+        width: 15
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65667a1593b544d10800000000000000
+      internalID: 2108910827257423446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_38
+      rect:
+        serializedVersion: 2
+        x: 771
+        y: 144
+        width: 12
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cdfd8ed54aed2280800000000000000
+      internalID: -9066332889019449911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_UI_Icon_Music_39
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 119
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 603b509988dcdf370800000000000000
+      internalID: 8358062470036042502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      SPR_UI_Icon_Music_0: -7103474158310323640
+      SPR_UI_Icon_Music_1: -8790385211404799592
+      SPR_UI_Icon_Music_10: 7321076722800587686
+      SPR_UI_Icon_Music_11: -6259450717955672398
+      SPR_UI_Icon_Music_12: 2689618724988069355
+      SPR_UI_Icon_Music_13: -3243004185186605071
+      SPR_UI_Icon_Music_14: 1430552471344308911
+      SPR_UI_Icon_Music_15: -6143712511682761850
+      SPR_UI_Icon_Music_16: -5605324443855322276
+      SPR_UI_Icon_Music_17: -8259272119822716305
+      SPR_UI_Icon_Music_18: 9145478270242046863
+      SPR_UI_Icon_Music_19: -3531210930723757988
+      SPR_UI_Icon_Music_2: 765508012307772791
+      SPR_UI_Icon_Music_20: 7377648466986232151
+      SPR_UI_Icon_Music_21: 1938089823388452848
+      SPR_UI_Icon_Music_22: -4236008975207682907
+      SPR_UI_Icon_Music_23: -2354545308918237507
+      SPR_UI_Icon_Music_24: -6516827618427810193
+      SPR_UI_Icon_Music_25: 1562422661256589113
+      SPR_UI_Icon_Music_26: -4229596067169236917
+      SPR_UI_Icon_Music_27: 3661392963214082703
+      SPR_UI_Icon_Music_28: 1330350940732016940
+      SPR_UI_Icon_Music_29: 764307461575572921
+      SPR_UI_Icon_Music_3: -6234010715415268638
+      SPR_UI_Icon_Music_30: 6826168711783149111
+      SPR_UI_Icon_Music_31: 8813354318341111018
+      SPR_UI_Icon_Music_32: -4204915508594886965
+      SPR_UI_Icon_Music_33: -5962653976719172917
+      SPR_UI_Icon_Music_34: -129407733488785707
+      SPR_UI_Icon_Music_35: 5726738823139978656
+      SPR_UI_Icon_Music_36: 672709801775747584
+      SPR_UI_Icon_Music_37: 2108910827257423446
+      SPR_UI_Icon_Music_38: -9066332889019449911
+      SPR_UI_Icon_Music_39: 8358062470036042502
+      SPR_UI_Icon_Music_4: 7659116957278148535
+      SPR_UI_Icon_Music_5: -5107866157177794600
+      SPR_UI_Icon_Music_6: -1164505382184001688
+      SPR_UI_Icon_Music_7: 3845416837931098526
+      SPR_UI_Icon_Music_8: -8546144874467154399
+      SPR_UI_Icon_Music_9: 3489421028868096724
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

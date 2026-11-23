@@ -41,7 +41,7 @@ namespace Blobs.Presentation
         private LevelColorPaletteAsset _colorPalette;
 
         public BlobMotionAnimator BlobMotionAnimator => _blobMotionAnimator;
-        public MonsterFaceView Face { get; private set; }
+        public BlobFaceView Face { get; private set; }
         public Color MergeEffectColor { get; private set; } = Color.white;
         public Skin MergeEffectSkin { get; private set; } = new(Color.white, Color.gray, Color.white);
 
@@ -297,7 +297,7 @@ namespace Blobs.Presentation
         private void CacheOptionalBehaviors()
         {
             _contactFeedback.Clear();
-            Face = TryGetComponent(out MonsterFaceView face) ? face : null;
+            Face = TryGetComponent(out BlobFaceView face) ? face : null;
 
             MonoBehaviour[] components =
                 GetComponents<MonoBehaviour>();

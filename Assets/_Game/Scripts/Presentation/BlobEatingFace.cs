@@ -6,10 +6,10 @@ namespace Blobs.Presentation
     public sealed class BlobEatingFace : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer faceRenderer;
-        [SerializeField] private MonsterFacePairs facePairs;
+        [SerializeField] private BlobFacePairs facePairs;
         private Sprite _idle;
         private bool _captured;
-        public void BeginPreview(MonsterFacePairs fallback)
+        public void BeginPreview(BlobFacePairs fallback)
         {
             if (facePairs == null) facePairs = fallback;
             if (faceRenderer == null)

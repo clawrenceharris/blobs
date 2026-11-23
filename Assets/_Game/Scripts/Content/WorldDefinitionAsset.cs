@@ -31,10 +31,14 @@ namespace Blobs.Content
         [SerializeField] private GameObject mechanicPreviewLockedPrefab;
         [SerializeField] private bool unlocked;
 
+        [Header("Transition")]
+        [SerializeField] private WorldTransitionPresentation transition = new();
+
         public LevelColorPaletteAsset Palette => palette;
         public GameObject MechanicPreviewPrefab => mechanicPreviewPrefab;
         public GameObject MechanicPreviewLockedPrefab => mechanicPreviewLockedPrefab;
         public bool Unlocked => unlocked;
+        public WorldTransitionPresentation Transition => transition;
         public int LevelSlotCount => levelSlotCount;
         public string WorldId => worldId;
         public string WorldTitle => worldTitle;

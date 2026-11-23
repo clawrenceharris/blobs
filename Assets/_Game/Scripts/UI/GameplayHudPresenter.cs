@@ -12,7 +12,7 @@ namespace Blobs.UI
     {
         [SerializeField] private MonoBehaviour sessionHostBehaviour;
         [SerializeField] private TMP_Text moveCountText;
-        [SerializeField] private TMP_Text statusText;
+        [SerializeField] private TMP_Text levelNumberText;
         [SerializeField] private UiButtonView restartButton;
         [SerializeField] private UiButtonView undoButton;
         [SerializeField] private UiButtonView exitButton;
@@ -163,12 +163,22 @@ namespace Blobs.UI
 
         public void NextLevel()
         {
-            _sessionHost?.NextLevel();
+            if (_sessionHost == null)
+                return;
+
+            BlobsterSceneTransition.PlayCoveredAction(
+                _sessionHost.NextLevel,
+                PlayerFlow.ActiveWorld?.Transition);
         }
 
         private void PreviousLevel()
         {
-            _sessionHost?.PreviousLevel();
+            if (_sessionHost == null)
+                return;
+
+            BlobsterSceneTransition.PlayCoveredAction(
+                _sessionHost.PreviousLevel,
+                PlayerFlow.ActiveWorld?.Transition);
         }
 
 
@@ -200,6 +210,12 @@ namespace Blobs.UI
             if (movesRoot != null)
                 movesRoot.SetActive(!_sessionHost.IsTutorial);
 
+            if (nextLevelButton != null)
+                //TODO: Disable if the next level is locked or not available
+                nextLevelButton.gameObject.SetActive(true);
+
+            if (levelNumberText != null)
+                levelNumberText.SetText((_sessionHost.CurrentLevelIndex + 1).ToString(), _sessionHost.CurrentLevelIndex + 1);
 
             if (snapshot == null || isComplete || !snapshot.CanUndo)
             {

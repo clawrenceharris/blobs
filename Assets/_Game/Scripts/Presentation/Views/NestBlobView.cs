@@ -54,7 +54,7 @@ namespace Blobs.Presentation
         {
             // Nest hosts inherit MonsterFaceView from the normal monster prefab; hide it so only
             // an arriving occupant can show a face after capture.
-            if (!HasOccupant && TryGetComponent(out MonsterFaceView hostFace))
+            if (!HasOccupant && TryGetComponent(out BlobFaceView hostFace))
                 hostFace.Hide();
         }
 

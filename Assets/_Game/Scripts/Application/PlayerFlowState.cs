@@ -47,6 +47,7 @@ namespace Blobs.Application
         public static void Clear()
         {
             _pendingLevelIndex = null;
+            _pendingWorldIndex = null;
         }
     }
 }

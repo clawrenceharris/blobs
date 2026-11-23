@@ -12,13 +12,17 @@ namespace Blobs.Core
     {
         private readonly IBlobRuleBook _rules;
         private readonly IBlobIdFactory _idFactory;
+        private readonly ICoreLogger _logger;
 
         public MoveResolver(
             IBlobRuleBook rules = null,
-            IBlobIdFactory idFactory = null)
+            IBlobIdFactory idFactory = null,
+            ICoreLogger logger = null)
         {
             _rules = rules ?? BlobRuleBook.CreateDefault();
             _idFactory = idFactory ?? new SequentialBlobIdFactory();
+            _logger = logger ?? NullCoreLogger.Instance;
+
         }
 
         public MoveFailureReason ValidateSourceSelection(
